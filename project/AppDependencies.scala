@@ -6,15 +6,19 @@ import sbt._
 object AppDependencies {
 
   val compile = Seq(
-    "uk.gov.hmrc"             %% "bootstrap-backend-play-27"  % "2.23.0",
-    "uk.gov.hmrc"             %% "simple-reactivemongo"       % "7.30.0-play-27"
+    "uk.gov.hmrc"       %% "bootstrap-backend-play-27"       % "2.23.0",
+    "org.reactivemongo" %% "play2-reactivemongo"             % "0.20.11-play26",
+    "com.typesafe.play" %% "play-iteratees"                  % "2.6.1",
+    "com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1"
   )
 
   val test = Seq(
-    "uk.gov.hmrc"             %% "bootstrap-test-play-27"   % "2.23.0" % Test,
-    "org.scalatest"           %% "scalatest"                % "3.1.2"                 % Test,
-    "com.typesafe.play"       %% "play-test"                % current                 % Test,
-    "com.vladsch.flexmark"    %  "flexmark-all"             % "0.35.10"               % "test, it",
-    "org.scalatestplus.play"  %% "scalatestplus-play"       % "4.0.3"                 % "test, it"
-  )
+    "uk.gov.hmrc"            %% "bootstrap-test-play-27" % "2.23.0",
+    "com.typesafe.play"      %% "play-test"              % current,
+    "org.scalatest"          %% "scalatest"              % "3.2.0",
+    "org.scalatestplus.play" %% "scalatestplus-play"     % "4.0.3",
+    "org.scalatestplus.play" %% "scalatestplus-play"     % "3.1.3",
+    "com.vladsch.flexmark"    % "flexmark-all"           % "0.35.10",
+    "com.github.tomakehurst"  % "wiremock-standalone"    % "2.27.1"
+  ).map(_ % "test, it")
 }

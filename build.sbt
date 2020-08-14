@@ -10,13 +10,14 @@ val silencerVersion = "1.7.0"
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .disablePlugins(JUnitXmlReportPlugin)
+  .settings(resolvers += Resolver.jcenterRepo)
+  .settings(publishingSettings: _*)
+  .configs(IntegrationTest)
+  .settings(integrationTestSettings(): _*)
+  .settings(scoverageSettings: _*)
   .settings(
-    majorVersion                     := 0,
-    scalaVersion                     := "2.12.11",
-    libraryDependencies              ++= AppDependencies.compile ++ AppDependencies.test,
     // ***************
     // Use the silencer plugin to suppress warnings
-    useSuperShell in ThisBuild     := false,
     scalacOptions += "-P:silencer:pathFilters=routes",
     libraryDependencies ++= Seq(
       compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
@@ -24,13 +25,16 @@ lazy val microservice = Project(appName, file("."))
     )
     // ***************
   )
-  .settings(publishingSettings: _*)
-  .configs(IntegrationTest)
-  .settings(integrationTestSettings(): _*)
-  .settings(resolvers += Resolver.jcenterRepo)
-  .settings(scoverageSettings: _*)
+  .settings(
+    majorVersion := 0,
+    scalaVersion := "2.12.11",
+    libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+    useSuperShell in ThisBuild := false,
+    scalacOptions += "-Ypartial-unification",
+    scalafmtOnCompile in ThisBuild := true
+  )
 
-lazy val scoverageSettings = {
+lazy val scoverageSettings =
   Seq(
     ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
     ScoverageKeys.coverageMinimum := 85.00,
@@ -39,4 +43,3 @@ lazy val scoverageSettings = {
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution in Test := false
   )
-}
