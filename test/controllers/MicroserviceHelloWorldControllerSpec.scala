@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.customsreferencedata.controllers
+package controllers
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import config.AppConfig
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.{Configuration, Environment}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 import play.api.http.Status
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, Helpers}
+import play.api.test.FakeRequest
+import play.api.test.Helpers
+import play.api.Configuration
+import play.api.Environment
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-import uk.gov.hmrc.customsreferencedata.config.AppConfig
 
-class MicroserviceHelloWorldControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+class MicroserviceHelloWorldControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite {
 
   private val fakeRequest = FakeRequest("GET", "/")
 
@@ -38,10 +40,10 @@ class MicroserviceHelloWorldControllerSpec extends AnyWordSpec with Matchers wit
 
   private val controller = new MicroserviceHelloWorldController(appConfig, Helpers.stubControllerComponents())
 
-  "GET /" should {
+  "GET /" - {
     "return 200" in {
       val result = controller.hello()(fakeRequest)
-      status(result) shouldBe Status.OK
+      status(result) mustBe Status.OK
     }
   }
 }
