@@ -28,6 +28,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     majorVersion := 0,
     scalaVersion := "2.12.11",
+    PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     useSuperShell in ThisBuild := false,
     scalacOptions += "-Ypartial-unification",
