@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package controllers
+package base
 
-import config.AppConfig
-import javax.inject.Inject
-import javax.inject.Singleton
-import play.api.mvc.Action
-import play.api.mvc.AnyContent
-import play.api.mvc.ControllerComponents
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import org.scalatest.OptionValues
+import org.scalatest.concurrent.IntegrationPatience
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import play.api.inject.guice.GuiceApplicationBuilder
 
-import scala.concurrent.Future
+trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience {
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject() (appConfig: AppConfig, cc: ControllerComponents) extends BackendController(cc) {
+  type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 
-  def hello(): Action[AnyContent] =
-    Action.async {
-      implicit request =>
-        Future.successful(Ok("Hello world"))
-    }
+  val baseApplicationBuilder: AppFunction = identity
+
 }
