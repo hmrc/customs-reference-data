@@ -16,16 +16,24 @@
 
 package services
 
+import java.time.LocalDate
+
 import javax.inject.Inject
 import models.ListName
+import models.MetaData
 import models.ReferenceDataList
 import repositories.ListRepository
 
+import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRetrievalService @Inject() (listRepository: ListRepository) {
+class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit ec: ExecutionContext) {
+
+  private def getVersion = MetaData("version", LocalDate.of(2020, 11, 5))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    listRepository.getList(listName)
+    listRepository.getList(listName, getVersion).map {
+      x => Some(ReferenceDataList(listName, getVersion, x))
+    }
 
 }

@@ -17,7 +17,8 @@
 package repositories
 
 import com.google.inject.Inject
-import models.{ListName, ReferenceDataList}
+import models.{ListName, MetaData}
+import play.api.libs.json.JsArray
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.play.json.collection.JSONCollection
 
@@ -30,6 +31,6 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  def getList(listName: ListName): Future[Option[ReferenceDataList]] = ???
+  def getList(listName: ListName, metaDeta: MetaData): Future[JsArray] = ???
 
 }

@@ -16,15 +16,17 @@
 
 package services
 
+import java.time.LocalDate
+
 import base.SpecBase
 import generators.ModelGenerators
-import models.ListName
-import models.ReferenceDataList
+import models.{MetaData, ReferenceDataList}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
+import play.api.libs.json.JsArray
 import play.api.test.Helpers._
 import repositories.ListRepository
 
@@ -46,32 +48,14 @@ class ListRetrievalServiceSpec extends SpecBase with ModelGenerators with ScalaC
         application =>
           forAll(arbitrary[ReferenceDataList]) {
             referenceDataList =>
-              when(mockListRepository.getList(any())).thenReturn(Future.successful(Some(referenceDataList)))
+              when(mockListRepository.getList(any(), any())).thenReturn(Future.successful(JsArray.empty))
+
+              val listWithDate = referenceDataList.copy(metaData = MetaData("version", LocalDate.of(2020, 11, 5)))
 
               val service = application.injector.instanceOf[ListRetrievalService]
 
-              service.getList(referenceDataList.id).futureValue.value mustBe referenceDataList
+              service.getList(referenceDataList.id).futureValue.value mustBe listWithDate
           }
-      }
-    }
-
-    "must return None when not available" in {
-
-      val mockListRepository = mock[ListRepository]
-
-      val listName = arbitrary[ListName].sample.value
-
-      val app = baseApplicationBuilder.andThen(
-        _.overrides(bind[ListRepository].toInstance(mockListRepository))
-      )
-
-      when(mockListRepository.getList(any())).thenReturn(Future.successful(None))
-
-      running(app) {
-        application =>
-          val service = application.injector.instanceOf[ListRetrievalService]
-
-          service.getList(listName).futureValue mustBe None
       }
     }
   }
