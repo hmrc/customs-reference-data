@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package base
+package models
 
-import org.scalatest.OptionValues
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.mockito.MockitoSugar
-import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.JsArray
+import play.api.libs.json.Reads
 
-trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience with MockitoSugar {
+case class ReferenceDataList(id: ListName, metaData: MetaData, data: JsArray)
 
-  type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
-
-  val baseApplicationBuilder: AppFunction = identity
+object ReferenceDataList {
+  implicit val reads: Reads[ReferenceDataList] = ???
 }
