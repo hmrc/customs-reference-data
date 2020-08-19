@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package base
+package services
 
-import org.scalatest.OptionValues
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import play.api.inject.guice.GuiceApplicationBuilder
+import javax.inject.Inject
+import models.ListName
+import models.ReferenceDataList
+import repositories.ListRepository
 
-trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience {
+import scala.concurrent.Future
 
-  type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
+class ListRetrievalService @Inject() (listRepository: ListRepository) {
 
-  val baseApplicationBuilder: AppFunction = identity
+  def getList(listName: ListName): Future[Option[ReferenceDataList]] =
+    listRepository.getList(listName)
+
 }

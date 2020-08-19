@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package base
+package models
 
-import org.scalatest.OptionValues
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import play.api.inject.guice.GuiceApplicationBuilder
+import java.time.LocalDate
 
-trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience {
-
-  type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
-
-  val baseApplicationBuilder: AppFunction = identity
-}
+case class MetaData(version: String, snapshot: LocalDate)
