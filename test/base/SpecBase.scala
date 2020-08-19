@@ -21,9 +21,10 @@ import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.guice.GuiceApplicationBuilder
 
-trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience {
+trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience with MockitoSugar {
 
   type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 

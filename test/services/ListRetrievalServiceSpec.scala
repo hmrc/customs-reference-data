@@ -24,8 +24,6 @@ import models.MetaData
 import models.ReferenceDataList
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
-import org.scalatest.concurrent.IntegrationPatience
-import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.libs.json.JsArray
 import play.api.test.Helpers._
@@ -33,7 +31,7 @@ import repositories.ListRepository
 
 import scala.concurrent.Future
 
-class ListRetrievalServiceSpec extends SpecBase with IntegrationPatience with MockitoSugar {
+class ListRetrievalServiceSpec extends SpecBase {
 
   "getList" - {
 
