@@ -17,15 +17,11 @@
 package repositories
 
 import com.google.inject.Inject
-import models.ListName
-import models.ReferenceDataList
-import play.api.libs.json.Json
+import models.{ListName, ReferenceDataList}
 import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) {
 
@@ -34,15 +30,6 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  def getList(listName: ListName): Future[Option[ReferenceDataList]] = {
-    val selector = Json.obj(
-      "id" -> listName.name
-    )
-
-    collection.flatMap {
-      _.find(selector, None)
-        .one[ReferenceDataList]
-    }
-  }
+  def getList(listName: ListName): Future[Option[ReferenceDataList]] = ???
 
 }

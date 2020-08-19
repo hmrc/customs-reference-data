@@ -16,22 +16,21 @@
 
 package services
 
-import java.time.LocalDate
-
 import base.SpecBase
+import generators.ModelGenerators
 import models.ListName
-import models.MetaData
 import models.ReferenceDataList
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
-import play.api.libs.json.JsArray
 import play.api.test.Helpers._
 import repositories.ListRepository
 
 import scala.concurrent.Future
 
-class ListRetrievalServiceSpec extends SpecBase {
+class ListRetrievalServiceSpec extends SpecBase with ModelGenerators with ScalaCheckDrivenPropertyChecks {
 
   "getList" - {
 
@@ -39,22 +38,20 @@ class ListRetrievalServiceSpec extends SpecBase {
 
       val mockListRepository = mock[ListRepository]
 
-      // Potential Generators
-      val testListName      = ListName("testListName")
-      val metaData          = MetaData("test", LocalDate.now)
-      val referenceDataList = ReferenceDataList(testListName, metaData, JsArray.empty)
-
       val app = baseApplicationBuilder.andThen(
         _.overrides(bind[ListRepository].toInstance(mockListRepository))
       )
 
-      when(mockListRepository.getList(any())).thenReturn(Future.successful(Some(referenceDataList)))
-
       running(app) {
         application =>
-          val service = application.injector.instanceOf[ListRetrievalService]
+          forAll(arbitrary[ReferenceDataList]) {
+            referenceDataList =>
+              when(mockListRepository.getList(any())).thenReturn(Future.successful(Some(referenceDataList)))
 
-          service.getList(testListName).futureValue.value mustBe ReferenceDataList(testListName, metaData, JsArray.empty)
+              val service = application.injector.instanceOf[ListRetrievalService]
+
+              service.getList(referenceDataList.id).futureValue.value mustBe referenceDataList
+          }
       }
     }
 
@@ -62,8 +59,7 @@ class ListRetrievalServiceSpec extends SpecBase {
 
       val mockListRepository = mock[ListRepository]
 
-      // Potential Generators
-      val testListName = ListName("testListName")
+      val listName = arbitrary[ListName].sample.value
 
       val app = baseApplicationBuilder.andThen(
         _.overrides(bind[ListRepository].toInstance(mockListRepository))
@@ -75,10 +71,9 @@ class ListRetrievalServiceSpec extends SpecBase {
         application =>
           val service = application.injector.instanceOf[ListRetrievalService]
 
-          service.getList(testListName).futureValue mustBe None
+          service.getList(listName).futureValue mustBe None
       }
     }
-
   }
 
 }
