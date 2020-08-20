@@ -17,12 +17,14 @@
 package repositories
 
 import com.google.inject.Inject
-import models.{ListName, MetaData}
+import models.ListName
+import models.MetaData
 import play.api.libs.json.JsArray
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.play.json.collection.JSONCollection
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) {
 
