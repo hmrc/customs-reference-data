@@ -17,20 +17,36 @@
 package repositories
 
 import com.google.inject.Inject
-import models.{ListName, MetaData}
+import models.ListName
+import models.MetaData
 import play.api.libs.json.JsArray
+import play.api.libs.json.Json
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import repositories.ListRepository.collectionName
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) {
-
-  private val collectionName = "reference-data-lists"
 
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  def getList(listName: ListName, metaDeta: MetaData): Future[JsArray] = ???
+  def getList(listName: ListName, metaDeta: MetaData): Future[JsArray] = {
+    val selector = Json.obj(
+      "listName" -> listName.name
+    )
 
+    collection.flatMap {
+      _.find(selector, None)
+        .requireOne[JsArray]
+    }
+  }
+
+}
+
+object ListRepository {
+  val collectionName = "reference-data-lists"
 }
