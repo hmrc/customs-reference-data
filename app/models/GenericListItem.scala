@@ -16,6 +16,16 @@
 
 package models
 
-import play.api.libs.json.JsObject
+import play.api.libs.json.OWrites
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 case class GenericListItem(listName: ReferenceDataPayload#ListName, messageInformation: ReferenceDataPayload#MessageInformation, data: JsObject)
+
+object GenericListItem {
+
+  implicit val writes: OWrites[GenericListItem] =
+    (__.write[ReferenceDataPayload#ListName] and
+      __.write[ReferenceDataPayload#MessageInformation] and
+      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
+}
