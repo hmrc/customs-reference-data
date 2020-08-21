@@ -18,15 +18,20 @@ package models
 
 import java.time.LocalDate
 
-import play.api.libs.json.JsArray
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 
 class ReferenceDataPayload(data: JsObject) {
 
   case class ListName(name: String)
-  case class SingleList(messageInformation: MessageInformation, list: JsArray)
+
   case class MessageInformation(messageId: String, snapshotDate: LocalDate)
+
+  case class SingleList(listName: ListName, messageInformation: MessageInformation, list: Seq[JsObject]) {
+
+    lazy val toGenericListItem: Seq[GenericListItem] =
+      list.map(GenericListItem(listName, messageInformation, _))
+  }
 
   private lazy val messageInformation: MessageInformation =
     (for {
@@ -40,7 +45,7 @@ class ReferenceDataPayload(data: JsObject) {
     lists.keys.map(ListName)
 
   def getList(listName: ListName): SingleList =
-    SingleList(messageInformation, (lists \ listName.name \ "listEntries").as[JsArray])
+    SingleList(listName, messageInformation, (lists \ listName.name \ "listEntries").as[Vector[JsObject]])
 
 }
 

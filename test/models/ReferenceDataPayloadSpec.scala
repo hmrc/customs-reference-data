@@ -82,14 +82,8 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
       val testListName2 = "testListName2"
 
-      val listEntries = Json.arr(
-        Json.obj(
-          "entryKey" -> "entryValue"
-        )
-      )
-
-      val testList2 = Json.obj(
-        testListName2 -> Json.obj("listName" -> testListName2, "listEntries" -> listEntries)
+      val listEntry = Json.obj(
+        "entryKey" -> "entryValue"
       )
 
       val messageId    = "74bd0784-8dc9-4eba-a435-9914ace26995"
@@ -108,16 +102,19 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
                   "entryKey" -> "entryValue"
                 )
               )
+            ),
+            testListName2 -> Json.obj(
+              "listName"    -> testListName2,
+              "listEntries" -> Json.arr(listEntry)
             )
           )
-          .++(testList2)
       )
 
       val referenceDataPayload = ReferenceDataPayload(data)
 
       val listName           = referenceDataPayload.ListName(testListName2)
       val messageInformation = referenceDataPayload.MessageInformation(messageId, LocalDate.parse(snapshotDate))
-      val expectedList       = referenceDataPayload.SingleList(messageInformation, listEntries)
+      val expectedList       = referenceDataPayload.SingleList(listName, messageInformation, Seq(listEntry))
 
       referenceDataPayload.getList(listName) mustEqual expectedList
     }
