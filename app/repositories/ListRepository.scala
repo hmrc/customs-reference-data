@@ -17,6 +17,7 @@
 package repositories
 
 import com.google.inject.Inject
+
 import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName

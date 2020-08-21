@@ -1,3 +1,3 @@
 # microservice specific routes
 
-
+GET /resources  @controllers.ResourceLinksController.index

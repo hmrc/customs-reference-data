@@ -51,7 +51,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       .build()
 
   private def fakeRequest: FakeRequest[AnyContentAsJson] =
-    FakeRequest(POST, routes.ReferenceDataController.post().url)
+    FakeRequest(POST, "/reference-data-lists")
       .withJsonBody(Json.obj())
 
   "post" - {
