@@ -49,7 +49,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelGenerators with ScalaC
         application =>
           forAll(arbitrary[ReferenceDataList]) {
             referenceDataList =>
-              when(mockListRepository.getList(any(), any())).thenReturn(Future.successful(JsArray.empty))
+              when(mockListRepository.getList(any(), any())).thenReturn(Future.successful(Nil))
 
               val listWithDate = referenceDataList.copy(metaData = MetaData("version", LocalDate.of(2020, 11, 5)))
 

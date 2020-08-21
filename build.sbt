@@ -14,6 +14,9 @@ lazy val microservice = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
+  .settings(
+    javaOptions in IntegrationTest += "-Dlogger.resource=logback-it.xml"
+  )
   .settings(scoverageSettings: _*)
   .settings(
     // ***************

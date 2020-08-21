@@ -19,9 +19,10 @@ package repositories
 import com.google.inject.Inject
 import models.ListName
 import models.MetaData
-import play.api.libs.json.JsArray
+import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.Cursor
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListRepository.collectionName
@@ -34,14 +35,13 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  def getList(listName: ListName, metaDeta: MetaData): Future[JsArray] = {
+  def getList(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
     val selector = Json.obj(
       "listName" -> listName.name
     )
 
     collection.flatMap {
-      _.find(selector, None)
-        .requireOne[JsArray]
+      _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
     }
   }
 
