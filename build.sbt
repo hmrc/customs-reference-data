@@ -14,9 +14,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
-  .settings(
-    javaOptions in IntegrationTest += "-Dlogger.resource=logback-it.xml"
-  )
   .settings(scoverageSettings: _*)
   .settings(
     // ***************
@@ -58,7 +55,8 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
   parallelExecution := false,
   fork              := true,
   javaOptions ++= Seq(
-    "-Dconfig.resource=it.application.conf"
+    "-Dconfig.resource=it.application.conf",
+    "-Dlogger.resource=logback-it.xml"
   )
 )
 
