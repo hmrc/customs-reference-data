@@ -16,37 +16,21 @@
 
 package generators
 
-import java.time.LocalDate
-
-import models._
-import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import play.api.libs.json.JsArray
+import org.scalacheck.Gen
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
 
-trait ModelGenerators extends JavaTimeGenerators {
+trait ModelGenerators {
 
-  implicit val arbitraryListName: Arbitrary[ListName] =
-    Arbitrary {
-      for {
-        name <- arbitrary[String]
-      } yield ListName(name)
-    }
+  val simpleJsString: Gen[JsString] = arbitrary[String].map(JsString)
 
-  implicit val arbitraryMetaData: Arbitrary[MetaData] =
-    Arbitrary {
-      for {
-        version  <- arbitrary[String]
-        snapShot <- arbitrary[LocalDate]
-      } yield MetaData(version, snapShot)
-    }
-
-  implicit val arbitraryReferenceDataList: Arbitrary[ReferenceDataList] =
-    Arbitrary {
-      for {
-        listName <- arbitrary[ListName]
-        metaData <- arbitrary[MetaData]
-      } yield ReferenceDataList(listName, metaData, Nil)
-      //TODO: This needs updating when we understand what data will be
-    }
-
+  val simpleJsObject: Gen[JsObject] =
+    for {
+      key   <- arbitrary[String]
+      value <- simpleJsString
+    } yield Json.obj(key -> value)
 }
+
+object ModelGenerators extends ModelGenerators

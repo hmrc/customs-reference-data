@@ -16,16 +16,10 @@
 
 package models
 
-import play.api.libs.json.OWrites
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.JsObject
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, data: JsObject)
+case class SingleList(listName: ListName, messageInformation: MessageInformation, list: Seq[JsObject]) {
 
-object GenericListItem {
-
-  implicit val writes: OWrites[GenericListItem] =
-    (__.write[ListName] and
-      __.write[MessageInformation] and
-      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
+  lazy val toGenericListItem: Seq[GenericListItem] =
+    list.map(GenericListItem(listName, messageInformation, _))
 }

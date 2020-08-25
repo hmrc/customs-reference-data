@@ -21,17 +21,6 @@ import java.time.LocalDate
 import play.api.libs.json._
 
 class ReferenceDataPayload(data: JsObject) {
-  outer =>
-
-  case class ListName(listName: String)
-
-  case class MessageInformation(messageId: String, snapshotDate: LocalDate)
-
-  case class SingleList(listName: ListName, messageInformation: MessageInformation, list: Seq[JsObject]) {
-
-    lazy val toGenericListItem: Seq[GenericListItem] =
-      list.map(GenericListItem(listName, messageInformation, _))
-  }
 
   private lazy val messageInformation: MessageInformation =
     (for {
@@ -42,24 +31,15 @@ class ReferenceDataPayload(data: JsObject) {
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
   def listsNames: collection.Set[ListName] =
-    lists.keys.map(outer.ListName)
+    lists.keys.map(ListName(_))
 
   def getList(listName: ListName): SingleList =
     SingleList(listName, messageInformation, (lists \ listName.listName \ "listEntries").as[Vector[JsObject]])
 
 }
 
-object ReferenceDataPayload extends MongoDateTimeFormats {
+object ReferenceDataPayload {
 
   def apply(data: JsObject): ReferenceDataPayload = new ReferenceDataPayload(data)
 
-  implicit val oWritesListName: OWrites[ReferenceDataPayload#ListName] =
-    listName => Json.obj("listName" -> listName.listName)
-
-  implicit val oWritesMessageInformation: OWrites[ReferenceDataPayload#MessageInformation] =
-    messageInformation =>
-      Json.obj(
-        "messageID"    -> messageInformation.messageId,
-        "snapshotDate" -> messageInformation.snapshotDate
-      )
 }

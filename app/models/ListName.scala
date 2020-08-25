@@ -16,4 +16,13 @@
 
 package models
 
-case class ListName(name: String)
+import play.api.libs.json.Json
+import play.api.libs.json.OFormat
+
+case class ListName(listName: String)
+
+object ListName {
+
+  implicit val oWritesListName: OFormat[ListName] =
+    Json.format[ListName]
+}

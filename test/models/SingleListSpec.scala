@@ -33,35 +33,9 @@ class SingleListSpec extends SpecBase with ScalaCheckDrivenPropertyChecks {
         "entryKey" -> "entryValue"
       )
 
-      val messageId    = "74bd0784-8dc9-4eba-a435-9914ace26995"
-      val snapshotDate = "2020-07-06"
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> messageId,
-          "snapshotDate" -> snapshotDate
-        ),
-        "lists" -> Json
-          .obj(
-            "testListName1" -> Json.obj(
-              "listName" -> "testListName1",
-              "listEntries" -> Json.arr(
-                Json.obj(
-                  "entryKey" -> "entryValue"
-                )
-              )
-            ),
-            testListName2 -> Json.obj(
-              "listName"    -> testListName2,
-              "listEntries" -> Json.arr(listEntry1)
-            )
-          )
-      )
-
-      val referenceDataPayload = ReferenceDataPayload(data)
-
-      val listName           = referenceDataPayload.ListName(testListName2)
-      val messageInformation = referenceDataPayload.MessageInformation(messageId, LocalDate.parse(snapshotDate))
-      val singleList         = referenceDataPayload.SingleList(listName, messageInformation, Seq(listEntry1))
+      val listName           = ListName(testListName2)
+      val messageInformation = MessageInformation("74bd0784-8dc9-4eba-a435-9914ace26995", LocalDate.parse("2020-07-06"))
+      val singleList         = SingleList(listName, messageInformation, Seq(listEntry1))
 
       val expected = Seq(GenericListItem(listName, messageInformation, listEntry1))
 

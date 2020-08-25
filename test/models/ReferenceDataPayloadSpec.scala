@@ -70,10 +70,9 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
         )
       )
 
-      val referenceDataPayload = ReferenceDataPayload(data)
-      val listNames            = referenceDataPayload.listsNames
+      val listNames = ReferenceDataPayload(data).listsNames
 
-      listNames mustEqual Set(referenceDataPayload.ListName("testListName1"), referenceDataPayload.ListName("testListName2"))
+      listNames mustEqual Set(ListName("testListName1"), ListName("testListName2"))
     }
   }
 
@@ -110,13 +109,11 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           )
       )
 
-      val referenceDataPayload = ReferenceDataPayload(data)
+      val listName = ListName(testListName2)
 
-      val listName           = referenceDataPayload.ListName(testListName2)
-      val messageInformation = referenceDataPayload.MessageInformation(messageId, LocalDate.parse(snapshotDate))
-      val expectedList       = referenceDataPayload.SingleList(listName, messageInformation, Seq(listEntry))
+      val expectedList = SingleList(listName, MessageInformation(messageId, LocalDate.parse(snapshotDate)), Seq(listEntry))
 
-      referenceDataPayload.getList(listName) mustEqual expectedList
+      ReferenceDataPayload(data).getList(listName) mustEqual expectedList
     }
   }
 

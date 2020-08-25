@@ -1,7 +1,8 @@
 package base
 
 import org.scalatest.OptionValues
-import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatest.concurrent.IntegrationPatience
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
@@ -12,4 +13,5 @@ class ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaF
   type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 
   val baseApplicationBuilder: AppFunction = identity
+
 }
