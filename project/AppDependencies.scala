@@ -23,4 +23,6 @@ object AppDependencies {
     "wolfendale"             %% "scalacheck-gen-regexp"    % "0.1.1",
     "com.vladsch.flexmark"    % "flexmark-all"             % "0.35.10"
   ).map(_ % "test, it")
+
+  def apply(): Seq[ModuleID] = compile ++ test
 }

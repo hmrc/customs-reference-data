@@ -16,10 +16,10 @@
 
 package models
 
-import play.api.libs.json.JsArray
+import play.api.libs.json.JsObject
 import play.api.libs.json.Reads
 
-case class ReferenceDataList(id: ListName, metaData: MetaData, data: JsArray)
+case class ReferenceDataList(id: ListName, metaData: MetaData, data: List[JsObject])
 
 object ReferenceDataList {
   implicit val reads: Reads[ReferenceDataList] = ???

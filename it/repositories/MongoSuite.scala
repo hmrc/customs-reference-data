@@ -23,9 +23,8 @@ import play.api.Configuration
 import reactivemongo.api.MongoConnection.ParsedURI
 import reactivemongo.api._
 
-import scala.concurrent.Future
-
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object MongoSuite extends OptionValues {
 
@@ -42,7 +41,6 @@ object MongoSuite extends OptionValues {
       parsedUri   <- MongoConnection.fromString(config.get[String]("mongodb.uri"))
       connnection <- AsyncDriver().connect(parsedUri)
     } yield (parsedUri, connnection)
-
 }
 
 trait MongoSuite {
