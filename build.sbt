@@ -1,7 +1,7 @@
-import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
-import uk.gov.hmrc.SbtArtifactory
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 import scoverage.ScoverageKeys
+import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
+import uk.gov.hmrc.{DefaultBuildSettings, SbtArtifactory}
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "customs-reference-data"
 
@@ -13,7 +13,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(publishingSettings: _*)
   .configs(IntegrationTest)
-  .settings(integrationTestSettings(): _*)
+  .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(scoverageSettings: _*)
   .settings(
     // ***************
@@ -44,3 +44,19 @@ lazy val scoverageSettings =
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution in Test := false
   )
+
+lazy val itSettings = Defaults.itSettings ++ Seq(
+  unmanagedSourceDirectories := Seq(
+    baseDirectory.value / "it"
+  ),
+  unmanagedResourceDirectories := Seq(
+    baseDirectory.value / "it" / "resources"
+  ),
+  parallelExecution := false,
+  fork              := true,
+  javaOptions ++= Seq(
+    "-Dconfig.resource=it.application.conf",
+    "-Dlogger.resource=logback-it.xml"
+  )
+)
+

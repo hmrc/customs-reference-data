@@ -45,7 +45,8 @@ trait ModelGenerators extends JavaTimeGenerators {
       for {
         listName <- arbitrary[ListName]
         metaData <- arbitrary[MetaData]
-      } yield ReferenceDataList(listName, metaData, JsArray.empty)
+      } yield ReferenceDataList(listName, metaData, Nil)
+      //TODO: This needs updating when we understand what data will be
     }
 
 }
