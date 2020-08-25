@@ -18,34 +18,41 @@ package repositories
 
 import com.typesafe.config.ConfigFactory
 import org.scalatest._
+import play.api.Application
 import play.api.Configuration
+import reactivemongo.api.MongoConnection.ParsedURI
 import reactivemongo.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object MongoSuite {
+object MongoSuite extends OptionValues {
 
-  private lazy val config: Configuration = Configuration(ConfigFactory.load(System.getProperty(
-    "config.resource"
-  )))
+  private lazy val config = Configuration(
+    ConfigFactory.load(
+      System.getProperty(
+        "config.resource"
+      )
+    )
+  )
 
-  private lazy val parsedUri =  Future.fromTry{
-    MongoConnection.parseURI(config.get[String]("mongodb.uri"))
-  }
-
-  lazy val connection: Future[MongoConnection] = parsedUri.map {MongoDriver().connection}
+  lazy val connection: Future[(ParsedURI, MongoConnection)] =
+    for {
+      parsedUri   <- MongoConnection.fromString(config.get[String]("mongodb.uri"))
+      connnection <- AsyncDriver().connect(parsedUri)
+    } yield (parsedUri, connnection)
 }
 
 trait MongoSuite {
   self: TestSuite =>
 
-  def database: Future[DefaultDB] = {
-    for {
-      uri        <- MongoSuite.parsedUri
-      connection <- MongoSuite.connection
-      database   <- connection.database(uri.db.get)
-    } yield database
-  }
+  def started(app: Application): Future[Unit] =
+    Future.sequence(Seq.empty[Future[Unit]]).map(_ => ())
+
+  def database: Future[DefaultDB] =
+    MongoSuite.connection.flatMap {
+      case (uri, connection) =>
+        connection.database(uri.db.get)
+    }
 
 }
