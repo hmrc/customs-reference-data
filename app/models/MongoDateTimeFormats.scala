@@ -16,34 +16,43 @@
 
 package models
 
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
+import java.time._
 
-import play.api.libs.json.JsValue
 import play.api.libs.json.Json
+import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
-import play.api.libs.json.Writes
 import play.api.libs.json.__
 
 trait MongoDateTimeFormats {
 
-  implicit val localDateTimeRead: Reads[LocalDate] =
+  private val timeZone: ZoneOffset = ZoneOffset.UTC
+
+  implicit val localDateRead: Reads[LocalDate] =
     (__ \ "$date").read[Long].map {
       millis =>
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC).toLocalDate
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), timeZone).toLocalDate
     }
 
-  implicit val localDateTimeWrite: Writes[LocalDate] =
-    new Writes[LocalDate] {
+  implicit val localDateWrite: OWrites[LocalDate] =
+    o =>
+      Json.obj(
+        "$date" ->
+          LocalDateTime.of(o, LocalTime.MIDNIGHT).atZone(timeZone).toInstant.toEpochMilli
+      )
 
-      override def writes(o: LocalDate): JsValue =
-        Json.obj(
-          "$date" -> LocalDateTime.of(o, LocalTime.MIDNIGHT)
-        )
+  implicit val localDateTimeRead: Reads[LocalDateTime] =
+    (__ \ "$date").read[Long].map {
+      millis =>
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), timeZone)
     }
+
+  implicit val localDateTimeWrite: OWrites[LocalDateTime] =
+    o =>
+      Json.obj(
+        "$date" ->
+          o.atZone(timeZone).toInstant.toEpochMilli
+      )
+
 }
 
 object MongoDateTimeFormats extends MongoDateTimeFormats
