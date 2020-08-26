@@ -28,8 +28,8 @@ class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {
     val date = LocalDate.now()
 
     val r           = ReferenceDataPayload(JsObject.empty)
-    val listName    = r.ListName("listNameValue")
-    val messageInfo = r.MessageInformation("messageIdValue", date)
+    val listName    = ListName("listNameValue")
+    val messageInfo = MessageInformation("messageIdValue", date)
 
     val listItemJson = Json.obj("key" -> "value")
 

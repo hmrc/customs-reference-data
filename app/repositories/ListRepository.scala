@@ -36,9 +36,7 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   def getList(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
-    val selector = Json.obj(
-      "listName" -> listName.name
-    )
+    val selector = Json.toJsObject(listName)
 
     collection.flatMap {
       _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())

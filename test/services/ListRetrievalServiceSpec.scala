@@ -19,7 +19,7 @@ package services
 import java.time.LocalDate
 
 import base.SpecBase
-import generators.ModelGenerators
+import generators.ModelArbitraryInstances
 import models.MetaData
 import models.ReferenceDataList
 import org.mockito.ArgumentMatchers.any
@@ -33,7 +33,7 @@ import repositories.ListRepository
 
 import scala.concurrent.Future
 
-class ListRetrievalServiceSpec extends SpecBase with ModelGenerators with ScalaCheckDrivenPropertyChecks {
+class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances with ScalaCheckDrivenPropertyChecks {
 
   "getList" - {
 

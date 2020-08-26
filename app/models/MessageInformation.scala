@@ -16,16 +16,19 @@
 
 package models
 
+import java.time.LocalDate
+
+import play.api.libs.json.Json
 import play.api.libs.json.OWrites
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, data: JsObject)
+case class MessageInformation(messageId: String, snapshotDate: LocalDate)
 
-object GenericListItem {
+object MessageInformation extends MongoDateTimeFormats {
 
-  implicit val writes: OWrites[GenericListItem] =
-    (__.write[ListName] and
-      __.write[MessageInformation] and
-      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
+  implicit val oWritesMessageInformation: OWrites[MessageInformation] =
+    messageInformation =>
+      Json.obj(
+        "messageID"    -> messageInformation.messageId,
+        "snapshotDate" -> messageInformation.snapshotDate
+      )
 }
