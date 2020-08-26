@@ -17,14 +17,20 @@
 package repositories
 
 import com.google.inject.Inject
+import models.GenericListItem
 import models.ListName
 import models.MetaData
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.Cursor
+import reactivemongo.api.commands.MultiBulkWriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import repositories.ListRepository.FailedWrite
+import repositories.ListRepository.ListRepositoryWriteResult
+import repositories.ListRepository.PartialWriteFailure
+import repositories.ListRepository.SuccessfulWrite
 import repositories.ListRepository.collectionName
 
 import scala.concurrent.ExecutionContext
@@ -43,8 +49,29 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
     }
   }
 
+  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
+    collection.flatMap {
+      _.insert(ordered = false) // TODO: how do we recover if an item fails bulk insert?
+        .many(list)
+        .map {
+          res =>
+            if (res.writeErrors.nonEmpty && (res.n > 0 || res.nModified > 0))
+              PartialWriteFailure(res.writeErrors.map(_.index).map(index => list(index)))
+            else if ((list.length <= res.n + res.nModified))
+              SuccessfulWrite
+            else
+              FailedWrite(res)
+        }
+    }
+
 }
 
 object ListRepository {
   val collectionName = "reference-data-lists"
+
+  sealed trait ListRepositoryWriteResult
+
+  object SuccessfulWrite                                               extends ListRepositoryWriteResult
+  case class PartialWriteFailure(insertFailures: Seq[GenericListItem]) extends ListRepositoryWriteResult
+  case class FailedWrite(multiBulkWriteResult: MultiBulkWriteResult)   extends ListRepositoryWriteResult
 }

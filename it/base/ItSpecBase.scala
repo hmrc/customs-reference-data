@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.guice.GuiceApplicationBuilder
 
-class ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with MockitoSugar {
+trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with MockitoSugar {
 
   type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 
