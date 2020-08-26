@@ -28,4 +28,9 @@ object GenericListItem {
     (__.write[ListName] and
       __.write[MessageInformation] and
       (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
+
+  implicit val readers: Reads[GenericListItem] =
+    (__.read[ListName] and
+      __.read[MessageInformation] and
+      (__ \ "data").read[JsObject])(GenericListItem(_, _, _))
 }
