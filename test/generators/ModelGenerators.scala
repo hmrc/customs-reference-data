@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import models.ReferenceDataPayload
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
@@ -40,7 +39,7 @@ trait ModelGenerators {
   def genReferenceList(numberOfLists: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[JsObject] =
     for {
       listNames <- arbitrary[String]
-      listItems <- listWithMaxLength(numberOfLists)(Arbitrary(dataItemsGen.getOrElse(genSimpleJsObject)))
+      listItems <- Gen.listOfN(numberOfLists, dataItemsGen.getOrElse(genSimpleJsObject))
     } yield Json.obj(
       listNames -> Json.obj(
         "listName"    -> listNames,
@@ -52,7 +51,7 @@ trait ModelGenerators {
     for {
       messageId    <- arbitrary[String]
       snapshotDate <- arbitrary[LocalDate]
-      lists        <- listWithMaxLength(numberOfLists)(Arbitrary(genReferenceList(numberOfListItems, dataItemsGen)))
+      lists        <- Gen.listOfN(numberOfLists, genReferenceList(numberOfListItems, dataItemsGen))
     } yield {
       val json = Json.obj(
         "messageInformation" -> Json.obj(
