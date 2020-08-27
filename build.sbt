@@ -1,6 +1,7 @@
 import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
-import uk.gov.hmrc.{DefaultBuildSettings, SbtArtifactory}
+import uk.gov.hmrc.DefaultBuildSettings
+import uk.gov.hmrc.SbtArtifactory
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "customs-reference-data"
@@ -52,11 +53,11 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
   unmanagedResourceDirectories := Seq(
     baseDirectory.value / "it" / "resources"
   ),
+  unmanagedSourceDirectories += baseDirectory.value / "test" / "generators",
   parallelExecution := false,
-  fork              := true,
+  fork := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=it.application.conf",
     "-Dlogger.resource=logback-it.xml"
   )
 )
-

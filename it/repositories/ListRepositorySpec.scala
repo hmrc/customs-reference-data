@@ -3,6 +3,9 @@ package repositories
 import java.time.LocalDate
 
 import base.ItSpecBase
+import generators.BaseGenerators
+import generators.ModelArbitraryInstances
+import models.GenericListItem
 import models.ListName
 import models.MetaData
 import org.scalatest.BeforeAndAfterAll
@@ -11,15 +14,25 @@ import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+import reactivemongo.api.Cursor
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import repositories.ListRepository.SuccessfulWrite
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ListRepositorySpec extends ItSpecBase with MongoSuite with IntegrationPatience with BeforeAndAfterEach with BeforeAndAfterAll with GuiceOneAppPerSuite {
+class ListRepositorySpec
+    extends ItSpecBase
+    with MongoSuite
+    with BaseGenerators
+    with ModelArbitraryInstances
+    with IntegrationPatience
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll
+    with GuiceOneAppPerSuite {
 
   import ListRepositorySpec._
 
@@ -71,7 +84,28 @@ class ListRepositorySpec extends ItSpecBase with MongoSuite with IntegrationPati
       }
 
     }
+  }
 
+  "insertList" - {
+    "must save a list" in {
+      val list = listWithMaxLength[GenericListItem](10).sample.value
+
+      val repository = app.injector.instanceOf[ListRepository]
+
+      repository.insertList(list).futureValue mustBe SuccessfulWrite
+
+      val result =
+        database
+          .flatMap(
+            _.collection[JSONCollection](ListRepository.collectionName)
+              .find(Json.obj(), None)
+              .cursor[GenericListItem]()
+              .collect[Seq](11, Cursor.FailOnError())
+          )
+          .futureValue
+
+      result must contain theSameElementsAs list
+    }
   }
 
 }
