@@ -29,7 +29,6 @@ class ListRepositorySpec
     with MongoSuite
     with BaseGenerators
     with ModelArbitraryInstances
-    with IntegrationPatience
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite {

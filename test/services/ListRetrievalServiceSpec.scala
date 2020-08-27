@@ -27,7 +27,6 @@ import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
-import play.api.libs.json.JsArray
 import play.api.test.Helpers._
 import repositories.ListRepository
 
