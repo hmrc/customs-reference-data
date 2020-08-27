@@ -53,7 +53,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
       } yield MessageInformation(messageId, snapshotDate)
     }
 
-  implicit def arbitrarySimpleJsObject: Arbitrary[JsObject] = Arbitrary(ModelGenerators.simpleJsObject)
+  implicit def arbitrarySimpleJsObject: Arbitrary[JsObject] = Arbitrary(ModelGenerators.genSimpleJsObject)
 
   implicit def arbitraryGenericListItem(implicit arbJsObject: Arbitrary[JsObject]): Arbitrary[GenericListItem] =
     Arbitrary {

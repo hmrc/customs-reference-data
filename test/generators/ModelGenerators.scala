@@ -16,21 +16,55 @@
 
 package generators
 
+import java.time.LocalDate
+
+import models.ReferenceDataPayload
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.Json
 
 trait ModelGenerators {
+  self: BaseGenerators with JavaTimeGenerators =>
 
-  val simpleJsString: Gen[JsString] = arbitrary[String].map(JsString)
+  val genSimpleJsString: Gen[JsString] = arbitrary[String].map(JsString)
 
-  val simpleJsObject: Gen[JsObject] =
+  val genSimpleJsObject: Gen[JsObject] =
     for {
       key   <- arbitrary[String]
-      value <- simpleJsString
+      value <- genSimpleJsString
     } yield Json.obj(key -> value)
+
+  def genReferenceList(numberOfLists: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[JsObject] =
+    for {
+      listNames <- arbitrary[String]
+      listItems <- listWithMaxLength(numberOfLists)(Arbitrary(dataItemsGen.getOrElse(genSimpleJsObject)))
+    } yield Json.obj(
+      listNames -> Json.obj(
+        "listName"    -> listNames,
+        "listEntries" -> listItems
+      )
+    )
+
+  def genReferenceDataPayload(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[ReferenceDataPayload] =
+    for {
+      messageId    <- arbitrary[String]
+      snapshotDate <- arbitrary[LocalDate]
+      lists        <- listWithMaxLength(numberOfLists)(Arbitrary(genReferenceList(numberOfListItems, dataItemsGen)))
+    } yield {
+      val json = Json.obj(
+        "messageInformation" -> Json.obj(
+          "messageID"    -> messageId,
+          "snapshotDate" -> snapshotDate
+        ),
+        "lists" -> lists.foldLeft(Json.obj())(_ ++ _)
+      )
+
+      ReferenceDataPayload(json)
+    }
+
 }
 
-object ModelGenerators extends ModelGenerators
+object ModelGenerators extends ModelGenerators with BaseGenerators with JavaTimeGenerators
