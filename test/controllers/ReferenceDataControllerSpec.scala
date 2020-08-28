@@ -17,6 +17,10 @@
 package controllers
 
 import base.SpecBase
+import models.ResponseErrorMessage
+import models.ResponseErrorType.OtherError
+import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
@@ -27,8 +31,6 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import org.mockito.Mockito._
-import org.mockito.ArgumentMatchers._
 import services.ReferenceDataService
 import services.ReferenceDataService.DataProcessingResult._
 
@@ -67,6 +69,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       val result = route(app, fakeRequest).value
 
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(result) mustBe Json.toJsObject(ResponseErrorMessage(OtherError, None))
     }
 
   }

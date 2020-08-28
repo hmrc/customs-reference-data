@@ -18,8 +18,11 @@ package controllers
 
 import javax.inject.Inject
 import models.ReferenceDataPayload
+import models.ResponseErrorMessage
+import models.ResponseErrorType.OtherError
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import services.ReferenceDataService
@@ -40,8 +43,7 @@ class ReferenceDataController @Inject() (cc: ControllerComponents, referenceData
           .insert(refData)
           .map {
             case DataProcessingSuccessful => Accepted
-            case DataProcessingFailed =>
-              InternalServerError
+            case DataProcessingFailed     => InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
           }
     }
 
