@@ -71,7 +71,7 @@ object ListRepository {
 
   sealed trait ListRepositoryWriteResult
 
-  object SuccessfulWrite                                               extends ListRepositoryWriteResult
+  case object SuccessfulWrite                                          extends ListRepositoryWriteResult
   case class PartialWriteFailure(insertFailures: Seq[GenericListItem]) extends ListRepositoryWriteResult
   case class FailedWrite(multiBulkWriteResult: MultiBulkWriteResult)   extends ListRepositoryWriteResult
 }
