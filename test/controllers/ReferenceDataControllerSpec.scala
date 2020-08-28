@@ -16,37 +16,61 @@
 
 package controllers
 
-import akka.util.ByteString
 import base.SpecBase
+import models.ResponseErrorMessage
+import models.ResponseErrorType.OtherError
+import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.http.Status
-import play.api.libs.json.JsValue
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.libs.streams.Accumulator
-import play.api.mvc.Action
 import play.api.mvc.AnyContentAsJson
-import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.ReferenceDataService
+import services.ReferenceDataService.DataProcessingResult._
 
 import scala.concurrent.Future
 
-class ReferenceDataControllerSpec extends SpecBase {
+class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val withTestOnlyRouter: AppFunction =
-    baseApplicationBuilder.andThen(_.configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes"))
+  override def beforeEach(): Unit =
+    super.beforeEach()
+
+  val mockReferenceDataService = mock[ReferenceDataService]
+
+  // Do not use directly use `app` instead
+  override def fakeApplication(): Application =
+    new GuiceApplicationBuilder()
+      .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
+      .overrides(bind[ReferenceDataService].toInstance(mockReferenceDataService))
+      .build()
 
   private def fakeRequest: FakeRequest[AnyContentAsJson] =
     FakeRequest(POST, routes.ReferenceDataController.post().url)
       .withJsonBody(Json.obj())
 
   "post" - {
-    "returns Ok for a JSON body" in {
-      running(withTestOnlyRouter) {
-        application =>
-          val result = route(application, fakeRequest).value
+    "returns Ok when the data has been processed" in {
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
-          status(result) mustBe Status.OK
-      }
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.ACCEPTED
     }
+
+    "returns with an Internal Server Error when the data was not processed successfully" in {
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(result) mustBe Json.toJsObject(ResponseErrorMessage(OtherError, None))
+    }
+
   }
 }

@@ -17,17 +17,34 @@
 package controllers
 
 import javax.inject.Inject
+import models.ReferenceDataPayload
+import models.ResponseErrorMessage
+import models.ResponseErrorType.OtherError
+import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
+import services.ReferenceDataService
+import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-class ReferenceDataController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
+import scala.concurrent.ExecutionContext
+
+class ReferenceDataController @Inject() (cc: ControllerComponents, referenceDataService: ReferenceDataService)(implicit ec: ExecutionContext)
+    extends BackendController(cc) {
 
   def post: Action[JsValue] =
-    Action(parse.json) {
+    Action(parse.json).async {
       implicit request =>
-        Ok("")
+        val refData = ReferenceDataPayload(request.body.as[JsObject])
+        referenceDataService
+          .insert(refData)
+          .map {
+            case DataProcessingSuccessful => Accepted
+            case DataProcessingFailed     => InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
+          }
     }
 
 }
