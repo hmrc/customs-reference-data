@@ -37,7 +37,7 @@ class ReferenceDataServiceIntegrationSpec
   "ReferenceDataService saves all the data items for each list" in {
     val data = genReferenceDataPayload(5, 5).sample.value
 
-    app.injector.instanceOf[ReferenceDataService].addNew(data).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
     val listRepository = app.injector.instanceOf[ListRepository]
 

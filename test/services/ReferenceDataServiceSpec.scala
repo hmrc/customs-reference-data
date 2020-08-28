@@ -39,7 +39,7 @@ class ReferenceDataServiceSpec extends SpecBase {
 
       val service = new ReferenceDataService(repository)
 
-      service.addNew(payload).futureValue mustBe DataProcessingSuccessful
+      service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
       verify(repository, times(2)).insertList(any())
     }
@@ -54,7 +54,7 @@ class ReferenceDataServiceSpec extends SpecBase {
 
       val service = new ReferenceDataService(repository)
 
-      service.addNew(payload).futureValue mustBe DataProcessingFailed
+      service.insert(payload).futureValue mustBe DataProcessingFailed
 
       verify(repository, times(2)).insertList(any())
     }

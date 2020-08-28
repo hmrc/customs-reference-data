@@ -30,7 +30,7 @@ import scala.concurrent.Future
 class ReferenceDataService @Inject() (repository: ListRepository)(implicit ec: ExecutionContext) {
   import services.ReferenceDataService.DataProcessingResult._
 
-  def addNew(payload: ReferenceDataPayload): Future[DataProcessingResult] =
+  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
     Future
       .sequence(
         payload.listsNames
