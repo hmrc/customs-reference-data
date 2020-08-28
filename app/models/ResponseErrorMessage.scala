@@ -22,7 +22,6 @@ import play.api.libs.functional.syntax._
 case class ResponseErrorMessage(errorType: ResponseErrorType, errors: Option[Seq[ResponseErrorDetails]])
 
 object ResponseErrorMessage {
-//  implicit val formats: OFormat[ResponseErrorMessage] = Json.format[ResponseErrorMessage]
 
   implicit val writes: OWrites[ResponseErrorMessage] =
     (__.write[ResponseErrorType] and
