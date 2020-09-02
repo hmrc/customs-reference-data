@@ -16,6 +16,13 @@
 
 package config
 
-import play.api.inject.SimpleModule
+import play.api.inject._
+import repositories.ListCollectionIndexManager
 
-class Module extends SimpleModule((environment, configuration) => Seq.empty)
+class Module
+    extends SimpleModule(
+      (environment, configuration) =>
+        Seq(
+          bind[ListCollectionIndexManager].toSelf.eagerly()
+        )
+    )

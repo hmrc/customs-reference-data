@@ -43,11 +43,17 @@ object MongoSuite extends OptionValues {
     } yield (parsedUri, connnection)
 }
 
-trait MongoSuite {
+trait MongoSuite extends BeforeAndAfterAll {
   self: TestSuite =>
 
   def started(app: Application): Future[Unit] =
-    Future.sequence(Seq.empty[Future[Unit]]).map(_ => ())
+    Future
+      .sequence(
+        Seq(
+          app.injector.instanceOf[ListCollectionIndexManager].started
+        )
+      )
+      .map(_ => ())
 
   def database: Future[DefaultDB] =
     MongoSuite.connection.flatMap {
