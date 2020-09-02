@@ -10,7 +10,6 @@ import models.ListName
 import models.MetaData
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.concurrent.IntegrationPatience
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -26,28 +25,41 @@ import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
-    with MongoSuite
     with BaseGenerators
     with ModelArbitraryInstances
     with BeforeAndAfterEach
     with BeforeAndAfterAll
-    with GuiceOneAppPerSuite {
+    with GuiceOneAppPerSuite
+    with FailOnUnindexedQueries {
 
   import ListRepositorySpec._
 
+  override def beforeAll(): Unit = {
+    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    super.beforeAll()
+    started(app).futureValue
+  }
+
   override def beforeEach(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListRepository.collectionName).drop(failIfNotFound = false))
+    database
+      .flatMap(
+        _.collection[JSONCollection](ListCollection.collectionName)
+          .delete()
+          .one(Json.obj())
+      )
+      .futureValue
+
     super.beforeEach()
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListRepository.collectionName).drop(failIfNotFound = false))
+    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
     super.afterAll()
   }
 
-  def seedData(database: Future[DefaultDB], data: Seq[JsObject]): Unit =
+  private def seedData(database: Future[DefaultDB], data: Seq[JsObject]): Unit =
     database.flatMap {
-      _.collection[JSONCollection](ListRepository.collectionName)
+      _.collection[JSONCollection](ListCollection.collectionName)
         .insert(ordered = true)
         .many(data)
     }.futureValue
@@ -96,7 +108,7 @@ class ListRepositorySpec
       val result =
         database
           .flatMap(
-            _.collection[JSONCollection](ListRepository.collectionName)
+            _.collection[JSONCollection](ListCollection.collectionName)
               .find(Json.obj(), None)
               .cursor[GenericListItem]()
               .collect[Seq](11, Cursor.FailOnError())

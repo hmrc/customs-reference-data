@@ -11,6 +11,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListRepository
 import repositories.MongoSuite
+import repositories.ListCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -25,12 +26,12 @@ class ReferenceDataServiceIntegrationSpec
   import generators.ModelGenerators._
 
   override def beforeEach(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListRepository.collectionName).drop(failIfNotFound = false))
+    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false))
     super.beforeEach()
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListRepository.collectionName).drop(failIfNotFound = false))
+    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false))
     super.afterAll()
   }
 

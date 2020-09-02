@@ -17,41 +17,37 @@
 package repositories
 
 import com.google.inject.Inject
+import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.MetaData
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.Cursor
 import reactivemongo.api.commands.MultiBulkWriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
-import repositories.ListRepository.collectionName
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) {
-
-  private def collection: Future[JSONCollection] =
-    mongo.database.map(_.collection[JSONCollection](collectionName))
+@Singleton
+class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
 
   def getList(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
     val selector = Json.toJsObject(listName)
 
-    collection.flatMap {
+    listCollection().flatMap {
       _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
     }
   }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
-    collection.flatMap {
-      _.insert(ordered = false) // TODO: how do we recover if an item fails bulk insert?
+    listCollection().flatMap {
+      _.insert(ordered = true) // TODO: how do we recover if an item fails bulk insert?
         .many(list)
         .map {
           res =>
@@ -67,7 +63,6 @@ class ListRepository @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionC
 }
 
 object ListRepository {
-  val collectionName = "reference-data-lists"
 
   sealed trait ListRepositoryWriteResult
 
