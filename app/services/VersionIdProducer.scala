@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package services
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import java.util.UUID
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, data: JsObject)
+import models.VersionId
 
-object GenericListItem {
+trait VersionIdProducer extends (() => VersionId)
 
-  implicit val writes: OWrites[GenericListItem] =
-    (__.write[ListName] and
-      __.write[MessageInformation] and
-      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
-
-  implicit val readers: Reads[GenericListItem] =
-    (__.read[ListName] and
-      __.read[MessageInformation] and
-      (__ \ "data").read[JsObject])(GenericListItem(_, _, _))
+class DefaultVersionIdProducer extends VersionIdProducer {
+  override def apply(): VersionId = VersionId(UUID.randomUUID().toString())
 }

@@ -17,6 +17,7 @@
 package generators
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 import models._
 import org.scalacheck.Arbitrary
@@ -64,4 +65,15 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
       } yield GenericListItem(listName, messageInformation, data)
     }
 
+  implicit val arbitraryVersionId: Arbitrary[VersionId] =
+    Arbitrary(arbitrary[String].map(VersionId(_)))
+
+  implicit def arbitraryVersionInformation(implicit ldt: Arbitrary[LocalDateTime]): Arbitrary[VersionInformation] =
+    Arbitrary {
+      for {
+        mi  <- arbitrary[MessageInformation]
+        v   <- arbitrary[VersionId]
+        ldt <- ldt.arbitrary
+      } yield VersionInformation(mi, v, ldt)
+    }
 }

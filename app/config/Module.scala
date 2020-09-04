@@ -18,11 +18,16 @@ package config
 
 import play.api.inject._
 import repositories.ListCollectionIndexManager
+import repositories.VersionCollectionIndexManager
+import services.DefaultVersionIdProducer
+import services.VersionIdProducer
 
 class Module
     extends SimpleModule(
       (environment, configuration) =>
         Seq(
-          bind[ListCollectionIndexManager].toSelf.eagerly()
+          bind[ListCollectionIndexManager].toSelf.eagerly(),
+          bind[VersionCollectionIndexManager].toSelf.eagerly(),
+          bind[VersionIdProducer].to[DefaultVersionIdProducer]
         )
     )

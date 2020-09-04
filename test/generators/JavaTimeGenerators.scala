@@ -18,6 +18,7 @@ package generators
 
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 import org.scalacheck.Arbitrary
@@ -38,6 +39,24 @@ trait JavaTimeGenerators {
 
   implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
     datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+  }
+
+  def dateTimesBetween(min: LocalDateTime, max: LocalDateTime): Gen[LocalDateTime] = {
+
+    def toMillis(date: LocalDateTime): Long =
+      date.atZone(ZoneOffset.UTC).toInstant.toEpochMilli
+
+    Gen.choose(toMillis(min), toMillis(max)).map {
+      millis =>
+        Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDateTime
+    }
+  }
+
+  implicit lazy val arbitraryLocalDateTime: Arbitrary[LocalDateTime] = Arbitrary {
+    dateTimesBetween(
+      LocalDateTime.of(1900, 1, 1, 0, 0, 0),
+      LocalDateTime.of(2100, 1, 1, 0, 0, 0)
+    )
   }
 
 }

@@ -50,7 +50,8 @@ trait MongoSuite extends BeforeAndAfterAll {
     Future
       .sequence(
         Seq(
-          app.injector.instanceOf[ListCollectionIndexManager].started
+          app.injector.instanceOf[ListCollectionIndexManager].started,
+          app.injector.instanceOf[VersionCollectionIndexManager].started
         )
       )
       .map(_ => ())

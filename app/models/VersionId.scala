@@ -16,20 +16,11 @@
 
 package models
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.Json
+import play.api.libs.json.OFormat
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, data: JsObject)
+case class VersionId(versionId: String)
 
-object GenericListItem {
-
-  implicit val writes: OWrites[GenericListItem] =
-    (__.write[ListName] and
-      __.write[MessageInformation] and
-      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
-
-  implicit val readers: Reads[GenericListItem] =
-    (__.read[ListName] and
-      __.read[MessageInformation] and
-      (__ \ "data").read[JsObject])(GenericListItem(_, _, _))
+object VersionId {
+  implicit val formats: OFormat[VersionId] = Json.format[VersionId]
 }
