@@ -33,9 +33,9 @@ class ReferenceDataService @Inject() (repository: ListRepository)(implicit ec: E
   def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
     Future
       .sequence(
-        payload.listsNames
-          .map(payload.getList)
-          .map(x => repository.insertList(x.toGenericListItem))
+        payload
+          .toIterator()
+          .map(repository.insertList)
       )
       .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
         case (_, SuccessfulWrite)        => DataProcessingSuccessful

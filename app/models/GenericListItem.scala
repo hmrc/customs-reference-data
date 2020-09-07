@@ -31,5 +31,5 @@ object GenericListItem {
   implicit val readers: Reads[GenericListItem] =
     (__.read[ListName] and
       __.read[MessageInformation] and
-      (__ \ "data").read[JsObject])(GenericListItem(_, _, _))
+      (__ \ "data").read[JsObject])(GenericListItem.apply _)
 }

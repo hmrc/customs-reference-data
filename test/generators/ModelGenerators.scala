@@ -28,17 +28,17 @@ import play.api.libs.json.Json
 trait ModelGenerators {
   self: BaseGenerators with JavaTimeGenerators =>
 
-  val genSimpleJsString: Gen[JsString] = arbitrary[String].map(JsString)
+  val genSimpleJsString: Gen[JsString] = extendedAsciiWithMaxLength(100).map(JsString)
 
   val genSimpleJsObject: Gen[JsObject] =
     for {
-      key   <- arbitrary[String]
+      key   <- extendedAsciiWithMaxLength(100)
       value <- genSimpleJsString
     } yield Json.obj(key -> value)
 
   def genReferenceList(numberOfLists: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[JsObject] =
     for {
-      listNames <- arbitrary[String]
+      listNames <- extendedAsciiWithMaxLength(100)
       listItems <- Gen.listOfN(numberOfLists, dataItemsGen.getOrElse(genSimpleJsObject))
     } yield Json.obj(
       listNames -> Json.obj(
@@ -47,22 +47,22 @@ trait ModelGenerators {
       )
     )
 
-  def genReferenceDataPayload(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[ReferenceDataPayload] =
+  def genReferenceDataJson(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[JsObject] =
     for {
       messageId    <- arbitrary[String]
       snapshotDate <- arbitrary[LocalDate]
       lists        <- Gen.listOfN(numberOfLists, genReferenceList(numberOfListItems, dataItemsGen))
-    } yield {
-      val json = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> messageId,
-          "snapshotDate" -> snapshotDate
-        ),
-        "lists" -> lists.foldLeft(Json.obj())(_ ++ _)
-      )
+    } yield Json.obj(
+      "messageInformation" -> Json.obj(
+        "messageID"    -> messageId,
+        "snapshotDate" -> snapshotDate
+      ),
+      "lists" -> lists.foldLeft(Json.obj())(_ ++ _)
+    )
 
-      ReferenceDataPayload(json)
-    }
+  def genReferenceDataPayload(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[ReferenceDataPayload] =
+    genReferenceDataJson(numberOfLists, numberOfListItems, dataItemsGen)
+      .map(ReferenceDataPayload(_))
 
 }
 
