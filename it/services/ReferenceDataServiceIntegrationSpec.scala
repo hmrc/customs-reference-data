@@ -49,7 +49,7 @@ class ReferenceDataServiceIntegrationSpec
 
     val listRepository = app.injector.instanceOf[ListRepository]
 
-    expectedListNames.nonEmpty must be(true)
+    expectedListNames.nonEmpty mustBe true
 
     expectedListNames.foreach {
       listName =>
