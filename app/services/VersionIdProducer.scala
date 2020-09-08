@@ -22,6 +22,6 @@ import models.VersionId
 
 trait VersionIdProducer extends (() => VersionId)
 
-class DefaultVersionIdProducer extends VersionIdProducer {
+object DefaultVersionIdProducer extends VersionIdProducer {
   override def apply(): VersionId = VersionId(UUID.randomUUID().toString())
 }

@@ -18,10 +18,12 @@ package services
 
 import base.SpecBase
 import generators.ModelGenerators.genReferenceDataPayload
+import models.VersionId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import repositories.ListRepository
+import repositories.VersionRepository
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import services.ReferenceDataService.DataProcessingResult._
@@ -38,7 +40,11 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val repository = mock[ListRepository]
           when(repository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
 
-          val service = new ReferenceDataService(repository)
+          val versionId         = VersionId("1")
+          val versionRepository = mock[VersionRepository]
+          when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
+
+          val service = new ReferenceDataService(repository, versionRepository)
 
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
@@ -54,7 +60,11 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
             .thenReturn(Future.successful(SuccessfulWrite))
             .thenReturn(Future.successful(PartialWriteFailure(Seq.empty)))
 
-          val service = new ReferenceDataService(repository)
+          val versionId         = VersionId("1")
+          val versionRepository = mock[VersionRepository]
+          when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
+
+          val service = new ReferenceDataService(repository, versionRepository)
 
           service.insert(payload).futureValue mustBe DataProcessingFailed
 
