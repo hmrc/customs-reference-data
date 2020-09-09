@@ -18,9 +18,10 @@ package services
 
 import base.SpecBase
 import generators.ModelGenerators.genReferenceDataPayload
-import repositories.ListRepository
-import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito._
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import repositories.ListRepository
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import services.ReferenceDataService.DataProcessingResult._
@@ -28,35 +29,37 @@ import services.ReferenceDataService.DataProcessingResult._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReferenceDataServiceSpec extends SpecBase {
+class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks {
 
   "addNew" - {
     "reports the processing as successful if all lists are successfully saved" in {
-      val payload = genReferenceDataPayload(numberOfLists = 2).sample.value
+      forAll(genReferenceDataPayload(numberOfLists = 2)) {
+        payload =>
+          val repository = mock[ListRepository]
+          when(repository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
 
-      val repository = mock[ListRepository]
-      when(repository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
+          val service = new ReferenceDataService(repository)
 
-      val service = new ReferenceDataService(repository)
+          service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
-      service.insert(payload).futureValue mustBe DataProcessingSuccessful
-
-      verify(repository, times(2)).insertList(any())
+          verify(repository, times(2)).insertList(any())
+      }
     }
 
     "reports the processing as failed if any lists are not saved" in {
-      val payload = genReferenceDataPayload(numberOfLists = 2).sample.value
+      forAll(genReferenceDataPayload(numberOfLists = 2)) {
+        payload =>
+          val repository = mock[ListRepository]
+          when(repository.insertList(any()))
+            .thenReturn(Future.successful(SuccessfulWrite))
+            .thenReturn(Future.successful(PartialWriteFailure(Seq.empty)))
 
-      val repository = mock[ListRepository]
-      when(repository.insertList(any()))
-        .thenReturn(Future.successful(SuccessfulWrite))
-        .thenReturn(Future.successful(PartialWriteFailure(Seq.empty)))
+          val service = new ReferenceDataService(repository)
 
-      val service = new ReferenceDataService(repository)
+          service.insert(payload).futureValue mustBe DataProcessingFailed
 
-      service.insert(payload).futureValue mustBe DataProcessingFailed
-
-      verify(repository, times(2)).insertList(any())
+          verify(repository, times(2)).insertList(any())
+      }
     }
 
   }

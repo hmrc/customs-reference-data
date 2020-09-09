@@ -4,10 +4,14 @@ import java.time.LocalDate
 
 import base.ItSpecBase
 import generators.BaseGenerators
+import models.ListName
 import models.MetaData
+import models.ReferenceDataPayload
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import play.api.libs.json.JsObject
 import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListRepository
 import repositories.MongoSuite
@@ -21,7 +25,8 @@ class ReferenceDataServiceIntegrationSpec
     with BaseGenerators
     with BeforeAndAfterEach
     with BeforeAndAfterAll
-    with GuiceOneAppPerSuite {
+    with GuiceOneAppPerSuite
+    with ScalaCheckDrivenPropertyChecks {
 
   import generators.ModelGenerators._
 
@@ -35,14 +40,18 @@ class ReferenceDataServiceIntegrationSpec
     super.afterAll()
   }
 
-  "ReferenceDataService saves all the data items for each list" in {
-    val data = genReferenceDataPayload(5, 5).sample.value
+  "saves all the data items for each list" in {
+    val json              = genReferenceDataJson(5, 5).sample.value
+    val data              = ReferenceDataPayload(json)
+    val expectedListNames = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
     val listRepository = app.injector.instanceOf[ListRepository]
 
-    data.listsNames.foreach {
+    expectedListNames.nonEmpty mustBe true
+
+    expectedListNames.foreach {
       listName =>
         val retrievedList = listRepository.getList(listName, MetaData("", LocalDate.now)).futureValue
 

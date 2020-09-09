@@ -30,11 +30,14 @@ class ReferenceDataPayload(data: JsObject) {
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  def listsNames: collection.Set[ListName] =
-    lists.keys.map(ListName(_))
-
-  def getList(listName: ListName): SingleList =
-    SingleList(listName, messageInformation, (lists \ listName.listName \ "listEntries").as[Vector[JsObject]])
+  def toIterator(): Iterable[Seq[GenericListItem]] =
+    lists.values.map(
+      list =>
+        (for {
+          ln <- list.validate[ListName]
+          le <- (list \ "listEntries").validate[Vector[JsObject]]
+        } yield le.map(GenericListItem(ln, messageInformation, _))).get
+    )
 
 }
 

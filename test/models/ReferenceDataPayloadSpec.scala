@@ -16,105 +16,33 @@
 
 package models
 
-import java.time.LocalDate
-
 import base.SpecBase
+import generators.ModelArbitraryInstances
+import generators.ModelGenerators._
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
 
-class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks {
+class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
-  "listsNames" - {
-    "should return an empty Seq when there lists" in {
+  "itIterator" - {
+    "returns an iterator of the lists with list entries" in {
+      forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
+        (numberOfLists, numberOfListItems) =>
+          forAll(genReferenceDataJson(numberOfLists, numberOfListItems)) {
+            data =>
+              val referenceDataPayload = ReferenceDataPayload(data)
 
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> "74bd0784-8dc9-4eba-a435-9914ace26995",
-          "snapshotDate" -> "2020-07-06"
-        ),
-        "lists" -> JsObject.empty
-      )
+              val referenceDataLists = referenceDataPayload.toIterator()
 
-      val payload = ReferenceDataPayload(data)
+              val asdf = referenceDataLists.forall {
+                _.length == numberOfListItems
+              }
 
-      val expected = Set.empty[ListName]
-
-      payload.listsNames mustEqual expected
-    }
-
-    "should return a list of all the list names that are included in the payload" in {
-
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> "74bd0784-8dc9-4eba-a435-9914ace26995",
-          "snapshotDate" -> "2020-07-06"
-        ),
-        "lists" -> Json.obj(
-          "testListName1" -> Json.obj(
-            "listName" -> "testListName1",
-            "listEntries" -> Json.arr(
-              Json.obj(
-                "entryKey" -> "entryValue"
-              )
-            )
-          ),
-          "testListName2" -> Json.obj(
-            "listName" -> "testListName2",
-            "listEntries" -> Json.arr(
-              Json.obj(
-                "entryKey" -> "entryValue"
-              )
-            )
-          )
-        )
-      )
-
-      val listNames = ReferenceDataPayload(data).listsNames
-
-      listNames mustEqual Set(ListName("testListName1"), ListName("testListName2"))
+              asdf mustEqual true
+              referenceDataLists.size mustEqual numberOfLists
+          }
+      }
     }
   }
-
-  "getlist" - {
-    "returns the list for a listName" in {
-
-      val testListName2 = "testListName2"
-
-      val listEntry = Json.obj(
-        "entryKey" -> "entryValue"
-      )
-
-      val messageId    = "74bd0784-8dc9-4eba-a435-9914ace26995"
-      val snapshotDate = "2020-07-06"
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> messageId,
-          "snapshotDate" -> snapshotDate
-        ),
-        "lists" -> Json
-          .obj(
-            "testListName1" -> Json.obj(
-              "listName" -> "testListName1",
-              "listEntries" -> Json.arr(
-                Json.obj(
-                  "entryKey" -> "entryValue"
-                )
-              )
-            ),
-            testListName2 -> Json.obj(
-              "listName"    -> testListName2,
-              "listEntries" -> Json.arr(listEntry)
-            )
-          )
-      )
-
-      val listName = ListName(testListName2)
-
-      val expectedList = SingleList(listName, MessageInformation(messageId, LocalDate.parse(snapshotDate)), Seq(listEntry))
-
-      ReferenceDataPayload(data).getList(listName) mustEqual expectedList
-    }
-  }
-
 }
