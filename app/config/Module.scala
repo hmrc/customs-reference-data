@@ -28,6 +28,6 @@ class Module
         Seq(
           bind[ListCollectionIndexManager].toSelf.eagerly(),
           bind[VersionCollectionIndexManager].toSelf.eagerly(),
-          bind[VersionIdProducer].to[DefaultVersionIdProducer]
+          bind[VersionIdProducer].toInstance(DefaultVersionIdProducer)
         )
     )

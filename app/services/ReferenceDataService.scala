@@ -19,6 +19,7 @@ package services
 import javax.inject.Inject
 import models.ReferenceDataPayload
 import repositories.ListRepository
+import repositories.VersionRepository
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
@@ -27,21 +28,24 @@ import services.ReferenceDataService.DataProcessingResult
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ReferenceDataService @Inject() (repository: ListRepository)(implicit ec: ExecutionContext) {
+class ReferenceDataService @Inject() (repository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
   import services.ReferenceDataService.DataProcessingResult._
 
   def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
-    Future
-      .sequence(
-        payload
-          .toIterator()
-          .map(repository.insertList)
-      )
-      .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
-        case (_, SuccessfulWrite)        => DataProcessingSuccessful
-        case (_, _: PartialWriteFailure) => DataProcessingFailed
-        case (_, _: FailedWrite)         => DataProcessingFailed
-      })
+    versionRepository.save(payload.messageInformation).flatMap {
+      versionId =>
+        Future
+          .sequence(
+            payload
+              .toIterator(versionId)
+              .map(repository.insertList)
+          )
+          .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
+            case (_, SuccessfulWrite)        => DataProcessingSuccessful
+            case (_, _: PartialWriteFailure) => DataProcessingFailed
+            case (_, _: FailedWrite)         => DataProcessingFailed
+          })
+    }
 
 }
 

@@ -18,6 +18,7 @@ package generators
 
 import java.time.LocalDate
 
+import models.MessageInformation
 import models.ReferenceDataPayload
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -47,21 +48,28 @@ trait ModelGenerators {
       )
     )
 
-  def genReferenceDataJson(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[JsObject] =
+  def genReferenceDataJson(
+    numberOfLists: Int = 5,
+    numberOfListItems: Int = 5,
+    messageInformation: Option[Gen[MessageInformation]] = None,
+    dataItemsGen: Option[Gen[JsObject]] = None
+  ): Gen[JsObject] = {
+    import generators.ModelArbitraryInstances.arbitraryMessageInformation
+
     for {
-      messageId    <- arbitrary[String]
-      snapshotDate <- arbitrary[LocalDate]
-      lists        <- Gen.listOfN(numberOfLists, genReferenceList(numberOfListItems, dataItemsGen))
+      messageInformation <- messageInformation.getOrElse(arbitraryMessageInformation.arbitrary)
+      lists              <- Gen.listOfN(numberOfLists, genReferenceList(numberOfListItems, dataItemsGen))
     } yield Json.obj(
       "messageInformation" -> Json.obj(
-        "messageID"    -> messageId,
-        "snapshotDate" -> snapshotDate
+        "messageID"    -> messageInformation.messageId,
+        "snapshotDate" -> messageInformation.snapshotDate
       ),
       "lists" -> lists.foldLeft(Json.obj())(_ ++ _)
     )
+  }
 
   def genReferenceDataPayload(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[ReferenceDataPayload] =
-    genReferenceDataJson(numberOfLists, numberOfListItems, dataItemsGen)
+    genReferenceDataJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
       .map(ReferenceDataPayload(_))
 
 }

@@ -19,30 +19,47 @@ package models
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import generators.ModelGenerators._
-import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
+import org.scalatest.matchers.MatchResult
+import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
   "itIterator" - {
     "returns an iterator of the lists with list entries" in {
+
+      val versionId = VersionId("1")
+
       forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
         (numberOfLists, numberOfListItems) =>
           forAll(genReferenceDataJson(numberOfLists, numberOfListItems)) {
             data =>
               val referenceDataPayload = ReferenceDataPayload(data)
 
-              val referenceDataLists = referenceDataPayload.toIterator()
+              val referenceDataLists = referenceDataPayload.toIterator(versionId)
 
-              val asdf = referenceDataLists.forall {
-                _.length == numberOfListItems
+              referenceDataLists.foreach {
+                x =>
+                  x.length mustEqual numberOfListItems
+
+                  x.foreach {
+                    _ must haveVersionId(versionId)
+                  }
               }
 
-              asdf mustEqual true
               referenceDataLists.size mustEqual numberOfLists
           }
       }
     }
   }
+
+  def haveVersionId(expectedVersionId: VersionId): Matcher[GenericListItem] =
+    left =>
+      MatchResult(
+        left.versionId == expectedVersionId,
+        s"""Expected GenericListItem with VersionId `${left.versionId}` to equal $expectedVersionId""",
+        s"""Expected GenericListItem had VersionId `${left.versionId}` equal $expectedVersionId"""
+      )
+
 }

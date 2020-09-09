@@ -30,15 +30,17 @@ class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {
     val r           = ReferenceDataPayload(JsObject.empty)
     val listName    = ListName("listNameValue")
     val messageInfo = MessageInformation("messageIdValue", date)
+    val versionId   = VersionId("1")
 
     val listItemJson = Json.obj("key" -> "value")
 
-    val genericListItem = GenericListItem(listName, messageInfo, listItemJson)
+    val genericListItem = GenericListItem(listName, messageInfo, versionId, listItemJson)
 
     val expectedJson = Json.obj(
       "listName"     -> listName.listName,
       "messageID"    -> "messageIdValue",
       "snapshotDate" -> date,
+      "versionId"    -> versionId.versionId,
       "data"         -> listItemJson
     )
 
