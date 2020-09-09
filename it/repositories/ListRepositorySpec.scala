@@ -10,6 +10,7 @@ import models.ListName
 import models.MetaData
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -30,7 +31,9 @@ class ListRepositorySpec
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite
-    with FailOnUnindexedQueries {
+    with MongoSuite with ScalaFutures
+//    with FailOnUnindexedQueries
+{
 
   import ListRepositorySpec._
 

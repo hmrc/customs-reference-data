@@ -16,13 +16,13 @@
 
 package models
 
-import java.time.LocalDate
-
+import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
-case class MetaData(version: String, snapshotDate: LocalDate)
+case class ResourceLinks(_links: Option[Map[String, JsObject]], metaData: Option[MetaData])
 
-object MetaData {
-  implicit val formats: OFormat[MetaData] = Json.format[MetaData]
+object ResourceLinks {
+
+  implicit val formats: OFormat[ResourceLinks] = Json.format[ResourceLinks]
 }
