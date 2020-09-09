@@ -7,6 +7,7 @@ import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
+import models.MessageInformation
 import models.MetaData
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
@@ -126,33 +127,45 @@ object ListRepositorySpec {
   val id1: BSONObjectID = BSONObjectID.generate()
   val id2: BSONObjectID = BSONObjectID.generate()
 
-  val sampleDataSet1: JsObject =
-    Json.obj(
-      "_id"        -> id1.toString(),
-      "listName"   -> "AdditionalInformationIdCommon",
-      "snapshotId" -> "snapshot",
-      "state"      -> "valid",
-      "activeFrom" -> "2020-01-18",
-      "code"       -> "00100",
-      "remark"     -> "foo",
-      "description" ->
-        Json.obj(
-          "en" -> "Simplified authorisation"
-        )
+  val sampleDataSet1: JsObject = Json.toJsObject(
+    GenericListItem(
+      listName = ListName("AdditionalInformationIdCommon"),
+      messageInformation = MessageInformation(
+        messageId = "1",
+        snapshotDate = LocalDate.now()
+      ),
+      data = Json.obj(
+        "snapshotId" -> "snapshot",
+        "state"      -> "valid",
+        "activeFrom" -> "2020-01-18",
+        "code"       -> "00100",
+        "remark"     -> "foo",
+        "description" ->
+          Json.obj(
+            "en" -> "Simplified authorisation"
+          )
+      )
     )
+  ) ++ Json.obj("_id" -> id1.toString())
 
-  val sampleDataSet2: JsObject =
-    Json.obj(
-      "_id"        -> id2.toString(),
-      "listName"   -> "AdditionalInformationIdCommon",
-      "snapshotId" -> "snapshot",
-      "state"      -> "valid",
-      "activeFrom" -> "2020-01-18",
-      "code"       -> "00100",
-      "remark"     -> "foo",
-      "description" ->
-        Json.obj(
-          "en" -> "Simplified authorisation"
-        )
+  val sampleDataSet2: JsObject = Json.toJsObject(
+    GenericListItem(
+      listName = ListName("AdditionalInformationIdCommon"),
+      messageInformation = MessageInformation(
+        messageId = "1",
+        snapshotDate = LocalDate.now()
+      ),
+      data = Json.obj(
+        "snapshotId" -> "snapshot",
+        "state"      -> "valid",
+        "activeFrom" -> "2020-01-18",
+        "code"       -> "00100",
+        "remark"     -> "foo",
+        "description" ->
+          Json.obj(
+            "en" -> "Simplified authorisation"
+          )
+      )
     )
+  ) ++ Json.obj("_id" -> id2.toString())
 }
