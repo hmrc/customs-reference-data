@@ -35,7 +35,7 @@ class ListRepositorySpec
   import ListRepositorySpec._
 
   override def beforeAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.flatMap(_.drop()).futureValue
     super.beforeAll()
     started(app).futureValue
   }
@@ -53,7 +53,7 @@ class ListRepositorySpec
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.flatMap(_.drop()).futureValue
     super.afterAll()
   }
 

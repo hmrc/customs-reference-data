@@ -22,7 +22,6 @@ import play.api.inject.bind
 import services.VersionIdProducer
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class VersionRepositorySpec
     extends ItSpecBase
@@ -34,7 +33,7 @@ class VersionRepositorySpec
     with FailOnUnindexedQueries {
 
   override def beforeAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.flatMap(_.drop()).futureValue
     super.beforeAll()
     started(app).futureValue
   }
@@ -52,7 +51,7 @@ class VersionRepositorySpec
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.flatMap(_.drop()).futureValue
     super.afterAll()
   }
 
