@@ -41,7 +41,9 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
     val selector = Json.toJsObject(listName)
 
     listCollection().flatMap {
-      _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
+      _.find(selector, None)
+        .cursor[JsObject]()
+        .collect[List](-1, Cursor.FailOnError[List[JsObject]]())
     }
   }
 
