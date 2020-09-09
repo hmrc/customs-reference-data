@@ -1,3 +1,3 @@
 # microservice specific routes
 
-
+POST /reference-data-lists controllers.ReferenceDataController.post
