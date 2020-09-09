@@ -36,7 +36,7 @@ class ReferenceDataController @Inject() (cc: ControllerComponents, referenceData
     extends BackendController(cc) {
 
   def post: Action[JsValue] =
-    Action(parse.json).async {
+    Action(parse.tolerantJson(maxLength = 1024 * 400)).async {
       implicit request =>
         val refData = ReferenceDataPayload(request.body.as[JsObject])
         referenceDataService
