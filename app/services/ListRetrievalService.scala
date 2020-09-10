@@ -32,13 +32,13 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
   private def getVersion = MetaData("version", LocalDate.of(2020, 11, 5))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    listRepository.getList(listName, getVersion).map {
+    listRepository.getListByName(listName, getVersion).map {
       x =>
         Some(ReferenceDataList(listName, getVersion, x))
     }
 
   def getResourceLinks(metaData: Option[MetaData]): Future[Option[ResourceLinks]] =
-    listRepository.getList.map {
+    listRepository.getAllLists.map {
       list =>
         if (list.nonEmpty)
           Some(ResourceLinks(_links = Some(buildLinks(list)), metaData = metaData))

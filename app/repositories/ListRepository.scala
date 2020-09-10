@@ -17,11 +17,11 @@
 package repositories
 
 import com.google.inject.Inject
-
 import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.MetaData
+import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import reactivemongo.api.Cursor
@@ -38,7 +38,8 @@ import scala.concurrent.Future
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
 
-  def getList(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
+  // Pass version here
+  def getListByName(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
     val selector = Json.toJsObject(listName)
 
     listCollection().flatMap {
@@ -46,7 +47,7 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
     }
   }
 
-  def getList: Future[List[GenericListItem]] =
+  def getAllLists: Future[List[GenericListItem]] =
     listCollection().flatMap {
       _.find(Json.obj(), None).cursor[GenericListItem]().collect[List](-1, Cursor.FailOnError[List[GenericListItem]]())
     }

@@ -52,7 +52,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockListRepository.getList).thenReturn(Future.successful(Nil))
+            when(mockListRepository.getAllLists).thenReturn(Future.successful(Nil))
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -82,7 +82,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
 
-                when(mockListRepository.getList).thenReturn(Future.successful(referenceData))
+                when(mockListRepository.getAllLists).thenReturn(Future.successful(referenceData))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -112,7 +112,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           application =>
             forAll(arbitrary[ReferenceDataList]) {
               referenceDataList =>
-                when(mockListRepository.getList(any(), any())).thenReturn(Future.successful(Nil))
+                when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(Nil))
 
                 val listWithDate = referenceDataList.copy(metaData = MetaData("version", LocalDate.of(2020, 11, 5)))
 
