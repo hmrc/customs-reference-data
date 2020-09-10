@@ -30,7 +30,7 @@ class ReferenceDataPayload(data: JsObject) {
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  def toIterator(versionId: VersionId): Iterable[Seq[GenericListItem]] =
+  def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
     lists.values.map(
       list =>
         (for {
