@@ -37,7 +37,7 @@ class ReferenceDataService @Inject() (repository: ListRepository, versionReposit
         Future
           .sequence(
             payload
-              .toIterator(versionId)
+              .toIterable(versionId)
               .map(repository.insertList)
           )
           .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
