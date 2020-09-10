@@ -26,10 +26,10 @@ import scala.concurrent.Future
 
 class ResourceLinksController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
 
+  //TODO: Needs updating to call ListRetrievalService.getResourceLinks
   def index: Action[AnyContent] =
     Action.async {
       implicit request =>
         Future.successful(Ok("").as("application/json"))
     }
-
 }

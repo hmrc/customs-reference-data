@@ -102,7 +102,7 @@ class ListRepositorySpec
 
   "insertList" - {
     "must save a list" in {
-      val list = listWithMaxLength[GenericListItem](10).sample.value
+      val list = listWithMaxLength[GenericListItem](10)(arbitraryGenericListItem(arbitrarySimpleJsObject)).sample.value
 
       val repository = app.injector.instanceOf[ListRepository]
 

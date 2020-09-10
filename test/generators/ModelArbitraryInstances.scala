@@ -24,14 +24,36 @@ import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import org.scalacheck.Arbitrary.arbitrary
 import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
-  implicit def arbitraryResourceLinks(implicit arbJsObject: Arbitrary[JsObject]): Arbitrary[ResourceLinks] =
+  //TODO: This can be replaced with GenericListItem (see ListRepositorySpec)
+  implicit val arbitraryReferenceDataListExample: Arbitrary[JsObject] =
+    Arbitrary {
+      for {
+        _id      <- arbitrary[String]
+        listName <- arbitrary[String]
+      } yield Json.obj(
+        "_id"        -> _id,
+        "listName"   -> listName,
+        "snapshotId" -> "snapshot",
+        "state"      -> "valid",
+        "activeFrom" -> "2020-01-18",
+        "code"       -> "00100",
+        "remark"     -> "foo",
+        "description" ->
+          Json.obj(
+            "en" -> "Simplified authorisation"
+          )
+      )
+    }
+
+  implicit def arbitraryResourceLinks: Arbitrary[ResourceLinks] =
     Arbitrary {
       for {
         linkKey  <- arbitrary[String]
-        link     <- arbJsObject.arbitrary
+        link     <- arbitrarySimpleJsObject.arbitrary
         links    <- Gen.option(Map(linkKey -> link))
         metaData <- Gen.option(arbitrary(arbitraryMetaData))
       } yield ResourceLinks(_links = links, metaData = metaData)

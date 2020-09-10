@@ -46,6 +46,11 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
     }
   }
 
+  def getList: Future[List[JsObject]] =
+    listCollection().flatMap {
+      _.find(Json.obj(), None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
+    }
+
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     listCollection().flatMap {
       _.insert(ordered = true) // TODO: how do we recover if an item fails bulk insert?

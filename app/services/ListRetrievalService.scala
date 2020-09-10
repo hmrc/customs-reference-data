@@ -22,6 +22,9 @@ import javax.inject.Inject
 import models.ListName
 import models.MetaData
 import models.ReferenceDataList
+import models.ResourceLinks
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import repositories.ListRepository
 
 import scala.concurrent.ExecutionContext
@@ -33,7 +36,33 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     listRepository.getList(listName, getVersion).map {
-      x => Some(ReferenceDataList(listName, getVersion, x))
+      x =>
+        Some(ReferenceDataList(listName, getVersion, x))
     }
+
+  //TODO: May need to return a GenericListItem from getList (or JsObject to GenericListItem here)
+  def getResourceLinks(metaData: Option[MetaData]): Future[Option[ResourceLinks]] =
+    listRepository.getList.map {
+      list =>
+        if (list.nonEmpty)
+          Some(ResourceLinks(_links = Some(buildLinks(list)), metaData = metaData))
+        else None
+    }
+
+
+  private def buildLinks(list: List[JsObject]): Map[String, JsObject] = {
+
+    val buildUri: String => String =
+      uri => s"/customs-reference-data/$uri"
+
+    val listKey = "listName"
+
+    val resourceLinks: Seq[Map[String, JsObject]] = list.zipWithIndex.map {
+      case (data, index) => Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString(buildUri(data.value(listKey).as[String])))))
+    }
+
+    Map("self" -> JsObject(Seq("href" -> JsString(buildUri("lists"))))) ++
+      resourceLinks.flatten
+  }
 
 }
