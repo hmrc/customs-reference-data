@@ -22,7 +22,7 @@ import play.api.libs.json._
 
 class ReferenceDataPayload(data: JsObject) {
 
-  private lazy val messageInformation: MessageInformation =
+  lazy val messageInformation: MessageInformation =
     (for {
       JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
       snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
@@ -30,12 +30,14 @@ class ReferenceDataPayload(data: JsObject) {
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  def listsNames: collection.Set[ListName] =
-    lists.keys.map(ListName(_))
-
-  def getList(listName: ListName): SingleList =
-    SingleList(listName, messageInformation, (lists \ listName.listName \ "listEntries").as[Vector[JsObject]])
-
+  def toIterator(versionId: VersionId): Iterable[Seq[GenericListItem]] =
+    lists.values.map(
+      list =>
+        (for {
+          ln <- list.validate[ListName]
+          le <- (list \ "listEntries").validate[Vector[JsObject]]
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).get
+    )
 }
 
 object ReferenceDataPayload {

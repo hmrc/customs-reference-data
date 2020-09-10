@@ -16,105 +16,50 @@
 
 package models
 
-import java.time.LocalDate
-
 import base.SpecBase
+import generators.ModelArbitraryInstances
+import generators.ModelGenerators._
+import org.scalacheck.Gen
+import org.scalatest.matchers.MatchResult
+import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
 
-class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks {
+class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
-  "listsNames" - {
-    "should return an empty Seq when there lists" in {
+  "itIterator" - {
+    "returns an iterator of the lists with list entries" in {
 
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> "74bd0784-8dc9-4eba-a435-9914ace26995",
-          "snapshotDate" -> "2020-07-06"
-        ),
-        "lists" -> JsObject.empty
-      )
+      val versionId = VersionId("1")
 
-      val payload = ReferenceDataPayload(data)
+      forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
+        (numberOfLists, numberOfListItems) =>
+          forAll(genReferenceDataJson(numberOfLists, numberOfListItems)) {
+            data =>
+              val referenceDataPayload = ReferenceDataPayload(data)
 
-      val expected = Set.empty[ListName]
+              val referenceDataLists = referenceDataPayload.toIterator(versionId)
 
-      payload.listsNames mustEqual expected
-    }
+              referenceDataLists.foreach {
+                x =>
+                  x.length mustEqual numberOfListItems
 
-    "should return a list of all the list names that are included in the payload" in {
+                  x.foreach {
+                    _ must haveVersionId(versionId)
+                  }
+              }
 
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> "74bd0784-8dc9-4eba-a435-9914ace26995",
-          "snapshotDate" -> "2020-07-06"
-        ),
-        "lists" -> Json.obj(
-          "testListName1" -> Json.obj(
-            "listName" -> "testListName1",
-            "listEntries" -> Json.arr(
-              Json.obj(
-                "entryKey" -> "entryValue"
-              )
-            )
-          ),
-          "testListName2" -> Json.obj(
-            "listName" -> "testListName2",
-            "listEntries" -> Json.arr(
-              Json.obj(
-                "entryKey" -> "entryValue"
-              )
-            )
-          )
-        )
-      )
-
-      val listNames = ReferenceDataPayload(data).listsNames
-
-      listNames mustEqual Set(ListName("testListName1"), ListName("testListName2"))
+              referenceDataLists.size mustEqual numberOfLists
+          }
+      }
     }
   }
 
-  "getlist" - {
-    "returns the list for a listName" in {
-
-      val testListName2 = "testListName2"
-
-      val listEntry = Json.obj(
-        "entryKey" -> "entryValue"
+  def haveVersionId(expectedVersionId: VersionId): Matcher[GenericListItem] =
+    left =>
+      MatchResult(
+        left.versionId == expectedVersionId,
+        s"""Expected GenericListItem with VersionId `${left.versionId}` to equal $expectedVersionId""",
+        s"""Expected GenericListItem had VersionId `${left.versionId}` equal $expectedVersionId"""
       )
-
-      val messageId    = "74bd0784-8dc9-4eba-a435-9914ace26995"
-      val snapshotDate = "2020-07-06"
-      val data = Json.obj(
-        "messageInformation" -> Json.obj(
-          "messageID"    -> messageId,
-          "snapshotDate" -> snapshotDate
-        ),
-        "lists" -> Json
-          .obj(
-            "testListName1" -> Json.obj(
-              "listName" -> "testListName1",
-              "listEntries" -> Json.arr(
-                Json.obj(
-                  "entryKey" -> "entryValue"
-                )
-              )
-            ),
-            testListName2 -> Json.obj(
-              "listName"    -> testListName2,
-              "listEntries" -> Json.arr(listEntry)
-            )
-          )
-      )
-
-      val listName = ListName(testListName2)
-
-      val expectedList = SingleList(listName, MessageInformation(messageId, LocalDate.parse(snapshotDate)), Seq(listEntry))
-
-      ReferenceDataPayload(data).getList(listName) mustEqual expectedList
-    }
-  }
 
 }

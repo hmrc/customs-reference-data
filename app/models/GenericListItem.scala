@@ -19,17 +19,19 @@ package models
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, data: JsObject)
+case class GenericListItem(listName: ListName, messageInformation: MessageInformation, versionId: VersionId, data: JsObject)
 
 object GenericListItem {
 
   implicit val writes: OWrites[GenericListItem] =
     (__.write[ListName] and
       __.write[MessageInformation] and
+      __.write[VersionId] and
       (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
 
   implicit val readers: Reads[GenericListItem] =
     (__.read[ListName] and
       __.read[MessageInformation] and
-      (__ \ "data").read[JsObject])(GenericListItem(_, _, _))
+      __.read[VersionId] and
+      (__ \ "data").read[JsObject])(GenericListItem.apply _)
 }
