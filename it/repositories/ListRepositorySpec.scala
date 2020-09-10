@@ -9,6 +9,7 @@ import models.GenericListItem
 import models.ListName
 import models.MessageInformation
 import models.MetaData
+import models.VersionId
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -127,6 +128,8 @@ object ListRepositorySpec {
   val id1: BSONObjectID = BSONObjectID.generate()
   val id2: BSONObjectID = BSONObjectID.generate()
 
+  val versionId = VersionId("1")
+
   val sampleDataSet1: JsObject = Json.toJsObject(
     GenericListItem(
       listName = ListName("AdditionalInformationIdCommon"),
@@ -134,6 +137,7 @@ object ListRepositorySpec {
         messageId = "1",
         snapshotDate = LocalDate.now()
       ),
+      versionId = versionId,
       data = Json.obj(
         "snapshotId" -> "snapshot",
         "state"      -> "valid",
@@ -155,6 +159,7 @@ object ListRepositorySpec {
         messageId = "1",
         snapshotDate = LocalDate.now()
       ),
+      versionId = versionId,
       data = Json.obj(
         "snapshotId" -> "snapshot",
         "state"      -> "valid",

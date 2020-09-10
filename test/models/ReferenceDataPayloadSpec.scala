@@ -23,10 +23,12 @@ import org.scalacheck.Gen
 import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
-  "itIterator" - {
+  "toIterable" - {
     "returns an iterator of the lists with list entries" in {
 
       val versionId = VersionId("1")
@@ -37,7 +39,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
             data =>
               val referenceDataPayload = ReferenceDataPayload(data)
 
-              val referenceDataLists = referenceDataPayload.toIterator(versionId)
+              val referenceDataLists = referenceDataPayload.toIterable(versionId)
 
               referenceDataLists.foreach {
                 x =>
