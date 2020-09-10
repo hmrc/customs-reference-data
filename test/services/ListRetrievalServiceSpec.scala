@@ -70,12 +70,12 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            forAll(listWithMaxLength(5)(arbitraryReferenceDataListExample), arbitrary[MetaData]) {
+            forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[MetaData]) {
 
               (referenceData, metaData) =>
                 val resourceLinks: Seq[Map[String, JsObject]] = referenceData.zipWithIndex.map {
                   case (data, index) =>
-                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + data.value("listName").as[String]))))
+                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + data.listName.listName))))
                 }
 
                 val links = Map(
