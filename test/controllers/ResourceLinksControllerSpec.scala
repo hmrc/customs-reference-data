@@ -17,29 +17,61 @@
 package controllers
 
 import base.SpecBase
+import generators.ModelArbitraryInstances
+import models.ResourceLinks
+import org.mockito.Mockito.when
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.TestData
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import play.api.Application
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.ListRetrievalService
 
-class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest {
+import scala.concurrent.Future
+
+class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
 
   private val fakeRequest = FakeRequest(GET, "/customs-reference-data/resources").withHeaders("Host" -> "localhost")
 
+  private val mockListRetrievalService = mock[ListRetrievalService]
+
+  override def newAppForTest(testData: TestData): Application =
+    new GuiceApplicationBuilder()
+      .overrides(bind[ListRetrievalService].toInstance(mockListRetrievalService))
+      .build()
+
   "ResourceLinksController" - {
 
-    "GET" - {
+    "resourceLinks" - {
 
-      "should return OK and correct content type" in {
+      "should return OK and reference data links" in {
+
+        forAll(arbitrary[ResourceLinks]) {
+          resourceLinks =>
+            when(mockListRetrievalService.getResourceLinks())
+              .thenReturn(Future.successful(Some(resourceLinks)))
+
+            val result = route(app, fakeRequest).get
+
+            status(result) mustBe OK
+            contentType(result).get mustBe "application/json"
+        }
+      }
+
+      "should return 500 when reference data links are unavailable" in {
+
+        when(mockListRetrievalService.getResourceLinks())
+          .thenReturn(Future.successful(None))
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe OK
-        contentType(result).get mustBe "application/json"
-
+        status(result) mustBe INTERNAL_SERVER_ERROR
       }
-
     }
-
   }
 
 }

@@ -37,7 +37,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
         Some(ReferenceDataList(listName, getVersion, x))
     }
 
-  def getResourceLinks(metaData: Option[MetaData]): Future[Option[ResourceLinks]] =
+  def getResourceLinks(metaData: Option[MetaData] = None): Future[Option[ResourceLinks]] =
     listRepository.getAllLists.map {
       list =>
         if (list.nonEmpty)

@@ -17,19 +17,27 @@
 package controllers
 
 import javax.inject.Inject
+import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents
+import services.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
-class ResourceLinksController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
+class ResourceLinksController @Inject() (
+  cc: ControllerComponents,
+  listRetrievalService: ListRetrievalService
+)(implicit ec: ExecutionContext)
+    extends BackendController(cc) {
 
-  //TODO: Needs updating to call ListRetrievalService.getResourceLinks
   def resourceLinks: Action[AnyContent] =
     Action.async {
       implicit request =>
-        Future.successful(Ok("").as("application/json"))
+        listRetrievalService.getResourceLinks().map {
+          case Some(resourceLinks) => Ok(Json.toJsObject(resourceLinks))
+          case None                => InternalServerError("No resource links found")
+        }
     }
 }
