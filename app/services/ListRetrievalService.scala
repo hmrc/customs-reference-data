@@ -33,16 +33,14 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     listRepository.getListByName(listName, getVersion).map {
-      x =>
-        Some(ReferenceDataList(listName, getVersion, x))
+      referenceDataList =>
+        if (referenceDataList.nonEmpty) Some(ReferenceDataList(listName, getVersion, referenceDataList)) else None
     }
 
   def getResourceLinks(metaData: Option[MetaData] = None): Future[Option[ResourceLinks]] =
     listRepository.getAllLists.map {
       list =>
-        if (list.nonEmpty)
-          Some(ResourceLinks(_links = Some(buildLinks(list)), metaData = metaData))
-        else None
+        if (list.nonEmpty) Some(ResourceLinks(_links = buildLinks(list), metaData = metaData)) else None
     }
 
   private def buildLinks(list: List[GenericListItem]): Map[String, JsObject] = {

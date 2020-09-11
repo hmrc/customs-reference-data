@@ -16,14 +16,10 @@
 
 package models
 
-import java.time.LocalDate
-
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsString
 import play.api.libs.json.Json
 
 class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with ScalaCheckDrivenPropertyChecks {
@@ -47,15 +43,11 @@ class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with Scala
               case None => Json.obj()
             }
 
-            val links = resourceLinks._links match {
-              case Some(link) =>
-                Json.obj(
-                  "_links" -> Json.obj(
-                    link.head._1 -> Json.toJson(link.head._2)
-                  )
-                )
-              case None => Json.obj()
-            }
+            val links = Json.obj(
+              "_links" -> Json.obj(
+                resourceLinks._links.head._1 -> Json.toJson(resourceLinks._links.head._2)
+              )
+            )
 
             val data = links ++ metaData
 
@@ -65,62 +57,7 @@ class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with Scala
         }
 
       }
-
-      "handle empty object" in {
-
-        val resourceLinks = ResourceLinks(
-          _links = None,
-          metaData = None
-        )
-
-        val data = Json.obj()
-
-        data.as[ResourceLinks] mustBe resourceLinks
-
-        Json.toJson(resourceLinks) mustBe data
-      }
-
-      "handle complete object" in {
-
-        val data = Json.obj(
-          "_links" ->
-            Json.obj(
-              "self"  -> Json.obj("href" -> "/customs-reference-data/lists"),
-              "list1" -> Json.obj("href" -> "/customs-reference-data/list1"),
-              "list2" -> Json.obj("href" -> "/customs-reference-data/list2")
-            ),
-          "metaData" -> Json.obj(
-            "version"      -> "12345",
-            "snapshotDate" -> "2020-07-06"
-          )
-        )
-
-        val links = Map(
-          "self"  -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists"))),
-          "list1" -> JsObject(Seq("href" -> JsString("/customs-reference-data/list1"))),
-          "list2" -> JsObject(Seq("href" -> JsString("/customs-reference-data/list2")))
-        )
-
-        val metaData = MetaData(
-          version = "12345",
-          snapshotDate = LocalDate.of(2020, 7, 6)
-        )
-
-        val resourceLinks = ResourceLinks(
-          _links = Some(links),
-          metaData = Some(
-            metaData
-          )
-        )
-
-        data.as[ResourceLinks] mustBe resourceLinks
-
-        Json.toJson(resourceLinks) mustBe data
-
-      }
-
     }
-
   }
 
 }

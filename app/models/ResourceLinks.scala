@@ -20,7 +20,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
-case class ResourceLinks(_links: Option[Map[String, JsObject]], metaData: Option[MetaData])
+case class ResourceLinks(_links: Map[String, JsObject], metaData: Option[MetaData])
 
 object ResourceLinks {
 
