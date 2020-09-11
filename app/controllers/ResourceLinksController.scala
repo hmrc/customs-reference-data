@@ -17,6 +17,7 @@
 package controllers
 
 import javax.inject.Inject
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
@@ -32,12 +33,17 @@ class ResourceLinksController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
+  private val logger: Logger = Logger("ResourceLinksController")
+
   def resourceLinks: Action[AnyContent] =
     Action.async {
       implicit request =>
         listRetrievalService.getResourceLinks().map {
-          case Some(resourceLinks) => Ok(Json.toJsObject(resourceLinks))
-          case None                => InternalServerError("No resource links found")
+          case Some(resourceLinks) =>
+            Ok(Json.toJsObject(resourceLinks))
+          case None =>
+            logger.error("Empty resource links list")
+            InternalServerError("No resource links found")
         }
     }
 }
