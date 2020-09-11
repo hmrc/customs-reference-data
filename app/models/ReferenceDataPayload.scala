@@ -31,12 +31,12 @@ class ReferenceDataPayload(data: JsObject) {
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
   def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
-    lists.values.map(
+    lists.values.flatMap(
       list =>
         (for {
           ln <- list.validate[ListName]
           le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).get
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).asOpt
     )
 }
 
