@@ -35,7 +35,7 @@ class ResourceLinksController @Inject() (
 
   private val logger: Logger = Logger("ResourceLinksController")
 
-  def resourceLinks: Action[AnyContent] =
+  def get: Action[AnyContent] =
     Action.async {
       implicit request =>
         listRetrievalService.getResourceLinks().map {
