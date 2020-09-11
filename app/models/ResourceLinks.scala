@@ -17,12 +17,29 @@
 package models
 
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
 case class ResourceLinks(_links: Map[String, JsObject], metaData: Option[MetaData])
 
 object ResourceLinks {
+
+  def apply(listNames: List[ListName], metaData: Option[MetaData]): ResourceLinks =
+    new ResourceLinks(linkFormatter(listNames), metaData)
+
+  private def linkFormatter(listNames: List[ListName]): Map[String, JsObject] = {
+
+    val buildUri: String => String =
+      uri => s"/customs-reference-data/$uri"
+
+    val resourceLinks: Seq[Map[String, JsObject]] = listNames.zipWithIndex.map {
+      case (listName, index) => Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString(buildUri(listName.listName)))))
+    }
+
+    Map("self" -> JsObject(Seq("href" -> JsString(buildUri("lists"))))) ++
+      resourceLinks.flatten
+  }
 
   implicit val formats: OFormat[ResourceLinks] = Json.format[ResourceLinks]
 }
