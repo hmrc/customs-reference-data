@@ -19,9 +19,7 @@ package services
 import java.time.LocalDate
 
 import javax.inject.Inject
-import models.ListName
-import models.MetaData
-import models.ReferenceDataList
+import models._
 import repositories.ListRepository
 
 import scala.concurrent.ExecutionContext
@@ -32,8 +30,14 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
   private def getVersion = MetaData("version", LocalDate.of(2020, 11, 5))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    listRepository.getList(listName, getVersion).map {
-      x => Some(ReferenceDataList(listName, getVersion, x))
+    listRepository.getListByName(listName, getVersion).map {
+      referenceDataList =>
+        if (referenceDataList.nonEmpty) Some(ReferenceDataList(listName, getVersion, referenceDataList)) else None
     }
 
+  def getResourceLinks(metaData: Option[MetaData] = None): Future[Option[ResourceLinks]] =
+    listRepository.getAllLists.map {
+      list =>
+        if (list.nonEmpty) Some(ResourceLinks.apply(list.map(_.listName), metaData)) else None
+    }
 }

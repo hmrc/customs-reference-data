@@ -21,6 +21,7 @@ import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.MetaData
+import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import reactivemongo.api.Cursor
@@ -37,13 +38,19 @@ import scala.concurrent.Future
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
 
-  def getList(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
+  // Pass version here
+  def getListByName(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
     val selector = Json.toJsObject(listName)
 
     listCollection().flatMap {
       _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
     }
   }
+
+  def getAllLists: Future[List[GenericListItem]] =
+    listCollection().flatMap {
+      _.find(Json.obj(), None).cursor[GenericListItem]().collect[List](-1, Cursor.FailOnError[List[GenericListItem]]())
+    }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     listCollection().flatMap {

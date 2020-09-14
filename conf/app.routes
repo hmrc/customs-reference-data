@@ -1,3 +1,5 @@
 # microservice specific routes
 
+GET   /resources  @controllers.ResourceLinksController.get
+
 POST /reference-data-lists controllers.ReferenceDataController.post

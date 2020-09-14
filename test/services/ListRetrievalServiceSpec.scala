@@ -19,43 +19,132 @@ package services
 import java.time.LocalDate
 
 import base.SpecBase
+import generators.BaseGenerators
 import generators.ModelArbitraryInstances
+import models.ListName
 import models.MetaData
 import models.ReferenceDataList
+import models.ResourceLinks
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import repositories.ListRepository
 
 import scala.concurrent.Future
 
-class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances with ScalaCheckDrivenPropertyChecks {
+class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances with BaseGenerators with ScalaCheckDrivenPropertyChecks {
 
-  "getList" - {
+  "getResourceLinks" - {
 
-    "must return a ReferenceDataList when available" in {
+    "must" - {
 
-      val mockListRepository = mock[ListRepository]
+      "return None if no links exist" in {
 
-      val app = baseApplicationBuilder.andThen(
-        _.overrides(bind[ListRepository].toInstance(mockListRepository))
-      )
+        val mockListRepository = mock[ListRepository]
 
-      running(app) {
-        application =>
-          forAll(arbitrary[ReferenceDataList]) {
-            referenceDataList =>
-              when(mockListRepository.getList(any(), any())).thenReturn(Future.successful(Nil))
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+        )
 
-              val listWithDate = referenceDataList.copy(metaData = MetaData("version", LocalDate.of(2020, 11, 5)))
+        running(app) {
+          application =>
+            when(mockListRepository.getAllLists).thenReturn(Future.successful(Nil))
 
-              val service = application.injector.instanceOf[ListRetrievalService]
+            val service = application.injector.instanceOf[ListRetrievalService]
 
-              service.getList(referenceDataList.id).futureValue.value mustBe listWithDate
-          }
+            service.getResourceLinks(None).futureValue mustBe None
+        }
+      }
+
+      "return ListRepository if links exist" in {
+
+        val mockListRepository = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+        )
+
+        running(app) {
+          application =>
+            forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[MetaData]) {
+
+              (referenceData, metaData) =>
+                val resourceLinks: Seq[Map[String, JsObject]] = referenceData.zipWithIndex.map {
+                  case (data, index) =>
+                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + data.listName.listName))))
+                }
+
+                val links = Map(
+                  "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
+                ) ++ resourceLinks.flatten
+
+                when(mockListRepository.getAllLists).thenReturn(Future.successful(referenceData))
+
+                val service = application.injector.instanceOf[ListRetrievalService]
+
+                service.getResourceLinks(Some(metaData)).futureValue mustBe Some(
+                  ResourceLinks(_links = links, metaData = Some(metaData))
+                )
+            }
+
+        }
+      }
+    }
+  }
+
+  "getListByName" - {
+
+    "must" - {
+
+      "return a ReferenceDataList when available" in {
+
+        val mockListRepository = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+        )
+
+        running(app) {
+          application =>
+            forAll(arbitrary[ReferenceDataList]) {
+              referenceDataList =>
+                when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(List(JsObject.empty)))
+
+                val listWithDate = referenceDataList
+                  .copy(
+                    metaData = MetaData("version", LocalDate.of(2020, 11, 5)),
+                    data = List(JsObject.empty)
+                  )
+
+                val service = application.injector.instanceOf[ListRetrievalService]
+
+                service.getList(referenceDataList.id).futureValue.value mustBe listWithDate
+            }
+        }
+      }
+
+      "return None when ReferenceDataList is unavailable" in {
+
+        val mockListRepository = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+        )
+
+        running(app) {
+          application =>
+            when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(Nil))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.getList(ListName("Invalid name"))
+
+            result.futureValue mustBe None
+        }
       }
     }
   }

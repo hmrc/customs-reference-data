@@ -18,4 +18,11 @@ package models
 
 import java.time.LocalDate
 
-case class MetaData(version: String, snapshot: LocalDate)
+import play.api.libs.json.Json
+import play.api.libs.json.OFormat
+
+case class MetaData(version: String, snapshotDate: LocalDate)
+
+object MetaData {
+  implicit val formats: OFormat[MetaData] = Json.format[MetaData]
+}

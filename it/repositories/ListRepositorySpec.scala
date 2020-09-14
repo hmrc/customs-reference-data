@@ -3,20 +3,15 @@ package repositories
 import java.time.LocalDate
 
 import base.ItSpecBase
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.GenericListItem
-import models.ListName
-import models.MessageInformation
-import models.MetaData
-import models.VersionId
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.{GenericListItem, ListName, MetaData}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
-import reactivemongo.api.Cursor
-import reactivemongo.api.DefaultDB
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
+import play.api.libs.json.{JsObject, Json}
+import reactivemongo.api.{Cursor, DefaultDB}
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
@@ -26,15 +21,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ListRepositorySpec
-    extends ItSpecBase
+  extends ItSpecBase
     with BaseGenerators
     with ModelArbitraryInstances
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite
-    with FailOnUnindexedQueries {
-
-  import ListRepositorySpec._
+    with MongoSuite
+    with ScalaFutures {
 
   override def beforeAll(): Unit = {
     database.flatMap(_.drop()).futureValue
@@ -66,42 +60,91 @@ class ListRepositorySpec
         .many(data)
     }.futureValue
 
-  "getList" - {
+  "getListByName" - {
 
-    "must handle" - {
+    "must return list of JsObjects when" - {
 
       "single record found" in {
 
-        seedData(database, Seq(sampleDataSet1))
+        forAll(arbitrary[GenericListItem], arbitrary[ListName]) {
+          (genericListItem, listName) =>
 
-        val repository = app.injector.instanceOf[ListRepository]
-        val result     = repository.getList(ListName("AdditionalInformationIdCommon"), MetaData("", LocalDate.now))
-        result.futureValue mustBe List(sampleDataSet1)
+            val setListName = genericListItem.copy(listName = listName)
+            val itemToJson = Json.toJsObject(setListName) ++ Json.obj("_id" -> BSONObjectID.generate.toString)
+
+            seedData(database, Seq(itemToJson))
+
+            val repository = app.injector.instanceOf[ListRepository]
+            val result = repository.getListByName(listName, MetaData("", LocalDate.now))
+
+            result.futureValue mustBe List(itemToJson)
+
+            database.flatMap(_.drop()).futureValue
+        }
       }
 
       "multiple records found" in {
 
-        seedData(database, Seq(sampleDataSet1, sampleDataSet2))
+        forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[ListName]) {
+          (genericListItems, listName) =>
 
-        val repository = app.injector.instanceOf[ListRepository]
-        val result     = repository.getList(ListName("AdditionalInformationIdCommon"), MetaData("", LocalDate.now))
-        result.futureValue mustBe List(sampleDataSet1, sampleDataSet2)
+            val setListName = genericListItems.map(_.copy(listName = listName))
+            val itemsToJsObject = setListName.map(Json.toJsObject(_) ++ Json.obj("_id" -> BSONObjectID.generate.toString))
+
+            seedData(database, itemsToJsObject)
+
+            val repository = app.injector.instanceOf[ListRepository]
+            val result = repository.getListByName(listName, MetaData("", LocalDate.now))
+
+            result.futureValue mustBe itemsToJsObject
+
+            database.flatMap(_.drop()).futureValue
+        }
       }
 
       "no records found" in {
 
         val repository = app.injector.instanceOf[ListRepository]
-        val result     = repository.getList(ListName("AdditionalInformationIdCommon"), MetaData("", LocalDate.now))
+        val result = repository.getListByName(ListName("AdditionalInformationIdCommon"), MetaData("", LocalDate.now))
 
         result.futureValue mustBe Nil
       }
+    }
+  }
 
+  "getAllLists" - {
+
+    "must return list of GenericListItem" in {
+
+      forAll(listWithMaxLength(5)(arbitraryGenericListItem)) {
+        genericListItems =>
+
+          val jsObjectSeq = genericListItems.map(Json.toJsObject[GenericListItem])
+
+          seedData(database, jsObjectSeq)
+
+          val repository = app.injector.instanceOf[ListRepository]
+          val result = repository.getAllLists.futureValue
+
+          result mustBe genericListItems
+
+          database.flatMap(_.drop()).futureValue
+      }
+    }
+
+    "must return empty list when no list items are found" in {
+
+      val repository = app.injector.instanceOf[ListRepository]
+      val result = repository.getAllLists.futureValue
+
+      result mustBe Nil
     }
   }
 
   "insertList" - {
+
     "must save a list" in {
-      val list = listWithMaxLength[GenericListItem](10).sample.value
+      val list = listWithMaxLength[GenericListItem](10)(arbitraryGenericListItem).sample.value
 
       val repository = app.injector.instanceOf[ListRepository]
 
@@ -121,56 +164,4 @@ class ListRepositorySpec
     }
   }
 
-}
-
-object ListRepositorySpec {
-
-  val id1: BSONObjectID = BSONObjectID.generate()
-  val id2: BSONObjectID = BSONObjectID.generate()
-
-  val versionId = VersionId("1")
-
-  val sampleDataSet1: JsObject = Json.toJsObject(
-    GenericListItem(
-      listName = ListName("AdditionalInformationIdCommon"),
-      messageInformation = MessageInformation(
-        messageId = "1",
-        snapshotDate = LocalDate.now()
-      ),
-      versionId = versionId,
-      data = Json.obj(
-        "snapshotId" -> "snapshot",
-        "state"      -> "valid",
-        "activeFrom" -> "2020-01-18",
-        "code"       -> "00100",
-        "remark"     -> "foo",
-        "description" ->
-          Json.obj(
-            "en" -> "Simplified authorisation"
-          )
-      )
-    )
-  ) ++ Json.obj("_id" -> id1.toString())
-
-  val sampleDataSet2: JsObject = Json.toJsObject(
-    GenericListItem(
-      listName = ListName("AdditionalInformationIdCommon"),
-      messageInformation = MessageInformation(
-        messageId = "1",
-        snapshotDate = LocalDate.now()
-      ),
-      versionId = versionId,
-      data = Json.obj(
-        "snapshotId" -> "snapshot",
-        "state"      -> "valid",
-        "activeFrom" -> "2020-01-18",
-        "code"       -> "00100",
-        "remark"     -> "foo",
-        "description" ->
-          Json.obj(
-            "en" -> "Simplified authorisation"
-          )
-      )
-    )
-  ) ++ Json.obj("_id" -> id2.toString())
 }

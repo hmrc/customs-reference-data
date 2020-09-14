@@ -20,11 +20,21 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 import models._
-import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
+
+  implicit def arbitraryResourceLinks: Arbitrary[ResourceLinks] =
+    Arbitrary {
+      for {
+        linkKey  <- arbitrary[String]
+        link     <- arbitrarySimpleJsObject.arbitrary
+        metaData <- Gen.option(arbitrary(arbitraryMetaData))
+      } yield ResourceLinks(_links = Map(linkKey -> link), metaData = metaData)
+    }
 
   implicit val arbitraryListName: Arbitrary[ListName] =
     Arbitrary(arbitrary[String].map(ListName(_)))
