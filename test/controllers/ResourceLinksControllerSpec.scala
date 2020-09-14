@@ -35,7 +35,7 @@ import scala.concurrent.Future
 
 class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
 
-  private val fakeRequest = FakeRequest(GET, "/customs-reference-data/resources").withHeaders("Host" -> "localhost")
+  private val fakeRequest = FakeRequest(GET, routes.ResourceLinksController.get().url)
 
   private val mockListRetrievalService = mock[ListRetrievalService]
 

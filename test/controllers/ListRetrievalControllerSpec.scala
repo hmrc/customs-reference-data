@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
+import models.ListName
 import models.ReferenceDataList
 import models.ResourceLinks
 import org.mockito.ArgumentMatchers.any
@@ -41,8 +42,6 @@ import scala.concurrent.Future
 
 class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
 
-  private val fakeRequest = FakeRequest(GET, "foo").withHeaders("Host" -> "localhost")
-
   private val mockListRetrievalService = mock[ListRetrievalService]
 
   override def newAppForTest(testData: TestData): Application =
@@ -54,10 +53,12 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
     "get" - {
 
-      "should return OK and " in {
+      "should return OK and a reference data list" in {
 
-        forAll(arbitrary[ReferenceDataList]) {
-          referenceDataList =>
+        forAll(arbitrary[ReferenceDataList], arbitrary[ListName]) {
+          (referenceDataList, listName) =>
+            val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(listName).url)
+
             when(mockListRetrievalService.getList(any()))
               .thenReturn(Future.successful(Some(referenceDataList)))
 
