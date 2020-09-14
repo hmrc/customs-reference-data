@@ -1,5 +1,8 @@
 # microservice specific routes
 
-GET   /resources  @controllers.ResourceLinksController.get
+GET     /assets/*file                               controllers.Assets.versioned(path="/public", file: Asset)
 
-POST /reference-data-lists controllers.ReferenceDataController.post
+GET     /customs-reference-data/lists               controllers.ResourceLinksController.get
+GET     /customs-reference-data/lists/:listName     controllers.ListRetrievalController.get(listName: ListName)
+
+POST    /reference-data-lists                       controllers.ReferenceDataController.post

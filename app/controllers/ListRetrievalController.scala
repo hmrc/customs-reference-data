@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package models
+package controllers
 
-import play.api.libs.json.Json
-import play.api.libs.json.OFormat
-import play.api.mvc._
+import javax.inject.Inject
+import models.ListName
+import play.api.libs.json.JsValue
+import play.api.mvc.Action
+import play.api.mvc.ControllerComponents
+import services.ReferenceDataService
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-case class ListName(listName: String)
+import scala.concurrent.ExecutionContext
 
-object ListName {
+class ListRetrievalController @Inject() (
+  cc: ControllerComponents,
+  referenceDataService: ReferenceDataService
+)(implicit ec: ExecutionContext)
+    extends BackendController(cc) {
 
-  implicit val oWritesListName: OFormat[ListName] =
-    Json.format[ListName]
+  def get(listName: ListName): Action[JsValue] = ???
 
-  implicit lazy val pathBindable: PathBindable[ListName] = new PathBindable[ListName] {
-
-    override def bind(key: String, value: String): Either[String, ListName] =
-      implicitly[PathBindable[String]].bind(key, value).right.map(ListName.apply)
-
-    override def unbind(key: String, value: ListName): String =
-      value.listName
-  }
 }
