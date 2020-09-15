@@ -16,6 +16,7 @@
 
 package config
 
+import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 import repositories.ListCollectionIndexManager
 import repositories.VersionCollectionIndexManager
@@ -24,10 +25,14 @@ import services.VersionIdProducer
 
 class Module
     extends SimpleModule(
-      (environment, configuration) =>
+      (environment, configuration) => {
+        val jsonValidationService: JsonValidationService = JsonValidationService.newInstance()
+
         Seq(
           bind[ListCollectionIndexManager].toSelf.eagerly(),
           bind[VersionCollectionIndexManager].toSelf.eagerly(),
-          bind[VersionIdProducer].toInstance(DefaultVersionIdProducer)
+          bind[VersionIdProducer].toInstance(DefaultVersionIdProducer),
+          bind[JsonValidationService].toInstance(jsonValidationService)
         )
+      }
     )
