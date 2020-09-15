@@ -49,6 +49,9 @@ lazy val scoverageSettings =
 
 lazy val testSettings = Seq(
   fork := false,
+  javaOptions ++= Seq(
+    "-Dconfig.resource=test.application.conf"
+  ),
   unmanagedResourceDirectories := Seq(
     baseDirectory.value / "test" / "resources"
   )
