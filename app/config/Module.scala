@@ -16,6 +16,7 @@
 
 package config
 
+import models.CTCUP06Schema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 import repositories.ListCollectionIndexManager
@@ -28,11 +29,24 @@ class Module
       (environment, configuration) => {
         val jsonValidationService: JsonValidationService = JsonValidationService.newInstance()
 
-        Seq(
-          bind[ListCollectionIndexManager].toSelf.eagerly(),
-          bind[VersionCollectionIndexManager].toSelf.eagerly(),
+        /*
+          These modules are all bound eagerly so that the application will fail on application start
+           if they are misconfigured or if key resources are not available
+         */
+        val eagerModules = Seq(
+          bind[CTCUP06Schema].toSelf,
+          bind[ListCollectionIndexManager].toSelf,
+          bind[VersionCollectionIndexManager].toSelf
+        ).map(_.eagerly())
+
+        /*
+            Modules that don't need to be eagerly created
+         */
+        val regularModules = Seq(
           bind[VersionIdProducer].toInstance(DefaultVersionIdProducer),
           bind[JsonValidationService].toInstance(jsonValidationService)
         )
+
+        eagerModules ++ regularModules
       }
     )
