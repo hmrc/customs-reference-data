@@ -16,22 +16,11 @@
 
 package models
 
-import java.io.FileNotFoundException
-
 import javax.inject.Inject
 import javax.inject.Singleton
-import org.leadpony.justify.api.JsonSchema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.Environment
 
 @Singleton
-class CTCUP08Schema @Inject() (env: Environment, jsonValidationService: JsonValidationService) {
-
-  private val schemaPath = "schemas/CTCUP08.schema.json"
-
-  val schema: JsonSchema =
-    env
-      .resourceAsStream("schemas/CTCUP08.schema.json")
-      .fold(throw new FileNotFoundException(s"File for schema: ${getClass.getSimpleName} not find file at path $schemaPath"))(jsonValidationService.readSchema)
-
-}
+class CTCUP08Schema @Inject() (env: Environment, jsonValidationService: JsonValidationService)
+    extends SimpleJsonSchemaProvider(env, jsonValidationService)("schemas/CTCUP08.schema.json")
