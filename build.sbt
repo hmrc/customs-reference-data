@@ -13,6 +13,7 @@ lazy val microservice = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(publishingSettings: _*)
+  .settings(inConfig(Test)(testSettings): _*)
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(scoverageSettings: _*)
@@ -45,6 +46,13 @@ lazy val scoverageSettings =
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution in Test := false
   )
+
+lazy val testSettings = Seq(
+  fork := false,
+  unmanagedResourceDirectories := Seq(
+    baseDirectory.value / "test" / "resources"
+  )
+)
 
 lazy val itSettings = Defaults.itSettings ++ Seq(
   unmanagedSourceDirectories := Seq(
