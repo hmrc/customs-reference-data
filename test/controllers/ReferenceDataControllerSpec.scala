@@ -16,19 +16,11 @@
 
 package controllers
 
-import java.util
-import java.util.Locale
-import java.util.function.Consumer
-
 import base.SpecBase
-import jakarta.json.stream.JsonLocation
 import models.InvaildJsonError
-import models.ResponseErrorMessage
+import models.OtherError
 import models.SchemaErrorDetails
 import models.SchemaValidationError
-import models.ResponseErrorType.OtherError
-import org.leadpony.justify.api.JsonSchema
-import org.leadpony.justify.api.Problem
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito
 import org.mockito.Mockito._
@@ -42,9 +34,9 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.ReferenceDataService.DataProcessingResult._
 import services.ReferenceDataService
 import services.SchemaValidationService
-import services.ReferenceDataService.DataProcessingResult._
 
 import scala.concurrent.Future
 
@@ -61,8 +53,8 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
   "post" - {
     "returns ACCEPTED when the data has been validated and processed" in {
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -71,8 +63,8 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns Bad Request when the json cannot be parsed" in {
       val invalidJsonError = "bad json"
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+//      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -84,8 +76,8 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
       val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
 
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
+//      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -94,13 +86,13 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
     }
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
 
       val result = route(app, fakeRequest).value
 
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
-      contentAsJson(result) mustBe Json.toJsObject(ResponseErrorMessage(OtherError, None))
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
     }
 
   }
