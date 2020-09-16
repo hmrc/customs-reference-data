@@ -19,6 +19,7 @@ package models
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
+@deprecated
 case class ResponseErrorMessage(errorType: ResponseErrorType, errors: Option[Seq[ResponseErrorDetails]])
 
 object ResponseErrorMessage {
@@ -32,6 +33,7 @@ object ResponseErrorMessage {
       (__ \ "errors").readNullable[Seq[ResponseErrorDetails]])(ResponseErrorMessage.apply _)
 }
 
+@deprecated
 sealed abstract class ResponseErrorType(val code: String, val message: String)
 
 object ResponseErrorType {
