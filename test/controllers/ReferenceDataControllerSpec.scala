@@ -64,7 +64,6 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
     "returns Bad Request when the json cannot be parsed" in {
       val invalidJsonError = "bad json"
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
-//      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -77,7 +76,6 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
 
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
-//      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
