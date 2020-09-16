@@ -16,6 +16,26 @@
       "description": "Age in years which must be equal to or greater than zero.",
       "type": "integer",
       "minimum": 0
+    },
+    "level1": {
+      "description": "A nested object",
+      "type": "object",
+      "properties": {
+        "level1_value": {
+          "description": "Level 1 value",
+          "type": "integer",
+          "minimum": 0
+        },
+        "level1_arr": {
+          "description": "Level 1 value",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["level1_value"]
     }
   }
 }
