@@ -17,7 +17,6 @@
 package services
 
 import java.io.ByteArrayInputStream
-import java.util.Locale
 
 import akka.util.ByteString
 import jakarta.json.JsonReader
@@ -25,38 +24,49 @@ import jakarta.json.stream.JsonParsingException
 import javax.inject.Inject
 import models.JsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
+import org.leadpony.justify.api.Problem
 import org.leadpony.justify.api.ProblemHandler
-import org.leadpony.justify.internal.problem.ProblemRenderer
-import scala.collection.JavaConverters._
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
+import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 
 class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
+  import services.SchemaValidationService._
 
-  private val problemRenderer = ProblemRenderer.DEFAULT_RENDERER // TODO: Remove
-
-  private def problemHandler(schemaValidationProblems: ListBuffer[String]): ProblemHandler =
+  private def problemHandler(schemaValidationProblems: ListBuffer[Problem]): ProblemHandler =
     _.asScala.foreach {
       problem =>
-        schemaValidationProblems += problemRenderer.render(problem, Locale.getDefault())
+        schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Boolean = {
-    val inputStream: ByteArrayInputStream = new ByteArrayInputStream(rawJson.toArray)
+  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[SchemaValidationErrors, JsValue] = {
+    val rawJsonByteArray: Array[Byte] = rawJson.toArray
 
-    val schemaValidationProblems: ListBuffer[String] = ListBuffer.empty[String]
+    val schemaValidationProblems = ListBuffer.empty[Problem]
 
-    val jsonReader: JsonReader = jsonValidationService.createReader(inputStream, schema.schema, problemHandler(schemaValidationProblems))
+    val jsonReader: JsonReader =
+      jsonValidationService.createReader(new ByteArrayInputStream(rawJsonByteArray), schema.schema, problemHandler(schemaValidationProblems))
 
     try {
       jsonReader.read()
 
-      schemaValidationProblems.isEmpty // TODO: Return errors or valid data
+      if (schemaValidationProblems.isEmpty) Right(Json.parse(rawJson.toArray))
+      else Left(SchemaValidationError(schemaValidationProblems.toList))
+
     } catch {
       case exc: JsonParsingException =>
-        ??? // TODO: Bubble up this
+        Left(InvalidJson(exc.getMessage()))
     } finally jsonReader.close()
 
   }
+}
+
+object SchemaValidationService {
+
+  sealed trait SchemaValidationErrors
+  case class InvalidJson(message: String)                 extends SchemaValidationErrors
+  case class SchemaValidationError(problem: Seq[Problem]) extends SchemaValidationErrors
 
 }

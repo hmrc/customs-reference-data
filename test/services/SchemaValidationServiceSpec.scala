@@ -21,17 +21,20 @@ import base.SpecBase
 import javax.inject.Inject
 import models.SimpleJsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
+import org.scalatest.EitherValues
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Environment
 import play.api.inject.SimpleModule
 import play.api.inject.bind
 import play.api.libs.json.Json
+import services.SchemaValidationService.InvalidJson
+import services.SchemaValidationService.SchemaValidationError
 
 private[this] class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
 
 private[this] class TestModule extends SimpleModule((env, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
 
-class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite {
+class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with EitherValues {
 
   "validate" - {
     "returns true when the json matches the schema specifications" in {
@@ -41,24 +44,46 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         "age"       -> 21
       )
 
+      val jsonByteString = ByteString.fromString(json.toString())
+
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, ByteString.fromString(json.toString())) mustEqual true
+      service.validate(testJsonSchema, jsonByteString).right.value mustEqual json
 
     }
 
-    "returns false when the json does not match the schema specifications" in {
+    "returns InvalidJson with description of the problem when the json cannot be parsed" in {
+      val invalidJsonString = """
+          |{
+          |  "firstName": "firstName_value",
+          |  "lastName" : "lastName_value",
+          |  "age"      : "INVALID_VALUE 
+          |}
+          |""".stripMargin
+
+      val jsonByteString = ByteString.fromString(invalidJsonString)
+
+      val service        = app.injector.instanceOf[SchemaValidationService]
+      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+
+      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[InvalidJson]
+
+    }
+
+    "returns SchemaValidationError with description of the problem when the json does not match the schema specifications" in {
       val json = Json.obj(
         "firstName" -> "firstName_value",
         "lastName"  -> "lastName_value",
         "age"       -> "INVALID_VALUE"
       )
 
+      val jsonByteString = ByteString.fromString(json.toString())
+
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, ByteString.fromString(json.toString())) mustEqual false
+      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[SchemaValidationError]
 
     }
 
