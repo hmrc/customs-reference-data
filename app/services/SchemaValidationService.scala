@@ -26,7 +26,7 @@ import models.JsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
 import org.leadpony.justify.api.Problem
 import org.leadpony.justify.api.ProblemHandler
-import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
 import scala.collection.JavaConverters._
@@ -41,7 +41,7 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
         schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[SchemaValidationErrors, JsValue] = {
+  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[ValidationError, JsObject] = {
     val rawJsonByteArray: Array[Byte] = rawJson.toArray
 
     val schemaValidationProblems = ListBuffer.empty[Problem]
@@ -52,7 +52,15 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
     try {
       jsonReader.read()
 
-      if (schemaValidationProblems.isEmpty) Right(Json.parse(rawJson.toArray))
+      if (schemaValidationProblems.isEmpty)
+        Json
+          .parse(rawJson.toArray)
+          .validate[JsObject]
+          .asEither
+          .fold(
+            x => Left(InvalidJson(x.mkString("Errors while parsing json: ", "\n", ""))),
+            x => Right(x)
+          )
       else Left(SchemaValidationError(schemaValidationProblems.toList))
 
     } catch {
@@ -65,8 +73,8 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
 
 object SchemaValidationService {
 
-  sealed trait SchemaValidationErrors
-  case class InvalidJson(message: String)                 extends SchemaValidationErrors
-  case class SchemaValidationError(problem: Seq[Problem]) extends SchemaValidationErrors
+  sealed trait ValidationError
+  case class InvalidJson(message: String)                 extends ValidationError
+  case class SchemaValidationError(problem: Seq[Problem]) extends ValidationError
 
 }
