@@ -19,8 +19,8 @@ package services
 import java.io.ByteArrayInputStream
 import java.util.zip.GZIPInputStream
 
-import models.ErrorHandler
-import models.ErrorHandler.Error
+import models.ResponseErrorMessage
+import models.ResponseErrorType.OtherError
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 
@@ -30,12 +30,12 @@ import scala.util.Try
 
 object GZipService {
 
-  def decompressArrayByteToJson(arrayByte: Array[Byte]): Either[ErrorHandler, JsValue] =
+  def decompressArrayByteToJson(arrayByte: Array[Byte]): Either[ResponseErrorMessage, JsValue] =
     Try {
       val inputStream = new GZIPInputStream(new ByteArrayInputStream(arrayByte))
       Json.parse(scala.io.Source.fromInputStream(inputStream).mkString)
     } match {
-      case Success(value)     => Right(value)
-      case Failure(exception) => Left(Error(exception.getMessage))
+      case Success(value) => Right(value)
+      case Failure(_)     => Left(ResponseErrorMessage(OtherError, None))
     }
 }

@@ -16,6 +16,10 @@
 
 package controllers
 
+import java.io.ByteArrayOutputStream
+import java.util.zip.GZIPOutputStream
+
+import akka.util.ByteString
 import base.SpecBase
 import models.ResponseErrorMessage
 import models.ResponseErrorType.OtherError
@@ -28,7 +32,7 @@ import play.api.http.Status
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.AnyContentAsJson
+import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ReferenceDataService
@@ -50,15 +54,37 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       .overrides(bind[ReferenceDataService].toInstance(mockReferenceDataService))
       .build()
 
-  private def fakeRequest: FakeRequest[AnyContentAsJson] =
+  private def fakeRequest(byteArray: Array[Byte]): FakeRequest[AnyContentAsRaw] =
     FakeRequest(POST, routes.ReferenceDataController.post().url)
-      .withJsonBody(Json.obj())
+      .withRawBody(ByteString.apply(byteArray))
+
+  def compress(input: Array[Byte]): Array[Byte] = {
+    val bos  = new ByteArrayOutputStream(input.length)
+    val gzip = new GZIPOutputStream(bos)
+    gzip.write(input)
+    gzip.close()
+    val compressed = bos.toByteArray
+    bos.close()
+    compressed
+  }
 
   "post" - {
-    "returns Ok when the data has been processed" in {
+    "returns Ok when the data has been processed with a valid GZipped Json body" in {
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
-      val result = route(app, fakeRequest).value
+      val json =
+        """
+          |{
+          |   "messageInformation": {
+          |     "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
+          |     "snapshotDate": "2020-07-06"
+          | }
+          |}
+          |""".stripMargin
+
+      val compressedJson = compress(json.getBytes)
+
+      val result = route(app, fakeRequest(compressedJson)).value
 
       status(result) mustBe Status.ACCEPTED
     }
@@ -66,11 +92,56 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
     "returns with an Internal Server Error when the data was not processed successfully" in {
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
 
-      val result = route(app, fakeRequest).value
+      val json =
+        """
+          |{
+          |   "messageInformation": {
+          |     "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
+          |     "snapshotDate": "2020-07-06"
+          | }
+          |}
+          |""".stripMargin
+
+      val compressedJson = compress(json.getBytes)
+
+      val result = route(app, fakeRequest(compressedJson)).value
 
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
       contentAsJson(result) mustBe Json.toJsObject(ResponseErrorMessage(OtherError, None))
     }
 
+    "returns Internal Server Error if request body is not in compressed GZip format" in {
+
+      val json =
+        """
+          |{
+          |   "messageInformation": {
+          |     "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
+          |     "snapshotDate": "2020-07-06"
+          | }
+          |}
+          |""".stripMargin
+
+      val result = route(app, fakeRequest(json.getBytes)).value
+
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
+    "returns Internal Server Error if request body is compressed however Json is invalid" in {
+
+      val invalidJson = "Invalid Json"
+
+      val result = route(app, fakeRequest(invalidJson.getBytes)).value
+
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
+//    "returns Internal Server Error if request body is larger than memory threshold" in {
+//
+//      val result = route(app, fakeRequest(???)).value
+//
+//      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+//    }
   }
+
 }

@@ -17,34 +17,53 @@
 package controllers
 
 import javax.inject.Inject
+import models.ResponseErrorType.InvalidJson
+import models.ResponseErrorType.OtherError
 import models.ReferenceDataPayload
 import models.ResponseErrorMessage
-import models.ResponseErrorType.OtherError
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
+import play.api.mvc.RawBuffer
+import services.GZipService.decompressArrayByteToJson
 import services.ReferenceDataService
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class ReferenceDataController @Inject() (cc: ControllerComponents, referenceDataService: ReferenceDataService)(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def post: Action[JsValue] =
-    Action(parse.tolerantJson(maxLength = 1024 * 400)).async {
-      implicit request =>
-        val refData = ReferenceDataPayload(request.body.as[JsObject])
-        referenceDataService
-          .insert(refData)
-          .map {
-            case DataProcessingSuccessful => Accepted
-            case DataProcessingFailed     => InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
-          }
-    }
+  def post: Action[RawBuffer] =
+    Action(parse.raw).async {
 
+      implicit request =>
+        val getRequestBody: Either[ResponseErrorMessage, Array[Byte]] = request.body.asBytes().map(_.toArray) match {
+          case Some(body) => Right(body)
+          case _          => Left(ResponseErrorMessage(InvalidJson, None))
+        }
+
+        val getResult: Either[ResponseErrorMessage, JsValue] = for {
+          requestBody    <- getRequestBody.right
+          decompressBody <- decompressArrayByteToJson(requestBody).right
+        } yield decompressBody
+
+        getResult match {
+          case Right(value) =>
+            val refData: ReferenceDataPayload = ReferenceDataPayload(value.as[JsObject])
+
+            referenceDataService
+              .insert(refData)
+              .map {
+                case DataProcessingSuccessful => Accepted
+                case DataProcessingFailed     => InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
+              }
+          case Left(error) => Future.successful(InternalServerError(Json.toJsObject(error)))
+        }
+    }
 }

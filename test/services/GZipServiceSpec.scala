@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPOutputStream
 
 import base.SpecBase
-import models.ErrorHandler
+import models.ResponseErrorMessage
 import org.scalatest.EitherValues
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json.Json
@@ -56,7 +56,7 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
         val compressedJson = compress(invalidJson.getBytes)
         val result         = GZipService.decompressArrayByteToJson(compressedJson).left.value
 
-        result mustBe an[ErrorHandler]
+        result mustBe an[ResponseErrorMessage]
       }
 
       "return an error when given uncompressed array[Byte]" in {
@@ -74,7 +74,7 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
         val uncompressedArrayByte = validJson.getBytes
         val result                = GZipService.decompressArrayByteToJson(uncompressedArrayByte).left.value
 
-        result mustBe an[ErrorHandler]
+        result mustBe an[ResponseErrorMessage]
       }
     }
   }
