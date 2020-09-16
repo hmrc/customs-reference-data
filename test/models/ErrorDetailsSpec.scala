@@ -19,11 +19,11 @@ package models
 import base.SpecBase
 import play.api.libs.json.Json
 
-class ErrorResponseSpec extends SpecBase {
+class ErrorDetailsSpec extends SpecBase {
 
-  "ErrorDetails" - {
+  "SchemaErrorDetails" - {
     "serialization to json" in {
-      val errorDetails = ErrorDetails("testMessage", "path")
+      val errorDetails = SchemaErrorDetails("testMessage", "path")
 
       Json.toJsObject(errorDetails) mustEqual Json.obj(
         "code"    -> errorDetails.code,
@@ -34,7 +34,7 @@ class ErrorResponseSpec extends SpecBase {
     }
   }
 
-  "ErrorResponse" - {
+  "ErrorDetails" - {
     "InvaildJsonError" - {
       "serialization to json" in {
         val message       = "invalid json"
@@ -50,13 +50,12 @@ class ErrorResponseSpec extends SpecBase {
 
     "SchemaError" - {
       "serialization to json" in {
-        val message       = "invalid json"
-        val errorDetails  = ErrorDetails("testMessage", "path")
-        val errorResponse = SchemaError(message, Seq(errorDetails))
+        val errorDetails  = SchemaErrorDetails("testMessage", "path")
+        val errorResponse = SchemaValidationError(Seq(errorDetails))
 
         Json.toJsObject(errorResponse) mustEqual Json.obj(
           "code"    -> "SCHEMA_ERROR",
-          "message" -> message,
+          "message" -> "The JSON request was not conformant with the schema. Schematic errors are detailed in the errors property below.",
           "errors" -> Json.arr(
             Json.obj(
               "code"    -> errorDetails.code,
