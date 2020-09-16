@@ -49,8 +49,8 @@ class ReferenceDataServiceIntegrationSpec
 
   "saves all the data items for each list" in {
     val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-    val json               = genReferenceDataJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
-    val data               = ReferenceDataPayload(json)
+    val json               = genReferenceDataListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
+    val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
