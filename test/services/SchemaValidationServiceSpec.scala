@@ -19,6 +19,8 @@ package services
 import akka.util.ByteString
 import base.SpecBase
 import javax.inject.Inject
+import models.InvaildJsonError
+import models.SchemaValidationError
 import models.SimpleJsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
 import org.scalatest.EitherValues
@@ -27,8 +29,6 @@ import play.api.Environment
 import play.api.inject.SimpleModule
 import play.api.inject.bind
 import play.api.libs.json.Json
-import services.SchemaValidationService.InvalidJson
-import services.SchemaValidationService.SchemaValidationError
 
 private[this] class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
 
@@ -53,12 +53,12 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
 
     }
 
-    "returns InvalidJson with description of the problem when the json cannot be parsed" in {
+    "returns InvaildJsonError with description of the problem when the json cannot be parsed" in {
       val invalidJsonString = """
           |{
           |  "firstName": "firstName_value",
           |  "lastName" : "lastName_value",
-          |  "age"      : "INVALID_VALUE 
+          |  "age"      : "INVALID_VALUE
           |}
           |""".stripMargin
 
@@ -67,7 +67,7 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[InvalidJson]
+      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[InvaildJsonError]
 
     }
 
@@ -75,7 +75,10 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
       val json = Json.obj(
         "firstName" -> "firstName_value",
         "lastName"  -> "lastName_value",
-        "age"       -> "INVALID_VALUE"
+        "age"       -> "INVALID_VALUE",
+        "level1" -> Json.obj(
+          "level1_arr" -> Json.arr(1)
+        )
       )
 
       val jsonByteString = ByteString.fromString(json.toString())

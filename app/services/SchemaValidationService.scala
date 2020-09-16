@@ -22,7 +22,10 @@ import akka.util.ByteString
 import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
 import javax.inject.Inject
+import models.ErrorDetails
+import models.InvaildJsonError
 import models.JsonSchemaProvider
+import models.SchemaValidationError
 import org.leadpony.justify.api.JsonValidationService
 import org.leadpony.justify.api.Problem
 import org.leadpony.justify.api.ProblemHandler
@@ -33,7 +36,6 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 
 class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
-  import services.SchemaValidationService._
 
   private def problemHandler(schemaValidationProblems: ListBuffer[Problem]): ProblemHandler =
     _.asScala.foreach {
@@ -41,7 +43,7 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
         schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[ValidationError, JsObject] = {
+  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[ErrorDetails, JsObject] = {
     val rawJsonByteArray: Array[Byte] = rawJson.toArray
 
     val schemaValidationProblems = ListBuffer.empty[Problem]
@@ -58,23 +60,15 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
           .validate[JsObject]
           .asEither
           .fold(
-            x => Left(InvalidJson(x.mkString("Errors while parsing json: ", "\n", ""))),
+            x => Left(InvaildJsonError(x.mkString("Errors while parsing json: ", " ; ", ""))),
             x => Right(x)
           )
-      else Left(SchemaValidationError(schemaValidationProblems.toList))
+      else Left(SchemaValidationError.fromJsonSchemaProblems(schemaValidationProblems.toList))
 
     } catch {
       case exc: JsonParsingException =>
-        Left(InvalidJson(exc.getMessage()))
+        Left(InvaildJsonError(exc.getMessage()))
     } finally jsonReader.close()
 
   }
-}
-
-object SchemaValidationService {
-
-  sealed trait ValidationError
-  case class InvalidJson(message: String)                 extends ValidationError
-  case class SchemaValidationError(problem: Seq[Problem]) extends ValidationError
-
 }
