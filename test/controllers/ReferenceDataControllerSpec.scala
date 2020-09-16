@@ -47,11 +47,11 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
   private val testJson = Json.obj("foo" -> "bar")
 
-  private def fakeRequest: FakeRequest[AnyContentAsJson] =
-    FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
-      .withJsonBody(testJson)
+  "referenceDataLists" - {
+    def fakeRequest: FakeRequest[AnyContentAsJson] =
+      FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
+        .withJsonBody(testJson)
 
-  "post" - {
     "returns ACCEPTED when the data has been validated and processed" in {
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
@@ -93,6 +93,53 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
     }
 
+  }
+
+  "customsOfficeLists" - {
+    def fakeRequest: FakeRequest[AnyContentAsJson] =
+      FakeRequest(POST, routes.ReferenceDataController.customsOfficeLists().url)
+        .withJsonBody(testJson)
+
+    "returns ACCEPTED when the data has been validated and processed" in {
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.ACCEPTED
+    }
+
+    "returns Bad Request when the json cannot be parsed" in {
+      val invalidJsonError = "bad json"
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidJsonError))
+    }
+
+    "returns Bad Request when the json cannot be validated against the schema problems" in {
+
+      val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
+
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(expectedError)
+    }
+
+    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
+    }
   }
 
   override def beforeEach(): Unit = {

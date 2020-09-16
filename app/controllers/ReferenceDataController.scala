@@ -20,19 +20,18 @@ import akka.util.ByteString
 import javax.inject.Inject
 import models.CTCUP06Schema
 import models.CTCUP08Schema
+import models.CustomsOfficeListsPayload
 import models.OtherError
-import models.ReferenceDataPayload
-import models.ResponseErrorMessage
+import models.ReferenceDataListsPayload
 import play.api.Logger
-import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
-import services.ReferenceDataService
-import services.SchemaValidationService
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import services.ReferenceDataService
+import services.SchemaValidationService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
@@ -59,7 +58,7 @@ class ReferenceDataController @Inject() (
           .map {
             schemaValidationService
               .validate(cTCUP06Schema, _)
-              .map(ReferenceDataPayload(_))
+              .map(ReferenceDataListsPayload(_))
               .fold(
                 error => {
                   referenceDataListsLogger.error(Json.toJsObject(error).toString())
@@ -82,6 +81,36 @@ class ReferenceDataController @Inject() (
 
     }
 
-  def customsOfficeLists(): Action[JsValue] = ???
+  def customsOfficeLists(): Action[RawBuffer] =
+    Action(parse.raw(1024 * 400)).async {
+      implicit request =>
+        request.body
+          .asBytes()
+          .map(bytes => ByteString(bytes.toArray))
+          .map {
+            schemaValidationService
+              .validate(cTCUP08Schema, _)
+              .map(CustomsOfficeListsPayload(_))
+              .fold(
+                error => {
+                  customsOfficeListsLogger.error(Json.toJsObject(error).toString())
+                  Future.successful(BadRequest(Json.toJsObject(error)))
+                },
+                refData =>
+                  referenceDataService
+                    .insert(refData)
+                    .map {
+                      case DataProcessingSuccessful => Accepted
+                      case DataProcessingFailed =>
+                        customsOfficeListsLogger.error("Failed to save the data list because of internal error")
+                        InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
+                    }
+              )
+          }
+          .getOrElse(
+            Future.successful(BadRequest(Json.toJsObject(OtherError("Empty request"))))
+          )
+
+    }
 
 }

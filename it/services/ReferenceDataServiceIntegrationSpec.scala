@@ -47,11 +47,39 @@ class ReferenceDataServiceIntegrationSpec
       .overrides(bind[VersionIdProducer].toInstance(fakeVersionIdProducer))
       .build()
 
-  "saves all the data items for each list" in {
+  "saves all the data items for each list for reference data list" in {
     val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
     val json               = genReferenceDataListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
+
+    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
+
+    val listRepository = app.injector.instanceOf[ListRepository]
+
+    expectedListNames.nonEmpty mustBe true
+
+    expectedListNames.foreach {
+      listName =>
+        val retrievedList = listRepository.getListByName(listName, MetaData("", LocalDate.now)).futureValue
+
+        retrievedList.length mustEqual 5
+
+        retrievedList.foreach {
+          _ must haveListInfo(
+            expectedListName = listName,
+            expectedSnapshotDate = messageInformation.snapshotDate,
+            expectedVersionId = expectedVersionId
+          )
+        }
+    }
+  }
+
+  "saves all the data items for each list for customs office list" in {
+    val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
+    val json               = genCustomsOfficeListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
+    val data               = CustomsOfficeListsPayload(json)
+    val expectedListNames  = json.keys.filterNot(_ == "messageInformation").map(ListName(_))
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
