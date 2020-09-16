@@ -16,10 +16,21 @@
 
 package controllers
 
+import java.util
+import java.util.Locale
+import java.util.function.Consumer
+
 import base.SpecBase
+import jakarta.json.stream.JsonLocation
+import models.InvaildJsonError
 import models.ResponseErrorMessage
+import models.SchemaErrorDetails
+import models.SchemaValidationError
 import models.ResponseErrorType.OtherError
+import org.leadpony.justify.api.JsonSchema
+import org.leadpony.justify.api.Problem
 import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -32,39 +43,59 @@ import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ReferenceDataService
+import services.SchemaValidationService
 import services.ReferenceDataService.DataProcessingResult._
 
 import scala.concurrent.Future
 
 class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  override def beforeEach(): Unit =
-    super.beforeEach()
+  val mockReferenceDataService    = mock[ReferenceDataService]
+  val mockSchemaValidationService = mock[SchemaValidationService]
 
-  val mockReferenceDataService = mock[ReferenceDataService]
-
-  // Do not use directly use `app` instead
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
-      .overrides(bind[ReferenceDataService].toInstance(mockReferenceDataService))
-      .build()
+  private val testJson = Json.obj("foo" -> "bar")
 
   private def fakeRequest: FakeRequest[AnyContentAsJson] =
-    FakeRequest(POST, routes.ReferenceDataController.post().url)
-      .withJsonBody(Json.obj())
+    FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
+      .withJsonBody(testJson)
 
   "post" - {
-    "returns Ok when the data has been processed" in {
+    "returns ACCEPTED when the data has been validated and processed" in {
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
 
       val result = route(app, fakeRequest).value
 
       status(result) mustBe Status.ACCEPTED
     }
 
-    "returns with an Internal Server Error when the data was not processed successfully" in {
+    "returns Bad Request when the json cannot be parsed" in {
+      val invalidJsonError = "bad json"
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidJsonError))
+    }
+
+    "returns Bad Request when the json cannot be validated against the schema problems" in {
+
+      val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
+
+      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(expectedError)
+    }
+
+    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
 
       val result = route(app, fakeRequest).value
 
@@ -73,4 +104,19 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
     }
 
   }
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    Mockito.reset(mockReferenceDataService, mockSchemaValidationService)
+  }
+
+  // Do not use directly use `app` instead
+  override def fakeApplication(): Application =
+    new GuiceApplicationBuilder()
+      .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
+      .overrides(
+        bind[ReferenceDataService].toInstance(mockReferenceDataService),
+        bind[SchemaValidationService].toInstance(mockSchemaValidationService)
+      )
+      .build()
 }

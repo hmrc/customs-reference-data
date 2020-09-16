@@ -17,34 +17,61 @@
 package controllers
 
 import javax.inject.Inject
+import models.CTCUP06Schema
+import models.CTCUP08Schema
 import models.ReferenceDataPayload
 import models.ResponseErrorMessage
 import models.ResponseErrorType.OtherError
-import play.api.libs.json.JsObject
+import play.api.Logger
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
+import play.api.mvc.RawBuffer
 import services.ReferenceDataService
+import services.SchemaValidationService
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
-class ReferenceDataController @Inject() (cc: ControllerComponents, referenceDataService: ReferenceDataService)(implicit ec: ExecutionContext)
+class ReferenceDataController @Inject() (
+  cc: ControllerComponents,
+  referenceDataService: ReferenceDataService,
+  schemaValidationService: SchemaValidationService,
+  cTCUP06Schema: CTCUP06Schema,
+  cTCUP08Schema: CTCUP08Schema
+)(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def post: Action[JsValue] =
-    Action(parse.tolerantJson(maxLength = 1024 * 400)).async {
+  private val referenceDataListsLogger = Logger("ReferenceDataLists")
+  private val customsOfficeListsLogger = Logger("CustomsOfficeLists")
+
+  def referenceDataLists(): Action[RawBuffer] =
+    Action(parse.raw(maxLength = 1024 * 400)).async {
       implicit request =>
-        val refData = ReferenceDataPayload(request.body.as[JsObject])
-        referenceDataService
-          .insert(refData)
-          .map {
-            case DataProcessingSuccessful => Accepted
-            case DataProcessingFailed     => InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
-          }
+        schemaValidationService
+          .validate(cTCUP06Schema, request.body.asBytes().get)
+          .map(ReferenceDataPayload(_))
+          .fold(
+            error => {
+              referenceDataListsLogger.error(Json.toJsObject(error).toString())
+              Future.successful(BadRequest(Json.toJsObject(error)))
+            },
+            refData =>
+              referenceDataService
+                .insert(refData)
+                .map {
+                  case DataProcessingSuccessful => Accepted
+                  case DataProcessingFailed =>
+                    referenceDataListsLogger.error("Failed to save the data list because of internal error")
+                    InternalServerError(Json.toJsObject(ResponseErrorMessage(OtherError, None)))
+                }
+          )
     }
+
+  def customsOfficeLists(): Action[JsValue] = ???
 
 }
