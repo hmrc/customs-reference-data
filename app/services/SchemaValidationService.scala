@@ -60,14 +60,14 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
           .validate[JsObject]
           .asEither
           .fold(
-            x => Left(InvaildJsonError(x.mkString("Errors while parsing json: ", " ; ", ""))),
-            x => Right(x)
+            validationError => Left(InvaildJsonError(validationError.mkString("Errors while parsing json: ", " ; ", ""))),
+            jsObject => Right(jsObject)
           )
       else Left(SchemaValidationError.fromJsonSchemaProblems(schemaValidationProblems.toList))
 
     } catch {
       case exc: JsonParsingException =>
-        Left(InvaildJsonError(exc.getMessage()))
+        Left(InvaildJsonError(exc.getMessage))
     } finally jsonReader.close()
 
   }

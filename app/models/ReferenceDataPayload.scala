@@ -31,7 +31,8 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
     (for {
       JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
       snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
-    } yield MessageInformation(messageId, snapshotDate)).get
+    } yield MessageInformation(messageId, snapshotDate))
+      .getOrElse(throw new Exception("Failed to convert ReferenceDataListsPayload to MessageInformation"))
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
@@ -55,7 +56,8 @@ class CustomsOfficeListsPayload(data: JsObject) extends ReferenceDataPayload {
     (for {
       JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
       snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
-    } yield MessageInformation(messageId, snapshotDate)).getOrElse(throw new Exception("WTF"))
+    } yield MessageInformation(messageId, snapshotDate))
+      .getOrElse(throw new Exception("Failed to convert CustomsOfficeListsPayload to MessageInformation"))
 
   override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
     data.values.flatMap(
