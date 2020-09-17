@@ -18,7 +18,6 @@ package services
 
 import java.io.ByteArrayInputStream
 
-import akka.util.ByteString
 import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
 import javax.inject.Inject
@@ -43,20 +42,19 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
         schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, rawJson: ByteString): Either[ErrorDetails, JsObject] = {
-    val rawJsonByteArray: Array[Byte] = rawJson.toArray
+  def validate(schema: JsonSchemaProvider, arrayByte: Array[Byte]): Either[ErrorDetails, JsObject] = {
 
     val schemaValidationProblems = ListBuffer.empty[Problem]
 
     val jsonReader: JsonReader =
-      jsonValidationService.createReader(new ByteArrayInputStream(rawJsonByteArray), schema.schema, problemHandler(schemaValidationProblems))
+      jsonValidationService.createReader(new ByteArrayInputStream(arrayByte), schema.schema, problemHandler(schemaValidationProblems))
 
     try {
       jsonReader.read()
 
       if (schemaValidationProblems.isEmpty)
         Json
-          .parse(rawJson.toArray)
+          .parse(arrayByte)
           .validate[JsObject]
           .asEither
           .fold(

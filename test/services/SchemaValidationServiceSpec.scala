@@ -16,7 +16,6 @@
 
 package services
 
-import akka.util.ByteString
 import base.SpecBase
 import javax.inject.Inject
 import models.InvaildJsonError
@@ -32,7 +31,7 @@ import play.api.libs.json.Json
 
 private[this] class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
 
-private[this] class TestModule extends SimpleModule((env, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
+private[this] class TestModule extends SimpleModule((_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
 
 class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with EitherValues {
 
@@ -44,12 +43,12 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         "age"       -> 21
       )
 
-      val jsonByteString = ByteString.fromString(json.toString())
+      val jsonByteArray = json.toString.getBytes
 
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteString).right.value mustEqual json
+      service.validate(testJsonSchema, jsonByteArray).right.value mustEqual json
 
     }
 
@@ -62,16 +61,17 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
           |}
           |""".stripMargin
 
-      val jsonByteString = ByteString.fromString(invalidJsonString)
+      val jsonByteArray = invalidJsonString.getBytes
 
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[InvaildJsonError]
+      service.validate(testJsonSchema, jsonByteArray).left.value mustBe a[InvaildJsonError]
 
     }
 
     "returns SchemaValidationError with description of the problem when the json does not match the schema specifications" in {
+
       val json = Json.obj(
         "firstName" -> "firstName_value",
         "lastName"  -> "lastName_value",
@@ -81,13 +81,12 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         )
       )
 
-      val jsonByteString = ByteString.fromString(json.toString())
+      val jsonArrayByte = json.toString.getBytes
 
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteString).left.value mustBe a[SchemaValidationError]
-
+      service.validate(testJsonSchema, jsonArrayByte).left.value mustBe a[SchemaValidationError]
     }
 
   }

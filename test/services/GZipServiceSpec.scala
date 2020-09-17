@@ -20,10 +20,9 @@ import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPOutputStream
 
 import base.SpecBase
-import models.ResponseErrorMessage
+import models.OtherError
 import org.scalatest.EitherValues
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.Json
 
 class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with EitherValues {
 
@@ -31,50 +30,26 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
 
     "must" - {
 
-      "return a decompressed Json when given array[Byte] in GZip format" in {
+      "return a decompressed array[Byte] from GZip format" in {
 
-        val validJson =
-          """
-            |{
-            |   "messageInformation": {
-            |     "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
-            |     "snapshotDate": "2020-07-06"
-            | }
-            |}
-            |""".stripMargin
+        val testString = "Test ArrayByte"
 
-        val compressedJson = compress(validJson.getBytes)
-        val result         = GZipService.decompressArrayByteToJson(compressedJson).right.value
+        val compressedValue = compress(testString.getBytes)
+        val result          = GZipService.decompressArrayByte(compressedValue).right.value
 
-        result mustBe Json.parse(validJson)
-      }
+        val decompressedResult = result.map(_.toChar).mkString
 
-      "return an error when given invalid Json" in {
-
-        val invalidJson = "Invalid"
-
-        val compressedJson = compress(invalidJson.getBytes)
-        val result         = GZipService.decompressArrayByteToJson(compressedJson).left.value
-
-        result mustBe an[ResponseErrorMessage]
+        decompressedResult mustBe testString
       }
 
       "return an error when given uncompressed array[Byte]" in {
 
-        val validJson =
-          """
-            |{
-            |   "messageInformation": {
-            |     "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
-            |     "snapshotDate": "2020-07-06"
-            | }
-            |}
-            |""".stripMargin
+        val testString = "Test ArrayByte"
 
-        val uncompressedArrayByte = validJson.getBytes
-        val result                = GZipService.decompressArrayByteToJson(uncompressedArrayByte).left.value
+        val uncompressedArrayByte = testString.getBytes
+        val result                = GZipService.decompressArrayByte(uncompressedArrayByte).left.value
 
-        result mustBe an[ResponseErrorMessage]
+        result mustBe an[OtherError]
       }
     }
   }
