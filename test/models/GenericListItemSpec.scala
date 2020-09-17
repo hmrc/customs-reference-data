@@ -27,7 +27,6 @@ class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {
   "Json serialization" in {
     val date = LocalDate.now()
 
-    val r           = ReferenceDataPayload(JsObject.empty)
     val listName    = ListName("listNameValue")
     val messageInfo = MessageInformation("messageIdValue", date)
     val versionId   = VersionId("1")

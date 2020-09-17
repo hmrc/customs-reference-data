@@ -16,7 +16,9 @@
 
 package generators
 
+import models.CustomsOfficeListsPayload
 import models.MessageInformation
+import models.ReferenceDataListsPayload
 import models.ReferenceDataPayload
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
@@ -53,7 +55,7 @@ trait ModelGenerators {
     * @param messageInformation The metadata for the reference data. This allows the caller to override the default random values and specify their own
     * @return A [[play.api.libs.json.JsObject]] that represents a full reference data push
     */
-  def genReferenceDataJson(
+  def genReferenceDataListsJson(
     numberOfLists: Int = 5,
     numberOfListItems: Int = 5,
     messageInformation: Option[Gen[MessageInformation]] = None,
@@ -83,9 +85,59 @@ trait ModelGenerators {
     )
   }
 
-  def genReferenceDataPayload(numberOfLists: Int = 5, numberOfListItems: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None): Gen[ReferenceDataPayload] =
-    genReferenceDataJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
-      .map(ReferenceDataPayload(_))
+  /**
+    * Generator that sample full reference data push as JSON
+    *
+    * @param numberOfLists The number of lists for the sample reference data json
+    * @param numberOfListItems The number of list items to populate the list's listEntries with
+    * @param messageInformation The metadata for the reference data. This allows the caller to override the default random values and specify their own
+    * @return A [[play.api.libs.json.JsObject]] that represents a full reference data push
+    */
+  def genCustomsOfficeListsJson(
+    numberOfLists: Int = 5,
+    numberOfListItems: Int = 5,
+    messageInformation: Option[Gen[MessageInformation]] = None,
+    dataItemsGen: Option[Gen[JsObject]] = None
+  ): Gen[JsObject] = {
+    import generators.ModelArbitraryInstances.arbitraryMessageInformation
+
+    require(numberOfLists >= 1, "Number of lists should be greater than 1")
+
+    // This is used to ensure that there are no collisions in the listNames so that we generate the specified number of lists.
+    val suffix: Iterator[String] = Iterator.from(0, 1).map(_.toString)
+
+    val jsObjGen2: Gen[JsObject] = {
+      val listNameGen: Gen[String] = extendedAsciiWithMaxLength(100).map(_ ++ suffix.next())
+      genReferenceList(numberOfListItems, dataItemsGen, listNameGen = Some(listNameGen))
+    }
+
+    for {
+      messageInformation <- messageInformation.getOrElse(arbitraryMessageInformation.arbitrary)
+      listsOfLists       <- Gen.listOfN(numberOfLists, jsObjGen2)
+      listsObject = listsOfLists.foldLeft(Json.obj())(_ ++ _)
+    } yield Json.obj(
+      "messageInformation" -> Json.obj(
+        "messageID"    -> messageInformation.messageId,
+        "snapshotDate" -> messageInformation.snapshotDate
+      )
+    ) ++ listsObject
+  }
+
+  def genReferenceDataListsPayload(
+    numberOfLists: Int = 5,
+    numberOfListItems: Int = 5,
+    dataItemsGen: Option[Gen[JsObject]] = None
+  ): Gen[ReferenceDataListsPayload] =
+    genReferenceDataListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
+      .map(ReferenceDataListsPayload(_))
+
+  def genCustomsOfficeListsPayload(
+    numberOfLists: Int = 5,
+    numberOfListItems: Int = 5,
+    dataItemsGen: Option[Gen[JsObject]] = None
+  ): Gen[CustomsOfficeListsPayload] =
+    genCustomsOfficeListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
+      .map(CustomsOfficeListsPayload(_))
 
 }
 
