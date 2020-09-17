@@ -17,7 +17,7 @@
 package services
 
 import base.SpecBase
-import generators.ModelGenerators.genReferenceDataPayload
+import generators.ModelGenerators.genReferenceDataListsPayload
 import models.VersionId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -35,7 +35,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   "addNew" - {
     "reports the processing as successful if all lists are successfully saved" in {
-      forAll(genReferenceDataPayload(numberOfLists = 2)) {
+      forAll(genReferenceDataListsPayload(numberOfLists = 2)) {
         payload =>
           val repository = mock[ListRepository]
           when(repository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
@@ -53,7 +53,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
     }
 
     "reports the processing as failed if any lists are not saved" in {
-      forAll(genReferenceDataPayload(numberOfLists = 2)) {
+      forAll(genReferenceDataListsPayload(numberOfLists = 2)) {
         payload =>
           val repository = mock[ListRepository]
           when(repository.insertList(any()))

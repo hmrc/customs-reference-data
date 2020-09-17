@@ -87,6 +87,9 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         ldt <- ldt.arbitrary
       } yield VersionInformation(mi, v, ldt)
     }
+
+  implicit def arbitraryReferenceDataPayload: Arbitrary[ReferenceDataPayload] =
+    Arbitrary(Gen.oneOf(ModelGenerators.genReferenceDataListsPayload(), ModelGenerators.genCustomsOfficeListsPayload()))
 }
 
 object ModelArbitraryInstances extends ModelArbitraryInstances

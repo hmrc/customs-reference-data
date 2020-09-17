@@ -20,17 +20,23 @@ import java.time.LocalDate
 
 import play.api.libs.json._
 
-class ReferenceDataPayload(data: JsObject) {
+sealed trait ReferenceDataPayload {
+  def messageInformation: MessageInformation
+  def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]]
+}
 
-  lazy val messageInformation: MessageInformation =
+class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
+
+  override lazy val messageInformation: MessageInformation =
     (for {
       JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
       snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
-    } yield MessageInformation(messageId, snapshotDate)).get
+    } yield MessageInformation(messageId, snapshotDate))
+      .getOrElse(throw new Exception("Failed to convert ReferenceDataListsPayload to MessageInformation"))
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
+  override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
     lists.values.flatMap(
       list =>
         (for {
@@ -40,8 +46,29 @@ class ReferenceDataPayload(data: JsObject) {
     )
 }
 
-object ReferenceDataPayload {
+object ReferenceDataListsPayload {
+  def apply(v1: JsObject): ReferenceDataListsPayload = new ReferenceDataListsPayload(v1)
+}
 
-  def apply(data: JsObject): ReferenceDataPayload = new ReferenceDataPayload(data)
+class CustomsOfficeListsPayload(data: JsObject) extends ReferenceDataPayload {
 
+  override lazy val messageInformation: MessageInformation =
+    (for {
+      JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
+      snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
+    } yield MessageInformation(messageId, snapshotDate))
+      .getOrElse(throw new Exception("Failed to convert CustomsOfficeListsPayload to MessageInformation"))
+
+  override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
+    data.values.flatMap(
+      list =>
+        (for {
+          ln <- list.validate[ListName]
+          le <- (list \ "listEntries").validate[Vector[JsObject]]
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).asOpt
+    )
+}
+
+object CustomsOfficeListsPayload {
+  def apply(v1: JsObject): CustomsOfficeListsPayload = new CustomsOfficeListsPayload(v1)
 }
