@@ -78,33 +78,30 @@ class ReferenceDataController @Inject() (
   def customsOfficeLists(): Action[RawBuffer] =
     Action(parse.raw(1024 * 400)).async {
       implicit request =>
-        request.body
-          .asBytes()
-          .map(_.toArray)
-          .map {
-            schemaValidationService
-              .validate(cTCUP08Schema, _)
-              .map(CustomsOfficeListsPayload(_))
-              .fold(
-                error => {
-                  customsOfficeListsLogger.error(Json.toJsObject(error).toString())
-                  Future.successful(BadRequest(Json.toJsObject(error)))
-                },
-                refData =>
-                  referenceDataService
-                    .insert(refData)
-                    .map {
-                      case DataProcessingSuccessful => Accepted
-                      case DataProcessingFailed =>
-                        customsOfficeListsLogger.error("Failed to save the data list because of internal error")
-                        InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
-                    }
-              )
-          }
-          .getOrElse(
-            Future.successful(BadRequest(Json.toJsObject(OtherError("Empty request"))))
-          )
+        val requestBody = request.body.asBytes().map(_.toArray) match {
+          case Some(body) => Right(body)
+          case _          => Left(OtherError("Payload larger than memory threshold"))
+        }
 
+        val validateAndDecompressBody = for {
+          requestBody    <- requestBody.right
+          decompressBody <- GZipService.decompressArrayByte(requestBody).right
+          validateBody   <- schemaValidationService.validate(cTCUP08Schema, decompressBody).right
+        } yield validateBody
+
+        validateAndDecompressBody match {
+          case Right(jsObject) =>
+            referenceDataService
+              .insert(CustomsOfficeListsPayload(jsObject))
+              .map {
+                case DataProcessingSuccessful => Accepted
+                case DataProcessingFailed =>
+                  referenceDataListsLogger.error("Failed to save the data list because of internal error")
+                  InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
+              }
+          case Left(error) =>
+            referenceDataListsLogger.error(Json.toJsObject(error).toString())
+            Future.successful(BadRequest(Json.toJsObject(error)))
+        }
     }
-
 }
