@@ -21,7 +21,10 @@ import java.util.zip.GZIPOutputStream
 
 import akka.util.ByteString
 import base.SpecBase
-import models.{InvaildJsonError, OtherError, SchemaErrorDetails, SchemaValidationError}
+import models.InvaildJsonError
+import models.OtherError
+import models.SchemaErrorDetails
+import models.SchemaValidationError
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito
 import org.mockito.Mockito._
@@ -32,11 +35,13 @@ import play.api.http.Status
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContentAsJson, AnyContentAsRaw}
+import play.api.mvc.AnyContentAsJson
+import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ReferenceDataService.DataProcessingResult._
-import services.{ReferenceDataService, SchemaValidationService}
+import services.ReferenceDataService
+import services.SchemaValidationService
 
 import scala.concurrent.Future
 
@@ -73,17 +78,28 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       status(result) mustBe Status.ACCEPTED
     }
 
-    "returns Bad Request when the json cannot be parsed" in {
-      val invalidJsonError = "bad json"
-      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+    "returns Bad Request when request body isn't compressed" in {
+
+      val invalidRequestBody = "Uncompressed Array[Byte]".getBytes
+
+      val result = route(app, fakeRequest(invalidRequestBody)).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Not in GZIP format"))
+    }
+
+    "returns Bad Request when the request body cannot be parsed" in {
+      val invalidRequestBody = "bad json"
+
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidRequestBody)))
 
       val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.BAD_REQUEST
-      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidJsonError))
+      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidRequestBody))
     }
 
-    "returns Bad Request when the json cannot be validated against the schema problems" in {
+    "returns Bad Request when the request body cannot be validated against the schema problems" in {
 
       val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
 
