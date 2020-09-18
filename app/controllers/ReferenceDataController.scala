@@ -16,13 +16,8 @@
 
 package controllers
 
-import akka.util.ByteString
 import javax.inject.Inject
-import models.CTCUP06Schema
-import models.CTCUP08Schema
-import models.CustomsOfficeListsPayload
-import models.OtherError
-import models.ReferenceDataListsPayload
+import models._
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -30,6 +25,7 @@ import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import services.GZipService
 import services.ReferenceDataService
 import services.SchemaValidationService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -52,65 +48,60 @@ class ReferenceDataController @Inject() (
   def referenceDataLists(): Action[RawBuffer] =
     Action(parse.raw(1024 * 400)).async {
       implicit request =>
-        request.body
-          .asBytes()
-          .map(bytes => ByteString(bytes.toArray))
-          .map {
-            schemaValidationService
-              .validate(cTCUP06Schema, _)
-              .map(ReferenceDataListsPayload(_))
-              .fold(
-                error => {
-                  referenceDataListsLogger.error(Json.toJsObject(error).toString())
-                  Future.successful(BadRequest(Json.toJsObject(error)))
-                },
-                refData =>
-                  referenceDataService
-                    .insert(refData)
-                    .map {
-                      case DataProcessingSuccessful => Accepted
-                      case DataProcessingFailed =>
-                        referenceDataListsLogger.error("Failed to save the data list because of internal error")
-                        InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
-                    }
-              )
-          }
-          .getOrElse(
-            Future.successful(BadRequest(Json.toJsObject(OtherError("Empty request"))))
-          )
+        val requestBody = request.body.asBytes().map(_.toArray) match {
+          case Some(body) => Right(body)
+          case _          => Left(OtherError("Payload larger than memory threshold"))
+        }
 
+        val validateAndDecompressBody = for {
+          requestBody    <- requestBody.right
+          decompressBody <- GZipService.decompressArrayByte(requestBody).right
+          validateBody   <- schemaValidationService.validate(cTCUP06Schema, decompressBody).right
+        } yield validateBody
+
+        validateAndDecompressBody match {
+          case Right(jsObject) =>
+            referenceDataService
+              .insert(ReferenceDataListsPayload(jsObject))
+              .map {
+                case DataProcessingSuccessful => Accepted
+                case DataProcessingFailed =>
+                  referenceDataListsLogger.error("Failed to save the data list because of internal error")
+                  InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
+              }
+          case Left(error) =>
+            referenceDataListsLogger.error(Json.toJsObject(error).toString())
+            Future.successful(BadRequest(Json.toJsObject(error)))
+        }
     }
 
   def customsOfficeLists(): Action[RawBuffer] =
     Action(parse.raw(1024 * 400)).async {
       implicit request =>
-        request.body
-          .asBytes()
-          .map(bytes => ByteString(bytes.toArray))
-          .map {
-            schemaValidationService
-              .validate(cTCUP08Schema, _)
-              .map(CustomsOfficeListsPayload(_))
-              .fold(
-                error => {
-                  customsOfficeListsLogger.error(Json.toJsObject(error).toString())
-                  Future.successful(BadRequest(Json.toJsObject(error)))
-                },
-                refData =>
-                  referenceDataService
-                    .insert(refData)
-                    .map {
-                      case DataProcessingSuccessful => Accepted
-                      case DataProcessingFailed =>
-                        customsOfficeListsLogger.error("Failed to save the data list because of internal error")
-                        InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
-                    }
-              )
-          }
-          .getOrElse(
-            Future.successful(BadRequest(Json.toJsObject(OtherError("Empty request"))))
-          )
+        val requestBody = request.body.asBytes().map(_.toArray) match {
+          case Some(body) => Right(body)
+          case _          => Left(OtherError("Payload larger than memory threshold"))
+        }
 
+        val validateAndDecompressBody = for {
+          requestBody    <- requestBody.right
+          decompressBody <- GZipService.decompressArrayByte(requestBody).right
+          validateBody   <- schemaValidationService.validate(cTCUP08Schema, decompressBody).right
+        } yield validateBody
+
+        validateAndDecompressBody match {
+          case Right(jsObject) =>
+            referenceDataService
+              .insert(CustomsOfficeListsPayload(jsObject))
+              .map {
+                case DataProcessingSuccessful => Accepted
+                case DataProcessingFailed =>
+                  customsOfficeListsLogger.error("Failed to save the data list because of internal error")
+                  InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
+              }
+          case Left(error) =>
+            customsOfficeListsLogger.error(Json.toJsObject(error).toString())
+            Future.successful(BadRequest(Json.toJsObject(error)))
+        }
     }
-
 }

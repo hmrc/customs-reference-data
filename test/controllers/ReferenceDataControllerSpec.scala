@@ -16,6 +16,7 @@
 
 package controllers
 
+import akka.util.ByteString
 import base.SpecBase
 import models.InvaildJsonError
 import models.OtherError
@@ -31,7 +32,7 @@ import play.api.http.Status
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.AnyContentAsJson
+import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ReferenceDataService.DataProcessingResult._
@@ -45,39 +46,52 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
   val mockReferenceDataService    = mock[ReferenceDataService]
   val mockSchemaValidationService = mock[SchemaValidationService]
 
-  private val testJson = Json.obj("foo" -> "bar")
+  private val testJson       = Json.obj("foo" -> "bar")
+  private val compressedJson = compress(testJson.toString.getBytes)
 
   "referenceDataLists" - {
-    def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
-        .withJsonBody(testJson)
 
-    "returns ACCEPTED when the data has been validated and processed" in {
+    def fakeRequest(arrayByte: Array[Byte] = compressedJson): FakeRequest[AnyContentAsRaw] =
+      FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
+        .withRawBody(ByteString(arrayByte))
+
+    "returns ACCEPTED when the data has been decompressed, validated and processed" in {
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.ACCEPTED
     }
 
-    "returns Bad Request when the json cannot be parsed" in {
-      val invalidJsonError = "bad json"
-      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+    "returns Bad Request when request body isn't compressed" in {
 
-      val result = route(app, fakeRequest).value
+      val invalidRequestBody = "Uncompressed Array[Byte]".getBytes
+
+      val result = route(app, fakeRequest(invalidRequestBody)).value
 
       status(result) mustBe Status.BAD_REQUEST
-      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidJsonError))
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Not in GZIP format"))
     }
 
-    "returns Bad Request when the json cannot be validated against the schema problems" in {
+    "returns Bad Request when the request body cannot be parsed" in {
+      val invalidRequestBody = "bad json"
+
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidRequestBody)))
+
+      val result = route(app, fakeRequest()).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidRequestBody))
+    }
+
+    "returns Bad Request when the request body cannot be validated against the schema problems" in {
 
       val expectedError = SchemaValidationError(Seq(SchemaErrorDetails("reason for problem", "/foo/1/bar")))
 
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.BAD_REQUEST
       contentAsJson(result) mustBe Json.toJsObject(expectedError)
@@ -87,7 +101,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
       contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
@@ -96,27 +110,37 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
   }
 
   "customsOfficeLists" - {
-    def fakeRequest: FakeRequest[AnyContentAsJson] =
+    def fakeRequest(arrayByte: Array[Byte] = compressedJson): FakeRequest[AnyContentAsRaw] =
       FakeRequest(POST, routes.ReferenceDataController.customsOfficeLists().url)
-        .withJsonBody(testJson)
+        .withRawBody(ByteString(arrayByte))
 
-    "returns ACCEPTED when the data has been validated and processed" in {
+    "returns ACCEPTED when the data has been decompressed, validated and processed" in {
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.ACCEPTED
     }
 
-    "returns Bad Request when the json cannot be parsed" in {
-      val invalidJsonError = "bad json"
-      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidJsonError)))
+    "returns Bad Request when request body isn't compressed" in {
 
-      val result = route(app, fakeRequest).value
+      val invalidRequestBody = "Uncompressed Array[Byte]".getBytes
+
+      val result = route(app, fakeRequest(invalidRequestBody)).value
 
       status(result) mustBe Status.BAD_REQUEST
-      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidJsonError))
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Not in GZIP format"))
+    }
+
+    "returns Bad Request when the json cannot be parsed" in {
+      val invalidRequestBody = "bad json"
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(InvaildJsonError(invalidRequestBody)))
+
+      val result = route(app, fakeRequest()).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(InvaildJsonError(invalidRequestBody))
     }
 
     "returns Bad Request when the json cannot be validated against the schema problems" in {
@@ -125,7 +149,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(expectedError))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.BAD_REQUEST
       contentAsJson(result) mustBe Json.toJsObject(expectedError)
@@ -135,7 +159,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
 
-      val result = route(app, fakeRequest).value
+      val result = route(app, fakeRequest()).value
 
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
       contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))

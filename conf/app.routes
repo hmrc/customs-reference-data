@@ -1,6 +1,6 @@
 # microservice specific routes
 
-GET   /resources  @controllers.ResourceLinksController.get
+GET     /resources                                  controllers.ResourceLinksController.get
 
 POST /reference-data-lists                          controllers.ReferenceDataController.referenceDataLists()
 POST /customs-office-lists/customs-office-lists     controllers.ReferenceDataController.customsOfficeLists()
