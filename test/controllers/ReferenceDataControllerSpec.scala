@@ -16,9 +16,6 @@
 
 package controllers
 
-import java.io.ByteArrayOutputStream
-import java.util.zip.GZIPOutputStream
-
 import akka.util.ByteString
 import base.SpecBase
 import models.InvaildJsonError
@@ -48,16 +45,6 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
   val mockReferenceDataService    = mock[ReferenceDataService]
   val mockSchemaValidationService = mock[SchemaValidationService]
-
-  def compress(input: Array[Byte]): Array[Byte] = {
-    val bos  = new ByteArrayOutputStream(input.length)
-    val gzip = new GZIPOutputStream(bos)
-    gzip.write(input)
-    gzip.close()
-    val compressed = bos.toByteArray
-    bos.close()
-    compressed
-  }
 
   private val testJson       = Json.obj("foo" -> "bar")
   private val compressedJson = compress(testJson.toString.getBytes)

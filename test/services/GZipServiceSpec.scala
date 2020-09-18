@@ -16,9 +16,6 @@
 
 package services
 
-import java.io.ByteArrayOutputStream
-import java.util.zip.GZIPOutputStream
-
 import base.SpecBase
 import models.OtherError
 import org.scalatest.EitherValues
@@ -52,16 +49,6 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
         result mustBe an[OtherError]
       }
     }
-  }
-
-  def compress(input: Array[Byte]): Array[Byte] = {
-    val bos  = new ByteArrayOutputStream(input.length)
-    val gzip = new GZIPOutputStream(bos)
-    gzip.write(input)
-    gzip.close()
-    val compressed = bos.toByteArray
-    bos.close()
-    compressed
   }
 
 }

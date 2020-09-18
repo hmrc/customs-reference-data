@@ -16,6 +16,9 @@
 
 package base
 
+import java.io.ByteArrayOutputStream
+import java.util.zip.GZIPOutputStream
+
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
@@ -29,4 +32,14 @@ trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFut
   type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 
   val baseApplicationBuilder: AppFunction = identity
+
+  def compress(input: Array[Byte]): Array[Byte] = {
+    val bos  = new ByteArrayOutputStream(input.length)
+    val gzip = new GZIPOutputStream(bos)
+    gzip.write(input)
+    gzip.close()
+    val compressed = bos.toByteArray
+    bos.close()
+    compressed
+  }
 }
