@@ -96,11 +96,11 @@ class ReferenceDataController @Inject() (
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>
-                  referenceDataListsLogger.error("Failed to save the data list because of internal error")
+                  customsOfficeListsLogger.error("Failed to save the data list because of internal error")
                   InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
               }
           case Left(error) =>
-            referenceDataListsLogger.error(Json.toJsObject(error).toString())
+            customsOfficeListsLogger.error(Json.toJsObject(error).toString())
             Future.successful(BadRequest(Json.toJsObject(error)))
         }
     }
