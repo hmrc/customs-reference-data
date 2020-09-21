@@ -16,10 +16,21 @@
 
 package services
 
+import java.util.Base64
+
 import models.OtherError
+
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
 object DecodingService {
 
-  def decodeFromBase64(arrayByte: Array[Byte]): Either[OtherError, Array[Byte]] = ???
-
+  def decodeFromBase64(arrayByte: Array[Byte]): Either[OtherError, Array[Byte]] =
+    Try {
+      Base64.getDecoder.decode(arrayByte)
+    } match {
+      case Success(value)     => Right(value)
+      case Failure(exception) => Left(OtherError(exception.getMessage))
+    }
 }

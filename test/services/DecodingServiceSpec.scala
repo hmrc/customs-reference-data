@@ -25,20 +25,23 @@ class DecodingServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks w
 
   "decodeFromBase64" - {
 
-    val testArrayByte: Array[Byte] = "Test".getBytes
-
     "must return decoded Array[Byte] when given a valid encoded Array[Byte]" in {
 
-      val encodeArrayByte = encode(testArrayByte)
+      val testString: String = "Test"
 
-      val result = DecodingService.decodeFromBase64(encodeArrayByte).right.toString
+      val encodeArrayByte = encode(testString.getBytes)
 
-      result mustBe testArrayByte
+      val result         = DecodingService.decodeFromBase64(encodeArrayByte).right.value
+      val resultToString = result.map(_.toChar).mkString
+
+      resultToString mustBe testString
     }
 
-    "must return OtherError when given an unencoded" in {
+    "must return OtherError when given invalid Base64 characters" in {
 
-      val result = DecodingService.decodeFromBase64(testArrayByte).left
+      val invalidString = "Test string with invalid base64 characters %"
+
+      val result = DecodingService.decodeFromBase64(invalidString.getBytes).left.value
 
       result mustBe an[OtherError]
     }
