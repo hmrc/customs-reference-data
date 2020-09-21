@@ -18,14 +18,10 @@ package models
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import generators.ModelGenerators.genReferenceDataListsJson
-import generators.ModelGenerators._
+import generators.ModelGenerators.{genReferenceDataListsJson, _}
 import org.scalacheck.Gen
-import org.scalatest.matchers.MatchResult
-import org.scalatest.matchers.Matcher
+import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 

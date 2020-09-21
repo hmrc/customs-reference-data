@@ -20,18 +20,12 @@ import javax.inject.Inject
 import models._
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.Action
-import play.api.mvc.ControllerComponents
-import play.api.mvc.RawBuffer
-import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
-import services.GZipService
-import services.ReferenceDataService
-import services.SchemaValidationService
+import play.api.mvc.{Action, ControllerComponents, RawBuffer}
+import services.ReferenceDataService.DataProcessingResult.{DataProcessingFailed, DataProcessingSuccessful}
+import services.{GZipService, ReferenceDataService, SchemaValidationService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ReferenceDataController @Inject() (
   cc: ControllerComponents,
