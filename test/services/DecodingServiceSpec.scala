@@ -37,9 +37,9 @@ class DecodingServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks w
       resultToString mustBe testString
     }
 
-    "must return OtherError when given invalid Base64 characters" in {
+    "must return OtherError when given unencoded Array[Byte]" in {
 
-      val invalidString = "Test string with invalid base64 characters %"
+      val invalidString = "Test string"
 
       val result = DecodingService.decodeFromBase64(invalidString.getBytes).left.value
 

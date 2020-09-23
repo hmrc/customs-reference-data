@@ -25,6 +25,7 @@ import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import services.DecodingService
 import services.GZipService
 import services.ReferenceDataService
 import services.SchemaValidationService
@@ -54,10 +55,11 @@ class ReferenceDataController @Inject() (
         }
 
         val validateAndDecompressBody = for {
-          requestBody    <- requestBody.right
-          decompressBody <- GZipService.decompressArrayByte(requestBody).right
-          validateBody   <- schemaValidationService.validate(cTCUP06Schema, decompressBody).right
-        } yield validateBody
+          requestBody      <- requestBody.right
+          decompressedBody <- GZipService.decompressArrayByte(requestBody).right
+          decodedBody      <- DecodingService.decodeFromBase64(decompressedBody).right
+          validatedBody    <- schemaValidationService.validate(cTCUP06Schema, decodedBody).right
+        } yield validatedBody
 
         validateAndDecompressBody match {
           case Right(jsObject) =>
@@ -84,10 +86,11 @@ class ReferenceDataController @Inject() (
         }
 
         val validateAndDecompressBody = for {
-          requestBody    <- requestBody.right
-          decompressBody <- GZipService.decompressArrayByte(requestBody).right
-          validateBody   <- schemaValidationService.validate(cTCUP08Schema, decompressBody).right
-        } yield validateBody
+          requestBody      <- requestBody.right
+          decompressedBody <- GZipService.decompressArrayByte(requestBody).right
+          decodedBody      <- DecodingService.decodeFromBase64(decompressedBody).right
+          validatedBody    <- schemaValidationService.validate(cTCUP06Schema, decodedBody).right
+        } yield validatedBody
 
         validateAndDecompressBody match {
           case Right(jsObject) =>
