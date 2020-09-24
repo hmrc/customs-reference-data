@@ -17,6 +17,7 @@
 package base
 
 import java.io.ByteArrayOutputStream
+import java.util.Base64
 import java.util.zip.GZIPOutputStream
 
 import org.scalatest.OptionValues
@@ -42,4 +43,6 @@ trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFut
     bos.close()
     compressed
   }
+
+  def encode(input: Array[Byte]): Array[Byte] = Base64.getEncoder.encode(input)
 }

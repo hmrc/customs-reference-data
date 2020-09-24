@@ -47,7 +47,8 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
   val mockSchemaValidationService = mock[SchemaValidationService]
 
   private val testJson       = Json.obj("foo" -> "bar")
-  private val compressedJson = compress(testJson.toString.getBytes)
+  private val encodedJson    = encode(testJson.toString.getBytes)
+  private val compressedJson = compress(encodedJson)
 
   "referenceDataLists" - {
 
@@ -95,6 +96,17 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
       status(result) mustBe Status.BAD_REQUEST
       contentAsJson(result) mustBe Json.toJsObject(expectedError)
+    }
+
+    "returns Bad Request when the request body doesnt conform to base64 encoding" in {
+
+      val invalidBase64String     = "Invalid base64 string".getBytes
+      val compressedInvalidString = compress(invalidBase64String)
+
+      val result = route(app, fakeRequest(compressedInvalidString)).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Illegal base64 character 20"))
     }
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
@@ -153,6 +165,17 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
       status(result) mustBe Status.BAD_REQUEST
       contentAsJson(result) mustBe Json.toJsObject(expectedError)
+    }
+
+    "returns Bad Request when the request body doesnt conform to base64 encoding" in {
+
+      val invalidBase64String     = "Invalid base64 string".getBytes
+      val compressedInvalidString = compress(invalidBase64String)
+
+      val result = route(app, fakeRequest(compressedInvalidString)).value
+
+      status(result) mustBe Status.BAD_REQUEST
+      contentAsJson(result) mustBe Json.toJsObject(OtherError("Illegal base64 character 20"))
     }
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
