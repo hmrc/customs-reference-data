@@ -16,11 +16,24 @@
 
 package models
 
-import play.api.libs.json.JsObject
-import play.api.libs.json.Reads
+import play.api.libs.json.{JsObject, Json, OWrites}
 
 case class ReferenceDataList(id: ListName, metaData: MetaData, data: List[JsObject])
 
 object ReferenceDataList {
-  implicit val reads: Reads[ReferenceDataList] = ???
+  implicit val writes: OWrites[ReferenceDataList] = OWrites(
+    referenceDataList =>
+      Json.obj(
+        "links" -> {
+          Json.obj("self" ->
+            Json.obj(
+              "href" -> s"customs-reference-data/lists/${referenceDataList.id.listName}"
+            )
+          )
+        },
+        "id"       -> referenceDataList.id.listName,
+        "metaData" -> Json.toJsObject(referenceDataList.metaData),
+        "data"     -> referenceDataList.data
+      )
+  )
 }

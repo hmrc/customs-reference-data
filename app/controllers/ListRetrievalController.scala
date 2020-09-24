@@ -18,20 +18,28 @@ package controllers
 
 import javax.inject.Inject
 import models.ListName
-import play.api.libs.json.JsValue
-import play.api.mvc.Action
-import play.api.mvc.ControllerComponents
-import services.ReferenceDataService
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import services.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
-  referenceDataService: ReferenceDataService
+  listRetrievalService: ListRetrievalService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName): Action[JsValue] = ???
+  def get(listName: ListName): Action[AnyContent] = {
+      Action.async {
+        implicit request =>
+          listRetrievalService.getList(listName).map {
+            case Some(referenceDataList) => Ok(Json.toJsObject(referenceDataList))
+            case None                    => NotFound
+          }
+
+      }
+  }
 
 }
