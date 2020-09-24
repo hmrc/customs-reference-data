@@ -17,24 +17,27 @@
 package services
 
 import base.SpecBase
+import generators.BaseGenerators
 import models.OtherError
+import org.scalacheck.Gen.asciiPrintableStr
 import org.scalatest.EitherValues
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class DecodingServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with EitherValues {
+class DecodingServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with EitherValues with BaseGenerators {
 
   "decodeFromBase64" - {
 
     "must return decoded Array[Byte] when given a valid encoded Array[Byte]" in {
 
-      val testString: String = "Test"
+      forAll(asciiPrintableStr) {
+        testString =>
+          val encodeArrayByte = encode(testString.getBytes)
 
-      val encodeArrayByte = encode(testString.getBytes)
+          val result         = DecodingService.decodeFromBase64(encodeArrayByte).right.value
+          val resultToString = result.map(_.toChar).mkString
 
-      val result         = DecodingService.decodeFromBase64(encodeArrayByte).right.value
-      val resultToString = result.map(_.toChar).mkString
-
-      resultToString mustBe testString
+          resultToString mustBe testString
+      }
     }
 
     "must return OtherError when given unencoded Array[Byte]" in {
