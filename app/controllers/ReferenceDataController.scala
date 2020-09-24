@@ -89,7 +89,7 @@ class ReferenceDataController @Inject() (
           requestBody      <- requestBody.right
           decompressedBody <- GZipService.decompressArrayByte(requestBody).right
           decodedBody      <- DecodingService.decodeFromBase64(decompressedBody).right
-          validatedBody    <- schemaValidationService.validate(cTCUP06Schema, decodedBody).right
+          validatedBody    <- schemaValidationService.validate(cTCUP08Schema, decodedBody).right
         } yield validatedBody
 
         validateAndDecompressBody match {
