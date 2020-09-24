@@ -18,6 +18,7 @@ package models
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
+import generators.ModelGenerators.genReferenceDataListsJson
 import generators.ModelGenerators._
 import org.scalacheck.Gen
 import org.scalatest.matchers.MatchResult
@@ -28,32 +29,78 @@ import play.api.libs.json.Json
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
-  "toIterable" - {
-    "returns an iterator of the lists with list entries" in {
+  "ReferenceDataListsPayload" - {
+    "messageInformation" in {
+      val referenceDataListsPayload = genReferenceDataListsPayload(1, 1).sample.value
 
-      val versionId = VersionId("1")
+      referenceDataListsPayload.messageInformation mustBe a[MessageInformation]
+    }
 
-      forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
-        (numberOfLists, numberOfListItems) =>
-          forAll(genReferenceDataJson(numberOfLists, numberOfListItems)) {
-            data =>
-              val referenceDataPayload = ReferenceDataPayload(data)
+    "toIterable" - {
+      "returns an iterator of the lists with list entries" in {
 
-              val referenceDataLists = referenceDataPayload.toIterable(versionId)
+        val versionId = VersionId("1")
 
-              referenceDataLists.foreach {
-                x =>
-                  x.length mustEqual numberOfListItems
+        forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
+          (numberOfLists, numberOfListItems) =>
+            forAll(genReferenceDataListsJson(numberOfLists, numberOfListItems)) {
+              data =>
+                val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                  x.foreach {
-                    _ must haveVersionId(versionId)
-                  }
-              }
+                val referenceDataLists = referenceDataPayload.toIterable(versionId)
 
-              referenceDataLists.size mustEqual numberOfLists
-          }
+                referenceDataLists.foreach {
+                  x =>
+                    x.length mustEqual numberOfListItems
+
+                    x.foreach {
+                      _ must haveVersionId(versionId)
+                    }
+                }
+
+                referenceDataLists.size mustEqual numberOfLists
+            }
+        }
       }
     }
+
+  }
+
+  "CustomsOfficeListsPayload" - {
+    "messageInformation" in {
+      val referenceDataListsPayload = genCustomsOfficeListsPayload(1, 1).sample.value
+
+      referenceDataListsPayload.messageInformation mustBe a[MessageInformation]
+    }
+
+    "toIterable" - {
+      "returns an iterator of the lists with list entries" in {
+
+        val versionId = VersionId("1")
+
+        forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
+          (numberOfLists, numberOfListItems) =>
+            forAll(genCustomsOfficeListsJson(numberOfLists, numberOfListItems)) {
+              data =>
+                val referenceDataPayload = CustomsOfficeListsPayload(data)
+
+                val referenceDataLists = referenceDataPayload.toIterable(versionId)
+
+                referenceDataLists.foreach {
+                  x =>
+                    x.length mustEqual numberOfListItems
+
+                    x.foreach {
+                      _ must haveVersionId(versionId)
+                    }
+                }
+
+                referenceDataLists.size mustEqual numberOfLists
+            }
+        }
+      }
+    }
+
   }
 
   def haveVersionId(expectedVersionId: VersionId): Matcher[GenericListItem] =

@@ -4,10 +4,12 @@ import sbt._
 object AppDependencies {
 
   val compile = Seq(
-    "uk.gov.hmrc"       %% "bootstrap-backend-play-27"       % "2.23.0",
-    "org.reactivemongo" %% "play2-reactivemongo"             % "0.20.11-play27",
-    "com.typesafe.play" %% "play-iteratees"                  % "2.6.1",
-    "com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1"
+    "uk.gov.hmrc"         %% "bootstrap-backend-play-27"       % "2.23.0",
+    "org.reactivemongo"   %% "play2-reactivemongo"             % "0.20.11-play27",
+    "com.typesafe.play"   %% "play-iteratees"                  % "2.6.1",
+    "com.typesafe.play"   %% "play-iteratees-reactive-streams" % "2.6.1",
+    "org.leadpony.justify" % "justify"                         % "3.0.0-RC2",
+    "org.leadpony.joy"     % "joy-classic"                     % "2.0.0-RC2"
   )
 
   val test = Seq(
