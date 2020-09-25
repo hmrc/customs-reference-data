@@ -24,8 +24,7 @@ case class ListName(listName: String)
 
 object ListName {
 
-  implicit val oWritesListName: OFormat[ListName] =
-    Json.format[ListName]
+  implicit val formats: OFormat[ListName] = Json.format[ListName]
 
   implicit lazy val pathBindable: PathBindable[ListName] = new PathBindable[ListName] {
 

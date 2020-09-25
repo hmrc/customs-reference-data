@@ -20,7 +20,6 @@ import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.ListName
 import models.ReferenceDataList
-import models.ResourceLinks
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -30,9 +29,9 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.GET
-import play.api.test.Helpers.contentType
 import play.api.test.Helpers.route
 import play.api.test.Helpers.status
 import play.api.test.Helpers._
@@ -49,25 +48,38 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
       .overrides(bind[ListRetrievalService].toInstance(mockListRetrievalService))
       .build()
 
-  "ResourceLinksController" - {
+  "ListRetrievalController" - {
 
     "get" - {
 
-      "should return OK and a reference data list" in {
+      "should return OK and a ReferenceDataList" in {
 
-        forAll(arbitrary[ReferenceDataList], arbitrary[ListName]) {
-          (referenceDataList, listName) =>
-            val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(listName).url)
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
 
-            when(mockListRetrievalService.getList(any()))
-              .thenReturn(Future.successful(Some(referenceDataList)))
+        val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(referenceDataList.id).url)
 
-            val result = route(app, fakeRequest).get
+        when(mockListRetrievalService.getList(any()))
+          .thenReturn(Future.successful(Some(referenceDataList)))
 
-            status(result) mustBe OK
-            contentType(result).get mustBe "application/json"
-        }
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(referenceDataList)
       }
+    }
+
+    "should return NotFound when no ReferenceDataList is found" in {
+
+      val listName = arbitrary[ListName].sample.value
+
+      val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(listName).url)
+
+      when(mockListRetrievalService.getList(any()))
+        .thenReturn(Future.successful(None))
+
+      val result = route(app, fakeRequest).get
+
+      status(result) mustBe NOT_FOUND
     }
   }
 
