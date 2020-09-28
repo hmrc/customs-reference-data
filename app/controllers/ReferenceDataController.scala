@@ -25,7 +25,6 @@ import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
 import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
-import services.DecodingService
 import services.GZipService
 import services.ReferenceDataService
 import services.SchemaValidationService
@@ -57,8 +56,7 @@ class ReferenceDataController @Inject() (
         val validateAndDecompressBody = for {
           requestBody      <- requestBody.right
           decompressedBody <- GZipService.decompressArrayByte(requestBody).right
-          decodedBody      <- DecodingService.decodeFromBase64(decompressedBody).right
-          validatedBody    <- schemaValidationService.validate(cTCUP06Schema, decodedBody).right
+          validatedBody    <- schemaValidationService.validate(cTCUP06Schema, decompressedBody).right
         } yield validatedBody
 
         validateAndDecompressBody match {
@@ -88,8 +86,7 @@ class ReferenceDataController @Inject() (
         val validateAndDecompressBody = for {
           requestBody      <- requestBody.right
           decompressedBody <- GZipService.decompressArrayByte(requestBody).right
-          decodedBody      <- DecodingService.decodeFromBase64(decompressedBody).right
-          validatedBody    <- schemaValidationService.validate(cTCUP08Schema, decodedBody).right
+          validatedBody    <- schemaValidationService.validate(cTCUP08Schema, decompressedBody).right
         } yield validatedBody
 
         validateAndDecompressBody match {
