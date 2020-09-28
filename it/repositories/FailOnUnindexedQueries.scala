@@ -2,9 +2,7 @@ package repositories
 
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
-import reactivemongo.api.BSONSerializationPack
-import reactivemongo.api.FailoverStrategy
-import reactivemongo.api.ReadPreference
+import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreference}
 import reactivemongo.api.commands.Command
 import reactivemongo.bson.BSONDocument
 import reactivemongo.core.errors.ReactiveMongoException

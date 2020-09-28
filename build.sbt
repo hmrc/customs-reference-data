@@ -1,3 +1,4 @@
+import play.sbt.routes.RoutesKeys
 import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
 import uk.gov.hmrc.DefaultBuildSettings
@@ -15,6 +16,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)
   .configs(IntegrationTest)
+  .settings(RoutesKeys.routesImport += "models._")
   .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(scoverageSettings: _*)
   .settings(

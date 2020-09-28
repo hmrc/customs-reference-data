@@ -16,22 +16,23 @@
 
 package models
 
+import base.SpecBase
+import generators.ModelArbitraryInstances
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.OptionValues
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json.Json
-import play.api.libs.json.OFormat
-import play.api.mvc._
 
-case class ListName(listName: String)
+class ReferenceDataListSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues {
 
-object ListName {
+  "ReferenceDataList" - {
 
-  implicit val formats: OFormat[ListName] = Json.format[ListName]
-
-  implicit lazy val pathBindable: PathBindable[ListName] = new PathBindable[ListName] {
-
-    override def bind(key: String, value: String): Either[String, ListName] =
-      implicitly[PathBindable[String]].bind(key, value).right.map(ListName.apply)
-
-    override def unbind(key: String, value: ListName): String =
-      value.listName
+    "must serialise and deserialise" in {
+      forAll(arbitrary[ReferenceDataList]) {
+        referenceDataList =>
+          Json.toJsObject(referenceDataList).validate[ReferenceDataList].get mustBe referenceDataList
+      }
+    }
   }
+
 }

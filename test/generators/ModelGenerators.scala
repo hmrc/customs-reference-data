@@ -19,7 +19,6 @@ package generators
 import models.CustomsOfficeListsPayload
 import models.MessageInformation
 import models.ReferenceDataListsPayload
-import models.ReferenceDataPayload
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString

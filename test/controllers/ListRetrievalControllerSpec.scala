@@ -18,7 +18,9 @@ package controllers
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import models.ResourceLinks
+import models.ListName
+import models.ReferenceDataList
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.TestData
@@ -27,15 +29,17 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
+import play.api.test.Helpers.GET
+import play.api.test.Helpers.route
+import play.api.test.Helpers.status
 import play.api.test.Helpers._
 import services.ListRetrievalService
 
 import scala.concurrent.Future
 
-class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
-
-  private val fakeRequest = FakeRequest(GET, routes.ResourceLinksController.get().url)
+class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
 
   private val mockListRetrievalService = mock[ListRetrievalService]
 
@@ -44,33 +48,38 @@ class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with 
       .overrides(bind[ListRetrievalService].toInstance(mockListRetrievalService))
       .build()
 
-  "ResourceLinksController" - {
+  "ListRetrievalController" - {
 
-    "resourceLinks" - {
+    "get" - {
 
-      "should return OK and reference data links" in {
+      "should return OK and a ReferenceDataList" in {
 
-        forAll(arbitrary[ResourceLinks]) {
-          resourceLinks =>
-            when(mockListRetrievalService.getResourceLinks())
-              .thenReturn(Future.successful(Some(resourceLinks)))
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
 
-            val result = route(app, fakeRequest).get
+        val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(referenceDataList.id).url)
 
-            status(result) mustBe OK
-            contentType(result).get mustBe "application/json"
-        }
-      }
-
-      "should return 500 when reference data links are unavailable" in {
-
-        when(mockListRetrievalService.getResourceLinks())
-          .thenReturn(Future.successful(None))
+        when(mockListRetrievalService.getList(any()))
+          .thenReturn(Future.successful(Some(referenceDataList)))
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe INTERNAL_SERVER_ERROR
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(referenceDataList)
       }
+    }
+
+    "should return NotFound when no ReferenceDataList is found" in {
+
+      val listName = arbitrary[ListName].sample.value
+
+      val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(listName).url)
+
+      when(mockListRetrievalService.getList(any()))
+        .thenReturn(Future.successful(None))
+
+      val result = route(app, fakeRequest).get
+
+      status(result) mustBe NOT_FOUND
     }
   }
 
