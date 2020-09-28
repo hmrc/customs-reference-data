@@ -1,5 +1,6 @@
 package repositories
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 import base.ItSpecBase
@@ -8,6 +9,7 @@ import generators.ModelArbitraryInstances
 import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
+import org.mockito.Mockito
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
@@ -19,7 +21,9 @@ import play.api.libs.json.Json
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
+import services.TimeService
 import services.VersionIdProducer
+import org.mockito.Mockito.when
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -47,6 +51,8 @@ class VersionRepositorySpec
       )
       .futureValue
 
+    Mockito.reset(mockVersionIdProducer, mockTimeService)
+
     super.beforeEach()
   }
 
@@ -55,22 +61,29 @@ class VersionRepositorySpec
     super.afterAll()
   }
 
-  val expectedVersionId                        = VersionId("1")
-  val fakeVersionIdProducer: VersionIdProducer = () => expectedVersionId
+  val mockVersionIdProducer = mock[VersionIdProducer]
+  val mockTimeService       = mock[TimeService]
 
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
       .overrides(
-        bind[VersionIdProducer].to(fakeVersionIdProducer)
+        bind[VersionIdProducer].to(mockVersionIdProducer),
+        bind[TimeService].to(mockTimeService)
       )
       .build()
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
+
       val repo = app.injector.instanceOf[VersionRepository]
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val result             = repo.save(messageInformation).futureValue
+
+      val expectedVersionId = VersionId("1")
+      when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
+      when(mockTimeService.now()).thenReturn(LocalDateTime.now())
+
+      val result = repo.save(messageInformation).futureValue
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now)
 
@@ -80,6 +93,28 @@ class VersionRepositorySpec
         database.flatMap(_.collection[JSONCollection](VersionCollection.collectionName).find(Json.obj(), None).one[VersionInformation]).futureValue.value
 
       savedVersionInformation mustEqual expectedVersionInformation
+    }
+  }
+
+  "getLatest" - {
+    "gets the most recent version information by snapshotDate" in {
+      val repo = app.injector.instanceOf[VersionRepository]
+
+      val recentDate = LocalDate.now()
+      val createdOn  = LocalDateTime.now()
+
+      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"))
+      when(mockTimeService.now()).thenReturn(createdOn)
+
+      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
+      repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1))).futureValue
+      repo.save(messageInformation.copy(snapshotDate = recentDate)).futureValue
+
+      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = recentDate), VersionId("2"), createdOn)
+
+      val result: VersionInformation = repo.getLatest.futureValue.value
+
+      result mustEqual expectedVersionInformation
     }
   }
 

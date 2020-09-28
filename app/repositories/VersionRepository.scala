@@ -26,20 +26,21 @@ import models.VersionInformation
 import play.api.libs.json._
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import services.TimeService
 import services.VersionIdProducer
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
-class VersionRepository @Inject() (versionCollection: VersionCollection, versionIdProducer: VersionIdProducer)(implicit
+class VersionRepository @Inject() (versionCollection: VersionCollection, versionIdProducer: VersionIdProducer, timeService: TimeService)(implicit
   ec: ExecutionContext
 ) {
 
   def save(messageInformation: MessageInformation): Future[VersionId] = {
-    val versionId: VersionId                   = versionIdProducer()
-    val time: LocalDateTime                    = LocalDateTime.now()
-    val versionInformation: VersionInformation = VersionInformation(messageInformation, versionId, time)
+    val versionId: VersionId = versionIdProducer()
+    val time: LocalDateTime  = timeService.now()
+    val versionInformation   = VersionInformation(messageInformation, versionId, time)
 
     versionCollection().flatMap {
       _.insert(false)
@@ -52,4 +53,9 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
         }
     }
   }
+
+  def getLatest: Future[Option[VersionInformation]] =
+    versionCollection().flatMap(
+      _.find(Json.obj(), None).sort(Json.obj("snapshotDate" -> -1)).one[VersionInformation]
+    )
 }
