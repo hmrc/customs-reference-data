@@ -43,7 +43,7 @@ class ResourceLinksController @Inject() (
             Ok(Json.toJsObject(resourceLinks))
           case None =>
             logger.error("Empty resource links list")
-            InternalServerError("No resource links found")
+            InternalServerError
         }
     }
 }

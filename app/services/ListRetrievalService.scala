@@ -45,8 +45,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
       genericItemList    <- OptionT.liftF(listRepository.getAllLists(versionInformation.versionId))
       resourceLinks <- OptionT.fromOption[Future] {
         if (genericItemList.nonEmpty) {
-          // Is created on data the snapshot date? Also should move this logic out somewhere else.
-          val metaData = MetaData.apply(versionInformation.versionId.versionId, versionInformation.createdOn.toLocalDate)
+          val metaData = MetaData.apply(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
           Some(ResourceLinks.apply(genericItemList.map(_.listName), metaData))
         } else
           None

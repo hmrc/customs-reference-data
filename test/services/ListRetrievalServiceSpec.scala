@@ -112,7 +112,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
-                val metaData = MetaData(versionInformation.versionId.versionId, versionInformation.createdOn.toLocalDate)
+                val metaData = MetaData(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
 
                 val resourceLinks: Seq[Map[String, JsObject]] = referenceData.zipWithIndex.map {
                   case (data, index) =>
