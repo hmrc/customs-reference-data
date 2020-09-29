@@ -21,11 +21,11 @@ import play.api.libs.json.JsString
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
-case class ResourceLinks(_links: Map[String, JsObject], metaData: Option[MetaData])
+case class ResourceLinks(_links: Map[String, JsObject], metaData: MetaData)
 
 object ResourceLinks {
 
-  def apply(listNames: List[ListName], metaData: Option[MetaData]): ResourceLinks =
+  def apply(listNames: List[ListName], metaData: MetaData): ResourceLinks =
     new ResourceLinks(linkFormatter(listNames), metaData)
 
   private def linkFormatter(listNames: List[ListName]): Map[String, JsObject] = {

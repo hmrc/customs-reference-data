@@ -32,24 +32,13 @@ class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with Scala
 
         forAll(arbitrary[ResourceLinks]) {
           resourceLinks =>
-            val metaData = resourceLinks.metaData match {
-              case Some(meta) =>
-                Json.obj(
-                  "metaData" -> Json.obj(
-                    "version"      -> meta.version,
-                    "snapshotDate" -> meta.snapshotDate.toString
-                  )
-                )
-              case None => Json.obj()
-            }
-
             val links = Json.obj(
               "_links" -> Json.obj(
                 resourceLinks._links.head._1 -> Json.toJson(resourceLinks._links.head._2)
               )
             )
 
-            val data = links ++ metaData
+            val data = links ++ Json.toJsObject(resourceLinks.metaData)
 
             data.as[ResourceLinks] mustBe resourceLinks
 

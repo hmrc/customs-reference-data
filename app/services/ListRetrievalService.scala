@@ -35,9 +35,12 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
         if (referenceDataList.nonEmpty) Some(ReferenceDataList(listName, getVersion, referenceDataList)) else None
     }
 
-  def getResourceLinks(metaData: Option[MetaData] = None): Future[Option[ResourceLinks]] =
-    listRepository.getAllLists.map {
+  def getResourceLinks(): Future[Option[ResourceLinks]] = {
+    val metaData: MetaData = ???
+
+    listRepository.getAllLists(???).map {
       list =>
         if (list.nonEmpty) Some(ResourceLinks.apply(list.map(_.listName), metaData)) else None
     }
+  }
 }

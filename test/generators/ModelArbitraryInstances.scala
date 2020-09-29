@@ -32,7 +32,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
       for {
         linkKey  <- arbitrary[String]
         link     <- arbitrarySimpleJsObject.arbitrary
-        metaData <- Gen.option(arbitrary(arbitraryMetaData))
+        metaData <- arbitrary(arbitraryMetaData)
       } yield ResourceLinks(_links = Map(linkKey -> link), metaData = metaData)
     }
 

@@ -53,11 +53,11 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockListRepository.getAllLists).thenReturn(Future.successful(Nil))
+            when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(Nil))
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
-            service.getResourceLinks(None).futureValue mustBe None
+            service.getResourceLinks().futureValue mustBe None
         }
       }
 
@@ -83,12 +83,12 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
 
-                when(mockListRepository.getAllLists).thenReturn(Future.successful(referenceData))
+                when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(referenceData))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
-                service.getResourceLinks(Some(metaData)).futureValue mustBe Some(
-                  ResourceLinks(_links = links, metaData = Some(metaData))
+                service.getResourceLinks().futureValue mustBe Some(
+                  ResourceLinks(_links = links, metaData = metaData)
                 )
             }
 

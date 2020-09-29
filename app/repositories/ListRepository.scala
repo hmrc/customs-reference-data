@@ -47,9 +47,11 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
     }
   }
 
-  def getAllLists: Future[List[GenericListItem]] =
+  def getAllLists(version: VersionId): Future[List[GenericListItem]] =
     listCollection().flatMap {
-      _.find(Json.obj(), None).cursor[GenericListItem]().collect[List](-1, Cursor.FailOnError[List[GenericListItem]]())
+      _.find(Json.toJsObject(version), None)
+        .cursor[GenericListItem]()
+        .collect[List](-1, Cursor.FailOnError[List[GenericListItem]]())
     }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
