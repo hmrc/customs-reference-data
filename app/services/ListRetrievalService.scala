@@ -18,14 +18,17 @@ package services
 
 import java.time.LocalDate
 
+import cats.data.OptionT
+import cats.implicits._
 import javax.inject.Inject
 import models._
 import repositories.ListRepository
+import repositories.VersionRepository
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit ec: ExecutionContext) {
+class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
 
   private def getVersion = MetaData("version", LocalDate.of(2020, 11, 5))
 
@@ -36,11 +39,20 @@ class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit e
     }
 
   def getResourceLinks(): Future[Option[ResourceLinks]] = {
-    val metaData: MetaData = ???
 
-    listRepository.getAllLists(???).map {
-      list =>
-        if (list.nonEmpty) Some(ResourceLinks.apply(list.map(_.listName), metaData)) else None
-    }
+    val getResourceLinks = for {
+      versionInformation <- OptionT(versionRepository.getLatest)
+      genericItemList    <- OptionT.liftF(listRepository.getAllLists(versionInformation.versionId))
+      resourceLinks <- OptionT.fromOption[Future] {
+        if (genericItemList.nonEmpty) {
+          // Is created on data the snapshot date? Also should move this logic out somewhere else.
+          val metaData = MetaData.apply(versionInformation.versionId.versionId, versionInformation.createdOn.toLocalDate)
+          Some(ResourceLinks.apply(genericItemList.map(_.listName), metaData))
+        } else
+          None
+      }
+    } yield resourceLinks
+
+    getResourceLinks.value
   }
 }

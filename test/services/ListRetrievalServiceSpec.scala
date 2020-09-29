@@ -25,6 +25,7 @@ import models.ListName
 import models.MetaData
 import models.ReferenceDataList
 import models.ResourceLinks
+import models.VersionInformation
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
@@ -34,6 +35,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import repositories.ListRepository
+import repositories.VersionRepository
 
 import scala.concurrent.Future
 
@@ -63,17 +65,28 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
       "return ListRepository if links exist" in {
 
-        val mockListRepository = mock[ListRepository]
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
 
         val app = baseApplicationBuilder.andThen(
-          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+          _.overrides(
+            bind[ListRepository].toInstance(mockListRepository),
+            bind[VersionRepository].toInstance(mockVersionRepository)
+          )
         )
 
         running(app) {
           application =>
-            forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[MetaData]) {
+            forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[VersionInformation]) {
 
-              (referenceData, metaData) =>
+              (referenceData, versionInformation) =>
+                when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
+                when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(referenceData))
+
+                val service = application.injector.instanceOf[ListRetrievalService]
+
+                val metaData = MetaData(versionInformation.versionId.versionId, versionInformation.createdOn.toLocalDate)
+
                 val resourceLinks: Seq[Map[String, JsObject]] = referenceData.zipWithIndex.map {
                   case (data, index) =>
                     Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + data.listName.listName))))
@@ -82,10 +95,6 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                 val links = Map(
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
-
-                when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(referenceData))
-
-                val service = application.injector.instanceOf[ListRetrievalService]
 
                 service.getResourceLinks().futureValue mustBe Some(
                   ResourceLinks(_links = links, metaData = metaData)
