@@ -24,5 +24,9 @@ import play.api.libs.json.OFormat
 case class MetaData(version: String, snapshotDate: LocalDate)
 
 object MetaData {
+
+  def apply(versionInformation: VersionInformation): MetaData =
+    new MetaData(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
+
   implicit val formats: OFormat[MetaData] = Json.format[MetaData]
 }

@@ -66,7 +66,10 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
 
   implicit def arbitrarySimpleJsObject: Arbitrary[JsObject] = Arbitrary(ModelGenerators.genSimpleJsObject)
 
-  implicit def arbitraryGenericListItem(implicit arbJsObject: Arbitrary[JsObject], arbVersionId: Arbitrary[VersionId]): Arbitrary[GenericListItem] =
+  implicit def arbitraryGenericListItem(implicit
+    arbJsObject: Arbitrary[JsObject],
+    arbVersionId: Arbitrary[VersionId]
+  ): Arbitrary[GenericListItem] =
     Arbitrary {
       for {
         listName           <- arbitrary[ListName]

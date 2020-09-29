@@ -61,7 +61,7 @@ class ReferenceDataServiceIntegrationSpec
 
     expectedListNames.foreach {
       listName =>
-        val retrievedList = listRepository.getListByName(listName, MetaData("", LocalDate.now)).futureValue
+        val retrievedList = listRepository.getListByName(listName, expectedVersionId).futureValue
 
         retrievedList.length mustEqual 5
 
@@ -89,7 +89,7 @@ class ReferenceDataServiceIntegrationSpec
 
     expectedListNames.foreach {
       listName =>
-        val retrievedList = listRepository.getListByName(listName, MetaData("", LocalDate.now)).futureValue
+        val retrievedList = listRepository.getListByName(listName, expectedVersionId).futureValue
 
         retrievedList.length mustEqual 5
 

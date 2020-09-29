@@ -27,6 +27,7 @@ import models.ReferenceDataList
 import models.ResourceLinks
 import models.VersionInformation
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -139,21 +140,26 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
       "return a ReferenceDataList when available" in {
 
-        val mockListRepository = mock[ListRepository]
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
 
         val app = baseApplicationBuilder.andThen(
-          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+          _.overrides(
+            bind[ListRepository].toInstance(mockListRepository),
+            bind[VersionRepository].toInstance(mockVersionRepository)
+          )
         )
 
         running(app) {
           application =>
-            forAll(arbitrary[ReferenceDataList]) {
-              referenceDataList =>
-                when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(List(JsObject.empty)))
+            forAll(arbitrary[ReferenceDataList], arbitrary[VersionInformation]) {
+              (referenceDataList, versionInformation) =>
+                when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
+                when(mockListRepository.getListByName(any(), eqTo(versionInformation.versionId))).thenReturn(Future.successful(List(JsObject.empty)))
 
                 val listWithDate = referenceDataList
                   .copy(
-                    metaData = MetaData("version", LocalDate.of(2020, 11, 5)),
+                    metaData = MetaData(versionInformation),
                     data = List(JsObject.empty)
                   )
 
@@ -166,11 +172,18 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
       "return None when ReferenceDataList is unavailable" in {
 
-        val mockListRepository = mock[ListRepository]
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
 
         val app = baseApplicationBuilder.andThen(
-          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+          _.overrides(
+            bind[ListRepository].toInstance(mockListRepository),
+            bind[VersionRepository].toInstance(mockVersionRepository)
+          )
         )
+
+        val versionInformation = arbitrary[VersionInformation].sample.value
+        when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
 
         running(app) {
           application =>

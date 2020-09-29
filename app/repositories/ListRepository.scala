@@ -20,7 +20,6 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
-import models.MetaData
 import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -38,12 +37,13 @@ import scala.concurrent.Future
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
 
-  // Pass version here
-  def getListByName(listName: ListName, metaDeta: MetaData): Future[List[JsObject]] = {
-    val selector = Json.toJsObject(listName)
+  def getListByName(listName: ListName, versionId: VersionId): Future[List[JsObject]] = {
+    val selector = Json.toJsObject(listName) ++ Json.toJsObject(versionId)
 
     listCollection().flatMap {
-      _.find(selector, None).cursor[JsObject]().collect[List](-1, Cursor.FailOnError[List[JsObject]]())
+      _.find(selector, projection = Some(Json.obj("_id" -> 0)))
+        .cursor[JsObject]()
+        .collect[List](-1, Cursor.FailOnError[List[JsObject]]())
     }
   }
 
