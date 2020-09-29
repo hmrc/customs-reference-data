@@ -47,15 +47,42 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
       "return None if no links exist" in {
 
-        val mockListRepository = mock[ListRepository]
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
 
         val app = baseApplicationBuilder.andThen(
-          _.overrides(bind[ListRepository].toInstance(mockListRepository))
+          _.overrides(
+            bind[ListRepository].toInstance(mockListRepository),
+            bind[VersionRepository].toInstance(mockVersionRepository)
+          )
+        )
+
+        val versionInformation = arbitrary[VersionInformation].sample.value
+
+        running(app) {
+          application =>
+            when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
+            when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(Nil))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+
+            service.getResourceLinks().futureValue mustBe None
+        }
+      }
+
+      "return None if no version information is found" in {
+
+        val mockVersionRepository = mock[VersionRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(
+            bind[VersionRepository].toInstance(mockVersionRepository)
+          )
         )
 
         running(app) {
           application =>
-            when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(Nil))
+            when(mockVersionRepository.getLatest).thenReturn(Future.successful(None))
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
