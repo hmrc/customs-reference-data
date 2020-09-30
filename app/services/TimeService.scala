@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package services
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
-import play.api.libs.json.Json
-import play.api.libs.json.OFormat
+import javax.inject.Singleton
 
-case class MetaData(version: String, snapshotDate: LocalDate)
-
-object MetaData {
-
-  def apply(versionInformation: VersionInformation): MetaData =
-    new MetaData(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
-
-  implicit val formats: OFormat[MetaData] = Json.format[MetaData]
+@Singleton
+class TimeService {
+  def now(): LocalDateTime = LocalDateTime.now()
 }

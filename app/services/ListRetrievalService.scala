@@ -16,28 +16,36 @@
 
 package services
 
-import java.time.LocalDate
-
+import cats.data.OptionT
+import cats.implicits._
 import javax.inject.Inject
 import models._
 import repositories.ListRepository
+import repositories.VersionRepository
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRetrievalService @Inject() (listRepository: ListRepository)(implicit ec: ExecutionContext) {
-
-  private def getVersion = MetaData("version", LocalDate.of(2020, 11, 5))
+class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    listRepository.getListByName(listName, getVersion).map {
-      referenceDataList =>
-        if (referenceDataList.nonEmpty) Some(ReferenceDataList(listName, getVersion, referenceDataList)) else None
-    }
+    (for {
+      versionInformation <- OptionT(versionRepository.getLatest)
+      referenceDataList  <- OptionT.liftF(listRepository.getListByName(listName, versionInformation.versionId))
+      if referenceDataList.nonEmpty
+    } yield {
+      val metaData: MetaData = MetaData(versionInformation)
+      ReferenceDataList(listName, metaData, referenceDataList)
+    }).value
 
-  def getResourceLinks(metaData: Option[MetaData] = None): Future[Option[ResourceLinks]] =
-    listRepository.getAllLists.map {
-      list =>
-        if (list.nonEmpty) Some(ResourceLinks.apply(list.map(_.listName), metaData)) else None
-    }
+  def getResourceLinks(): Future[Option[ResourceLinks]] =
+    (for {
+      versionInformation <- OptionT(versionRepository.getLatest)
+      genericItemList    <- OptionT.liftF(listRepository.getAllLists(versionInformation.versionId))
+      if genericItemList.nonEmpty
+    } yield {
+      val metaData = MetaData(versionInformation)
+      ResourceLinks(genericItemList.map(_.listName), metaData)
+    }).value
+
 }
