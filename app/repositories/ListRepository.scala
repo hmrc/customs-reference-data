@@ -46,16 +46,11 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
     val selector = Json.toJsObject(listName) ++ Json.toJsObject(versionId)
 
     listCollection().flatMap {
-      collection =>
-        val cursor: Source[JsObject, Future[State]] =
-          collection
-            .find(selector, projection = Some(Json.obj("_id" -> 0)))
-            .cursor[JsObject]()
-            .documentSource()
-
-        val woa: Source[JsObject, Future[State]] = cursor.map(x => (x \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
-
-        woa.runWith(Sink.seq[JsObject]).map(_.toList)
+      _.find(selector, projection = Some(Json.obj("_id" -> 0)))
+        .cursor[JsObject]()
+        .documentSource()
+        .map(x => (x \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
+        .runWith(Sink.seq[JsObject]).map(_.toList)
     }
   }
 
