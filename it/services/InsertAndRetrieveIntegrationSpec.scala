@@ -21,13 +21,12 @@ import play.api.libs.json.Json
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListCollection
-import repositories.ListRepository
 import repositories.MongoSuite
 import repositories.VersionCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class ReferenceDataServiceIntegrationSpec
+class InsertAndRetrieveIntegrationSpec
     extends ItSpecBase
     with MongoSuite
     with BaseGenerators
@@ -55,23 +54,19 @@ class ReferenceDataServiceIntegrationSpec
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
-    val listRepository = app.injector.instanceOf[ListRepository]
+    val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
     expectedListNames.nonEmpty mustBe true
 
     expectedListNames.foreach {
       listName =>
-        val retrievedList = listRepository.getListByName(listName, expectedVersionId).futureValue
+        val result = listRetrievalService.getList(listName).futureValue.value
 
-        retrievedList.length mustEqual 5
+        result.id mustEqual listName
+        result.metaData.version mustEqual expectedVersionId.versionId
+        result.metaData.snapshotDate mustEqual messageInformation.snapshotDate
+        result.data mustEqual (json \ "lists" \ listName.listName \ "listEntries").toOption.value.as[List[JsObject]]
 
-        retrievedList.foreach {
-          _ must haveListInfo(
-            expectedListName = listName,
-            expectedSnapshotDate = messageInformation.snapshotDate,
-            expectedVersionId = expectedVersionId
-          )
-        }
     }
   }
 
@@ -83,23 +78,19 @@ class ReferenceDataServiceIntegrationSpec
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
-    val listRepository = app.injector.instanceOf[ListRepository]
+    val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
     expectedListNames.nonEmpty mustBe true
 
     expectedListNames.foreach {
       listName =>
-        val retrievedList = listRepository.getListByName(listName, expectedVersionId).futureValue
+        val result = listRetrievalService.getList(listName).futureValue.value
 
-        retrievedList.length mustEqual 5
+        result.id mustEqual listName
+        result.metaData.version mustEqual expectedVersionId.versionId
+        result.metaData.snapshotDate mustEqual messageInformation.snapshotDate
+        result.data mustEqual (json \ listName.listName \ "listEntries").toOption.value.as[List[JsObject]]
 
-        retrievedList.foreach {
-          _ must haveListInfo(
-            expectedListName = listName,
-            expectedSnapshotDate = messageInformation.snapshotDate,
-            expectedVersionId = expectedVersionId
-          )
-        }
     }
   }
 
