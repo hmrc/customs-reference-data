@@ -16,37 +16,59 @@
 
 package repositories
 
+import akka.stream.Materializer
+import akka.stream.scaladsl.Sink
+import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.VersionId
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import reactivemongo.api.Cursor
+import reactivemongo.api.Cursor.WithOps
 import reactivemongo.api.commands.MultiBulkWriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
+import reactivemongo.akkastream.State
+import reactivemongo.akkastream.cursorProducer
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
-class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
+class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
 
   def getListByName(listName: ListName, versionId: VersionId): Future[List[JsObject]] = {
     val selector = Json.toJsObject(listName) ++ Json.toJsObject(versionId)
 
     listCollection().flatMap {
-      _.find(selector, projection = Some(Json.obj("_id" -> 0)))
-        .cursor[JsObject]()
-        .collect[List](-1, Cursor.FailOnError[List[JsObject]]())
+      collection =>
+        val cursor: Source[JsObject, Future[State]] =
+          collection
+            .find(selector, projection = Some(Json.obj("_id" -> 0)))
+            .cursor[JsObject]()
+            .documentSource()
+
+        val woa: Source[JsObject, Future[State]] = cursor.map(x => (x \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
+
+        woa.runWith(Sink.seq[JsObject]).map(_.toList)
     }
+
+//
+//    listCollection().flatMap {
+//      _.find(selector, projection = Some(Json.obj("_id" -> 0)))
+//        .cursor[JsObject]()
+//        .collect[List](-1, Cursor.FailOnError[List[JsObject]]())
+//    }
   }
 
+  // This should only retrieve listNames (not whole collection)
   def getAllLists(version: VersionId): Future[List[GenericListItem]] =
     listCollection().flatMap {
       _.find(Json.toJsObject(version), None)

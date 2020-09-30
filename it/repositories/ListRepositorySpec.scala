@@ -77,16 +77,18 @@ class ListRepositorySpec
       val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
       val listName   = arbitrary[ListName].sample.value
 
-      val expectedList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
       val otherList    = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
 
-      seedData(database, expectedList ++ otherList)
+      seedData(database, targetList ++ otherList)
 
       val repository = app.injector.instanceOf[ListRepository]
 
       val result = repository.getListByName(listName, versionId)
 
-      result.futureValue mustBe expectedList
+      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
+
+      result.futureValue mustBe expectedResult
     }
 
     "returns the list items that match the list name" in {
@@ -96,16 +98,18 @@ class ListRepositorySpec
       val listName      = ListName("l1")
       val otherlistName = ListName("l2")
 
-      val expectedList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val targetList  = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
       val otherList    = dataListV2.map(_.copy(listName = otherlistName)).map(Json.toJsObject(_))
 
-      seedData(database, expectedList ++ otherList)
+      seedData(database, targetList ++ otherList)
 
       val repository = app.injector.instanceOf[ListRepository]
 
       val result = repository.getListByName(listName, versionId)
 
-      result.futureValue mustBe expectedList
+      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
+
+      result.futureValue mustBe expectedResult
     }
 
     "returns an empty list when there are no items that that match the list name" in {
@@ -113,9 +117,9 @@ class ListRepositorySpec
       val listItem  = arbitrary[GenericListItem].sample.value
       val listName  = ListName("l1")
 
-      val expectedList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
+      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
 
-      seedData(database, Seq(expectedList))
+      seedData(database, Seq(targetList))
 
       val repository = app.injector.instanceOf[ListRepository]
 
@@ -129,9 +133,9 @@ class ListRepositorySpec
       val listItem  = arbitrary[GenericListItem].sample.value
       val listName  = ListName("l1")
 
-      val expectedList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
+      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
 
-      seedData(database, Seq(expectedList))
+      seedData(database, Seq(targetList))
 
       val repository = app.injector.instanceOf[ListRepository]
 
