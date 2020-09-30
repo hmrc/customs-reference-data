@@ -37,7 +37,7 @@ object ReferenceDataList {
           },
           "id"       -> referenceDataList.id.listName,
           "metaData" -> Json.toJsObject(referenceDataList.metaData),
-          "data"     -> referenceDataList.data
+          "data"     -> referenceDataList.data.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
         )
     }
 
