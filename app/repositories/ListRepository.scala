@@ -49,8 +49,9 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
       _.find(selector, projection = Some(Json.obj("_id" -> 0)))
         .cursor[JsObject]()
         .documentSource()
-        .map(x => (x \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
-        .runWith(Sink.seq[JsObject]).map(_.toList)
+        .map(jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
+        .runWith(Sink.seq[JsObject])
+        .map(_.toList)
     }
   }
 
