@@ -26,7 +26,7 @@ import play.api.libs.functional.syntax._
 
 case class VersionInformation(messageInformation: MessageInformation, versionId: VersionId, createdOn: LocalDateTime)
 
-object VersionInformation {
+object VersionInformation extends MongoDateTimeFormats {
 
   implicit val writes: OWrites[VersionInformation] =
     (__.write[MessageInformation] and
