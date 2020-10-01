@@ -63,7 +63,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
         running(app) {
           application =>
             when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
-            when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(Nil))
+            when(mockListRepository.getListNames(any())).thenReturn(Future.successful(Nil))
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -105,19 +105,19 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            forAll(listWithMaxLength(5)(arbitraryGenericListItem), arbitrary[VersionInformation]) {
+            forAll(listWithMaxLength(5)(arbitraryListName), arbitrary[VersionInformation]) {
 
-              (referenceData, versionInformation) =>
+              (listNames, versionInformation) =>
                 when(mockVersionRepository.getLatest).thenReturn(Future.successful(Some(versionInformation)))
-                when(mockListRepository.getAllLists(any())).thenReturn(Future.successful(referenceData))
+                when(mockListRepository.getListNames(any())).thenReturn(Future.successful(listNames))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
                 val metaData = MetaData(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
 
-                val resourceLinks: Seq[Map[String, JsObject]] = referenceData.zipWithIndex.map {
-                  case (data, index) =>
-                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + data.listName.listName))))
+                val resourceLinks: Seq[Map[String, JsObject]] = listNames.zipWithIndex.map {
+                  case (listName, index) =>
+                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + listName.listName))))
                 }
 
                 val links = Map(

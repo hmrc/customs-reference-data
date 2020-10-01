@@ -19,7 +19,7 @@ package models
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class ReferenceDataList(id: ListName, metaData: MetaData, data: List[JsObject])
+case class ReferenceDataList(id: ListName, metaData: MetaData, data: Seq[JsObject])
 
 object ReferenceDataList {
 
