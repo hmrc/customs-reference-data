@@ -36,13 +36,14 @@ import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 
+import scala.collection.immutable
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
 
-  def getListByName(listName: ListName, versionId: VersionId): Future[List[JsObject]] = {
+  def getListByName(listName: ListName, versionId: VersionId): Future[Seq[JsObject]] = {
     val selector = Json.toJsObject(listName) ++ Json.toJsObject(versionId)
 
     listCollection().flatMap {
@@ -51,16 +52,15 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
         .documentSource()
         .map(jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
         .runWith(Sink.seq[JsObject])
-        .map(_.toList)
     }
   }
 
-  // TODO: This should only retrieve listNames (not whole collection)
-  def getAllLists(version: VersionId): Future[List[GenericListItem]] =
+  def getListNames(version: VersionId): Future[Seq[ListName]] =
     listCollection().flatMap {
       _.find(Json.toJsObject(version), None)
-        .cursor[GenericListItem]()
-        .collect[List](-1, Cursor.FailOnError[List[GenericListItem]]())
+        .cursor[ListName]()
+        .documentSource()
+        .runWith(Sink.seq[ListName])
     }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =

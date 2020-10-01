@@ -145,9 +145,9 @@ class ListRepositorySpec
     }
   }
 
-  "getAllLists" - {
+  "getListNames" - {
 
-    "must return list of GenericListItem" in {
+    "must return list of ListNames" in {
 
       val toJsObjectSeq: List[GenericListItem] => Seq[JsObject] = _.map(Json.toJsObject[GenericListItem])
 
@@ -159,9 +159,11 @@ class ListRepositorySpec
           seedData(database, toJsObjectSeq(genericListItems))
 
           val repository = app.injector.instanceOf[ListRepository]
-          val result     = repository.getAllLists(versionId).futureValue
+          val result     = repository.getListNames(versionId).futureValue
 
-          result mustBe genericListItems
+          val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
+
+          result mustBe expectedResult
 
           database.flatMap(_.drop()).futureValue
       }
@@ -170,7 +172,7 @@ class ListRepositorySpec
     "must return empty list when no list items are found" in {
 
       val repository = app.injector.instanceOf[ListRepository]
-      val result     = repository.getAllLists(VersionId("123")).futureValue
+      val result     = repository.getListNames(VersionId("123")).futureValue
 
       result mustBe Nil
     }
