@@ -50,7 +50,7 @@ object ErrorDetails {
 
 }
 
-case class InvaildJsonError(_message: String) extends ErrorDetails {
+case class InvalidJsonError(_message: String) extends ErrorDetails {
   override def code: String = "INVALID_JSON"
 
   override def message: String = _message

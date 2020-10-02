@@ -18,22 +18,42 @@ package services
 
 import base.SpecBase
 import generators.ModelGenerators.genReferenceDataListsPayload
+import models.OtherError
 import models.VersionId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
+import org.scalatest.OptionValues
+import org.scalatest.TestData
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import repositories.ListRepository
-import repositories.VersionRepository
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import play.api.Application
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
+import repositories.ListRepository
+import repositories.VersionRepository
 import services.ReferenceDataService.DataProcessingResult._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks {
+class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with GuiceOneAppPerTest with ScalaCheckPropertyChecks with OptionValues {
 
-  "addNew" - {
+  val mockVersionRepository: VersionRepository       = mock[VersionRepository]
+  val mockValidationService: SchemaValidationService = mock[SchemaValidationService]
+  val mockListRepository: ListRepository             = mock[ListRepository]
+
+  override def newAppForTest(testData: TestData): Application =
+    new GuiceApplicationBuilder()
+      .overrides(bind[VersionRepository].toInstance(mockVersionRepository))
+      .overrides(bind[SchemaValidationService].toInstance(mockValidationService))
+      .overrides(bind[ListRepository].toInstance(mockListRepository))
+      .build()
+
+  "insert" - {
     "reports the processing as successful if all lists are successfully saved" in {
       forAll(genReferenceDataListsPayload(numberOfLists = 2)) {
         payload =>
@@ -42,9 +62,11 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val versionId         = VersionId("1")
           val versionRepository = mock[VersionRepository]
+          val validationService = mock[SchemaValidationService]
+
           when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
 
-          val service = new ReferenceDataService(repository, versionRepository)
+          val service = new ReferenceDataService(repository, versionRepository, validationService)
 
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
@@ -62,9 +84,11 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val versionId         = VersionId("1")
           val versionRepository = mock[VersionRepository]
+          val validationService = mock[SchemaValidationService]
+
           when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
 
-          val service = new ReferenceDataService(repository, versionRepository)
+          val service = new ReferenceDataService(repository, versionRepository, validationService)
 
           service.insert(payload).futureValue mustBe DataProcessingFailed
 
@@ -72,5 +96,47 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       }
     }
 
+  }
+
+  "validateAndDecompress" - {
+
+    val testJson       = Json.obj("foo" -> "bar")
+    val compressedJson = compress(testJson.toString.getBytes)
+
+    "must return compressed and validated Array[Byte] on success" in {
+
+      when(mockValidationService.validate(any(), any())).thenReturn(Right(testJson))
+
+      val service        = app.injector.instanceOf[ReferenceDataService]
+      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+
+      val result = service.validateAndDecompress(testJsonSchema, compressedJson).right.get
+
+      result mustBe testJson
+    }
+
+    "must return error when given body not in Gzip format" in {
+
+      val invalidArrayByte = testJson.toString.getBytes
+
+      val service        = app.injector.instanceOf[ReferenceDataService]
+      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+
+      val result = service.validateAndDecompress(testJsonSchema, invalidArrayByte).left.get
+
+      result mustBe OtherError("Not in GZIP format")
+    }
+
+    "must return error when a json validation error occurs" in {
+
+      when(mockValidationService.validate(any(), any())).thenReturn(Left(OtherError("Json failed")))
+
+      val service        = app.injector.instanceOf[ReferenceDataService]
+      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+
+      val result = service.validateAndDecompress(testJsonSchema, compressedJson).left.get
+
+      result mustBe OtherError("Json failed")
+    }
   }
 }

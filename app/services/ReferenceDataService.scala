@@ -17,7 +17,10 @@
 package services
 
 import javax.inject.Inject
+import models.ErrorDetails
+import models.JsonSchemaProvider
 import models.ReferenceDataPayload
+import play.api.libs.json.JsObject
 import repositories.ListRepository
 import repositories.VersionRepository
 import repositories.ListRepository.FailedWrite
@@ -28,7 +31,12 @@ import services.ReferenceDataService.DataProcessingResult
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ReferenceDataService @Inject() (repository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
+class ReferenceDataService @Inject() (
+  repository: ListRepository,
+  versionRepository: VersionRepository,
+  schemaValidationService: SchemaValidationService
+)(implicit ec: ExecutionContext) {
+
   import services.ReferenceDataService.DataProcessingResult._
 
   def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
@@ -46,6 +54,12 @@ class ReferenceDataService @Inject() (repository: ListRepository, versionReposit
             case (_, _: FailedWrite)         => DataProcessingFailed
           })
     }
+
+  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject] =
+    for {
+      decompressedBody <- GZipService.decompressArrayByte(body)
+      validatedBody    <- schemaValidationService.validate(jsonSchemaProvider, decompressedBody)
+    } yield validatedBody
 
 }
 
