@@ -22,7 +22,7 @@ import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
 import javax.inject.Inject
 import models.ErrorDetails
-import models.InvaildJsonError
+import models.InvalidJsonError
 import models.JsonSchemaProvider
 import models.SchemaValidationError
 import org.leadpony.justify.api.JsonValidationService
@@ -58,14 +58,14 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
           .validate[JsObject]
           .asEither
           .fold(
-            validationError => Left(InvaildJsonError(validationError.mkString("Errors while parsing json: ", " ; ", ""))),
+            validationError => Left(InvalidJsonError(validationError.mkString("Errors while parsing json: ", " ; ", ""))),
             jsObject => Right(jsObject)
           )
       else Left(SchemaValidationError.fromJsonSchemaProblems(schemaValidationProblems.toList))
 
     } catch {
       case exc: JsonParsingException =>
-        Left(InvaildJsonError(exc.getMessage))
+        Left(InvalidJsonError(exc.getMessage))
     } finally jsonReader.close()
 
   }

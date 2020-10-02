@@ -18,7 +18,7 @@ package services
 
 import base.SpecBase
 import javax.inject.Inject
-import models.InvaildJsonError
+import models.InvalidJsonError
 import models.SchemaValidationError
 import models.SimpleJsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
@@ -66,7 +66,7 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteArray).left.value mustBe a[InvaildJsonError]
+      service.validate(testJsonSchema, jsonByteArray).left.value mustBe a[InvalidJsonError]
 
     }
 

@@ -38,7 +38,7 @@ class ErrorDetailsSpec extends SpecBase {
     "InvaildJsonError" - {
       "serialization to json" in {
         val message       = "invalid json"
-        val errorResponse = InvaildJsonError(_message = message)
+        val errorResponse = InvalidJsonError(_message = message)
 
         Json.toJsObject(errorResponse) mustEqual Json.obj(
           "code"    -> "INVALID_JSON",
