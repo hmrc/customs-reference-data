@@ -73,8 +73,8 @@ class InsertAndRetrieveIntegrationSpec
   "saves all the data items for each list for customs office list" in {
     val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
     val json               = genCustomsOfficeListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
-    val data               = CustomsOfficeListsPayload(json)
-    val expectedListNames  = json.keys.filterNot(_ == "messageInformation").map(ListName(_))
+    val data               = ReferenceDataListsPayload(json)
+    val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
     app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
@@ -89,7 +89,7 @@ class InsertAndRetrieveIntegrationSpec
         result.id mustEqual listName
         result.metaData.version mustEqual expectedVersionId.versionId
         result.metaData.snapshotDate mustEqual messageInformation.snapshotDate
-        result.data mustEqual (json \ listName.listName \ "listEntries").toOption.value.as[List[JsObject]]
+        result.data mustEqual (json \ "lists" \ listName.listName \ "listEntries").toOption.value.as[List[JsObject]]
 
     }
   }
