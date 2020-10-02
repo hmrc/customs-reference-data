@@ -18,7 +18,6 @@ package repositories
 
 import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
-import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.GenericListItem
@@ -26,9 +25,7 @@ import models.ListName
 import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import reactivemongo.akkastream.State
 import reactivemongo.akkastream.cursorProducer
-import reactivemongo.api.Cursor
 import reactivemongo.api.commands.MultiBulkWriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import repositories.ListRepository.FailedWrite
@@ -36,7 +33,6 @@ import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 
-import scala.collection.immutable
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 

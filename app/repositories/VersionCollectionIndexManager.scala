@@ -28,7 +28,7 @@ import scala.concurrent.Future
 @Singleton
 class VersionCollectionIndexManager @Inject() (versionCollection: VersionCollection)(implicit ec: ExecutionContext) {
 
-  private val index: Index.Default = Index(
+  private val versionId_index: Index.Default = Index(
     key = Seq("versionId" -> IndexType.Ascending),
     name = Some("versionId_index"),
     unique = true,
@@ -52,11 +52,38 @@ class VersionCollectionIndexManager @Inject() (versionCollection: VersionCollect
     options = BSONDocument.empty
   )
 
+  private val snapshotDate_index: Index.Default = Index(
+    key = Seq("snapshotDate" -> IndexType.Ascending),
+    name = Some("snapshotDate_index"),
+    unique = true,
+    background = true,
+    sparse = false,
+    expireAfterSeconds = None,
+    storageEngine = None,
+    weights = None,
+    defaultLanguage = None,
+    languageOverride = None,
+    textIndexVersion = None,
+    sphereIndexVersion = None,
+    bits = None,
+    min = None,
+    max = None,
+    bucketSize = None,
+    collation = None,
+    wildcardProjection = None,
+    version = None,
+    partialFilter = None,
+    options = BSONDocument.empty
+  )
+
+  private def addIndex(index: Index.Default): Future[Boolean] =
+    versionCollection().flatMap(
+      _.indexesManager
+        .ensure(index)
+    )
+
+  import cats.implicits._
+
   val started: Future[Unit] =
-    versionCollection()
-      .flatMap(
-        _.indexesManager
-          .ensure(index)
-          .map(_ => ())
-      )
+    (addIndex(versionId_index), addIndex(snapshotDate_index)).tupled.void
 }
