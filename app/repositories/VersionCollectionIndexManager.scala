@@ -55,7 +55,7 @@ class VersionCollectionIndexManager @Inject() (versionCollection: VersionCollect
   private val snapshotDate_index: Index.Default = Index(
     key = Seq("snapshotDate" -> IndexType.Ascending),
     name = Some("snapshotDate_index"),
-    unique = true,
+    unique = false,
     background = true,
     sparse = false,
     expireAfterSeconds = None,
