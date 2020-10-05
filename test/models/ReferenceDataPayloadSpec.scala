@@ -37,30 +37,20 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
     "listNames" - {
       "returns all the listNames for all lists" in {
-        val data = Json.obj(
-          "messageInformation" -> Json.obj(
-            "messageID"    -> "messageIDValue",
-            "snapshotDate" -> "snapshotDateValue"
-          ),
-          "lists" -> Json.obj(
-            "list1" -> Json.obj(
-              "listName" -> "list1",
-              "listEntries" -> Json.obj(
-                "a" -> "b"
-              )
-            ),
-            "list2" -> Json.obj(
-              "listName" -> "list2",
-              "listEntries" -> Json.obj(
-                "a" -> "b"
-              )
-            )
-          )
-        )
 
-        val referenceDataPayload = ReferenceDataListsPayload(data)
+        val versionId = VersionId("1")
 
-        referenceDataPayload.listNames mustEqual Seq(ListName("list1"), ListName("list2"))
+        forAll(Gen.choose(1, 5), Gen.choose(1, 5)) {
+          (numberOfLists, numberOfListItems) =>
+            forAll(genReferenceDataListsJson(numberOfLists, numberOfListItems)) {
+              data =>
+                val referenceDataPayload = ReferenceDataListsPayload(data)
+
+                val expectedResult = referenceDataPayload.toIterable(versionId).flatMap(_.map(_.listName)).toSet
+
+                referenceDataPayload.listNames mustEqual expectedResult
+            }
+        }
       }
     }
 

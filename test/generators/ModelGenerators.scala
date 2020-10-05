@@ -36,7 +36,7 @@ trait ModelGenerators {
 
   def genReferenceList(numberOfLists: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None, listNameGen: Option[Gen[String]] = None): Gen[JsObject] =
     for {
-      listNames <- listNameGen.getOrElse(extendedAsciiWithMaxLength(100))
+      listNames <- listNameGen.getOrElse(stringsWithMaxLength(10))
       listItems <- Gen.listOfN(numberOfLists, dataItemsGen.getOrElse(genSimpleJsObject))
     } yield Json.obj(
       listNames -> Json.obj(
@@ -67,7 +67,7 @@ trait ModelGenerators {
     val suffix: Iterator[String] = Iterator.from(0, 1).map(_.toString)
 
     val jsObjGen2: Gen[JsObject] = {
-      val listNameGen: Gen[String] = extendedAsciiWithMaxLength(100).map(_ ++ suffix.next())
+      val listNameGen: Gen[String] = stringsWithMaxLength(10).map(_ ++ suffix.next())
       genReferenceList(numberOfListItems, dataItemsGen, listNameGen = Some(listNameGen))
     }
 
