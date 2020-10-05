@@ -53,7 +53,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns ACCEPTED when the data has been decompressed, validated and processed" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -62,7 +62,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns Bad Request when a decompression or validation error occurs" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Left(OtherError("error")))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -71,7 +71,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingFailed))
 
       val result = route(app, fakeRequest).value
 
@@ -88,7 +88,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns ACCEPTED when the data has been decompressed, validated and processed" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -97,7 +97,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns Bad Request when a decompression or validation error occurs" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Left(OtherError("error")))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingSuccessful))
 
       val result = route(app, fakeRequest).value
 
@@ -106,7 +106,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
+      when(mockReferenceDataService.insert(any(), any())).thenReturn(Future.successful(DataProcessingFailed))
 
       val result = route(app, fakeRequest).value
 

@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 
 import com.google.inject.Inject
 import javax.inject.Singleton
+import models.ListName
 import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
@@ -37,10 +38,10 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, validFor: Seq[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
-    val versionInformation   = VersionInformation(messageInformation, versionId, time)
+    val versionInformation   = VersionInformation(messageInformation, versionId, time, validFor)
 
     versionCollection().flatMap {
       _.insert(false)

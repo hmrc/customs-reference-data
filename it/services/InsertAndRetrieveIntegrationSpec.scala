@@ -52,7 +52,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(data, expectedListNames.toSeq).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
@@ -76,7 +76,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(data, expectedListNames.toSeq).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 

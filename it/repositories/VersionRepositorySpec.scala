@@ -6,9 +6,7 @@ import java.time.LocalDateTime
 import base.ItSpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
+import models.{ListName, MessageInformation, VersionId, VersionInformation}
 import org.mockito.Mockito
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
@@ -78,14 +76,15 @@ class VersionRepositorySpec
       val repo = app.injector.instanceOf[VersionRepository]
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
+      val listName = Arbitrary.arbitrary[ListName].sample.value
 
       val expectedVersionId = VersionId("1")
       when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
       when(mockTimeService.now()).thenReturn(LocalDateTime.now())
 
-      val result = repo.save(messageInformation).futureValue
+      val result = repo.save(messageInformation, Seq(listName)).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now)
+      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, Seq(listName))
 
       result mustEqual expectedVersionId
 
@@ -107,10 +106,12 @@ class VersionRepositorySpec
       when(mockTimeService.now()).thenReturn(createdOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1))).futureValue
-      repo.save(messageInformation.copy(snapshotDate = recentDate)).futureValue
+      val listName = Arbitrary.arbitrary[ListName].sample.value
 
-      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = recentDate), VersionId("2"), createdOn)
+      repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1)), Seq(listName)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = recentDate), Seq(listName)).futureValue
+
+      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = recentDate), VersionId("2"), createdOn, Seq(listName))
 
       val result: VersionInformation = repo.getLatest.futureValue.value
 
@@ -121,7 +122,7 @@ class VersionRepositorySpec
   implicit val versionInformationEquality: Equality[VersionInformation] =
     (a, b) =>
       b match {
-        case VersionInformation(mi, ver, _) => (a.messageInformation == mi) && (a.versionId == ver)
+        case VersionInformation(mi, ver, _, _) => (a.messageInformation == mi) && (a.versionId == ver)
         case _                              => false
       }
 

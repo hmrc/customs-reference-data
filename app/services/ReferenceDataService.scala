@@ -19,6 +19,7 @@ package services
 import javax.inject.Inject
 import models.ErrorDetails
 import models.JsonSchemaProvider
+import models.ListName
 import models.ReferenceDataPayload
 import play.api.libs.json.JsObject
 import repositories.ListRepository
@@ -39,8 +40,8 @@ class ReferenceDataService @Inject() (
 
   import services.ReferenceDataService.DataProcessingResult._
 
-  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
-    versionRepository.save(payload.messageInformation).flatMap {
+  def insert(payload: ReferenceDataPayload, versionListNames: Seq[ListName]): Future[DataProcessingResult] =
+    versionRepository.save(payload.messageInformation, versionListNames).flatMap {
       versionId =>
         Future
           .sequence(
@@ -60,7 +61,6 @@ class ReferenceDataService @Inject() (
       decompressedBody <- GZipService.decompressArrayByte(body)
       validatedBody    <- schemaValidationService.validate(jsonSchemaProvider, decompressedBody)
     } yield validatedBody
-
 }
 
 object ReferenceDataService {
