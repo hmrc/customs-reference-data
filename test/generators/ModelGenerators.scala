@@ -16,7 +16,6 @@
 
 package generators
 
-import models.CustomsOfficeListsPayload
 import models.MessageInformation
 import models.ReferenceDataListsPayload
 import org.scalacheck.Gen
@@ -75,12 +74,13 @@ trait ModelGenerators {
     for {
       messageInformation <- messageInformation.getOrElse(arbitraryMessageInformation.arbitrary)
       lists              <- Gen.listOfN(numberOfLists, jsObjGen2)
+      listsObject = lists.foldLeft(Json.obj())(_ ++ _)
     } yield Json.obj(
       "messageInformation" -> Json.obj(
         "messageID"    -> messageInformation.messageId,
         "snapshotDate" -> messageInformation.snapshotDate
       ),
-      "lists" -> lists.foldLeft(Json.obj())(_ ++ _)
+      "lists" -> listsObject
     )
   }
 
@@ -92,6 +92,7 @@ trait ModelGenerators {
     * @param messageInformation The metadata for the reference data. This allows the caller to override the default random values and specify their own
     * @return A [[play.api.libs.json.JsObject]] that represents a full reference data push
     */
+  @deprecated("Use genReferenceDataListsJson", "")
   def genCustomsOfficeListsJson(
     numberOfLists: Int = 5,
     numberOfListItems: Int = 5,
@@ -118,8 +119,9 @@ trait ModelGenerators {
       "messageInformation" -> Json.obj(
         "messageID"    -> messageInformation.messageId,
         "snapshotDate" -> messageInformation.snapshotDate
-      )
-    ) ++ listsObject
+      ),
+      "lists" -> listsObject
+    )
   }
 
   def genReferenceDataListsPayload(
@@ -134,9 +136,9 @@ trait ModelGenerators {
     numberOfLists: Int = 5,
     numberOfListItems: Int = 5,
     dataItemsGen: Option[Gen[JsObject]] = None
-  ): Gen[CustomsOfficeListsPayload] =
+  ): Gen[ReferenceDataListsPayload] =
     genCustomsOfficeListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
-      .map(CustomsOfficeListsPayload(_))
+      .map(ReferenceDataListsPayload(_))
 
 }
 

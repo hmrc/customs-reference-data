@@ -81,7 +81,7 @@ class ReferenceDataController @Inject() (
         requestBody match {
           case Right(jsObject) =>
             referenceDataService
-              .insert(CustomsOfficeListsPayload(jsObject))
+              .insert(ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>

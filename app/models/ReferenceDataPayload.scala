@@ -37,38 +37,15 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
   override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
-    lists.values.flatMap(
+    lists.values.map(
       list =>
         (for {
           ln <- list.validate[ListName]
           le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).asOpt
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).get
     )
 }
 
 object ReferenceDataListsPayload {
   def apply(v1: JsObject): ReferenceDataListsPayload = new ReferenceDataListsPayload(v1)
-}
-
-class CustomsOfficeListsPayload(data: JsObject) extends ReferenceDataPayload {
-
-  override lazy val messageInformation: MessageInformation =
-    (for {
-      JsString(messageId) <- (data \ "messageInformation" \ "messageID").validate[JsString]
-      snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
-    } yield MessageInformation(messageId, snapshotDate))
-      .getOrElse(throw new Exception("Failed to convert CustomsOfficeListsPayload to MessageInformation"))
-
-  override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
-    data.values.flatMap(
-      list =>
-        (for {
-          ln <- list.validate[ListName]
-          le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).asOpt
-    )
-}
-
-object CustomsOfficeListsPayload {
-  def apply(v1: JsObject): CustomsOfficeListsPayload = new CustomsOfficeListsPayload(v1)
 }
