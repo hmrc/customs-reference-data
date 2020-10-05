@@ -22,6 +22,7 @@ import play.api.libs.json._
 
 sealed trait ReferenceDataPayload {
   def messageInformation: MessageInformation
+  def listNames: Seq[ListName]
   def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]]
 }
 
@@ -33,6 +34,8 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
       snapshotDate        <- (data \ "messageInformation" \ "snapshotDate").validate[LocalDate]
     } yield MessageInformation(messageId, snapshotDate))
       .getOrElse(throw new Exception("Failed to convert ReferenceDataListsPayload to MessageInformation"))
+
+  override def listNames: Seq[ListName] = ???
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 

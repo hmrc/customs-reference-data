@@ -24,6 +24,7 @@ import org.scalacheck.Gen
 import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import play.api.libs.json.Json
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
@@ -32,6 +33,35 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val referenceDataListsPayload = genReferenceDataListsPayload(1, 1).sample.value
 
       referenceDataListsPayload.messageInformation mustBe a[MessageInformation]
+    }
+
+    "listNames" - {
+      "returns all the listNames for all lists" in {
+        val data = Json.obj(
+          "messageInformation" -> Json.obj(
+            "messageID"    -> "messageIDValue",
+            "snapshotDate" -> "snapshotDateValue"
+          ),
+          "lists" -> Json.obj(
+            "list1" -> Json.obj(
+              "listName" -> "list1",
+              "listEntries" -> Json.obj(
+                "a" -> "b"
+              )
+            ),
+            "list2" -> Json.obj(
+              "listName" -> "list2",
+              "listEntries" -> Json.obj(
+                "a" -> "b"
+              )
+            )
+          )
+        )
+
+        val referenceDataPayload = ReferenceDataListsPayload(data)
+
+        referenceDataPayload.listNames mustEqual Seq(ListName("list1"), ListName("list2"))
+      }
     }
 
     "toIterable" - {
