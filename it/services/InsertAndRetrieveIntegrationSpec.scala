@@ -23,7 +23,8 @@ import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListCollection
 import repositories.MongoSuite
 import repositories.VersionCollection
-import services.ingestion.{ReferenceDataService, VersionIdProducer}
+import repositories.VersionIdProducer
+import services.ingestion.ReferenceDataService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

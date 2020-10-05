@@ -34,7 +34,7 @@ import play.api.libs.json.Json
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 
-class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
+private[ingestion] class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
 
   private def problemHandler(schemaValidationProblems: ListBuffer[Problem]): ProblemHandler =
     _.asScala.foreach {

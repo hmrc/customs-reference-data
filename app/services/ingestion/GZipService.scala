@@ -25,7 +25,7 @@ import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
 
-object GZipService {
+private[ingestion] object GZipService {
 
   def decompressArrayByte(arrayByte: Array[Byte]): Either[OtherError, Array[Byte]] =
     Try {

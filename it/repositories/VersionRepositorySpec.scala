@@ -6,7 +6,10 @@ import java.time.LocalDateTime
 import base.ItSpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
-import models.{ListName, MessageInformation, VersionId, VersionInformation}
+import models.ListName
+import models.MessageInformation
+import models.VersionId
+import models.VersionInformation
 import org.mockito.Mockito
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
@@ -21,7 +24,6 @@ import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
 import services.TimeService
 import org.mockito.Mockito.when
-import services.ingestion.VersionIdProducer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -76,7 +78,7 @@ class VersionRepositorySpec
       val repo = app.injector.instanceOf[VersionRepository]
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listName = Arbitrary.arbitrary[ListName].sample.value
+      val listName           = Arbitrary.arbitrary[ListName].sample.value
 
       val expectedVersionId = VersionId("1")
       when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
@@ -106,7 +108,7 @@ class VersionRepositorySpec
       when(mockTimeService.now()).thenReturn(createdOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listName = Arbitrary.arbitrary[ListName].sample.value
+      val listName           = Arbitrary.arbitrary[ListName].sample.value
 
       repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1)), Seq(listName)).futureValue
       repo.save(messageInformation.copy(snapshotDate = recentDate), Seq(listName)).futureValue
@@ -123,7 +125,7 @@ class VersionRepositorySpec
     (a, b) =>
       b match {
         case VersionInformation(mi, ver, _, _) => (a.messageInformation == mi) && (a.versionId == ver)
-        case _                              => false
+        case _                                 => false
       }
 
 }
