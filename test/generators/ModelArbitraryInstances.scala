@@ -37,7 +37,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
     }
 
   implicit val arbitraryListName: Arbitrary[ListName] =
-    Arbitrary(arbitrary[String].map(ListName(_)))
+    Arbitrary(BaseGenerators.stringsWithMaxLength(50).map(ListName(_)))
 
   implicit val arbitraryMetaData: Arbitrary[MetaData] =
     Arbitrary {
@@ -53,7 +53,6 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         listName <- arbitrary[ListName]
         metaData <- arbitrary[MetaData]
       } yield ReferenceDataList(listName, metaData, Nil)
-      //TODO: This needs updating when we understand what data will be
     }
 
   implicit val arbitraryMessageInformation: Arbitrary[MessageInformation] =

@@ -36,10 +36,10 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation, validFor: Set[ListName]): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, listNames: Set[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
-    val versionInformation   = VersionInformation(messageInformation, versionId, time, validFor)
+    val versionInformation   = VersionInformation(messageInformation, versionId, time, listNames)
 
     versionCollection().flatMap {
       _.insert(false)
@@ -53,8 +53,10 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
     }
   }
 
-  def getLatest: Future[Option[VersionInformation]] =
+  def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     versionCollection().flatMap(
-      _.find(Json.obj(), None).sort(Json.obj("snapshotDate" -> -1)).one[VersionInformation]
+      _.find(Json.obj("listNames.listName" -> listName.listName), None)
+        .sort(Json.obj("snapshotDate" -> -1))
+        .one[VersionInformation]
     )
 }

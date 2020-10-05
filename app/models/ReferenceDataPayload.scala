@@ -37,7 +37,7 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  override lazy val listNames: collection.Set[ListName] = lists.keys.map(ListName.apply)
+  override lazy val listNames: collection.Set[ListName] = lists.keys.map(list => (lists \ list).as[ListName])
 
   override def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]] =
     lists.values.map(
