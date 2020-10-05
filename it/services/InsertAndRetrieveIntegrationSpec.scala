@@ -23,6 +23,7 @@ import reactivemongo.play.json.collection.JSONCollection
 import repositories.ListCollection
 import repositories.MongoSuite
 import repositories.VersionCollection
+import services.ingestion.{ReferenceDataService, VersionIdProducer}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -52,7 +53,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data, expectedListNames.toSeq).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
@@ -76,7 +77,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data, expectedListNames.toSeq).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 

@@ -33,7 +33,7 @@ object VersionInformation extends MongoDateTimeFormats {
       __.write[MessageInformation] and
         __.write[VersionId] and
         (__ \ "createdOn").write[LocalDateTime] and
-        __.write[Seq[ListName]]
+        (__ \ "validFor").write[Seq[ListName]]
     )(unlift(VersionInformation.unapply))
 
   implicit val readers: Reads[VersionInformation] =
@@ -41,6 +41,6 @@ object VersionInformation extends MongoDateTimeFormats {
       __.read[MessageInformation] and
         __.read[VersionId] and
         (__ \ "createdOn").read[LocalDateTime] and
-        __.read[Seq[ListName]]
+        (__ \ "validFor").read[Seq[ListName]]
     )(VersionInformation.apply _)
 }

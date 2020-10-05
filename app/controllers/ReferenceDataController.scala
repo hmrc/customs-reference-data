@@ -19,15 +19,13 @@ package controllers
 import javax.inject.Inject
 import models._
 import play.api.Logger
-import play.api.libs.json.JsLookupResult.jsLookupResultToJsLookup
-import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
-import services.ReferenceDataService
-import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import services.ingestion.ReferenceDataService
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
@@ -55,10 +53,8 @@ class ReferenceDataController @Inject() (
 
         requestBody match {
           case Right(jsObject) =>
-            val getListNames: Seq[ListName] = (jsObject \\ "ListName").map(_.as[ListName])
-
             referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject), getListNames)
+              .insert(ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>
@@ -81,10 +77,8 @@ class ReferenceDataController @Inject() (
 
         requestBody match {
           case Right(jsObject) =>
-            val getListNames: Seq[ListName] = (jsObject \\ "listName").map(_.as[ListName])
-
             referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject), getListNames)
+              .insert(ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>

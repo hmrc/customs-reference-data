@@ -21,8 +21,8 @@ import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 import repositories.ListCollectionIndexManager
 import repositories.VersionCollectionIndexManager
-import services.DefaultVersionIdProducer
-import services.VersionIdProducer
+import services.ingestion.DefaultVersionIdProducer
+import services.ingestion.VersionIdProducer
 
 class Module
     extends SimpleModule(

@@ -20,8 +20,8 @@ import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
 import services.TimeService
-import services.VersionIdProducer
 import org.mockito.Mockito.when
+import services.ingestion.VersionIdProducer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

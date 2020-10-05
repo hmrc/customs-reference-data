@@ -14,34 +14,45 @@
  * limitations under the License.
  */
 
-package services
+package services.ingestion
 
-import javax.inject.Inject
+import com.google.inject.ImplementedBy
+import com.google.inject.Inject
 import models.ErrorDetails
 import models.JsonSchemaProvider
 import models.ListName
 import models.ReferenceDataPayload
 import play.api.libs.json.JsObject
-import repositories.ListRepository
-import repositories.VersionRepository
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
-import services.ReferenceDataService.DataProcessingResult
+import repositories.ListRepository
+import repositories.VersionRepository
+import services.ingestion.ReferenceDataService.DataProcessingResult
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ReferenceDataService @Inject() (
+@ImplementedBy(classOf[ReferenceDataServiceImpl])
+trait ReferenceDataService {
+
+  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult]
+
+  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject]
+
+}
+
+private[ingestion] class ReferenceDataServiceImpl @Inject() (
   repository: ListRepository,
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService
-)(implicit ec: ExecutionContext) {
+)(implicit ec: ExecutionContext)
+    extends ReferenceDataService {
 
-  import services.ReferenceDataService.DataProcessingResult._
-
-  def insert(payload: ReferenceDataPayload, versionListNames: Seq[ListName]): Future[DataProcessingResult] =
-    versionRepository.save(payload.messageInformation, versionListNames).flatMap {
+  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
+    versionRepository.save(payload.messageInformation, Seq.empty[ListName]).flatMap {
       versionId =>
         Future
           .sequence(
