@@ -36,7 +36,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation, validFor: Seq[ListName]): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, validFor: Set[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
     val versionInformation   = VersionInformation(messageInformation, versionId, time, validFor)

@@ -24,7 +24,7 @@ import play.api.libs.json.Reads
 import play.api.libs.json.__
 import play.api.libs.functional.syntax._
 
-case class VersionInformation(messageInformation: MessageInformation, versionId: VersionId, createdOn: LocalDateTime, validFor: Seq[ListName])
+case class VersionInformation(messageInformation: MessageInformation, versionId: VersionId, createdOn: LocalDateTime, validFor: Set[ListName])
 
 object VersionInformation extends MongoDateTimeFormats {
 
@@ -33,7 +33,7 @@ object VersionInformation extends MongoDateTimeFormats {
       __.write[MessageInformation] and
         __.write[VersionId] and
         (__ \ "createdOn").write[LocalDateTime] and
-        (__ \ "validFor").write[Seq[ListName]]
+        (__ \ "validFor").write[Set[ListName]]
     )(unlift(VersionInformation.unapply))
 
   implicit val readers: Reads[VersionInformation] =
@@ -41,6 +41,6 @@ object VersionInformation extends MongoDateTimeFormats {
       __.read[MessageInformation] and
         __.read[VersionId] and
         (__ \ "createdOn").read[LocalDateTime] and
-        (__ \ "validFor").read[Seq[ListName]]
+        (__ \ "validFor").read[Set[ListName]]
     )(VersionInformation.apply _)
 }

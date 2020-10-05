@@ -84,9 +84,9 @@ class VersionRepositorySpec
       when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
       when(mockTimeService.now()).thenReturn(LocalDateTime.now())
 
-      val result = repo.save(messageInformation, Seq(listName)).futureValue
+      val result = repo.save(messageInformation, Set(listName)).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, Seq(listName))
+      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, Set(listName))
 
       result mustEqual expectedVersionId
 
@@ -110,10 +110,10 @@ class VersionRepositorySpec
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
-      repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1)), Seq(listName)).futureValue
-      repo.save(messageInformation.copy(snapshotDate = recentDate), Seq(listName)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = recentDate.minusDays(1)), Set(listName)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = recentDate), Set(listName)).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = recentDate), VersionId("2"), createdOn, Seq(listName))
+      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = recentDate), VersionId("2"), createdOn, Set(listName))
 
       val result: VersionInformation = repo.getLatest.futureValue.value
 

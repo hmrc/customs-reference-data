@@ -21,6 +21,7 @@ import generators.ModelGenerators.genReferenceDataListsPayload
 import models.OtherError
 import models.VersionId
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
 import org.scalatest.TestData
@@ -72,6 +73,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
           verify(repository, times(2)).insertList(any())
+          verify(versionRepository, times(1)).save(any(), eqTo(payload.listNames.toSet))
       }
     }
 
