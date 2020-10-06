@@ -150,7 +150,7 @@ class VersionRepositorySpec
   }
 
   "getLatest" - {
-    "returns the latest version by snapshotDate" in {
+    "returns all version with the latest snapshot date" in {
       val repo = app.injector.instanceOf[VersionRepository]
 
       val latestSnapshotDate = LocalDate.now()
@@ -159,22 +159,22 @@ class VersionRepositorySpec
       val oldSnapshotDate = LocalDate.now().minusDays(1)
       val oldCreatedOn    = LocalDateTime.now().minusDays(1)
 
-      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"))
+      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"), VersionId("3"))
       when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listNames1         = Set(ListName("a"), ListName("b"))
-      val listNames2         = Set(ListName("1"), ListName("2"))
+      val listNames1         = Set(ListName("1"), ListName("2"))
+      val listNames2         = Set(ListName("a"), ListName("b"))
+      val listNames3         = Set(ListName("c"), ListName("d"))
 
       repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), listNames1).futureValue
       repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames2).futureValue
+      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames3).futureValue
 
-      val expectedVersionInformation =
-        VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, listNames2)
+      val result: Set[ListName]         = repo.getLatest().futureValue.value.listNames
+      val expectedResult: Set[ListName] = listNames2 ++ listNames3
 
-      val result = repo.getLatest().futureValue.value
-
-      result mustEqual expectedVersionInformation
+      result mustEqual expectedResult
     }
   }
 

@@ -25,9 +25,14 @@ import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
+import reactivemongo.api.{Cursor, ReadConcern}
+import reactivemongo.api.bson.{BSONDocument, BSONString}
+import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.commands.WriteResult
+import reactivemongo.core.commands.{Ascending, Match, Project, Sort}
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import services.TimeService
+
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
@@ -60,11 +65,25 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
         .one[VersionInformation]
     )
 
-  def getLatest(): Future[Option[VersionInformation]] =
-    versionCollection().flatMap(
-      _.find(Json.obj(), None)
-        .sort(Json.obj("snapshotDate" -> -1))
-        .one[VersionInformation]
-    )
+  def getLatest(): Future[Seq[ListName]] = {
+
+    val query = Json.obj("snapshotDate" -> ???)
+
+    versionCollection().flatMap {
+      x =>
+        import x.BatchCommands.AggregationFramework.{Match, Project}
+
+        x.aggregatorContext[ListName](
+          Match(query), List(Project(
+            Json.obj(
+              "_id" -> JsNumber(0),
+              "listName" -> JsNumber(1)
+            )))
+        )
+          .prepared
+          .cursor
+          .collect[Seq](-1, Cursor.FailOnError())
+    }
+  }
 
 }
