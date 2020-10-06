@@ -84,9 +84,9 @@ class VersionRepositorySpec
       when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
       when(mockTimeService.now()).thenReturn(LocalDateTime.now())
 
-      val result = repo.save(messageInformation, Set(listName)).futureValue
+      val result = repo.save(messageInformation, Seq(listName)).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, Set(listName))
+      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, Seq(listName))
 
       result mustEqual expectedVersionId
 
@@ -113,11 +113,11 @@ class VersionRepositorySpec
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
-      repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), Set(listName)).futureValue
-      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), Set(listName)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), Seq(listName)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), Seq(listName)).futureValue
 
       val expectedVersionInformation =
-        VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, Set(listName))
+        VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, Seq(listName))
 
       val result: VersionInformation = repo.getLatest(listName).futureValue.value
 
@@ -138,10 +138,10 @@ class VersionRepositorySpec
       val listName1          = ListName("1")
       val listName2          = ListName("2")
 
-      repo.save(messageInformation.copy(snapshotDate = snapshotDate), Set(listName1)).futureValue
-      repo.save(messageInformation.copy(snapshotDate = snapshotDate), Set(listName2)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = snapshotDate), Seq(listName1)).futureValue
+      repo.save(messageInformation.copy(snapshotDate = snapshotDate), Seq(listName2)).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = snapshotDate), VersionId("1"), latestCreatedOn, Set(listName1))
+      val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = snapshotDate), VersionId("1"), latestCreatedOn, Seq(listName1))
 
       val result: VersionInformation = repo.getLatest(listName1).futureValue.value
 
@@ -163,18 +163,18 @@ class VersionRepositorySpec
       when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listNames1         = Set(ListName("1"), ListName("2"))
-      val listNames2         = Set(ListName("a"), ListName("b"))
-      val listNames3         = Set(ListName("c"), ListName("d"))
+      val listNames1         = Seq(ListName("1"), ListName("2"))
+      val listNames2         = Seq(ListName("a"), ListName("b"))
+      val listNames3         = Seq(ListName("c"), ListName("d"))
 
       repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), listNames1).futureValue
       repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames2).futureValue
       repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames3).futureValue
 
-      val result = repo.getLatest().futureValue
-      val expectedResult: Set[ListName] = listNames2 ++ listNames3
+      val result         = repo.getLatest().futureValue
+      val expectedResult = listNames2 ++ listNames3
 
-      result mustEqual expectedResult
+      result must contain theSameElementsAs expectedResult
     }
   }
 

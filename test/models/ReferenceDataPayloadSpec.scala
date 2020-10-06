@@ -24,7 +24,6 @@ import org.scalacheck.Gen
 import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.Json
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
@@ -46,9 +45,9 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
               data =>
                 val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                val expectedResult = referenceDataPayload.toIterable(versionId).flatMap(_.map(_.listName)).toSet
+                val expectedResult = referenceDataPayload.toIterable(versionId).flatMap(_.map(_.listName)).toSeq.distinct.toSet
 
-                referenceDataPayload.listNames mustEqual expectedResult
+                referenceDataPayload.listNames.toSet mustEqual expectedResult
             }
         }
       }

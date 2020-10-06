@@ -73,7 +73,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
           verify(repository, times(2)).insertList(any())
-          verify(versionRepository, times(1)).save(any(), eqTo(payload.listNames.toSet))
+          verify(versionRepository, times(1)).save(any(), eqTo(payload.listNames))
       }
     }
 

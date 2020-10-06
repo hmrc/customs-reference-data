@@ -52,7 +52,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService {
 
   def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
-    versionRepository.save(payload.messageInformation, payload.listNames.toSet).flatMap {
+    versionRepository.save(payload.messageInformation, payload.listNames).flatMap {
       versionId =>
         Future
           .sequence(

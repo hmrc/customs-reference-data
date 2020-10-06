@@ -46,7 +46,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation, listNames: Set[ListName]): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, listNames: Seq[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
     val versionInformation   = VersionInformation(messageInformation, versionId, time, listNames)
@@ -70,29 +70,13 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
         .one[VersionInformation]
     )
 
-  def getLatest(): Future[Seq[ListName]] = {
-
-    val query = Json.obj("snapshotDate" -> ???)
-
+  def getLatest(): Future[Seq[ListName]] =
     versionCollection().flatMap {
-      x =>
-        import x.BatchCommands.AggregationFramework.Match
-        import x.BatchCommands.AggregationFramework.Project
-
-        x.aggregatorContext[ListName](
-          Match(query),
-          List(
-            Project(
-              Json.obj(
-                "_id"      -> JsNumber(0),
-                "listName" -> JsNumber(1)
-              )
-            )
-          )
-        ).prepared
-          .cursor
-          .collect[Seq](-1, Cursor.FailOnError())
+      _.find(Json.obj(), None)
+        .sort(Json.obj("snapshotDate" -> -1))
+        .cursor[VersionInformation]()
+        .collect[Seq](-1, Cursor.FailOnError[Seq[VersionInformation]]())
+        .map(_.take(2).map(_.listNames).foldLeft(Seq.empty[ListName])(_ ++ _))
     }
-  }
 
 }
