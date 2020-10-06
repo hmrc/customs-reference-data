@@ -24,8 +24,10 @@ import models.GenericListItem
 import models.ListName
 import models.VersionId
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import play.api.libs.json.Json
 import reactivemongo.akkastream.cursorProducer
+import reactivemongo.api.ReadConcern
 import reactivemongo.api.commands.MultiBulkWriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import repositories.ListRepository.FailedWrite
@@ -53,10 +55,8 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
     listCollection().flatMap {
-      _.find(Json.toJsObject(version), None)
-        .cursor[ListName]()
-        .documentSource()
-        .runWith(Sink.seq[ListName])
+      _.distinct[String, Seq]("listName", Some(Json.toJsObject(version)), ReadConcern.Local, None)
+        .map(_.map(ListName(_)))
     }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =

@@ -97,7 +97,7 @@ class VersionRepositorySpec
     }
   }
 
-  "getLatest" - {
+  "getLatest with listName filter" - {
     "returns the latest version for a listName by snapshotDate" in {
       val repo = app.injector.instanceOf[VersionRepository]
 
@@ -144,6 +144,35 @@ class VersionRepositorySpec
       val expectedVersionInformation = VersionInformation(messageInformation.copy(snapshotDate = snapshotDate), VersionId("1"), latestCreatedOn, Set(listName1))
 
       val result: VersionInformation = repo.getLatest(listName1).futureValue.value
+
+      result mustEqual expectedVersionInformation
+    }
+  }
+
+  "getLatest" - {
+    "returns the latest version by snapshotDate" in {
+      val repo = app.injector.instanceOf[VersionRepository]
+
+      val latestSnapshotDate = LocalDate.now()
+      val latestCreatedOn    = LocalDateTime.now()
+
+      val oldSnapshotDate = LocalDate.now().minusDays(1)
+      val oldCreatedOn    = LocalDateTime.now().minusDays(1)
+
+      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"))
+      when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
+
+      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
+      val listNames1         = Set(ListName("a"), ListName("b"))
+      val listNames2         = Set(ListName("1"), ListName("2"))
+
+      repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), listNames1).futureValue
+      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames2).futureValue
+
+      val expectedVersionInformation =
+        VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, listNames2)
+
+      val result = repo.getLatest().futureValue.value
 
       result mustEqual expectedVersionInformation
     }

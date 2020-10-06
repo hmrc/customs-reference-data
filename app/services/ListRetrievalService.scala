@@ -40,7 +40,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
 
   def getResourceLinks(): Future[Option[ResourceLinks]] =
     (for {
-      versionInformation <- OptionT(versionRepository.getLatest(???))
+      versionInformation <- OptionT(versionRepository.getLatest())
       listNames          <- OptionT.liftF(listRepository.getListNames(versionInformation.versionId))
       if listNames.nonEmpty
     } yield {

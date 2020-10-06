@@ -59,4 +59,12 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
         .sort(Json.obj("snapshotDate" -> -1))
         .one[VersionInformation]
     )
+
+  def getLatest(): Future[Option[VersionInformation]] =
+    versionCollection().flatMap(
+      _.find(Json.obj(), None)
+        .sort(Json.obj("snapshotDate" -> -1))
+        .one[VersionInformation]
+    )
+
 }
