@@ -25,17 +25,18 @@ case class ResourceLinks(_links: Map[String, JsObject], metaData: MetaData)
 
 object ResourceLinks {
 
-  def apply(listNames: Seq[ListName], metaData: MetaData): ResourceLinks =
+  def apply(listNames: Set[ListName], metaData: MetaData): ResourceLinks =
     new ResourceLinks(linkFormatter(listNames), metaData)
 
-  private def linkFormatter(listNames: Seq[ListName]): Map[String, JsObject] = {
+  private def linkFormatter(listNames: Set[ListName]): Map[String, JsObject] = {
 
     val buildUri: String => String =
       uri => s"/customs-reference-data/$uri"
 
+    //TODO fix ordering here
     val resourceLinks: Seq[Map[String, JsObject]] = listNames.zipWithIndex.map {
       case (listName, index) => Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString(buildUri(listName.listName)))))
-    }
+    }.toSeq
 
     Map("self" -> JsObject(Seq("href" -> JsString(buildUri("lists"))))) ++
       resourceLinks.flatten

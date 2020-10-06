@@ -39,13 +39,13 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
     }).value
 
   def getResourceLinks(): Future[Option[ResourceLinks]] =
-    (for {
-      versionInformation <- OptionT(versionRepository.getLatest())
-      listNames          <- OptionT.liftF(listRepository.getListNames(versionInformation.versionId))
-      if listNames.nonEmpty
-    } yield {
-      val metaData = MetaData(versionInformation)
-      ResourceLinks(listNames, metaData)
-    }).value
-
+    (
+      for {
+        latestVersion <- OptionT(versionRepository.getLatest())
+        if latestVersion.listNames.nonEmpty
+      } yield {
+        val metaData = MetaData(latestVersion)
+        ResourceLinks(latestVersion.listNames, metaData)
+      }
+    ).value
 }
