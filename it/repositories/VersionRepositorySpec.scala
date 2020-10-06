@@ -171,7 +171,7 @@ class VersionRepositorySpec
       repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames2).futureValue
       repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames3).futureValue
 
-      val result: Set[ListName]         = repo.getLatest().futureValue.value.listNames
+      val result = repo.getLatest().futureValue
       val expectedResult: Set[ListName] = listNames2 ++ listNames3
 
       result mustEqual expectedResult

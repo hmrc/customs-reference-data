@@ -30,10 +30,9 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit def arbitraryResourceLinks: Arbitrary[ResourceLinks] =
     Arbitrary {
       for {
-        linkKey  <- arbitrary[String]
-        link     <- arbitrarySimpleJsObject.arbitrary
-        metaData <- arbitrary(arbitraryMetaData)
-      } yield ResourceLinks(_links = Map(linkKey -> link), metaData = metaData)
+        linkKey <- arbitrary[String]
+        link    <- arbitrarySimpleJsObject.arbitrary
+      } yield ResourceLinks(_links = Map(linkKey -> link))
     }
 
   implicit val arbitraryListName: Arbitrary[ListName] =

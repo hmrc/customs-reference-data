@@ -44,7 +44,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
     "must" - {
 
-      "return None if no links exist" in {
+      "return a None list if no listnames are found" in {
 
         val mockVersionRepository = mock[VersionRepository]
 
@@ -54,11 +54,11 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           )
         )
 
-        val versionInformationWithEmptyList = arbitrary[VersionInformation].sample.value.copy(listNames = Set.empty)
+        val listNames = Future.successful(Seq.empty[ListName])
 
         running(app) {
           application =>
-            when(mockVersionRepository.getLatest()).thenReturn(Future.successful(Some(versionInformationWithEmptyList)))
+            when(mockVersionRepository.getLatest()).thenReturn(listNames)
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -66,7 +66,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
         }
       }
 
-      "return None if no version information is found" in {
+      "return list of list names" in {
 
         val mockVersionRepository = mock[VersionRepository]
 
@@ -78,47 +78,22 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockVersionRepository.getLatest()).thenReturn(Future.successful(None))
-
-            val service = application.injector.instanceOf[ListRetrievalService]
-
-            service.getResourceLinks().futureValue mustBe None
-        }
-      }
-
-      "return ListRepository if links exist" in {
-
-        val mockVersionRepository = mock[VersionRepository]
-
-        val app = baseApplicationBuilder.andThen(
-          _.overrides(
-            bind[VersionRepository].toInstance(mockVersionRepository)
-          )
-        )
-
-        running(app) {
-          application =>
-            forAll(arbitrary[VersionInformation]) {
-
-              versionInformation =>
-                when(mockVersionRepository.getLatest()).thenReturn(Future.successful(Some(versionInformation)))
+            forAll(listWithMaxLength[ListName](10)) {
+              listNames =>
+                when(mockVersionRepository.getLatest()).thenReturn(Future.successful(listNames))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
-                val metaData = MetaData(versionInformation.versionId.versionId, versionInformation.messageInformation.snapshotDate)
-
-                val resourceLinks: Seq[Map[String, JsObject]] = versionInformation.listNames.zipWithIndex.map {
-                  case (listName, index) =>
-                    Map(s"list${index + 1}" -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + listName.listName))))
-                }.toSeq
+                val resourceLinks: Seq[Map[String, JsObject]] = listNames.map {
+                  listName =>
+                    Map(listName.listName -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + listName.listName))))
+                }
 
                 val links = Map(
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
 
-                service.getResourceLinks().futureValue mustBe Some(
-                  ResourceLinks(_links = links, metaData = metaData)
-                )
+                service.getResourceLinks().futureValue mustBe Some(ResourceLinks(_links = links))
             }
 
         }

@@ -25,11 +25,16 @@ import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
-import reactivemongo.api.{Cursor, ReadConcern}
-import reactivemongo.api.bson.{BSONDocument, BSONString}
+import reactivemongo.api.Cursor
+import reactivemongo.api.ReadConcern
+import reactivemongo.api.bson.BSONDocument
+import reactivemongo.api.bson.BSONString
 import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.commands.WriteResult
-import reactivemongo.core.commands.{Ascending, Match, Project, Sort}
+import reactivemongo.core.commands.Ascending
+import reactivemongo.core.commands.Match
+import reactivemongo.core.commands.Project
+import reactivemongo.core.commands.Sort
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import services.TimeService
 
@@ -71,16 +76,20 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
 
     versionCollection().flatMap {
       x =>
-        import x.BatchCommands.AggregationFramework.{Match, Project}
+        import x.BatchCommands.AggregationFramework.Match
+        import x.BatchCommands.AggregationFramework.Project
 
         x.aggregatorContext[ListName](
-          Match(query), List(Project(
-            Json.obj(
-              "_id" -> JsNumber(0),
-              "listName" -> JsNumber(1)
-            )))
-        )
-          .prepared
+          Match(query),
+          List(
+            Project(
+              Json.obj(
+                "_id"      -> JsNumber(0),
+                "listName" -> JsNumber(1)
+              )
+            )
+          )
+        ).prepared
           .cursor
           .collect[Seq](-1, Cursor.FailOnError())
     }
