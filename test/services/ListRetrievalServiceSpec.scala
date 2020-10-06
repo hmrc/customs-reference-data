@@ -60,7 +60,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockVersionRepository.getLatest(???)).thenReturn(Future.successful(Some(versionInformation)))
+            when(mockVersionRepository.getLatest()).thenReturn(Future.successful(Some(versionInformation)))
             when(mockListRepository.getListNames(any())).thenReturn(Future.successful(Nil))
 
             val service = application.injector.instanceOf[ListRetrievalService]
@@ -81,7 +81,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockVersionRepository.getLatest(???)).thenReturn(Future.successful(None))
+            when(mockVersionRepository.getLatest()).thenReturn(Future.successful(None))
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -106,7 +106,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
             forAll(listWithMaxLength(5)(arbitraryListName), arbitrary[VersionInformation]) {
 
               (listNames, versionInformation) =>
-                when(mockVersionRepository.getLatest(???)).thenReturn(Future.successful(Some(versionInformation)))
+                when(mockVersionRepository.getLatest()).thenReturn(Future.successful(Some(versionInformation)))
                 when(mockListRepository.getListNames(any())).thenReturn(Future.successful(listNames))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
