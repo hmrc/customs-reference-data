@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package services
+package services.ingestion
 
 import base.SpecBase
 import javax.inject.Inject

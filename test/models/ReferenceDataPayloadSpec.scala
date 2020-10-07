@@ -34,6 +34,25 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       referenceDataListsPayload.messageInformation mustBe a[MessageInformation]
     }
 
+    "listNames" - {
+      "returns all the listNames for all lists" in {
+
+        val versionId = VersionId("1")
+
+        forAll(Gen.choose(1, 5), Gen.choose(1, 5)) {
+          (numberOfLists, numberOfListItems) =>
+            forAll(genReferenceDataListsJson(numberOfLists, numberOfListItems)) {
+              data =>
+                val referenceDataPayload = ReferenceDataListsPayload(data)
+
+                val expectedResult = referenceDataPayload.toIterable(versionId).flatMap(_.map(_.listName)).toSeq.distinct.toSet
+
+                referenceDataPayload.listNames.toSet mustEqual expectedResult
+            }
+        }
+      }
+    }
+
     "toIterable" - {
       "returns an iterator of the lists with list entries" in {
 

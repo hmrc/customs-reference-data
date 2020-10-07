@@ -32,16 +32,15 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.ReferenceDataService.DataProcessingResult._
-import services.ReferenceDataService
-import services.SchemaValidationService
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import services.ingestion.ReferenceDataService
 
 import scala.concurrent.Future
 
 class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val mockReferenceDataService    = mock[ReferenceDataService]
-  val mockSchemaValidationService = mock[SchemaValidationService]
+  val mockReferenceDataService = mock[ReferenceDataService]
 
   private val testJson = Json.obj("foo" -> "bar")
 
@@ -117,7 +116,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    Mockito.reset(mockReferenceDataService, mockSchemaValidationService)
+    Mockito.reset(mockReferenceDataService)
   }
 
   // Do not use directly use `app` instead
@@ -125,8 +124,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
     new GuiceApplicationBuilder()
       .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
       .overrides(
-        bind[ReferenceDataService].toInstance(mockReferenceDataService),
-        bind[SchemaValidationService].toInstance(mockSchemaValidationService)
+        bind[ReferenceDataService].toInstance(mockReferenceDataService)
       )
       .build()
 }

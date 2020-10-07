@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package services
+package services.ingestion
 
 import base.SpecBase
 import generators.ModelGenerators.genReferenceDataListsPayload
 import models.OtherError
 import models.VersionId
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
 import org.scalatest.TestData
@@ -31,11 +32,12 @@ import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import repositories.ListRepository.PartialWriteFailure
-import repositories.ListRepository.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionRepository
-import services.ReferenceDataService.DataProcessingResult._
+import repositories.ListRepository.PartialWriteFailure
+import repositories.ListRepository.SuccessfulWrite
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -64,13 +66,14 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
-          when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
+          when(versionRepository.save(any(), any())).thenReturn(Future.successful(versionId))
 
-          val service = new ReferenceDataService(repository, versionRepository, validationService)
+          val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
           verify(repository, times(2)).insertList(any())
+          verify(versionRepository, times(1)).save(any(), eqTo(payload.listNames))
       }
     }
 
@@ -86,9 +89,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
-          when(versionRepository.save(any())).thenReturn(Future.successful(versionId))
+          when(versionRepository.save(any(), any())).thenReturn(Future.successful(versionId))
 
-          val service = new ReferenceDataService(repository, versionRepository, validationService)
+          val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 
           service.insert(payload).futureValue mustBe DataProcessingFailed
 

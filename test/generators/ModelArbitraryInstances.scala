@@ -30,14 +30,13 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit def arbitraryResourceLinks: Arbitrary[ResourceLinks] =
     Arbitrary {
       for {
-        linkKey  <- arbitrary[String]
-        link     <- arbitrarySimpleJsObject.arbitrary
-        metaData <- arbitrary(arbitraryMetaData)
-      } yield ResourceLinks(_links = Map(linkKey -> link), metaData = metaData)
+        linkKey <- arbitrary[String]
+        link    <- arbitrarySimpleJsObject.arbitrary
+      } yield ResourceLinks(_links = Map(linkKey -> link))
     }
 
   implicit val arbitraryListName: Arbitrary[ListName] =
-    Arbitrary(arbitrary[String].map(ListName(_)))
+    Arbitrary(BaseGenerators.stringsWithMaxLength(50).map(ListName(_)))
 
   implicit val arbitraryMetaData: Arbitrary[MetaData] =
     Arbitrary {
@@ -53,7 +52,6 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         listName <- arbitrary[ListName]
         metaData <- arbitrary[MetaData]
       } yield ReferenceDataList(listName, metaData, Nil)
-      //TODO: This needs updating when we understand what data will be
     }
 
   implicit val arbitraryMessageInformation: Arbitrary[MessageInformation] =
@@ -88,7 +86,8 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         mi  <- arbitrary[MessageInformation]
         v   <- arbitrary[VersionId]
         ldt <- ldt.arbitrary
-      } yield VersionInformation(mi, v, ldt)
+        vf  <- arbitrary[ListName]
+      } yield VersionInformation(mi, v, ldt, Seq(vf))
     }
 
   implicit def arbitraryReferenceDataPayload: Arbitrary[ReferenceDataPayload] =

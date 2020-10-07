@@ -19,16 +19,13 @@ package controllers
 import javax.inject.Inject
 import models._
 import play.api.Logger
-import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import play.api.mvc.RawBuffer
-import services.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
-import services.GZipService
-import services.ReferenceDataService
-import services.SchemaValidationService
+import services.ingestion.ReferenceDataService
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
+import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext

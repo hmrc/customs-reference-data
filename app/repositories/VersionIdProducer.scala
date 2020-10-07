@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package services
+package repositories
 
 import java.util.UUID
 
+import com.google.inject.ImplementedBy
+import javax.inject.Singleton
 import models.VersionId
 
+@ImplementedBy(classOf[DefaultVersionIdProducer])
 trait VersionIdProducer extends (() => VersionId)
 
-object DefaultVersionIdProducer extends VersionIdProducer {
+@Singleton
+private[repositories] class DefaultVersionIdProducer extends VersionIdProducer {
   override def apply(): VersionId = VersionId(UUID.randomUUID().toString())
 }

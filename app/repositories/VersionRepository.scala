@@ -20,14 +20,23 @@ import java.time.LocalDateTime
 
 import com.google.inject.Inject
 import javax.inject.Singleton
+import models.ListName
 import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
+import reactivemongo.api.Cursor
+import reactivemongo.api.ReadConcern
+import reactivemongo.api.bson.BSONDocument
+import reactivemongo.api.bson.BSONString
+import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.commands.WriteResult
+import reactivemongo.core.commands.Ascending
+import reactivemongo.core.commands.Match
+import reactivemongo.core.commands.Project
+import reactivemongo.core.commands.Sort
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import services.TimeService
-import services.VersionIdProducer
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -37,10 +46,10 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, listNames: Seq[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
-    val versionInformation   = VersionInformation(messageInformation, versionId, time)
+    val versionInformation   = VersionInformation(messageInformation, versionId, time, listNames)
 
     versionCollection().flatMap {
       _.insert(false)
@@ -54,8 +63,20 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
     }
   }
 
-  def getLatest: Future[Option[VersionInformation]] =
+  def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     versionCollection().flatMap(
-      _.find(Json.obj(), None).sort(Json.obj("snapshotDate" -> -1)).one[VersionInformation]
+      _.find(Json.obj("listNames.listName" -> listName.listName), None)
+        .sort(Json.obj("snapshotDate" -> -1))
+        .one[VersionInformation]
     )
+
+  def getLatest(): Future[Seq[ListName]] =
+    versionCollection().flatMap {
+      _.find(Json.obj(), None)
+        .sort(Json.obj("snapshotDate" -> -1))
+        .cursor[VersionInformation]()
+        .collect[Seq](-1, Cursor.FailOnError[Seq[VersionInformation]]())
+        .map(_.take(2).map(_.listNames).foldLeft(Seq.empty[ListName])(_ ++ _))
+    }
+
 }

@@ -136,3 +136,5 @@ trait BaseGenerators {
     } yield listOfCharNum.mkString.toInt
 
 }
+
+object BaseGenerators extends BaseGenerators

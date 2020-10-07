@@ -21,8 +21,6 @@ import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 import repositories.ListCollectionIndexManager
 import repositories.VersionCollectionIndexManager
-import services.DefaultVersionIdProducer
-import services.VersionIdProducer
 
 class Module
     extends SimpleModule(
@@ -43,7 +41,6 @@ class Module
             Modules that don't need to be eagerly created
          */
         val regularModules = Seq(
-          bind[VersionIdProducer].toInstance(DefaultVersionIdProducer),
           bind[JsonValidationService].toInstance(jsonValidationService)
         )
 
