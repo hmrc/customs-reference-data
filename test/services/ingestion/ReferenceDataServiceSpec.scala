@@ -66,14 +66,14 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
-          when(versionRepository.save(any(), any())).thenReturn(Future.successful(versionId))
+          when(versionRepository.save(any(), any(), any())).thenReturn(Future.successful(versionId))
 
           val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 
           service.insert(payload).futureValue mustBe DataProcessingSuccessful
 
           verify(repository, times(2)).insertList(any())
-          verify(versionRepository, times(1)).save(any(), eqTo(payload.listNames))
+          verify(versionRepository, times(1)).save(any(), any(), eqTo(payload.listNames))
       }
     }
 
@@ -89,7 +89,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
-          when(versionRepository.save(any(), any())).thenReturn(Future.successful(versionId))
+          when(versionRepository.save(any(), any(), any())).thenReturn(Future.successful(versionId))
 
           val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 

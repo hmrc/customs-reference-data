@@ -23,6 +23,7 @@ import models.JsonSchemaProvider
 import models.ListName
 import models.ReferenceDataPayload
 import play.api.libs.json.JsObject
+import repositories.ApiDataSource.RefDataFeed
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
@@ -52,7 +53,8 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService {
 
   def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
-    versionRepository.save(payload.messageInformation, payload.listNames).flatMap {
+    // get feed here
+    versionRepository.save(payload.messageInformation, RefDataFeed, payload.listNames).flatMap {
       versionId =>
         Future
           .sequence(

@@ -23,8 +23,15 @@ import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 import play.api.libs.json.__
 import play.api.libs.functional.syntax._
+import repositories.ApiDataSource
 
-case class VersionInformation(messageInformation: MessageInformation, versionId: VersionId, createdOn: LocalDateTime, listNames: Seq[ListName])
+case class VersionInformation(
+  messageInformation: MessageInformation,
+  versionId: VersionId,
+  createdOn: LocalDateTime,
+  source: ApiDataSource,
+  listNames: Seq[ListName]
+)
 
 object VersionInformation extends MongoDateTimeFormats {
 
@@ -33,6 +40,7 @@ object VersionInformation extends MongoDateTimeFormats {
       __.write[MessageInformation] and
         __.write[VersionId] and
         (__ \ "createdOn").write[LocalDateTime] and
+        (__ \ "source").write[ApiDataSource] and
         (__ \ "listNames").write[Seq[ListName]]
     )(unlift(VersionInformation.unapply))
 
@@ -41,6 +49,7 @@ object VersionInformation extends MongoDateTimeFormats {
       __.read[MessageInformation] and
         __.read[VersionId] and
         (__ \ "createdOn").read[LocalDateTime] and
+        (__ \ "source").read[ApiDataSource] and
         (__ \ "listNames").read[Seq[ListName]]
     )(VersionInformation.apply _)
 }
