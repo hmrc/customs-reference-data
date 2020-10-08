@@ -26,15 +26,7 @@ import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
 import reactivemongo.api.Cursor
-import reactivemongo.api.ReadConcern
-import reactivemongo.api.bson.BSONDocument
-import reactivemongo.api.bson.BSONString
-import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.commands.WriteResult
-import reactivemongo.core.commands.Ascending
-import reactivemongo.core.commands.Match
-import reactivemongo.core.commands.Project
-import reactivemongo.core.commands.Sort
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import services.TimeService
 

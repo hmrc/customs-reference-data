@@ -27,6 +27,7 @@ import services.ingestion.ReferenceDataService
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import config.ReferenceDataControllerParserConfig
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -34,16 +35,19 @@ import scala.concurrent.Future
 class ReferenceDataController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
+  parseConfig: ReferenceDataControllerParserConfig,
   cTCUP06Schema: CTCUP06Schema,
   cTCUP08Schema: CTCUP08Schema
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
+  import parseConfig._
+
   private val referenceDataListsLogger = Logger("ReferenceDataLists")
   private val customsOfficeListsLogger = Logger("CustomsOfficeLists")
 
   def referenceDataLists(): Action[RawBuffer] =
-    Action(parse.raw(1024 * 400)).async {
+    Action(referenceDataParser(parse)).async {
 
       implicit request =>
         val requestBody = request.body.asBytes().map(_.toArray) match {
@@ -68,7 +72,7 @@ class ReferenceDataController @Inject() (
     }
 
   def customsOfficeLists(): Action[RawBuffer] =
-    Action(parse.raw(1024 * 400)).async {
+    Action(customsOfficeParser(parse)).async {
       implicit request =>
         val requestBody = request.body.asBytes().map(_.toArray) match {
           case Some(body) => referenceDataService.validateAndDecompress(cTCUP08Schema, body)
