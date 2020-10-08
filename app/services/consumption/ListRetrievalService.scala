@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package services
+package services.consumption
 
 import cats.data.OptionT
 import cats.implicits._

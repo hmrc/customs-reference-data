@@ -28,7 +28,7 @@ import play.api.libs.json._
 import reactivemongo.api.Cursor
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import services.TimeService
+import services.consumption.TimeService
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
