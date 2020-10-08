@@ -17,6 +17,7 @@
 package config
 
 import models.CTCUP06Schema
+import models.CTCUP08Schema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 import repositories.ListCollectionIndexManager
@@ -33,8 +34,10 @@ class Module
          */
         val eagerModules = Seq(
           bind[CTCUP06Schema].toSelf,
+          bind[CTCUP08Schema].toSelf,
           bind[ListCollectionIndexManager].toSelf,
-          bind[VersionCollectionIndexManager].toSelf
+          bind[VersionCollectionIndexManager].toSelf,
+          bind[ReferenceDataControllerParserConfig].toSelf
         ).map(_.eagerly())
 
         /*
