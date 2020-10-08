@@ -39,7 +39,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
     }).value
 
   def getResourceLinks(): Future[Option[ResourceLinks]] =
-    versionRepository.getLatest().map {
+    versionRepository.getLatestListNames().map {
       listNames =>
         if (listNames.nonEmpty)
           Some(ResourceLinks(listNames))

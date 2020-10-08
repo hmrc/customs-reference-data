@@ -149,30 +149,30 @@ class VersionRepositorySpec
     }
   }
 
-  "getLatest" - {
-    "returns all version with the latest snapshot date" in {
+  "getLatestListNames" - {
+    "returns listnames for the latest REF and COL by snapshotDate" in {
       val repo = app.injector.instanceOf[VersionRepository]
 
-      val latestSnapshotDate = LocalDate.now()
-      val latestCreatedOn    = LocalDateTime.now()
-
-      val oldSnapshotDate = LocalDate.now().minusDays(1)
-      val oldCreatedOn    = LocalDateTime.now().minusDays(1)
+      val latestSnapshotDate      = LocalDate.now()
+      val latestMessageInfomation = MessageInformation("messageId", latestSnapshotDate)
+      val oldMessageInfomation    = MessageInformation("messageId", latestSnapshotDate.minusDays(1))
 
       when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"), VersionId("3"))
-      when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
+      when(mockTimeService.now())
+        .thenReturn(LocalDateTime.now().minusDays(1))
+        .thenReturn(LocalDateTime.now().minusDays(1))
+        .thenReturn(LocalDateTime.now())
 
-      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listNames1         = Seq(ListName("1"), ListName("2"))
-      val listNames2         = Seq(ListName("a"), ListName("b"))
-      val listNames3         = Seq(ListName("c"), ListName("d"))
+      val listNames1 = Seq(ListName("a"), ListName("b"))
+      val listNames2 = Seq(ListName("1"), ListName("2"))
+      val listNames3 = Seq(ListName("1.1"), ListName("2.1"))
 
-      repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), listNames1).futureValue
-      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames2).futureValue
-      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), listNames3).futureValue
+      repo.save(oldMessageInfomation, listNames1).futureValue
+      repo.save(oldMessageInfomation, listNames2).futureValue
+      repo.save(latestMessageInfomation, listNames3).futureValue
 
-      val result         = repo.getLatest().futureValue
-      val expectedResult = listNames2 ++ listNames3
+      val result         = repo.getLatestListNames().futureValue
+      val expectedResult = listNames1 ++ listNames3
 
       result must contain theSameElementsAs expectedResult
     }
