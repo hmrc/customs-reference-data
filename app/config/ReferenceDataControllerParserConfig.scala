@@ -27,13 +27,13 @@ import play.api.mvc.RawBuffer
 class ReferenceDataControllerParserConfig @Inject() (config: Configuration)() {
 
   private val referenceDataLists =
-    config.getOptional[Long]("controllers.controllers.ReferenceDataController.referenceDataLists.maxLength")
+    config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.referenceDataLists.maxLength")
 
   def referenceDataParser(parse: PlayBodyParsers): BodyParser[RawBuffer] =
     referenceDataLists.fold(parse.raw)(maxLength => parse.raw(maxLength = maxLength))
 
   private val customsOfficeLists =
-    config.getOptional[Long]("controllers.controllers.ReferenceDataController.customsOfficeLists.maxLength")
+    config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.customsOfficeLists.maxLength")
 
   def customsOfficeParser(parse: PlayBodyParsers): BodyParser[RawBuffer] =
     customsOfficeLists.fold(parse.raw)(maxLength => parse.raw(maxLength = maxLength))

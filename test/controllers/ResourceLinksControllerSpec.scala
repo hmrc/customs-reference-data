@@ -29,7 +29,7 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.ListRetrievalService
+import services.consumption.ListRetrievalService
 
 import scala.concurrent.Future
 

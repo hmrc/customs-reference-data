@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package services
+package services.consumption
 
 import base.SpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
-import models.ListName
-import models.MetaData
-import models.ReferenceDataList
-import models.ResourceLinks
-import models.VersionInformation
+import models._
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._

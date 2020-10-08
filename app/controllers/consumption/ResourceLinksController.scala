@@ -14,33 +14,36 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.consumption
 
 import javax.inject.Inject
-import models.ListName
-import play.api.libs.json.JsValue
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents
-import services.ListRetrievalService
+import services.consumption.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
 
-class ListRetrievalController @Inject() (
+class ResourceLinksController @Inject() (
   cc: ControllerComponents,
   listRetrievalService: ListRetrievalService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName): Action[AnyContent] =
+  private val logger: Logger = Logger("ResourceLinksController")
+
+  def get: Action[AnyContent] =
     Action.async {
       implicit request =>
-        listRetrievalService.getList(listName).map {
-          case Some(referenceDataList) => Ok(Json.toJsObject(referenceDataList))
-          case None                    => NotFound
+        listRetrievalService.getResourceLinks().map {
+          case Some(resourceLinks) =>
+            Ok(Json.toJsObject(resourceLinks))
+          case None =>
+            logger.error("Empty resource links list")
+            InternalServerError
         }
     }
-
 }

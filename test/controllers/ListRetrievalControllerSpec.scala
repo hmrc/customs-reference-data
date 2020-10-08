@@ -35,7 +35,7 @@ import play.api.test.Helpers.GET
 import play.api.test.Helpers.route
 import play.api.test.Helpers.status
 import play.api.test.Helpers._
-import services.ListRetrievalService
+import services.consumption.ListRetrievalService
 
 import scala.concurrent.Future
 

@@ -22,8 +22,8 @@ import play.api.libs.json.Json
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
-import services.TimeService
 import org.mockito.Mockito.when
+import services.consumption.TimeService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

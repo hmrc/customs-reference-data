@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ingestion
 
+import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
 import models._
 import play.api.Logger
@@ -27,7 +28,6 @@ import services.ingestion.ReferenceDataService
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import config.ReferenceDataControllerParserConfig
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
