@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ingestion
 
 import akka.util.ByteString
 import base.SpecBase
@@ -32,13 +32,13 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.ingestion.ReferenceDataService
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
-import services.ingestion.ReferenceDataService
 
 import scala.concurrent.Future
 
-class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
+class ReferenceDataListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
   val mockReferenceDataService = mock[ReferenceDataService]
 
@@ -47,7 +47,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
   "referenceDataLists" - {
 
     def fakeRequest: FakeRequest[AnyContentAsRaw] =
-      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataController.referenceDataLists().url)
+      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataListController.referenceDataLists().url)
         .withRawBody(ByteString(testJson.toString.getBytes))
 
     "returns ACCEPTED when the data has been decompressed, validated and processed" in {
@@ -78,40 +78,6 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
       contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
     }
 
-  }
-
-  "customsOfficeLists" - {
-    def fakeRequest: FakeRequest[AnyContentAsRaw] =
-      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataController.customsOfficeLists().url)
-        .withRawBody(ByteString(testJson.toString.getBytes))
-
-    "returns ACCEPTED when the data has been decompressed, validated and processed" in {
-      when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
-
-      val result = route(app, fakeRequest).value
-
-      status(result) mustBe Status.ACCEPTED
-    }
-
-    "returns Bad Request when a decompression or validation error occurs" in {
-      when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Left(OtherError("error")))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingSuccessful))
-
-      val result = route(app, fakeRequest).value
-
-      status(result) mustBe Status.BAD_REQUEST
-    }
-
-    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
-      when(mockReferenceDataService.validateAndDecompress(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(any())).thenReturn(Future.successful(DataProcessingFailed))
-
-      val result = route(app, fakeRequest).value
-
-      status(result) mustBe Status.INTERNAL_SERVER_ERROR
-      contentAsJson(result) mustBe Json.toJsObject(OtherError("Failed in processing the data list"))
-    }
   }
 
   override def beforeEach(): Unit = {
