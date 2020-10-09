@@ -47,7 +47,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
   "referenceDataLists" - {
 
     def fakeRequest: FakeRequest[AnyContentAsRaw] =
-      FakeRequest(POST, routes.ReferenceDataController.referenceDataLists().url)
+      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataController.referenceDataLists().url)
         .withRawBody(ByteString(testJson.toString.getBytes))
 
     "returns ACCEPTED when the data has been decompressed, validated and processed" in {
@@ -82,7 +82,7 @@ class ReferenceDataControllerSpec extends SpecBase with GuiceOneAppPerSuite with
 
   "customsOfficeLists" - {
     def fakeRequest: FakeRequest[AnyContentAsRaw] =
-      FakeRequest(POST, routes.ReferenceDataController.customsOfficeLists().url)
+      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataController.customsOfficeLists().url)
         .withRawBody(ByteString(testJson.toString.getBytes))
 
     "returns ACCEPTED when the data has been decompressed, validated and processed" in {
