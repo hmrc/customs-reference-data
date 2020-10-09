@@ -69,7 +69,8 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
 
   def getLatestListNames(): Future[Seq[ListName]] = {
     case class ListNames(listNames: Seq[ListName])
-    implicit val writes = (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
+    implicit val reads: Reads[ListNames] =
+      (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
 
     def getListName(coll: JSONCollection)(source: ApiDataSource)(implicit q: Query[ApiDataSource], rds: Reads[ListName]): Future[Option[Seq[ListName]]] =
       coll
@@ -82,7 +83,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
       db    <- OptionT.liftF(versionCollection())
       list1 <- OptionT(getListName(db)(RefDataFeed))
       list2 <- OptionT(getListName(db)(ColDataFeed))
-    } yield list1 ++ list2).value.map(_.get) // TODO: get rid of this get
+    } yield list1 ++ list2).value.map(_.getOrElse(Seq.empty))
   }
 
 }
