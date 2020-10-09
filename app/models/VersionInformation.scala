@@ -23,7 +23,6 @@ import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 import play.api.libs.json.__
 import play.api.libs.functional.syntax._
-import repositories.ApiDataSource
 
 case class VersionInformation(
   messageInformation: MessageInformation,

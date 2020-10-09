@@ -30,8 +30,9 @@ import play.api.libs.json._
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
-import repositories.ApiDataSource.ColDataFeed
-import repositories.ApiDataSource.RefDataFeed
+import models.ApiDataSource
+import models.ApiDataSource.ColDataFeed
+import models.ApiDataSource.RefDataFeed
 import repositories.Query.QueryOps
 import services.consumption.TimeService
 
@@ -85,30 +86,5 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
       list2 <- OptionT(getListName(db)(ColDataFeed))
     } yield list1 ++ list2).value.map(_.getOrElse(Seq.empty))
   }
-
-}
-
-sealed trait ApiDataSource
-
-object ApiDataSource {
-  case object RefDataFeed extends ApiDataSource
-  case object ColDataFeed extends ApiDataSource
-
-  val fromString: PartialFunction[String, ApiDataSource] = {
-    case "RefDataFeed" => RefDataFeed
-    case "ColDataFeed" => ColDataFeed
-  }
-
-  implicit val jsonWrites: Writes[ApiDataSource] =
-    implicitly[Writes[String]]
-      .contramap(_.toString)
-
-  implicit val jsonReads: Reads[ApiDataSource] =
-    implicitly[Reads[String]]
-      .map(fromString.lift)
-      .map(_.get)
-
-  implicit val query: Query[ApiDataSource] =
-    Query.fromWrites(ads => Json.obj("source" -> ads))
 
 }

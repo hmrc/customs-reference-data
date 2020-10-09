@@ -18,11 +18,14 @@ package services.ingestion
 
 import base.SpecBase
 import generators.ModelGenerators.genReferenceDataListsPayload
+import models.ApiDataSource.RefDataFeed
 import models.OtherError
 import models.VersionId
+import models.ApiDataSource
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.OptionValues
 import org.scalatest.TestData
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
@@ -38,6 +41,7 @@ import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
+import generators.ModelArbitraryInstances._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -57,8 +61,8 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   "insert" - {
     "reports the processing as successful if all lists are successfully saved" in {
-      forAll(genReferenceDataListsPayload(numberOfLists = 2)) {
-        payload =>
+      forAll(genReferenceDataListsPayload(numberOfLists = 2), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
           val repository = mock[ListRepository]
           when(repository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
 
@@ -70,7 +74,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 
-          service.insert(payload).futureValue mustBe DataProcessingSuccessful
+          service.insert(apiDataSource, payload).futureValue mustBe DataProcessingSuccessful
 
           verify(repository, times(2)).insertList(any())
           verify(versionRepository, times(1)).save(any(), any(), eqTo(payload.listNames))
@@ -78,8 +82,8 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
     }
 
     "reports the processing as failed if any lists are not saved" in {
-      forAll(genReferenceDataListsPayload(numberOfLists = 2)) {
-        payload =>
+      forAll(genReferenceDataListsPayload(numberOfLists = 2), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
           val repository = mock[ListRepository]
           when(repository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite))
@@ -93,7 +97,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService)
 
-          service.insert(payload).futureValue mustBe DataProcessingFailed
+          service.insert(apiDataSource, payload).futureValue mustBe DataProcessingFailed
 
           verify(repository, times(2)).insertList(any())
       }

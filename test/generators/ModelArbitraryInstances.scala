@@ -24,7 +24,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
-import repositories.ApiDataSource
+import models.ApiDataSource
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 

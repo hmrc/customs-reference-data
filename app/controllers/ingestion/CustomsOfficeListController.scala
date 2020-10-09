@@ -18,6 +18,7 @@ package controllers.ingestion
 
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
+import models.ApiDataSource.ColDataFeed
 import models._
 import play.api.Logger
 import play.api.libs.json.Json
@@ -55,7 +56,7 @@ class CustomsOfficeListController @Inject() (
         requestBody match {
           case Right(jsObject) =>
             referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject))
+              .insert(ColDataFeed, ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>

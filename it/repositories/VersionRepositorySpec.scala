@@ -23,8 +23,8 @@ import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
 import org.mockito.Mockito.when
-import repositories.ApiDataSource.ColDataFeed
-import repositories.ApiDataSource.RefDataFeed
+import models.ApiDataSource.ColDataFeed
+import models.ApiDataSource.RefDataFeed
 import services.consumption.TimeService
 
 import scala.concurrent.ExecutionContext.Implicits.global

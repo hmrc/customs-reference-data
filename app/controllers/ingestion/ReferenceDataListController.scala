@@ -18,6 +18,7 @@ package controllers.ingestion
 
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
+import models.ApiDataSource.RefDataFeed
 import models.CTCUP06Schema
 import models.OtherError
 import models.ReferenceDataListsPayload
@@ -58,7 +59,7 @@ class ReferenceDataListController @Inject() (
         requestBody match {
           case Right(jsObject) =>
             referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject))
+              .insert(RefDataFeed, ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>
