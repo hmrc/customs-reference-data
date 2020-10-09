@@ -6,6 +6,7 @@ import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import models.VersionedListName
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.BeforeAndAfterAll
@@ -78,13 +79,13 @@ class ListRepositorySpec
       val listName   = arbitrary[ListName].sample.value
 
       val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList    = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
 
       seedData(database, targetList ++ otherList)
 
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result = repository.getListByName(listName, versionId)
+      val result = repository.getListByName(VersionedListName(listName, versionId))
 
       val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
 
@@ -98,14 +99,14 @@ class ListRepositorySpec
       val listName      = ListName("l1")
       val otherlistName = ListName("l2")
 
-      val targetList  = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList    = dataListV2.map(_.copy(listName = otherlistName)).map(Json.toJsObject(_))
+      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val otherList  = dataListV2.map(_.copy(listName = otherlistName)).map(Json.toJsObject(_))
 
       seedData(database, targetList ++ otherList)
 
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result = repository.getListByName(listName, versionId)
+      val result = repository.getListByName(VersionedListName(listName, versionId))
 
       val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
 
@@ -123,7 +124,7 @@ class ListRepositorySpec
 
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result = repository.getListByName(ListName("other"), versionId)
+      val result = repository.getListByName(VersionedListName(ListName("other"), versionId))
 
       result.futureValue mustBe Nil
     }
@@ -139,7 +140,7 @@ class ListRepositorySpec
 
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result = repository.getListByName(listName, VersionId("2"))
+      val result = repository.getListByName(VersionedListName(listName, VersionId("2")))
 
       result.futureValue mustBe Nil
     }

@@ -19,6 +19,7 @@ package models
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 import play.api.mvc._
+import repositories.Query
 
 case class ListName(listName: String)
 
@@ -34,4 +35,8 @@ object ListName {
     override def unbind(key: String, value: ListName): String =
       value.listName
   }
+
+  implicit val query: Query[ListName] =
+    listName => Json.obj("listNames.listName" -> listName.listName)
+
 }

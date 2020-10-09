@@ -19,7 +19,6 @@ package models
 import java.time.LocalDate
 
 import base.SpecBase
-import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
 class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {

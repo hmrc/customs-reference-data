@@ -29,8 +29,8 @@ object Query {
 
   def fromWrites[A: OWrites]: Query[A] = implicitly[OWrites[A]].writes _
 
-  implicit class QueryOps[A: Query](a: A) {
-    def query: JsObject = Query[A].toJson(a)
+  implicit class QueryOps[A](a: A) {
+    def query(implicit qa: Query[A]): JsObject = Query[A].toJson(a)
   }
 
 }

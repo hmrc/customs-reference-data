@@ -63,7 +63,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     versionCollection().flatMap(
-      _.find(Json.obj("listNames.listName" -> listName.listName), None)
+      _.find(listName.query, None)
         .sort(Json.obj("snapshotDate" -> -1))
         .one[VersionInformation]
     )
@@ -73,7 +73,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
     implicit val reads: Reads[ListNames] =
       (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
 
-    def getListName(coll: JSONCollection)(source: ApiDataSource)(implicit q: Query[ApiDataSource], rds: Reads[ListName]): Future[Option[Seq[ListName]]] =
+    def getListName(coll: JSONCollection)(source: ApiDataSource): Future[Option[Seq[ListName]]] =
       coll
         .find(source.query, None)
         .sort(Json.obj("snapshotDate" -> -1))

@@ -31,7 +31,8 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     (for {
       versionInformation <- OptionT(versionRepository.getLatest(listName))
-      referenceDataList  <- OptionT.liftF(listRepository.getListByName(listName, versionInformation.versionId))
+      versionedListName = VersionedListName(listName, versionInformation.versionId)
+      referenceDataList <- OptionT.liftF(listRepository.getListByName(versionedListName))
       if referenceDataList.nonEmpty
     } yield {
       val metaData: MetaData = MetaData(versionInformation)
