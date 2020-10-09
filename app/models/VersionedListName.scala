@@ -17,15 +17,11 @@
 package models
 
 import play.api.libs.json.Json
-import play.api.libs.json.OFormat
 import repositories.Query
 
-case class VersionId(versionId: String)
+case class VersionedListName(listName: ListName, versionId: VersionId)
 
-object VersionId {
+object VersionedListName {
 
-  implicit val formats: OFormat[VersionId] = Json.format[VersionId]
-
-  implicit val query: Query[VersionId] = Query.fromWrites
-
+  implicit val query: Query[VersionedListName] = v => Json.toJsObject(v.listName) ++ Json.toJsObject(v.versionId)
 }

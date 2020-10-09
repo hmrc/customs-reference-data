@@ -118,7 +118,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
             forAll(arbitrary[ReferenceDataList], arbitrary[VersionInformation]) {
               (referenceDataList, versionInformation) =>
                 when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
-                when(mockListRepository.getListByName(any(), eqTo(versionInformation.versionId))).thenReturn(Future.successful(List(JsObject.empty)))
+                when(mockListRepository.getListByName(any())).thenReturn(Future.successful(List(JsObject.empty)))
 
                 val listWithDate = referenceDataList
                   .copy(
@@ -150,7 +150,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(Nil))
+            when(mockListRepository.getListByName(any())).thenReturn(Future.successful(Nil))
 
             val service = application.injector.instanceOf[ListRetrievalService]
             val result  = service.getList(ListName("Invalid name"))

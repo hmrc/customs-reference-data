@@ -23,9 +23,13 @@ import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import models.VersionedListName
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.Json
+import play.api.libs.json.OWrites
+import play.api.libs.json.Writes
+import play.api.libs.functional.syntax._
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
 import reactivemongo.api.commands.MultiBulkWriteResult
@@ -34,6 +38,9 @@ import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
+import Query.QueryOps
+import play.api.libs.functional.FunctionalBuilder
+import play.api.libs.functional.~
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -41,21 +48,18 @@ import scala.concurrent.Future
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
 
-  def getListByName(listName: ListName, versionId: VersionId): Future[Seq[JsObject]] = {
-    val selector = Json.toJsObject(listName) ++ Json.toJsObject(versionId)
-
+  def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
     listCollection().flatMap {
-      _.find(selector, projection = Some(Json.obj("_id" -> 0)))
+      _.find(listNameDetails.query, projection = Some(Json.obj("_id" -> 0)))
         .cursor[JsObject]()
         .documentSource()
         .map(jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
         .runWith(Sink.seq[JsObject])
     }
-  }
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
     listCollection().flatMap {
-      _.distinct[String, Seq]("listName", Some(Json.toJsObject(version)), ReadConcern.Local, None)
+      _.distinct[String, Seq]("listName", Some(version.query), ReadConcern.Local, None)
         .map(_.map(ListName(_)))
     }
 
