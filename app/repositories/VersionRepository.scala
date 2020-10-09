@@ -18,6 +18,8 @@ package repositories
 
 import java.time.LocalDateTime
 
+import cats.data._
+import cats.implicits._
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.ListName
@@ -25,9 +27,13 @@ import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
-import reactivemongo.api.Cursor
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.JSONCollection
+import models.ApiDataSource
+import models.ApiDataSource.ColDataFeed
+import models.ApiDataSource.RefDataFeed
+import repositories.Query.QueryOps
 import services.consumption.TimeService
 
 import scala.concurrent.ExecutionContext
@@ -38,10 +44,10 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation, listNames: Seq[ListName]): Future[VersionId] = {
+  def save(messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[VersionId] = {
     val versionId: VersionId = versionIdProducer()
     val time: LocalDateTime  = timeService.now()
-    val versionInformation   = VersionInformation(messageInformation, versionId, time, listNames)
+    val versionInformation   = VersionInformation(messageInformation, versionId, time, feed, listNames)
 
     versionCollection().flatMap {
       _.insert(false)
@@ -62,13 +68,23 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, version
         .one[VersionInformation]
     )
 
-  def getLatest(): Future[Seq[ListName]] =
-    versionCollection().flatMap {
-      _.find(Json.obj(), None)
+  def getLatestListNames(): Future[Seq[ListName]] = {
+    case class ListNames(listNames: Seq[ListName])
+    implicit val reads: Reads[ListNames] =
+      (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
+
+    def getListName(coll: JSONCollection)(source: ApiDataSource)(implicit q: Query[ApiDataSource], rds: Reads[ListName]): Future[Option[Seq[ListName]]] =
+      coll
+        .find(source.query, None)
         .sort(Json.obj("snapshotDate" -> -1))
-        .cursor[VersionInformation]()
-        .collect[Seq](-1, Cursor.FailOnError[Seq[VersionInformation]]())
-        .map(_.take(2).map(_.listNames).foldLeft(Seq.empty[ListName])(_ ++ _))
-    }
+        .one[ListNames]
+        .map(_.map(_.listNames))
+
+    (for {
+      db    <- OptionT.liftF(versionCollection())
+      list1 <- OptionT(getListName(db)(RefDataFeed))
+      list2 <- OptionT(getListName(db)(ColDataFeed))
+    } yield list1 ++ list2).value.map(_.getOrElse(Seq.empty))
+  }
 
 }

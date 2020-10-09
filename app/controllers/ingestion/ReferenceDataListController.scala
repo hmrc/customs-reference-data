@@ -18,7 +18,10 @@ package controllers.ingestion
 
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
-import models._
+import models.ApiDataSource.RefDataFeed
+import models.CTCUP06Schema
+import models.OtherError
+import models.ReferenceDataListsPayload
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -32,19 +35,17 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ReferenceDataController @Inject() (
+class ReferenceDataListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
-  cTCUP06Schema: CTCUP06Schema,
-  cTCUP08Schema: CTCUP08Schema
+  cTCUP06Schema: CTCUP06Schema
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
   import parseConfig._
 
   private val referenceDataListsLogger = Logger("ReferenceDataLists")
-  private val customsOfficeListsLogger = Logger("CustomsOfficeLists")
 
   def referenceDataLists(): Action[RawBuffer] =
     Action(referenceDataParser(parse)).async {
@@ -58,7 +59,7 @@ class ReferenceDataController @Inject() (
         requestBody match {
           case Right(jsObject) =>
             referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject))
+              .insert(RefDataFeed, ReferenceDataListsPayload(jsObject))
               .map {
                 case DataProcessingSuccessful => Accepted
                 case DataProcessingFailed =>
@@ -67,30 +68,6 @@ class ReferenceDataController @Inject() (
               }
           case Left(error) =>
             referenceDataListsLogger.error(Json.toJsObject(error).toString())
-            Future.successful(BadRequest(Json.toJsObject(error)))
-        }
-    }
-
-  def customsOfficeLists(): Action[RawBuffer] =
-    Action(customsOfficeParser(parse)).async {
-      implicit request =>
-        val requestBody = request.body.asBytes().map(_.toArray) match {
-          case Some(body) => referenceDataService.validateAndDecompress(cTCUP08Schema, body)
-          case _          => Left(OtherError("Payload larger than memory threshold"))
-        }
-
-        requestBody match {
-          case Right(jsObject) =>
-            referenceDataService
-              .insert(ReferenceDataListsPayload(jsObject))
-              .map {
-                case DataProcessingSuccessful => Accepted
-                case DataProcessingFailed =>
-                  customsOfficeListsLogger.error("Failed to save the data list because of internal error")
-                  InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
-              }
-          case Left(error) =>
-            customsOfficeListsLogger.error(Json.toJsObject(error).toString())
             Future.successful(BadRequest(Json.toJsObject(error)))
         }
     }

@@ -24,6 +24,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
+import models.ApiDataSource
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
@@ -80,14 +81,18 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit val arbitraryVersionId: Arbitrary[VersionId] =
     Arbitrary(arbitrary[String].map(VersionId(_)))
 
+  implicit val arbitraryApiDataSource: Arbitrary[ApiDataSource] =
+    Arbitrary(Gen.oneOf(ApiDataSource.RefDataFeed, ApiDataSource.ColDataFeed))
+
   implicit def arbitraryVersionInformation(implicit ldt: Arbitrary[LocalDateTime]): Arbitrary[VersionInformation] =
     Arbitrary {
       for {
         mi  <- arbitrary[MessageInformation]
         v   <- arbitrary[VersionId]
         ldt <- ldt.arbitrary
+        api <- arbitrary[ApiDataSource]
         vf  <- arbitrary[ListName]
-      } yield VersionInformation(mi, v, ldt, Seq(vf))
+      } yield VersionInformation(mi, v, ldt, api, Seq(vf))
     }
 
   implicit def arbitraryReferenceDataPayload: Arbitrary[ReferenceDataPayload] =

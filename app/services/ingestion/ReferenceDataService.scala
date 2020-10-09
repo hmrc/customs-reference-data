@@ -18,9 +18,9 @@ package services.ingestion
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
+import models.ApiDataSource
 import models.ErrorDetails
 import models.JsonSchemaProvider
-import models.ListName
 import models.ReferenceDataPayload
 import play.api.libs.json.JsObject
 import repositories.ListRepository.FailedWrite
@@ -38,7 +38,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
 
-  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult]
 
   def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject]
 
@@ -51,8 +51,8 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
-  def insert(payload: ReferenceDataPayload): Future[DataProcessingResult] =
-    versionRepository.save(payload.messageInformation, payload.listNames).flatMap {
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult] =
+    versionRepository.save(payload.messageInformation, feed, payload.listNames).flatMap {
       versionId =>
         Future
           .sequence(

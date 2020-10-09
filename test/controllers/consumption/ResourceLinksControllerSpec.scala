@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.consumption
 
 import base.SpecBase
 import generators.ModelArbitraryInstances

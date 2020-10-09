@@ -4,6 +4,8 @@ import java.time.LocalDate
 
 import base.ItSpecBase
 import generators.BaseGenerators
+import models.ApiDataSource.ColDataFeed
+import models.ApiDataSource.RefDataFeed
 import models._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
@@ -55,7 +57,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(RefDataFeed, data).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
@@ -79,7 +81,7 @@ class InsertAndRetrieveIntegrationSpec
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
-    app.injector.instanceOf[ReferenceDataService].insert(data).futureValue
+    app.injector.instanceOf[ReferenceDataService].insert(ColDataFeed, data).futureValue
 
     val listRetrievalService = app.injector.instanceOf[ListRetrievalService]
 
