@@ -56,7 +56,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
 
-        val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(referenceDataList.id).url)
+        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
         when(mockListRetrievalService.getList(any()))
           .thenReturn(Future.successful(Some(referenceDataList)))
@@ -72,7 +72,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
       val listName = arbitrary[ListName].sample.value
 
-      val fakeRequest = FakeRequest(GET, routes.ListRetrievalController.get(listName).url)
+      val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(listName).url)
 
       when(mockListRetrievalService.getList(any()))
         .thenReturn(Future.successful(None))
