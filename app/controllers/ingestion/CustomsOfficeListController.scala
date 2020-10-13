@@ -16,6 +16,7 @@
 
 package controllers.ingestion
 
+import akka.util.ByteString
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
 import models.ApiDataSource.ColDataFeed
@@ -24,7 +25,6 @@ import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
-import play.api.mvc.RawBuffer
 import services.ingestion.ReferenceDataService
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
 import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
@@ -45,15 +45,10 @@ class CustomsOfficeListController @Inject() (
 
   private val customsOfficeListsLogger = Logger("CustomsOfficeLists")
 
-  def customsOfficeLists(): Action[RawBuffer] =
+  def customsOfficeLists(): Action[ByteString] =
     Action(customsOfficeParser(parse)).async {
       implicit request =>
-        val requestBody = request.body.asBytes().map(_.toArray) match {
-          case Some(body) => referenceDataService.validateAndDecompress(cTCUP08Schema, body)
-          case _          => Left(OtherError("Payload larger than memory threshold"))
-        }
-
-        requestBody match {
+        referenceDataService.validateAndDecompress(cTCUP08Schema, request.body.toArray) match {
           case Right(jsObject) =>
             referenceDataService
               .insert(ColDataFeed, ReferenceDataListsPayload(jsObject))

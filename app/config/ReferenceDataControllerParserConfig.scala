@@ -16,12 +16,12 @@
 
 package config
 
-import play.api.Configuration
+import akka.util.ByteString
 import javax.inject.Inject
 import javax.inject.Singleton
-import play.api.mvc.PlayBodyParsers
+import play.api.Configuration
 import play.api.mvc.BodyParser
-import play.api.mvc.RawBuffer
+import play.api.mvc.PlayBodyParsers
 
 @Singleton
 class ReferenceDataControllerParserConfig @Inject() (config: Configuration)() {
@@ -29,13 +29,13 @@ class ReferenceDataControllerParserConfig @Inject() (config: Configuration)() {
   private val referenceDataLists =
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.referenceDataLists.maxLength")
 
-  def referenceDataParser(parse: PlayBodyParsers): BodyParser[RawBuffer] =
-    referenceDataLists.fold(parse.raw)(maxLength => parse.raw(maxLength = maxLength))
+  def referenceDataParser(parse: PlayBodyParsers): BodyParser[ByteString] =
+    referenceDataLists.fold(parse.byteString)(maxLength => parse.byteString(maxLength = maxLength))
 
   private val customsOfficeLists =
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.customsOfficeLists.maxLength")
 
-  def customsOfficeParser(parse: PlayBodyParsers): BodyParser[RawBuffer] =
-    customsOfficeLists.fold(parse.raw)(maxLength => parse.raw(maxLength = maxLength))
+  def customsOfficeParser(parse: PlayBodyParsers): BodyParser[ByteString] =
+    customsOfficeLists.fold(parse.byteString)(maxLength => parse.byteString(maxLength = maxLength))
 
 }
