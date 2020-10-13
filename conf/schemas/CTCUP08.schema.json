@@ -229,8 +229,8 @@
         },
         "eMailAddress": {
           "type": "string",
-          "description": "The Email address",
-          "format": "email"
+          "description": "The Email addresses",
+          "examples": ["(ABC) abc@example.com, (DEF) abc@example.com"]
         },
         "geoInfoCode": {
           "type": "string",

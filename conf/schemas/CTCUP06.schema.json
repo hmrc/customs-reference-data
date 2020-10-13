@@ -222,8 +222,7 @@
                     "format": "date"
                   },
                   "code": {
-                    "type": "string",
-                    "pattern": "^[A-Z]{2}[0-9]{3}[A-Z]$"
+                    "type": "string"
                   },
                   "description": {
                     "$ref": "#/definitions/EntryDescription"
@@ -970,8 +969,7 @@
           "format": "date"
         },
         "code": {
-          "type": "string",
-          "pattern": "^[0-9]{5}$"
+          "type": "string"
         },
         "description": {
           "$ref": "#/definitions/EntryDescription"
@@ -2599,8 +2597,7 @@
           "pattern": "^[A-Z]{2}$"
         },
         "unLocodeId": {
-          "type": "string",
-          "pattern": "^[A-Z]{3}$"
+          "type": "string"
         },
         "unLocodeName": {
           "type": "string"
