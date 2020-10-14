@@ -53,9 +53,9 @@ class ReferenceDataListController @Inject() (
       implicit request =>
         (
           for {
-            validate              <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
-            referenceDataPayload  = ReferenceDataListsPayload(validate)
-            insert                <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
+            validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
+            referenceDataPayload = ReferenceDataListsPayload(validate)
+            insert <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
           } yield insert
         ).value.map {
           case Right(_) => Accepted

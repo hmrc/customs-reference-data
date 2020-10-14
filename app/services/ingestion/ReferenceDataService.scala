@@ -18,13 +18,7 @@ package services.ingestion
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
-import models.ApiDataSource
-import models.ErrorDetails
-import models.JsonSchemaProvider
-import models.ListName
-import models.OtherError
-import models.ReferenceDataPayload
-import models.WriteError
+import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import repositories.ListRepository.FailedWrite
@@ -32,9 +26,6 @@ import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionRepository
-import services.ingestion.ReferenceDataService.DataProcessingResult
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -66,14 +57,10 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
           )
           .map(
             _.foldLeft[Option[Seq[ListName]]](None) {
-              case (None, SuccessfulWrite)                           => None
-              case (Some(errors), SuccessfulWrite)                   => Some(errors)
-              case (None, partialError: PartialWriteFailure)         => Some(Seq(partialError.listName))
-              case (Some(errors), partialError: PartialWriteFailure) => Some(errors :+ partialError.listName)
-              case (Some(errors), FailedWrite(listName))             => Some(errors :+ listName)
-              case (None, FailedWrite(listName))                     => Some(Seq(listName))
-            }.map(_.foldLeft("Failed to insert the following lists: ")((x, y) => x ++ s", ${y.listName}"))
-              .map(WriteError(_))
+              case (errors, SuccessfulWrite)                  => errors
+              case (errors, PartialWriteFailure(listName, _)) => errors.orElse(Some(Seq())).map(_ :+ listName)
+              case (errors, FailedWrite(listName))            => errors.orElse(Some(Seq())).map(_ :+ listName)
+            }.map(x => WriteError(x.map(_.listName).mkString("Failed to insert the following lists: ", ", ", "")))
           )
     }
 
