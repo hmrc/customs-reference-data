@@ -20,6 +20,7 @@ import akka.util.ByteString
 import javax.inject.Inject
 import javax.inject.Singleton
 import play.api.Configuration
+import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
 import play.api.mvc.PlayBodyParsers
 
@@ -29,13 +30,13 @@ class ReferenceDataControllerParserConfig @Inject() (config: Configuration)() {
   private val referenceDataLists =
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.referenceDataLists.maxLength")
 
-  def referenceDataParser(parse: PlayBodyParsers): BodyParser[ByteString] =
-    referenceDataLists.fold(parse.byteString)(maxLength => parse.byteString(maxLength = maxLength))
+  def referenceDataParser(parse: PlayBodyParsers): BodyParser[JsValue] =
+    referenceDataLists.fold(parse.json)(maxLength => parse.json(maxLength = maxLength))
 
   private val customsOfficeLists =
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.customsOfficeLists.maxLength")
 
-  def customsOfficeParser(parse: PlayBodyParsers): BodyParser[ByteString] =
-    customsOfficeLists.fold(parse.byteString)(maxLength => parse.byteString(maxLength = maxLength))
+  def customsOfficeParser(parse: PlayBodyParsers): BodyParser[JsValue] =
+    customsOfficeLists.fold(parse.json)(maxLength => parse.json(maxLength = maxLength))
 
 }

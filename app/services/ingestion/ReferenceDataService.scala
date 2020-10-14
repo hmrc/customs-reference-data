@@ -21,8 +21,10 @@ import com.google.inject.Inject
 import models.ApiDataSource
 import models.ErrorDetails
 import models.JsonSchemaProvider
+import models.OtherError
 import models.ReferenceDataPayload
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
@@ -38,9 +40,9 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
 
-  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject]
+  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 
 }
 
@@ -51,7 +53,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult] =
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] =
     versionRepository.save(payload.messageInformation, feed, payload.listNames).flatMap {
       versionId =>
         Future
@@ -60,18 +62,14 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
               .toIterable(versionId)
               .map(repository.insertList)
           )
-          .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
-            case (_, SuccessfulWrite)        => DataProcessingSuccessful
-            case (_, _: PartialWriteFailure) => DataProcessingFailed
-            case (_, _: FailedWrite)         => DataProcessingFailed
+          .map(_.foldLeft[Either[ErrorDetails, Unit]](Right(())) {
+            case (_, SuccessfulWrite) => Right(())
+            case (_, error)           => Left(OtherError(error.toString))
           })
     }
 
-  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject] =
-    for {
-      decompressedBody <- GZipService.decompressArrayByte(body)
-      validatedBody    <- schemaValidationService.validate(jsonSchemaProvider, decompressedBody)
-    } yield validatedBody
+  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
+    schemaValidationService.validate(jsonSchemaProvider, body)
 }
 
 object ReferenceDataService {

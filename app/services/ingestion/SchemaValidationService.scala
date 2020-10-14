@@ -16,7 +16,7 @@
 
 package services.ingestion
 
-import java.io.ByteArrayInputStream
+import java.io.StringReader
 
 import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
@@ -29,7 +29,7 @@ import org.leadpony.justify.api.JsonValidationService
 import org.leadpony.justify.api.Problem
 import org.leadpony.justify.api.ProblemHandler
 import play.api.libs.json.JsObject
-import play.api.libs.json.Json
+import play.api.libs.json.JsValue
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
@@ -42,19 +42,18 @@ private[ingestion] class SchemaValidationService @Inject() (jsonValidationServic
         schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, arrayByte: Array[Byte]): Either[ErrorDetails, JsObject] = {
+  def validate(schema: JsonSchemaProvider, json: JsValue): Either[ErrorDetails, JsObject] = {
 
     val schemaValidationProblems = ListBuffer.empty[Problem]
 
     val jsonReader: JsonReader =
-      jsonValidationService.createReader(new ByteArrayInputStream(arrayByte), schema.schema, problemHandler(schemaValidationProblems))
+      jsonValidationService.createReader(new StringReader(json.toString), schema.schema, problemHandler(schemaValidationProblems))
 
     try {
       jsonReader.read()
 
       if (schemaValidationProblems.isEmpty)
-        Json
-          .parse(arrayByte)
+        json
           .validate[JsObject]
           .asEither
           .fold(
