@@ -21,8 +21,10 @@ import com.google.inject.Inject
 import models.ApiDataSource
 import models.ErrorDetails
 import models.JsonSchemaProvider
+import models.ListName
 import models.OtherError
 import models.ReferenceDataPayload
+import models.WriteError
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import repositories.ListRepository.FailedWrite
@@ -40,7 +42,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 
@@ -53,7 +55,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] =
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] =
     versionRepository.save(payload.messageInformation, feed, payload.listNames).flatMap {
       versionId =>
         Future
@@ -62,10 +64,17 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
               .toIterable(versionId)
               .map(repository.insertList)
           )
-          .map(_.foldLeft[Either[ErrorDetails, Unit]](Right(())) {
-            case (_, SuccessfulWrite) => Right(())
-            case (_, error)           => Left(OtherError(error.toString))
-          })
+          .map(
+            _.foldLeft[Option[Seq[ListName]]](None) {
+              case (None, SuccessfulWrite)                           => None
+              case (Some(errors), SuccessfulWrite)                   => Some(errors)
+              case (None, partialError: PartialWriteFailure)         => Some(Seq(partialError.listName))
+              case (Some(errors), partialError: PartialWriteFailure) => Some(errors :+ partialError.listName)
+              case (Some(errors), FailedWrite(listName))             => Some(errors :+ listName)
+              case (None, FailedWrite(listName))                     => Some(Seq(listName))
+            }.map(_.foldLeft("Failed to insert the following lists: ")((x, y) => x ++ s", ${y.listName}"))
+              .map(WriteError(_))
+          )
     }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

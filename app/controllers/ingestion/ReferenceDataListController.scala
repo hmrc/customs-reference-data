@@ -16,7 +16,8 @@
 
 package controllers.ingestion
 
-import cats.data.EitherT
+import cats.data._
+import cats.implicits._
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
 import models.ApiDataSource.ColDataFeed
@@ -31,8 +32,6 @@ import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import services.ingestion.ReferenceDataService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import cats.data.EitherT
-import cats.implicits._
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -54,8 +53,9 @@ class ReferenceDataListController @Inject() (
       implicit request =>
         (
           for {
-            validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
-            insert   <- EitherT(referenceDataService.insert(ColDataFeed, ReferenceDataListsPayload(validate)))
+            validate              <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
+            referenceDataPayload  = ReferenceDataListsPayload(validate)
+            insert                <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
           } yield insert
         ).value.map {
           case Right(_) => Accepted

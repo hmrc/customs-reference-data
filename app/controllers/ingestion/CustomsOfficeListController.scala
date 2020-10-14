@@ -51,7 +51,8 @@ class CustomsOfficeListController @Inject() (
         (
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP08Schema, request.body))
-            insert   <- EitherT(referenceDataService.insert(ColDataFeed, ReferenceDataListsPayload(validate)))
+            referenceDataPayload = ReferenceDataListsPayload(validate)
+            insert <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
           } yield insert
         ).value.map {
           case Right(_) => Accepted
