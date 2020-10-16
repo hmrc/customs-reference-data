@@ -25,22 +25,15 @@ import models.ListName
 import models.VersionId
 import models.VersionedListName
 import play.api.libs.json.JsObject
-import play.api.libs.json.JsString
 import play.api.libs.json.Json
-import play.api.libs.json.OWrites
-import play.api.libs.json.Writes
-import play.api.libs.functional.syntax._
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
 import reactivemongo.api.commands.MultiBulkWriteResult
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.ListRepositoryWriteResult
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
-import Query.QueryOps
-import play.api.libs.functional.FunctionalBuilder
-import play.api.libs.functional.~
+import repositories.Query.QueryOps
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -49,12 +42,28 @@ import scala.concurrent.Future
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
 
   def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
-    listCollection().flatMap {
-      _.find(listNameDetails.query, projection = Some(Json.obj("_id" -> 0)))
-        .cursor[JsObject]()
-        .documentSource()
-        .map(jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject])
-        .runWith(Sink.seq[JsObject])
+    listCollection.apply().flatMap {
+      collection =>
+        import collection.aggregationFramework.PipelineOperator
+
+        val query: PipelineOperator = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
+        val sort: PipelineOperator  = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
+        val projection: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
+          Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
+        }))
+
+        collection
+          .aggregateWith[JsObject](allowDiskUse = true) {
+            _ => (query, List(sort, projection))
+          }
+          .documentSource()
+          .map(
+            jsObject =>
+              (jsObject \ "data")
+                .getOrElse(JsObject.empty)
+                .asInstanceOf[JsObject]
+          )
+          .runWith(Sink.seq[JsObject])
     }
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
