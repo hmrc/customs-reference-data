@@ -18,7 +18,6 @@ package repositories
 
 import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
-import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.GenericListItem
@@ -27,8 +26,6 @@ import models.VersionId
 import models.VersionedListName
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import play.api.libs.json.OFormat
-import reactivemongo.akkastream.State
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
 import reactivemongo.api.commands.MultiBulkWriteResult
@@ -38,7 +35,6 @@ import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import repositories.Query.QueryOps
 
-import scala.collection.immutable
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
@@ -47,22 +43,27 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
 
   def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
     listCollection.apply().flatMap {
-      x =>
-        import x.aggregationFramework.PipelineOperator
+      collection =>
+        import collection.aggregationFramework.PipelineOperator
 
-        val woa: PipelineOperator  = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
-        val woa1: PipelineOperator = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
-        val woa2: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
+        val query: PipelineOperator = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
+        val sort: PipelineOperator  = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
+        val projection: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
           Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
         }))
 
-        val woa3 = x
+        collection
           .aggregateWith[JsObject](allowDiskUse = true) {
-            _ => (woa, List(woa1, woa2))
+            _ => (query, List(sort, projection))
           }
           .documentSource()
-
-        woa3.map(jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject]).runWith(Sink.seq[JsObject])
+          .map(
+            jsObject =>
+              (jsObject \ "data")
+                .getOrElse(JsObject.empty)
+                .asInstanceOf[JsObject]
+          )
+          .runWith(Sink.seq[JsObject])
     }
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
