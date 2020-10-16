@@ -18,7 +18,7 @@ package controllers.consumption
 
 import javax.inject.Inject
 import models.ListName
-import play.api.libs.json.Json
+import play.api.http.HttpEntity
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents
@@ -36,10 +36,13 @@ class ListRetrievalController @Inject() (
   def get(listName: ListName): Action[AnyContent] =
     Action.async {
       implicit request =>
-        listRetrievalService.getList(listName).map {
-          case Some(referenceDataList) => Ok(Json.toJsObject(referenceDataList))
-          case None                    => NotFound
+        val source = listRetrievalService.sourceTransform(listName)
+
+        source.map {
+          case Some(source) =>
+            Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+          case None =>
+            NotFound
         }
     }
-
 }

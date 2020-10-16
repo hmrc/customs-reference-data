@@ -18,6 +18,7 @@ package repositories
 
 import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
+import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.GenericListItem
@@ -26,6 +27,7 @@ import models.VersionId
 import models.VersionedListName
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+import reactivemongo.akkastream.State
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
 import reactivemongo.api.commands.MultiBulkWriteResult
@@ -40,6 +42,30 @@ import scala.concurrent.Future
 
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
+
+  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[State]]] =
+    listCollection.apply().map {
+      collection =>
+        import collection.aggregationFramework.PipelineOperator
+
+        val query: PipelineOperator = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
+        val sort: PipelineOperator  = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
+        val projection: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
+          Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
+        }))
+
+        collection
+          .aggregateWith[JsObject](allowDiskUse = true) {
+            _ => (query, List(sort, projection))
+          }
+          .documentSource()
+          .map(
+            jsObject =>
+              (jsObject \ "data")
+                .getOrElse(JsObject.empty)
+                .asInstanceOf[JsObject]
+          )
+    }
 
   def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
     listCollection.apply().flatMap {

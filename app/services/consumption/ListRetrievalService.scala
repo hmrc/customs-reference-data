@@ -16,10 +16,15 @@
 
 package services.consumption
 
+import akka.stream.scaladsl.Source
+import akka.util.ByteString
 import cats.data.OptionT
 import cats.implicits._
 import javax.inject.Inject
 import models._
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
+import reactivemongo.akkastream.State
 import repositories.ListRepository
 import repositories.VersionRepository
 
@@ -27,6 +32,41 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
+
+  def streamList(listName: ListName): Future[Option[Source[JsObject, Future[State]]]] =
+    (
+      for {
+        versionInformation <- OptionT(versionRepository.getLatest(listName))
+        versionedListName = VersionedListName(listName, versionInformation.versionId)
+        referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
+      } yield referenceDataList
+    ).value
+
+  def jsonFormat(listName: ListName, metaData: MetaData): String =
+    s"""
+       |{
+       |   "_links": {
+       |     "self": {
+       |       "href": "customs-reference-data/lists/${listName.listName}"
+       |     }
+       |   },
+       |   "id": "${listName.listName}",
+       |   "data": [
+       |""".stripMargin
+
+  def sourceTransform(listName: ListName): Future[Option[Source[ByteString, Future[State]]]] =
+    (
+      for {
+        referenceDataList <- OptionT(streamList(listName))
+        getMeta           <- OptionT(getMetaData(listName))
+        jsonFormatted = jsonFormat(listName, getMeta)
+      } yield referenceDataList
+        .map(r => ByteString(Json.stringify(r)))
+        .intersperse(ByteString(jsonFormatted), ByteString(","), ByteString("]}"))
+    ).value
+
+  def getMetaData(listName: ListName): Future[Option[MetaData]] =
+    versionRepository.getLatest(listName).map(_.map(MetaData(_)))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     (for {
