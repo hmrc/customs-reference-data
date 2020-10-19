@@ -35,14 +35,9 @@ class ListRetrievalController @Inject() (
 
   def get(listName: ListName): Action[AnyContent] =
     Action.async {
-      implicit request =>
-        val source = listRetrievalService.sourceTransform(listName)
-
-        source.map {
-          case Some(source) =>
-            Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-          case None =>
-            NotFound
-        }
+      listRetrievalService.sourceTransform(listName).map {
+        case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+        case None         => NotFound
+      }
     }
 }

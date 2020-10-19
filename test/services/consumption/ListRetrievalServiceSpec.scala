@@ -16,19 +16,29 @@
 
 package services.consumption
 
+import akka.NotUsed
+import akka.actor.ActorSystem
+import akka.stream.scaladsl.Flow
+import akka.stream.scaladsl.Source
+import akka.util.ByteString
 import base.SpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models._
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
+import play.api.libs.json.Json
 import play.api.test.Helpers._
+import reactivemongo.akkastream.AkkaStreamCursor
+import reactivemongo.akkastream.State
+import reactivemongo.api.Cursor
+import reactivemongo.api.CursorProducer
 import repositories.ListRepository
 import repositories.VersionRepository
 
@@ -160,5 +170,92 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
       }
     }
   }
+
+  "getMetaData" - {
+
+    "must return MetaData when given the latest version information" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      running(app) {
+        application =>
+          forAll(arbitrary[VersionInformation]) {
+            versionInformation =>
+              when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
+
+              val service = application.injector.instanceOf[ListRetrievalService]
+              val result  = service.getMetaData(versionInformation.listNames.head)
+
+              result.futureValue.value mustBe MetaData(versionInformation)
+          }
+      }
+    }
+
+    "must return None when no version information is found" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      running(app) {
+        application =>
+          when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(None))
+
+          val service = application.injector.instanceOf[ListRetrievalService]
+          val result  = service.getMetaData(ListName("Invalid"))
+
+          result.futureValue mustBe None
+      }
+    }
+  }
+
+  //    "sourceTransform" - {
+  //
+  //      "must do something" in {
+  //
+  //        implicit lazy val actorSystem: ActorSystem = ActorSystem()
+  //
+  //        val source: Source[JsObject, NotUsed] = Source.repeat(1).map(_ => Json.obj("foo" -> "bar"))
+  //        val future: Source[JsObject, Future[State]] = source.mapMaterializedValue(_ => Future.successful(???))
+  //
+  //
+  //        val mockVersionRepository = mock[VersionRepository]
+  //        val mockListRepository    = mock[ListRepository]
+  //
+  //        val app = baseApplicationBuilder.andThen(
+  //          _.overrides(
+  //            bind[VersionRepository].toInstance(mockVersionRepository),
+  //            bind[ListRepository].toInstance(mockListRepository)
+  //          )
+  //        )
+  //
+  //        running(app) {
+  //          application =>
+  //            forAll(arbitrary[VersionInformation]) {
+  //              versionInformation =>
+  //                when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
+  //                when(mockListRepository.getListByNameSource(any())).thenReturn(Future.successful(Some(future)))
+  //
+  //                val service = application.injector.instanceOf[ListRetrievalService]
+  //                val result  = service.sourceTransform(versionInformation.listNames.head)
+  //
+  //                result.futureValue.value mustBe future
+  //            }
+  //        }
+  //
+  //      }
+  //    }
+
+  "streamList" - {}
 
 }

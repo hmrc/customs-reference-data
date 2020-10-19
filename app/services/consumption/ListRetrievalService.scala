@@ -42,6 +42,8 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
       } yield referenceDataList
     ).value
 
+  def getMetaData(listName: ListName): Future[Option[MetaData]] = versionRepository.getLatest(listName).map(_.map(MetaData(_)))
+
   def jsonFormat(listName: ListName, metaData: MetaData): String =
     s"""
        |{
@@ -50,6 +52,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
        |       "href": "customs-reference-data/lists/${listName.listName}"
        |     }
        |   },
+       |   "meta": ${Json.toJsObject(metaData)},
        |   "id": "${listName.listName}",
        |   "data": [
        |""".stripMargin
@@ -64,9 +67,6 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
         .map(r => ByteString(Json.stringify(r)))
         .intersperse(ByteString(jsonFormatted), ByteString(","), ByteString("]}"))
     ).value
-
-  def getMetaData(listName: ListName): Future[Option[MetaData]] =
-    versionRepository.getLatest(listName).map(_.map(MetaData(_)))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     (for {
