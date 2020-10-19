@@ -30,6 +30,7 @@ import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
 
+  // TODO: Should the materialized value be NotUsed instead
   def streamList(listName: ListName): Future[Option[Source[JsObject, Future[_]]]] =
     (
       for {

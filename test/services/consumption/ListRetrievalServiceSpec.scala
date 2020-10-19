@@ -16,7 +16,11 @@
 
 package services.consumption
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl.Source
+import akka.stream.testkit.scaladsl.TestSink
 import base.SpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
@@ -212,6 +216,9 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
   "streamList" - {
 
+    implicit lazy val actorSystem: ActorSystem = ActorSystem()
+    implicit lazy val mat: Materializer        = ActorMaterializer()
+
     "must return reference data as stream" in {
 
       val mockVersionRepository = mock[VersionRepository]
@@ -224,18 +231,28 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
         )
       )
 
+      val sourceElement        = Json.obj("a" -> "b")
+      val expectedSourceValues = scala.collection.immutable.Seq.fill(4)(sourceElement)
+
       running(app) {
         application =>
           forAll(arbitrary[ReferenceDataList], arbitrary[VersionInformation]) {
             (referenceDataList, versionInformation) =>
-              val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
+              val source: Source[JsObject, Future[_]] =
+                Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> sourceElement))))
 
               when(mockListRepository.getListByNameSource(any())).thenReturn(Future.successful(source))
               when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
 
               val service = application.injector.instanceOf[ListRetrievalService]
 
-              service.streamList(referenceDataList.id).futureValue.value mustBe source
+              service
+                .streamList(referenceDataList.id)
+                .futureValue
+                .value
+                .runWith(TestSink.probe[JsObject])
+                .request(4)
+                .expectNextN(expectedSourceValues)
           }
       }
     }
