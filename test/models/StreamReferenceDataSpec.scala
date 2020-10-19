@@ -28,7 +28,9 @@ import base.SpecBase
 import generators.ModelArbitraryInstances
 import org.scalatest.OptionValues
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
 class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues {
 
@@ -42,19 +44,22 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       val name = arbitraryListName.arbitrary.sample.value
       val meta = arbitraryMetaData.arbitrary.sample.value
 
-      val x: Flow[JsObject, ByteString, _] = StreamReferenceData().wrapInJson(name, meta)
+      val testFlow = StreamReferenceData(name, meta).nestInJson[JsObject]
 
-      val source: Source[JsObject, NotUsed] = Source.repeat(Json.obj("foo" -> "bar"))
+      val source = Source(1 to 5).map(_ => Json.obj("index" -> "value"))
 
-      val woa: Seq[ByteString] = source
-        .via(x)
+      val streamOutput: Seq[ByteString] = source
+        .via(testFlow)
         .runWith(TestSink.probe[ByteString])
-        .request(5)
-        .expectNextN(5)
+        .request(11)
+        .expectNextN(11)
 
-      val result: JsValue = Json.toJson(woa.map(_.utf8String).mkString)
+      val result = Json.parse(streamOutput.map(_.utf8String).mkString)
 
-      result mustBe ""
+      (result \ "_links" \ "self" \ "href").as[String] mustBe controllers.consumption.routes.ListRetrievalController.get(name).url
+      (result \ "meta").as[MetaData] mustBe meta
+      (result \ "id").as[String] mustBe name.listName
+      (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))
     }
   }
 }

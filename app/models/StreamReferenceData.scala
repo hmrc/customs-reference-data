@@ -19,17 +19,17 @@ package models
 import akka.NotUsed
 import akka.stream.scaladsl.Flow
 import akka.util.ByteString
-import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
-class StreamReferenceData {
+class StreamReferenceData(listName: ListName, metaData: MetaData) {
 
-  private def jsonFormat(listName: ListName, metaData: MetaData): String =
+  private lazy val jsonFormat: String =
     s"""
        |{
        |   "_links": {
        |     "self": {
-       |       "href": "customs-reference-data/lists/${listName.listName}"
+       |       "href": "${controllers.consumption.routes.ListRetrievalController.get(listName).url}"
        |     }
        |   },
        |   "meta": ${Json.toJsObject(metaData)},
@@ -37,13 +37,13 @@ class StreamReferenceData {
        |   "data": [
        |""".stripMargin
 
-  def wrapInJson(listName: ListName, metaData: MetaData): Flow[JsObject, ByteString, NotUsed] =
+  def nestInJson[A: Writes]: Flow[A, ByteString, NotUsed] =
     Flow
-      .apply[JsObject]
-      .map(r => ByteString(Json.stringify(r)))
-      .intersperse(ByteString(jsonFormat(listName, metaData)), ByteString(","), ByteString("]}"))
+      .apply[A]
+      .map(a => ByteString(Json.stringify(Json.toJson(a))))
+      .intersperse(ByteString(jsonFormat), ByteString(","), ByteString("]}"))
 }
 
 object StreamReferenceData {
-  def apply(): StreamReferenceData = new StreamReferenceData()
+  def apply(listName: ListName, metaData: MetaData): StreamReferenceData = new StreamReferenceData(listName: ListName, metaData: MetaData)
 }
