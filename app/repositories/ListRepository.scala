@@ -59,12 +59,6 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
             _ => (query, List(sort, projection))
           }
           .documentSource()
-          .map(
-            jsObject =>
-              (jsObject \ "data")
-                .getOrElse(JsObject.empty)
-                .asInstanceOf[JsObject]
-          )
     }
 
   def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =

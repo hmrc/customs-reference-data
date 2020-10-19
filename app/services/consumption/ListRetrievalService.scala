@@ -36,7 +36,7 @@ class ListRetrievalService @Inject() (listRepository: ListRepository, versionRep
         versionInformation <- OptionT(versionRepository.getLatest(listName))
         versionedListName = VersionedListName(listName, versionInformation.versionId)
         referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
-      } yield referenceDataList
+      } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)
     ).value
 
   def getMetaData(listName: ListName): Future[Option[MetaData]] = versionRepository.getLatest(listName).map(_.map(MetaData(_)))
