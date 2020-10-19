@@ -16,8 +16,11 @@
 
 package controllers.consumption
 
+import cats.data.OptionT
+import cats.implicits._
 import javax.inject.Inject
 import models.ListName
+import models.StreamReferenceData
 import play.api.http.HttpEntity
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
@@ -35,7 +38,13 @@ class ListRetrievalController @Inject() (
 
   def get(listName: ListName): Action[AnyContent] =
     Action.async {
-      listRetrievalService.sourceTransform(listName).map {
+      (
+        for {
+          streamedList <- OptionT(listRetrievalService.streamList(listName))
+          metaData     <- OptionT(listRetrievalService.getMetaData(listName))
+          nestJson = StreamReferenceData(listName, metaData)
+        } yield streamedList.via(nestJson.nestInJson)
+      ).value.map {
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
         case None         => NotFound
       }
