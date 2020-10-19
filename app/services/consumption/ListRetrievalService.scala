@@ -22,9 +22,11 @@ import cats.implicits._
 import javax.inject.Inject
 import models._
 import play.api.libs.json.JsObject
-import repositories.{ListRepository, VersionRepository}
+import repositories.ListRepository
+import repositories.VersionRepository
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
 

@@ -43,7 +43,7 @@ import scala.concurrent.Future
 @Singleton
 class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
 
-  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[State]]] =
+  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]] =
     listCollection.apply().map {
       collection =>
         import collection.aggregationFramework.PipelineOperator

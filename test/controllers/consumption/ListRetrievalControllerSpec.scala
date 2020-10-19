@@ -57,7 +57,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
     "get" - {
 
-      "should return OK and a ReferenceDataList" in {
+      "should return OK" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
         val metaData          = arbitrary[MetaData].sample.value
@@ -90,7 +90,6 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
       "should return NotFound when MetaData returns None" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
-        val metaData          = arbitrary[MetaData].sample.value
 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
