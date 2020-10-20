@@ -18,7 +18,6 @@ package services.ingestion
 
 import base.SpecBase
 import javax.inject.Inject
-import models.InvalidJsonError
 import models.SchemaValidationError
 import models.SimpleJsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
@@ -43,31 +42,10 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         "age"       -> 21
       )
 
-      val jsonByteArray = json.toString.getBytes
-
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonByteArray).right.value mustEqual json
-
-    }
-
-    "returns InvaildJsonError with description of the problem when the json cannot be parsed" in {
-      val invalidJsonString = """
-          |{
-          |  "firstName": "firstName_value",
-          |  "lastName" : "lastName_value",
-          |  "age"      : "INVALID_VALUE
-          |}
-          |""".stripMargin
-
-      val jsonByteArray = invalidJsonString.getBytes
-
-      val service        = app.injector.instanceOf[SchemaValidationService]
-      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
-
-      service.validate(testJsonSchema, jsonByteArray).left.value mustBe a[InvalidJsonError]
-
+      service.validate(testJsonSchema, json).right.value mustEqual json
     }
 
     "returns SchemaValidationError with description of the problem when the json does not match the schema specifications" in {
@@ -81,12 +59,10 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         )
       )
 
-      val jsonArrayByte = json.toString.getBytes
-
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, jsonArrayByte).left.value mustBe a[SchemaValidationError]
+      service.validate(testJsonSchema, json).left.value mustBe a[SchemaValidationError]
     }
 
   }
