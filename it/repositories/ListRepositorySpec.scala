@@ -1,6 +1,9 @@
 package repositories
 
+import akka.actor.ActorSystem
+import akka.stream.{ActorMaterializer, Materializer}
 import akka.stream.scaladsl.Source
+import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
@@ -73,6 +76,9 @@ class ListRepositorySpec
 
   "getListByNameSource" - {
 
+    implicit lazy val actorSystem: ActorSystem = ActorSystem()
+    implicit lazy val mat: Materializer        = ActorMaterializer()
+
     "returns the list items that match the specified VersionId" in {
       val versionId  = VersionId("1")
       val dataListV1 = listOfItemsForVersion(versionId).sample.value
@@ -88,9 +94,27 @@ class ListRepositorySpec
 
       val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
 
-      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
+      val data = targetList.map(x => (x - "listName" - "snapshotDate" - "versionId" - "messageID"))
 
-      result.futureValue mustBe expectedResult
+      result
+        .futureValue
+        .runWith(TestSink.probe[JsObject])
+        .request(targetList.length)
+        .expectNextN(data)
+    }
+
+    "returns a source that completes immediately when there are no matching items" in {
+      val versionId  = VersionId("1")
+      val listName   = arbitrary[ListName].sample.value
+      val repository = app.injector.instanceOf[ListRepository]
+
+      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+
+      result
+        .futureValue
+        .runWith(TestSink.probe[JsObject])
+        .request(1)
+        .expectComplete()
     }
   }
 
