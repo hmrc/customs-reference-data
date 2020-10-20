@@ -18,19 +18,14 @@ package services.ingestion
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
-import models.ApiDataSource
-import models.ErrorDetails
-import models.JsonSchemaProvider
-import models.ReferenceDataPayload
+import models._
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 import repositories.ListRepository.FailedWrite
 import repositories.ListRepository.PartialWriteFailure
 import repositories.ListRepository.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionRepository
-import services.ingestion.ReferenceDataService.DataProcessingResult
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -38,9 +33,9 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
 
-  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject]
+  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 
 }
 
@@ -51,7 +46,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[DataProcessingResult] =
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] =
     versionRepository.save(payload.messageInformation, feed, payload.listNames).flatMap {
       versionId =>
         Future
@@ -60,18 +55,17 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
               .toIterable(versionId)
               .map(repository.insertList)
           )
-          .map(_.foldLeft[DataProcessingResult](DataProcessingSuccessful) {
-            case (_, SuccessfulWrite)        => DataProcessingSuccessful
-            case (_, _: PartialWriteFailure) => DataProcessingFailed
-            case (_, _: FailedWrite)         => DataProcessingFailed
-          })
+          .map(
+            _.foldLeft[Option[Seq[ListName]]](None) {
+              case (errors, SuccessfulWrite)                  => errors
+              case (errors, PartialWriteFailure(listName, _)) => errors.orElse(Some(Seq())).map(_ :+ listName)
+              case (errors, FailedWrite(listName))            => errors.orElse(Some(Seq())).map(_ :+ listName)
+            }.map(x => WriteError(x.map(_.listName).mkString("Failed to insert the following lists: ", ", ", "")))
+          )
     }
 
-  def validateAndDecompress(jsonSchemaProvider: JsonSchemaProvider, body: Array[Byte]): Either[ErrorDetails, JsObject] =
-    for {
-      decompressedBody <- GZipService.decompressArrayByte(body)
-      validatedBody    <- schemaValidationService.validate(jsonSchemaProvider, decompressedBody)
-    } yield validatedBody
+  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
+    schemaValidationService.validate(jsonSchemaProvider, body)
 }
 
 object ReferenceDataService {

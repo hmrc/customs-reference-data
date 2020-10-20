@@ -99,11 +99,11 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
         .map {
           res =>
             if (res.writeErrors.nonEmpty && (res.n > 0 || res.nModified > 0))
-              PartialWriteFailure(res.writeErrors.map(_.index).map(index => list(index)))
+              PartialWriteFailure(list.head.listName, res.writeErrors.map(_.index))
             else if ((list.length <= res.n + res.nModified))
               SuccessfulWrite
             else
-              FailedWrite(res)
+              FailedWrite(list.head.listName)
         }
     }
 
@@ -113,7 +113,7 @@ object ListRepository {
 
   sealed trait ListRepositoryWriteResult
 
-  case object SuccessfulWrite                                          extends ListRepositoryWriteResult
-  case class PartialWriteFailure(insertFailures: Seq[GenericListItem]) extends ListRepositoryWriteResult
-  case class FailedWrite(multiBulkWriteResult: MultiBulkWriteResult)   extends ListRepositoryWriteResult
+  case object SuccessfulWrite                                               extends ListRepositoryWriteResult
+  case class PartialWriteFailure(listName: ListName, errorsIndex: Seq[Int]) extends ListRepositoryWriteResult
+  case class FailedWrite(listName: ListName)                                extends ListRepositoryWriteResult
 }

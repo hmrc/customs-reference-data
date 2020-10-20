@@ -16,20 +16,21 @@
 
 package controllers.ingestion
 
-import akka.util.ByteString
+import cats.data._
+import cats.implicits._
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
-import models.ApiDataSource.RefDataFeed
+import models.ApiDataSource.ColDataFeed
 import models.CTCUP06Schema
-import models.OtherError
+import models.ErrorDetails
 import models.ReferenceDataListsPayload
+import models.WriteError
 import play.api.Logger
+import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
 import services.ingestion.ReferenceDataService
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingFailed
-import services.ingestion.ReferenceDataService.DataProcessingResult.DataProcessingSuccessful
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
@@ -47,22 +48,23 @@ class ReferenceDataListController @Inject() (
 
   private val referenceDataListsLogger = Logger("ReferenceDataLists")
 
-  def referenceDataLists(): Action[ByteString] =
+  def referenceDataLists(): Action[JsValue] =
     Action(referenceDataParser(parse)).async {
       implicit request =>
-        referenceDataService.validateAndDecompress(cTCUP06Schema, request.body.toArray) match {
-          case Right(jsObject) =>
-            referenceDataService
-              .insert(RefDataFeed, ReferenceDataListsPayload(jsObject))
-              .map {
-                case DataProcessingSuccessful => Accepted
-                case DataProcessingFailed =>
-                  referenceDataListsLogger.error("Failed to save the data list because of internal error")
-                  InternalServerError(Json.toJsObject(OtherError("Failed in processing the data list")))
-              }
-          case Left(error) =>
-            referenceDataListsLogger.error(Json.toJsObject(error).toString())
-            Future.successful(BadRequest(Json.toJsObject(error)))
+        (
+          for {
+            validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
+            referenceDataPayload = ReferenceDataListsPayload(validate)
+            insert <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
+          } yield insert
+        ).value.map {
+          case Right(_) => Accepted
+          case Left(writeError: WriteError) =>
+            referenceDataListsLogger.error(s"Failed to save the data list because of error: ${writeError.message}")
+            InternalServerError(Json.toJsObject(writeError))
+          case Left(errorDetails: ErrorDetails) =>
+            referenceDataListsLogger.error(errorDetails.message)
+            BadRequest(Json.toJsObject(errorDetails))
         }
     }
 }
