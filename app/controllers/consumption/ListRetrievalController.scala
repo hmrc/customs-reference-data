@@ -18,10 +18,12 @@ package controllers.consumption
 
 import cats.data.OptionT
 import cats.implicits._
+import config.AppConfig
 import javax.inject.Inject
 import models.ListName
 import models.StreamReferenceData
 import play.api.http.HttpEntity
+import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents
@@ -32,11 +34,14 @@ import scala.concurrent.ExecutionContext
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
-  listRetrievalService: ListRetrievalService
+  listRetrievalService: ListRetrievalService,
+  appConfig: AppConfig
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName): Action[AnyContent] =
+  def get(listName: ListName): Action[AnyContent] = if (appConfig.streamToggle) streamedResponse(listName) else standardResponse(listName)
+
+  def streamedResponse(listName: ListName): Action[AnyContent] =
     Action.async {
       (
         for {
@@ -48,5 +53,14 @@ class ListRetrievalController @Inject() (
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
         case None         => NotFound
       }
+    }
+
+  def standardResponse(listName: ListName): Action[AnyContent] =
+    Action.async {
+      implicit request =>
+        listRetrievalService.getList(listName).map {
+          case Some(referenceDataList) => Ok(Json.toJsObject(referenceDataList))
+          case None                    => NotFound
+        }
     }
 }

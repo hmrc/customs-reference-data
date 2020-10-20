@@ -71,7 +71,7 @@ class ListRepositorySpec
     listWithMaxLength(5)(arbitraryGenericListItem)
   }
 
-  "getListByNameSource" ignore {
+  "getListByNameSource" - {
 
     "returns the list items that match the specified VersionId" in {
       val versionId  = VersionId("1")
@@ -92,7 +92,6 @@ class ListRepositorySpec
 
       result.futureValue mustBe expectedResult
     }
-
   }
 
   "getListByName" - {
