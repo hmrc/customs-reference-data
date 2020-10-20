@@ -16,18 +16,23 @@
 
 package services.consumption
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.Materializer
+import akka.stream.scaladsl.Source
+import akka.stream.testkit.scaladsl.TestSink
 import base.SpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models._
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.inject.bind
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
+import play.api.libs.json.Json
 import play.api.test.Helpers._
 import repositories.ListRepository
 import repositories.VersionRepository
@@ -157,6 +162,121 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
             result.futureValue mustBe None
         }
+      }
+    }
+  }
+
+  "getMetaData" - {
+
+    "must return MetaData when given the latest version information" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      running(app) {
+        application =>
+          forAll(arbitrary[VersionInformation]) {
+            versionInformation =>
+              when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
+
+              val service = application.injector.instanceOf[ListRetrievalService]
+              val result  = service.getMetaData(versionInformation.listNames.head)
+
+              result.futureValue.value mustBe MetaData(versionInformation)
+          }
+      }
+    }
+
+    "must return None when no version information is found" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      running(app) {
+        application =>
+          when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(None))
+
+          val service = application.injector.instanceOf[ListRetrievalService]
+          val result  = service.getMetaData(ListName("Invalid"))
+
+          result.futureValue mustBe None
+      }
+    }
+  }
+
+  "streamList" - {
+
+    implicit lazy val actorSystem: ActorSystem = ActorSystem()
+    implicit lazy val mat: Materializer        = ActorMaterializer()
+
+    "must return reference data as stream" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+      val mockListRepository    = mock[ListRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[ListRepository].toInstance(mockListRepository),
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      val sourceElement        = Json.obj("a" -> "b")
+      val expectedSourceValues = scala.collection.immutable.Seq.fill(4)(sourceElement)
+
+      running(app) {
+        application =>
+          forAll(arbitrary[ReferenceDataList], arbitrary[VersionInformation]) {
+            (referenceDataList, versionInformation) =>
+              val source: Source[JsObject, Future[_]] =
+                Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> sourceElement))))
+
+              when(mockListRepository.getListByNameSource(any())).thenReturn(Future.successful(source))
+              when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
+
+              val service = application.injector.instanceOf[ListRetrievalService]
+
+              service
+                .streamList(referenceDataList.id)
+                .futureValue
+                .value
+                .runWith(TestSink.probe[JsObject])
+                .request(4)
+                .expectNextN(expectedSourceValues)
+          }
+      }
+    }
+
+    "must return None if no version information is found" in {
+
+      val mockVersionRepository = mock[VersionRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      running(app) {
+        application =>
+          forAll(arbitrary[ReferenceDataList]) {
+            referenceDataList =>
+              when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(None))
+
+              val service = application.injector.instanceOf[ListRetrievalService]
+
+              service.streamList(referenceDataList.id).futureValue mustBe None
+          }
       }
     }
   }

@@ -26,7 +26,9 @@ object AppDependencies {
     "org.mockito"             % "mockito-core"             % "3.3.3",
     "org.scalacheck"         %% "scalacheck"               % "1.14.3",
     "wolfendale"             %% "scalacheck-gen-regexp"    % "0.1.1",
-    "com.vladsch.flexmark"    % "flexmark-all"             % "0.35.10"
+    "com.vladsch.flexmark"    % "flexmark-all"             % "0.35.10",
+    "com.typesafe.akka"      %% "akka-stream-testkit"      % "2.6.10",
+    "com.typesafe.akka"      %% "akka-slf4j"               % "2.6.10"
   ).map(_ % "test, it")
 
   def apply(): Seq[ModuleID] = compile ++ test

@@ -16,10 +16,12 @@
 
 package services.consumption
 
+import akka.stream.scaladsl.Source
 import cats.data.OptionT
 import cats.implicits._
 import javax.inject.Inject
 import models._
+import play.api.libs.json.JsObject
 import repositories.ListRepository
 import repositories.VersionRepository
 
@@ -27,6 +29,17 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
+
+  def streamList(listName: ListName): Future[Option[Source[JsObject, Future[_]]]] =
+    (
+      for {
+        versionInformation <- OptionT(versionRepository.getLatest(listName))
+        versionedListName = VersionedListName(listName, versionInformation.versionId)
+        referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
+      } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)
+    ).value
+
+  def getMetaData(listName: ListName): Future[Option[MetaData]] = versionRepository.getLatest(listName).map(_.map(MetaData(_)))
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     (for {

@@ -1,5 +1,9 @@
 package repositories
 
+import akka.actor.ActorSystem
+import akka.stream.{ActorMaterializer, Materializer}
+import akka.stream.scaladsl.Source
+import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
@@ -68,6 +72,50 @@ class ListRepositorySpec
   def listOfItemsForVersion(versionId: VersionId) = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength(5)(arbitraryGenericListItem)
+  }
+
+  "getListByNameSource" - {
+
+    implicit lazy val actorSystem: ActorSystem = ActorSystem()
+    implicit lazy val mat: Materializer        = ActorMaterializer()
+
+    "returns the list items that match the specified VersionId" in {
+      val versionId  = VersionId("1")
+      val dataListV1 = listOfItemsForVersion(versionId).sample.value
+      val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
+      val listName   = arbitrary[ListName].sample.value
+
+      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+
+      seedData(database, targetList ++ otherList)
+
+      val repository = app.injector.instanceOf[ListRepository]
+
+      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+
+      val data = targetList.map(x => (x - "listName" - "snapshotDate" - "versionId" - "messageID"))
+
+      result
+        .futureValue
+        .runWith(TestSink.probe[JsObject])
+        .request(targetList.length)
+        .expectNextN(data)
+    }
+
+    "returns a source that completes immediately when there are no matching items" in {
+      val versionId  = VersionId("1")
+      val listName   = arbitrary[ListName].sample.value
+      val repository = app.injector.instanceOf[ListRepository]
+
+      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+
+      result
+        .futureValue
+        .runWith(TestSink.probe[JsObject])
+        .request(1)
+        .expectComplete()
+    }
   }
 
   "getListByName" - {

@@ -16,10 +16,14 @@
 
 package controllers.consumption
 
+import akka.NotUsed
+import akka.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.ListName
+import models.MetaData
 import models.ReferenceDataList
+import models.StreamReferenceData
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -29,6 +33,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.GET
@@ -52,35 +57,51 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
     "get" - {
 
-      "should return OK and a ReferenceDataList" in {
+      "should return OK" in {
+
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
+        val metaData          = arbitrary[MetaData].sample.value
+
+        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
+
+        val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
+
+        when(mockListRetrievalService.getMetaData(any())).thenReturn(Future.successful(Some(metaData)))
+        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(Some(source)))
+
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe OK
+      }
+
+      "should return NotFound when StreamList returns None" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
-        when(mockListRetrievalService.getList(any()))
-          .thenReturn(Future.successful(Some(referenceDataList)))
+        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(None))
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe OK
-        contentAsJson(result) mustBe Json.toJson(referenceDataList)
+        status(result) mustBe NOT_FOUND
+      }
+
+      "should return NotFound when MetaData returns None" in {
+
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
+
+        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
+
+        val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
+
+        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getMetaData(any())).thenReturn(Future.successful(None))
+
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe NOT_FOUND
       }
     }
-
-    "should return NotFound when no ReferenceDataList is found" in {
-
-      val listName = arbitrary[ListName].sample.value
-
-      val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(listName).url)
-
-      when(mockListRetrievalService.getList(any()))
-        .thenReturn(Future.successful(None))
-
-      val result = route(app, fakeRequest).get
-
-      status(result) mustBe NOT_FOUND
-    }
   }
-
 }
