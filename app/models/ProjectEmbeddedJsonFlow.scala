@@ -35,7 +35,7 @@ class ProjectEmbeddedJsonFlow(listName: ListName) {
     case x: JsResultException =>
       logger.error(s"""Unexpected error when transforming ${listName.listName}: ${x.getMessage}""")
       Supervision.Stop
-    case _ => Supervision.stop
+    case _ => Supervision.Stop
   }
 
   def project: Flow[JsObject, JsObject, NotUsed] =
