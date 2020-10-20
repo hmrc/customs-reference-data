@@ -20,7 +20,7 @@ import cats.data._
 import cats.implicits._
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
-import models.ApiDataSource.ColDataFeed
+import models.ApiDataSource.RefDataFeed
 import models.CTCUP06Schema
 import models.ErrorDetails
 import models.ReferenceDataListsPayload
@@ -55,7 +55,7 @@ class ReferenceDataListController @Inject() (
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
             referenceDataPayload = ReferenceDataListsPayload(validate)
-            insert <- EitherT.fromOptionF(referenceDataService.insert(ColDataFeed, referenceDataPayload), ()).swap
+            insert <- EitherT.fromOptionF(referenceDataService.insert(RefDataFeed, referenceDataPayload), ()).swap
           } yield insert
         ).value.map {
           case Right(_) => Accepted
