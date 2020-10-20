@@ -34,14 +34,11 @@ import scala.concurrent.ExecutionContext
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
-  listRetrievalService: ListRetrievalService,
-  appConfig: AppConfig
+  listRetrievalService: ListRetrievalService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName): Action[AnyContent] = if (appConfig.streamToggle) streamedResponse(listName) else standardResponse(listName)
-
-  def streamedResponse(listName: ListName): Action[AnyContent] =
+  def get(listName: ListName): Action[AnyContent] =
     Action.async {
       (
         for {
@@ -53,14 +50,5 @@ class ListRetrievalController @Inject() (
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
         case None         => NotFound
       }
-    }
-
-  def standardResponse(listName: ListName): Action[AnyContent] =
-    Action.async {
-      implicit request =>
-        listRetrievalService.getList(listName).map {
-          case Some(referenceDataList) => Ok(Json.toJsObject(referenceDataList))
-          case None                    => NotFound
-        }
     }
 }

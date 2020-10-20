@@ -25,7 +25,6 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
 
   val authBaseUrl: String = servicesConfig.baseUrl("auth")
-  val streamToggle        = config.get[Boolean]("stream-toggle")
 
   val auditingEnabled: Boolean = config.get[Boolean]("auditing.enabled")
   val graphiteHost: String     = config.get[String]("microservice.metrics.graphite.host")
