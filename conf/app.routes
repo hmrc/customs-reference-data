@@ -4,4 +4,4 @@ GET     /customs-reference-data/lists                   controllers.consumption.
 GET     /customs-reference-data/lists/:listName         controllers.consumption.ListRetrievalController.get(listName: ListName)
 
 POST    /reference-data-lists                           controllers.ingestion.ReferenceDataListController.referenceDataLists()
-POST    /customs-office-lists/customs-office-lists      controllers.ingestion.CustomsOfficeListController.customsOfficeLists()
+POST    /customs-office-lists                           controllers.ingestion.CustomsOfficeListController.customsOfficeLists()
