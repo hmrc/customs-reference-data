@@ -25,9 +25,17 @@ import play.api.libs.json.Json
 class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with ScalaCheckDrivenPropertyChecks {
 
   "ResourceLinks" - {
+    "urls should match pattern containing url to list" in {
+      forAll(arbitrary[ResourceLinks]) {
+        resourceLinks =>
+          resourceLinks._links.filterKeys(_ != "self").foreach {
+            case (listName, path) =>
+              (path \ "href").as[String] mustEqual s"/customs-reference-data/lists/$listName"
+          }
+      }
+    }
 
     "should" - {
-
       "deserialise and serialise" in {
 
         forAll(arbitrary[ResourceLinks]) {

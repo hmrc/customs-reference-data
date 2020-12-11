@@ -30,15 +30,19 @@ object ResourceLinks {
 
   private def linkFormatter(listNames: Seq[ListName]): Map[String, JsObject] = {
 
-    val buildUri: String => String =
-      uri => s"/customs-reference-data/$uri"
+    def buildUri(listName: Option[String]): String =
+      listName.fold("/customs-reference-data/lists") {
+        name => s"/customs-reference-data/lists/$name"
+      }
 
     //TODO fix ordering here
     val resourceLinks: Seq[(String, JsObject)] = listNames.map {
-      listName => listName.listName -> JsObject(Seq("href" -> JsString(buildUri(listName.listName))))
+      listName => listName.listName -> JsObject(Seq("href" -> JsString(buildUri(Some(listName.listName)))))
     }
 
-    Map("self" -> JsObject(Seq("href" -> JsString(buildUri("lists"))))) ++ resourceLinks
+    Map(
+      "self" -> JsObject(Seq("href" -> JsString(buildUri(None))))
+    ) ++ resourceLinks
   }
 
   implicit val formats: OFormat[ResourceLinks] = Json.format[ResourceLinks]

@@ -87,7 +87,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
                 val resourceLinks: Seq[Map[String, JsObject]] = listNames.map {
                   listName =>
-                    Map(listName.listName -> JsObject(Seq("href" -> JsString("/customs-reference-data/" + listName.listName))))
+                    Map(listName.listName -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists/" + listName.listName))))
                 }
 
                 val links = Map(

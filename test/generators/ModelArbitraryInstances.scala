@@ -28,12 +28,14 @@ import models.ApiDataSource
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
+  val maxListSize = 10
+
   implicit def arbitraryResourceLinks: Arbitrary[ResourceLinks] =
     Arbitrary {
       for {
-        linkKey <- arbitrary[String]
-        link    <- arbitrarySimpleJsObject.arbitrary
-      } yield ResourceLinks(_links = Map(linkKey -> link))
+        size      <- Gen.chooseNum(1, maxListSize)
+        listNames <- Gen.listOfN(size, arbitrary[ListName])
+      } yield ResourceLinks(listNames)
     }
 
   implicit val arbitraryListName: Arbitrary[ListName] =
