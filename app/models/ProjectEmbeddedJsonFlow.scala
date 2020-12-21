@@ -33,7 +33,7 @@ class ProjectEmbeddedJsonFlow(listName: ListName) {
       logger.error(s"""Error when transforming ${listName.listName}. Expected data item to have "data" field""")
       Supervision.Stop
     case x: JsResultException =>
-      logger.error(s"""Unexpected error when transforming ${listName.listName}: ${x.getMessage}""")
+      logger.error(s"Unexpected error when transforming ${listName.listName}", x)
       Supervision.Stop
     case _ => Supervision.Stop
   }

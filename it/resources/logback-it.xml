@@ -8,6 +8,8 @@
         </encoder>
     </appender>
 
+    <logger name="application" level="OFF"/>
+
     <root level="${LOG_LEVEL:-WARN}">
         <appender-ref ref="CONSOLE" />
     </root>

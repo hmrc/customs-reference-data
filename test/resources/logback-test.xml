@@ -6,6 +6,8 @@
         </encoder>
     </appender>
 
+    <logger name="application" level="OFF"/>
+
     <root level="ERROR">
     </root>
 </configuration>

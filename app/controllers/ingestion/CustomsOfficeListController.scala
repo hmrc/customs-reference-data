@@ -20,9 +20,9 @@ import cats.data.EitherT
 import cats.implicits._
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
+import logging.Logging
 import models.ApiDataSource.ColDataFeed
 import models._
-import play.api.Logger
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -39,11 +39,10 @@ class CustomsOfficeListController @Inject() (
   parseConfig: ReferenceDataControllerParserConfig,
   cTCUP08Schema: CTCUP08Schema
 )(implicit ec: ExecutionContext)
-    extends BackendController(cc) {
+    extends BackendController(cc)
+    with Logging {
 
   import parseConfig._
-
-  private val customsOfficeListsLogger = Logger("CustomsOfficeLists")
 
   def customsOfficeLists(): Action[JsValue] =
     Action(customsOfficeParser(parse)).async {
@@ -57,10 +56,10 @@ class CustomsOfficeListController @Inject() (
         ).value.map {
           case Right(_) => Accepted
           case Left(writeError: WriteError) =>
-            customsOfficeListsLogger.error(s"Failed to save the data list because of error: ${writeError.message}")
+            logger.info(s"Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
-            customsOfficeListsLogger.error(errorDetails.message)
+            logger.info(errorDetails.message)
             BadRequest(Json.toJsObject(errorDetails))
         }
     }

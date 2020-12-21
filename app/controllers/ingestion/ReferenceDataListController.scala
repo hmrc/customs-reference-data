@@ -20,12 +20,12 @@ import cats.data._
 import cats.implicits._
 import config.ReferenceDataControllerParserConfig
 import javax.inject.Inject
+import logging.Logging
 import models.ApiDataSource.RefDataFeed
 import models.CTCUP06Schema
 import models.ErrorDetails
 import models.ReferenceDataListsPayload
 import models.WriteError
-import play.api.Logger
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -42,11 +42,10 @@ class ReferenceDataListController @Inject() (
   parseConfig: ReferenceDataControllerParserConfig,
   cTCUP06Schema: CTCUP06Schema
 )(implicit ec: ExecutionContext)
-    extends BackendController(cc) {
+    extends BackendController(cc)
+    with Logging {
 
   import parseConfig._
-
-  private val referenceDataListsLogger = Logger("ReferenceDataLists")
 
   def referenceDataLists(): Action[JsValue] =
     Action(referenceDataParser(parse)).async {
@@ -60,10 +59,10 @@ class ReferenceDataListController @Inject() (
         ).value.map {
           case Right(_) => Accepted
           case Left(writeError: WriteError) =>
-            referenceDataListsLogger.error(s"Failed to save the data list because of error: ${writeError.message}")
+            logger.info(s"Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
-            referenceDataListsLogger.error(errorDetails.message)
+            logger.info(errorDetails.message)
             BadRequest(Json.toJsObject(errorDetails))
         }
     }
