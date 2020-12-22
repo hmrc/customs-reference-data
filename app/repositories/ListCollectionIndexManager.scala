@@ -18,7 +18,9 @@ package repositories
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.Index
+import reactivemongo.api.indexes.Index.Aux
 import reactivemongo.api.indexes.IndexType
 import reactivemongo.bson.BSONDocument
 
@@ -28,36 +30,26 @@ import scala.concurrent.Future
 @Singleton
 class ListCollectionIndexManager @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext) {
 
-  private val index: Index.Default = Index(
+  private val listNameIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
     key = Seq("listName" -> IndexType.Ascending),
     name = Some("listName_index"),
-    unique = false,
-    background = true,
-    sparse = false,
-    expireAfterSeconds = None,
-    storageEngine = None,
-    weights = None,
-    defaultLanguage = None,
-    languageOverride = None,
-    textIndexVersion = None,
-    sphereIndexVersion = None,
-    bits = None,
-    min = None,
-    max = None,
-    bucketSize = None,
-    collation = None,
-    wildcardProjection = None,
-    version = None,
-    partialFilter = None,
-    options = BSONDocument.empty
+    background = true
+  )
+
+  private val versionIdIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
+    key = Seq("versionId" -> IndexType.Ascending),
+    name = Some("versionId_index"),
+    background = true
   )
 
   val started: Future[Unit] =
     listCollection()
-      .flatMap(
-        _.indexesManager
-          .ensure(index)
-          .map(_ => ())
-      )
-
+      .flatMap {
+        jsonCollection =>
+          for {
+            _   <- jsonCollection.indexesManager.ensure(listNameIndex)
+            res <- jsonCollection.indexesManager.ensure(versionIdIndex)
+          } yield res
+      }
+      .map(_ => ())
 }
