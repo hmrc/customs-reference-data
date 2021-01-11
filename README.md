@@ -1,7 +1,17 @@
 
-# customs-reference-data
+# Customs Reference Data
 
-This is a placeholder README.md for a new repository
+## Related test repositories
+The is a Github repo with [Github repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface):
+- sample data for active development or testing of the service  service
+- test scenarios for the service
+
+## Development
+### Seeding service with data
+- Follow the [instructions in the test repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface)
+
+
+
 
 ### License
 
