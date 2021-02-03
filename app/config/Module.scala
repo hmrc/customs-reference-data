@@ -20,7 +20,9 @@ import models.CTCUP06Schema
 import models.CTCUP08Schema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
+import repositories.DefaultListRepository
 import repositories.ListCollectionIndexManager
+import repositories.ListRepository
 import repositories.VersionCollectionIndexManager
 
 class Module
@@ -37,7 +39,8 @@ class Module
           bind[CTCUP08Schema].toSelf,
           bind[ListCollectionIndexManager].toSelf,
           bind[VersionCollectionIndexManager].toSelf,
-          bind[ReferenceDataControllerParserConfig].toSelf
+          bind[ReferenceDataControllerParserConfig].toSelf,
+          bind[ListRepository].to[DefaultListRepository]
         ).map(_.eagerly())
 
         /*

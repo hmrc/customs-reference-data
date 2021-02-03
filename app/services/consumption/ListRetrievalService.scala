@@ -19,12 +19,12 @@ package services.consumption
 import akka.stream.scaladsl.Source
 import cats.data.OptionT
 import cats.implicits._
-import javax.inject.Inject
 import models._
 import play.api.libs.json.JsObject
 import repositories.ListRepository
 import repositories.VersionRepository
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 

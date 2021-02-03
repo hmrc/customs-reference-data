@@ -20,28 +20,32 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.Sink
 import akka.stream.scaladsl.Source
 import com.google.inject.Inject
-import javax.inject.Singleton
 import models.GenericListItem
 import models.ListName
 import models.VersionId
 import models.VersionedListName
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import reactivemongo.akkastream.State
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
-import reactivemongo.api.commands.MultiBulkWriteResult
-import repositories.ListRepository.FailedWrite
-import repositories.ListRepository.ListRepositoryWriteResult
-import repositories.ListRepository.PartialWriteFailure
-import repositories.ListRepository.SuccessfulWrite
 import repositories.Query.QueryOps
 
+import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
+trait ListRepository {
+  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]]
+  def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]]
+  def getListNames(version: VersionId): Future[Seq[ListName]]
+  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult]
+}
+
 @Singleton
-class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: ExecutionContext, mt: Materializer) {
+class DefaultListRepository @Inject() (
+  listCollection: ListCollection
+)(implicit ec: ExecutionContext, mt: Materializer)
+    extends ListRepository {
 
   def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]] =
     listCollection.apply().map {
@@ -106,14 +110,4 @@ class ListRepository @Inject() (listCollection: ListCollection)(implicit ec: Exe
               FailedWrite(list.head.listName)
         }
     }
-
-}
-
-object ListRepository {
-
-  sealed trait ListRepositoryWriteResult
-
-  case object SuccessfulWrite                                               extends ListRepositoryWriteResult
-  case class PartialWriteFailure(listName: ListName, errorsIndex: Seq[Int]) extends ListRepositoryWriteResult
-  case class FailedWrite(listName: ListName)                                extends ListRepositoryWriteResult
 }

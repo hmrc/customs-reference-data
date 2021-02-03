@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReferenceDataPayload",
+  "description": "All data lists for the reference data feed",
+  "type": "object",
+  "properties": {
+    "messageInformation": {
+      "$ref": "#/definitions/MessageInformation"
+    },
+    "lists": {
+      "$ref": "#/definitions/Lists"
+    }
+  },
+  "required": ["messageInformation", "lists"],
+  "additionalProperties": false,
+  "definitions": {
+    "Lists": {
+      "title": "Lists",
+      "type": "object",
+      "properties": {
+        "AdditionalInformationIdCommon": {
+          "$ref": "#/definitions/AdditionalInformationIDCommon"
+        },
+        "UnodLanguages": {
+          "$ref": "#/definitions/ControllingAgencies"
+        }
+      },
+      "required": [
+        "AdditionalInformationIdCommon",
+        "UnodLanguages"
+      ],
+      "additionalProperties": false
+    },
+    "ListName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "AdditionalInformationIDCommon": {
+      "title": "AdditionalInformationIDCommon",
+      "type": "object",
+      "properties": {
+        "listName": {
+          "$ref": "#/definitions/ListName"
+        },
+        "listEntries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/AdditionalInformationIDCommonListEntry"
+          }
+        }
+      },
+      "required": ["listName", "listEntries"],
+      "additionalProperties": false
+    },
+    "AdditionalInformationIDCommonListEntry": {
+      "title": "AdditionalInformationIDCommonListEntry",
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/State"
+        },
+        "activeFrom": {
+          "type": "string",
+          "format": "date"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9]{1,5}$"
+        },
+        "description": {
+          "$ref": "#/definitions/EntryDescription"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "required": ["state", "activeFrom", "code", "description"],
+      "additionalProperties": false
+    },
+    "ControllingAgencies": {
+      "title": "Controlling Agencies",
+      "type": "object",
+      "properties": {
+        "listName": {
+          "$ref": "#/definitions/ListName"
+        },
+        "listEntries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "title": "Controlling Agency",
+            "type": "object",
+            "properties": {
+              "state": {
+                "$ref": "#/definitions/State"
+              },
+              "activeFrom": {
+                "type": "string",
+                "format": "date"
+              },
+              "code": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9]{1,2}$"
+              },
+              "description": {
+                "$ref": "#/definitions/EntryDescription"
+              }
+            },
+            "required": ["state", "activeFrom", "code", "description"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["listName", "listEntries"],
+      "additionalProperties": false
+    },
+    "MessageInformation": {
+      "title": "MessageInformation",
+      "type": "object",
+      "properties": {
+        "messageID": {
+          "type": "string"
+        },
+        "snapshotDate": {
+          "type": "string"
+        }
+      },
+      "required": ["messageID", "snapshotDate"],
+      "additionalProperties": false
+    },
+    "State": {
+      "title": "State",
+      "description": "The validity state of the list item",
+      "type": "string",
+      "enum": ["valid", "invalid"]
+    },
+    "CountryRegimeCode": {
+      "title": "CountryRegimeCode",
+      "type": "string",
+      "enum": ["TOC", "EEC", "OTH"]
+    },
+    "EntryDescription": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string"
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
