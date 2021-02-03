@@ -1,7 +1,6 @@
 package api
 
 import base.ItSpecBase
-import com.codahale.metrics.SharedMetricRegistries
 import models.{ApiDataSource, ListName, VersionId}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
@@ -12,7 +11,6 @@ import play.api.libs.ws.{WSClient, WSResponse}
 import repositories.{DefaultListRepository, ListRepository, MongoSuite, VersionRepository}
 
 import java.io.InputStream
-import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 
