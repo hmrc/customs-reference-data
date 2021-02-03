@@ -53,7 +53,7 @@ class VersionRepositorySpec
       )
       .futureValue
 
-    Mockito.reset(mockVersionIdProducer, mockTimeService)
+    Mockito.reset(mockTimeService)
 
     super.beforeEach()
   }
@@ -63,13 +63,11 @@ class VersionRepositorySpec
     super.afterAll()
   }
 
-  val mockVersionIdProducer = mock[VersionIdProducer]
   val mockTimeService       = mock[TimeService]
 
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
       .overrides(
-        bind[VersionIdProducer].to(mockVersionIdProducer),
         bind[TimeService].to(mockTimeService)
       )
       .build()
@@ -83,10 +81,10 @@ class VersionRepositorySpec
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
       val expectedVersionId = VersionId("1")
-      when(mockVersionIdProducer.apply()).thenReturn(expectedVersionId)
+
       when(mockTimeService.now()).thenReturn(LocalDateTime.now())
 
-      val result = repo.save(messageInformation, RefDataFeed, Seq(listName)).futureValue
+      val result = repo.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName)).futureValue
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, RefDataFeed, Seq(listName))
 
@@ -109,14 +107,13 @@ class VersionRepositorySpec
       val oldSnapshotDate = LocalDate.now().minusDays(1)
       val oldCreatedOn    = LocalDateTime.now().minusDays(1)
 
-      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"))
       when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
-      repo.save(messageInformation.copy(snapshotDate = oldSnapshotDate), RefDataFeed, Seq(listName)).futureValue
-      repo.save(messageInformation.copy(snapshotDate = latestSnapshotDate), RefDataFeed, Seq(listName)).futureValue
+      repo.save(VersionId("1"), messageInformation.copy(snapshotDate = oldSnapshotDate), RefDataFeed, Seq(listName)).futureValue
+      repo.save(VersionId("2"), messageInformation.copy(snapshotDate = latestSnapshotDate), RefDataFeed, Seq(listName)).futureValue
 
       val expectedVersionInformation =
         VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, RefDataFeed, Seq(listName))
@@ -133,15 +130,14 @@ class VersionRepositorySpec
       val latestCreatedOn = LocalDateTime.now()
       val oldCreatedOn    = LocalDateTime.now().minusDays(1)
 
-      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"))
       when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName1          = ListName("1")
       val listName2          = ListName("2")
 
-      repo.save(messageInformation.copy(snapshotDate = snapshotDate), RefDataFeed, Seq(listName1)).futureValue
-      repo.save(messageInformation.copy(snapshotDate = snapshotDate), ColDataFeed, Seq(listName2)).futureValue
+      repo.save(VersionId("1"), messageInformation.copy(snapshotDate = snapshotDate), RefDataFeed, Seq(listName1)).futureValue
+      repo.save(VersionId("2"), messageInformation.copy(snapshotDate = snapshotDate), ColDataFeed, Seq(listName2)).futureValue
 
       val expectedVersionInformation =
         VersionInformation(messageInformation.copy(snapshotDate = snapshotDate), VersionId("1"), latestCreatedOn, RefDataFeed, Seq(listName1))
@@ -160,7 +156,6 @@ class VersionRepositorySpec
       val newMessageInfomation = MessageInformation("messageId", newSnapshotDate)
       val oldMessageInfomation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
 
-      when(mockVersionIdProducer.apply()).thenReturn(VersionId("1"), VersionId("2"), VersionId("3"))
       when(mockTimeService.now())
         .thenReturn(LocalDateTime.now().minusDays(1))
         .thenReturn(LocalDateTime.now().minusDays(1))
@@ -170,9 +165,9 @@ class VersionRepositorySpec
       val listNames2 = Seq(ListName("1"), ListName("2"))
       val listNames3 = Seq(ListName("1.1"), ListName("2.1"))
 
-      repo.save(oldMessageInfomation, ColDataFeed, listNames1).futureValue
-      repo.save(oldMessageInfomation, RefDataFeed, listNames2).futureValue
-      repo.save(newMessageInfomation, RefDataFeed, listNames3).futureValue
+      repo.save(VersionId("1"), oldMessageInfomation, ColDataFeed, listNames1).futureValue
+      repo.save(VersionId("2"), oldMessageInfomation, RefDataFeed, listNames2).futureValue
+      repo.save(VersionId("3"), newMessageInfomation, RefDataFeed, listNames3).futureValue
 
       val result         = repo.getLatestListNames().futureValue
       val expectedResult = listNames1 ++ listNames3

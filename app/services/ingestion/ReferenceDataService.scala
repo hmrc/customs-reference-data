@@ -25,6 +25,7 @@ import repositories.DefaultListRepository.FailedWrite
 import repositories.DefaultListRepository.PartialWriteFailure
 import repositories.DefaultListRepository.SuccessfulWrite
 import repositories.ListRepository
+import repositories.VersionIdProducer
 import repositories.VersionRepository
 
 import scala.concurrent.ExecutionContext
@@ -42,27 +43,36 @@ trait ReferenceDataService {
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
   repository: ListRepository,
   versionRepository: VersionRepository,
-  schemaValidationService: SchemaValidationService
+  schemaValidationService: SchemaValidationService,
+  versionIdProducer: VersionIdProducer
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] =
-    versionRepository.save(payload.messageInformation, feed, payload.listNames).flatMap {
-      versionId =>
-        Future
-          .sequence(
-            payload
-              .toIterable(versionId)
-              .map(repository.insertList)
-          )
-          .map(
-            _.foldLeft[Option[Seq[ListName]]](None) {
-              case (errors, SuccessfulWrite)                  => errors
-              case (errors, PartialWriteFailure(listName, _)) => errors.orElse(Some(Seq())).map(_ :+ listName)
-              case (errors, FailedWrite(listName))            => errors.orElse(Some(Seq())).map(_ :+ listName)
-            }.map(x => WriteError(x.map(_.listName).mkString("Failed to insert the following lists: ", ", ", "")))
-          )
-    }
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
+    val versionId = versionIdProducer()
+
+    Future
+      .sequence(
+        payload
+          .toIterable(versionId)
+          .map(repository.insertList)
+      )
+      .flatMap(
+        writeResult =>
+          versionRepository
+            .save(versionId, payload.messageInformation, feed, payload.listNames)
+            .map(
+              _ =>
+                writeResult
+                  .foldLeft[Option[Seq[ListName]]](None) {
+                    case (errors, SuccessfulWrite)                  => errors
+                    case (errors, PartialWriteFailure(listName, _)) => errors.orElse(Some(Seq())).map(_ :+ listName)
+                    case (errors, FailedWrite(listName))            => errors.orElse(Some(Seq())).map(_ :+ listName)
+                  }
+                  .map(x => WriteError(x.map(_.listName).mkString("Failed to insert the following lists: ", ", ", "")))
+            )
+      )
+  }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)

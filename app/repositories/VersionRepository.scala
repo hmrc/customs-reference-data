@@ -40,14 +40,13 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
-class VersionRepository @Inject() (versionCollection: VersionCollection, versionIdProducer: VersionIdProducer, timeService: TimeService)(implicit
+class VersionRepository @Inject() (versionCollection: VersionCollection, timeService: TimeService)(implicit
   ec: ExecutionContext
 ) {
 
-  def save(messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[VersionId] = {
-    val versionId: VersionId = versionIdProducer()
-    val time: LocalDateTime  = timeService.now()
-    val versionInformation   = VersionInformation(messageInformation, versionId, time, feed, listNames)
+  def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[VersionId] = {
+    val time: LocalDateTime = timeService.now()
+    val versionInformation  = VersionInformation(messageInformation, versionId, time, feed, listNames)
 
     versionCollection().flatMap {
       _.insert(false)

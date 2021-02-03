@@ -38,7 +38,9 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
 
     database.flatMap(_.drop()).futureValue
 
-    val versionId: VersionId = versionRepo.save(defaultMessageInformation, ApiDataSource.RefDataFeed, Seq(defaultListName)).futureValue
+    val versionId: VersionId = VersionId("test-version-id")
+
+    versionRepo.save(versionId, defaultMessageInformation, ApiDataSource.RefDataFeed, Seq(defaultListName)).futureValue
 
     listRepo.insertList(basicList(versionId)).futureValue
 
