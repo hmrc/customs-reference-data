@@ -28,10 +28,6 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import reactivemongo.akkastream.cursorProducer
 import reactivemongo.api.ReadConcern
-import repositories.DefaultListRepository.FailedWrite
-import repositories.DefaultListRepository.ListRepositoryWriteResult
-import repositories.DefaultListRepository.PartialWriteFailure
-import repositories.DefaultListRepository.SuccessfulWrite
 import repositories.Query.QueryOps
 
 import javax.inject.Singleton
@@ -114,14 +110,4 @@ class DefaultListRepository @Inject() (
               FailedWrite(list.head.listName)
         }
     }
-
-}
-
-object DefaultListRepository {
-
-  sealed trait ListRepositoryWriteResult
-
-  case object SuccessfulWrite                                               extends ListRepositoryWriteResult
-  case class PartialWriteFailure(listName: ListName, errorsIndex: Seq[Int]) extends ListRepositoryWriteResult
-  case class FailedWrite(listName: ListName)                                extends ListRepositoryWriteResult
 }

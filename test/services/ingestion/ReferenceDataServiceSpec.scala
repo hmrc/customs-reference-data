@@ -36,9 +36,9 @@ import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import repositories.DefaultListRepository.FailedWrite
-import repositories.DefaultListRepository.PartialWriteFailure
-import repositories.DefaultListRepository.SuccessfulWrite
+import repositories.FailedWrite
+import repositories.PartialWriteFailure
+import repositories.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionIdProducer
 import repositories.VersionRepository

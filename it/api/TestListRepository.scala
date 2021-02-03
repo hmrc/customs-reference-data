@@ -3,7 +3,7 @@ package api
 import akka.stream.scaladsl.Source
 import models.{GenericListItem, ListName, VersionId, VersionedListName}
 import play.api.libs.json.JsObject
-import repositories.{DefaultListRepository, ListRepository}
+import repositories.{DefaultListRepository, ListRepository, ListRepositoryWriteResult}
 
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -15,7 +15,7 @@ class TestListRepository @Inject()(defaultListRepository: DefaultListRepository)
 
   override def getListNames(version: VersionId): Future[Seq[ListName]] = defaultListRepository.getListNames(version)
 
-  override def insertList(list: Seq[GenericListItem]): Future[DefaultListRepository.ListRepositoryWriteResult] = {
+  override def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
     defaultListRepository.insertList(list)
   }

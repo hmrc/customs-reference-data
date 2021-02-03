@@ -21,9 +21,9 @@ import com.google.inject.Inject
 import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
-import repositories.DefaultListRepository.FailedWrite
-import repositories.DefaultListRepository.PartialWriteFailure
-import repositories.DefaultListRepository.SuccessfulWrite
+import repositories.FailedWrite
+import repositories.PartialWriteFailure
+import repositories.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionIdProducer
 import repositories.VersionRepository
@@ -65,15 +65,4 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)
-}
-
-object ReferenceDataService {
-
-  sealed trait DataProcessingResult
-
-  object DataProcessingResult {
-    case object DataProcessingSuccessful extends DataProcessingResult
-    case object DataProcessingFailed     extends DataProcessingResult
-  }
-
 }
