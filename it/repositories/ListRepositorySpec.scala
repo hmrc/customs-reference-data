@@ -24,7 +24,7 @@ import reactivemongo.api.Cursor
 import reactivemongo.api.DefaultDB
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
-import repositories.ListRepository.SuccessfulWrite
+import repositories.DefaultListRepository.SuccessfulWrite
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

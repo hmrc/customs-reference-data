@@ -21,9 +21,9 @@ import com.google.inject.Inject
 import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
-import repositories.ListRepository.FailedWrite
-import repositories.ListRepository.PartialWriteFailure
-import repositories.ListRepository.SuccessfulWrite
+import repositories.DefaultListRepository.FailedWrite
+import repositories.DefaultListRepository.PartialWriteFailure
+import repositories.DefaultListRepository.SuccessfulWrite
 import repositories.ListRepository
 import repositories.VersionRepository
 

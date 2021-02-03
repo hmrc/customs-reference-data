@@ -1,0 +1,51 @@
+{
+  "messageInformation": {
+    "messageID": "the-brand-new-message-id",
+    "snapshotDate": "2020-07-06"
+  },
+  "lists": {
+    "AdditionalInformationIdCommon": {
+      "listName": "AdditionalInformationIdCommon",
+      "listEntries": [
+        {
+          "state": "valid",
+          "activeFrom": "2020-01-18",
+          "code": "11111",
+          "remark": "foo",
+          "description": {
+            "en": "Very Simple"
+          }
+        },
+        {
+          "state": "valid",
+          "activeFrom": "2020-07-01",
+          "code": "22222",
+          "description": {
+            "en": "This is EN bruh"
+          }
+        }
+      ]
+    },
+    "UnodLanguages": {
+      "listName": "UnodLanguages",
+      "listEntries": [
+        {
+          "state": "valid",
+          "activeFrom": "1900-01-01",
+          "code": "TD",
+          "description": {
+            "en": "TODAY"
+          }
+        },
+        {
+          "state": "valid",
+          "activeFrom": "1900-01-01",
+          "code": "TM",
+          "description": {
+            "en": "TOMORROW"
+          }
+        }
+      ]
+    }
+  }
+}
