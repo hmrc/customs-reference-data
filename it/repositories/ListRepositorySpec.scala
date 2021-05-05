@@ -212,7 +212,7 @@ class ListRepositorySpec
 
           val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
 
-          result mustBe expectedResult
+          result must contain allElementsOf(expectedResult)
 
           database.flatMap(_.drop()).futureValue
       }
