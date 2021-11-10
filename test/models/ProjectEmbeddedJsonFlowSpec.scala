@@ -17,19 +17,17 @@
 package models
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.stream.Materializer
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.SpecBase
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+
 import scala.collection.immutable.{Seq => ImmSeq}
 
 class ProjectEmbeddedJsonFlowSpec extends SpecBase {
 
   implicit lazy val actorSystem: ActorSystem = ActorSystem()
-  implicit lazy val mat: Materializer        = ActorMaterializer()
 
   "ProjectEmbeddedJson" - {
     "returns the embedded json object in the data field" in {

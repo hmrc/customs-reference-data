@@ -16,8 +16,7 @@
 
 package repositories
 
-import reactivemongo.api.indexes.IndexType
-import reactivemongo.bson.BSONDocument
+import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.Index.Aux
 import reactivemongo.api.indexes.Index

@@ -16,11 +16,8 @@
 
 package models
 
-import java.io.FileNotFoundException
-
 import javax.inject.Inject
 import javax.inject.Singleton
-import org.leadpony.justify.api.JsonSchema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.Environment
 

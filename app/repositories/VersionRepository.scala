@@ -28,7 +28,7 @@ import models.VersionId
 import models.VersionInformation
 import play.api.libs.json._
 import reactivemongo.api.commands.WriteResult
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
 import models.ApiDataSource
 import models.ApiDataSource.ColDataFeed

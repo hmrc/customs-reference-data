@@ -20,12 +20,9 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
-import repositories.ListCollection
-import repositories.MongoSuite
-import repositories.VersionCollection
-import repositories.VersionIdProducer
+import repositories.{ListCollection, MongoSuite, VersionCollection, VersionIdProducer}
 import services.consumption.ListRetrievalService
 import services.ingestion.ReferenceDataService
 
@@ -77,7 +74,7 @@ class InsertAndRetrieveIntegrationSpec
 
   "saves all the data items for each list for customs office list" in {
     val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-    val json               = genCustomsOfficeListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
+    val json               = genReferenceDataListsJson(5, 5, messageInformation = Some(Gen.const(messageInformation))).sample.value
     val data               = ReferenceDataListsPayload(json)
     val expectedListNames  = (json \ "lists").as[JsObject].keys.map(ListName(_))
 
@@ -115,8 +112,7 @@ class InsertAndRetrieveIntegrationSpec
     }
 
   override def beforeAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
-    started(app)
+    dropDatabase()
     super.beforeAll()
   }
 
@@ -140,7 +136,7 @@ class InsertAndRetrieveIntegrationSpec
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
+    dropDatabase()
     super.afterAll()
   }
 }

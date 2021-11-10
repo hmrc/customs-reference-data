@@ -16,14 +16,11 @@
 
 package controllers.consumption
 
-import akka.NotUsed
 import akka.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import models.ListName
 import models.MetaData
 import models.ReferenceDataList
-import models.StreamReferenceData
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary

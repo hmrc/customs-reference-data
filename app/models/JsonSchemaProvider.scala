@@ -17,7 +17,6 @@
 package models
 
 import java.io.FileNotFoundException
-import java.nio.file.Path
 
 import org.leadpony.justify.api.JsonSchema
 import org.leadpony.justify.api.JsonValidationService

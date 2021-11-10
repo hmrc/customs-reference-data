@@ -1,10 +1,9 @@
 package api
 
-import com.typesafe.config.ConfigFactory
+import java.time.LocalDate
+
 import models.{GenericListItem, ListName, MessageInformation, VersionId}
 import play.api.libs.json.{JsObject, Json}
-
-import java.time.LocalDate
 
 trait ConsumptionHelper {
 

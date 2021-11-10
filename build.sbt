@@ -31,15 +31,15 @@ lazy val microservice = Project(appName, file("."))
     scalaVersion := "2.12.11",
     PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    useSuperShell in ThisBuild := false,
+    ThisBuild / useSuperShell := false,
     scalacOptions += "-Ypartial-unification",
-    scalafmtOnCompile in ThisBuild := true
+    ThisBuild / scalafmtOnCompile := true
   )
 
 lazy val scoverageSettings =
   Seq(
     ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
-    ScoverageKeys.coverageMinimum := 85.00,
+    ScoverageKeys.coverageMinimumStmtTotal := 85.00,
     ScoverageKeys.coverageExcludedFiles := "<empty>;.*javascript.*;.*Routes.*;",
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,

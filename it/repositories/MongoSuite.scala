@@ -18,10 +18,10 @@ package repositories
 
 import com.typesafe.config.ConfigFactory
 import org.scalatest._
-import play.api.Application
+import org.scalatest.concurrent.ScalaFutures
 import play.api.Configuration
-import reactivemongo.api.MongoConnection.ParsedURI
 import reactivemongo.api._
+import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -36,30 +36,24 @@ object MongoSuite extends OptionValues {
     )
   )
 
-  lazy val connection: Future[(ParsedURI, MongoConnection)] =
-    for {
-      parsedUri   <- MongoConnection.fromString(config.get[String]("mongodb.uri"))
-      connnection <- AsyncDriver().connect(parsedUri)
-    } yield (parsedUri, connnection)
+  private lazy val parsedUri: Future[MongoConnection.ParsedURI] =
+    MongoConnection.fromString(config.get[String]("mongodb.uri"))
+
+  lazy val connection: Future[MongoConnection] = parsedUri.flatMap { AsyncDriver().connect(_, Some("connectionName")) }
 }
 
-trait MongoSuite extends BeforeAndAfterAll {
+trait MongoSuite extends BeforeAndAfterAll with ScalaFutures {
   self: TestSuite =>
 
-  def started(app: Application): Future[Unit] =
-    Future
-      .sequence(
-        Seq(
-          app.injector.instanceOf[ListCollectionIndexManager].started,
-          app.injector.instanceOf[VersionCollectionIndexManager].started
-        )
-      )
-      .map(_ => ())
-
   def database: Future[DefaultDB] =
-    MongoSuite.connection.flatMap {
-      case (uri, connection) =>
-        connection.database(uri.db.get)
-    }
+    for {
+      uri              <- MongoSuite.parsedUri
+      connection       <- MongoSuite.connection
+      database         <- connection.database(uri.db.get)
+    } yield database
 
+  def dropDatabase(): Unit = {
+    database.map(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.map(_.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)).futureValue
+  }
 }

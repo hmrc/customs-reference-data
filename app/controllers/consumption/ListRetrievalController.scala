@@ -18,12 +18,10 @@ package controllers.consumption
 
 import cats.data.OptionT
 import cats.implicits._
-import config.AppConfig
 import javax.inject.Inject
 import models.ListName
 import models.StreamReferenceData
 import play.api.http.HttpEntity
-import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents

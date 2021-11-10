@@ -52,9 +52,9 @@ class DefaultListRepository @Inject() (
       collection =>
         import collection.aggregationFramework.PipelineOperator
 
-        val query: PipelineOperator = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
-        val sort: PipelineOperator  = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
-        val projection: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
+        val query: PipelineOperator = PipelineOperator(Json.obj(s"$$match" -> listNameDetails.query))
+        val sort: PipelineOperator  = PipelineOperator(Json.obj(s"$$sort" -> Json.obj("_id" -> 1)))
+        val projection: PipelineOperator = PipelineOperator(Json.obj(s"$$project" -> {
           Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
         }))
 
@@ -70,9 +70,9 @@ class DefaultListRepository @Inject() (
       collection =>
         import collection.aggregationFramework.PipelineOperator
 
-        val query: PipelineOperator = PipelineOperator(Json.obj("$match" -> listNameDetails.query))
-        val sort: PipelineOperator  = PipelineOperator(Json.obj("$sort" -> Json.obj("_id" -> 1)))
-        val projection: PipelineOperator = PipelineOperator(Json.obj("$project" -> {
+        val query: PipelineOperator = PipelineOperator(Json.obj(s"$$match" -> listNameDetails.query))
+        val sort: PipelineOperator  = PipelineOperator(Json.obj(s"$$sort" -> Json.obj("_id" -> 1)))
+        val projection: PipelineOperator = PipelineOperator(Json.obj(s"$$project" -> {
           Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
         }))
 

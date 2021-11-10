@@ -2,9 +2,10 @@ package repositories
 
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
-import reactivemongo.api.{BSONSerializationPack, FailoverStrategy, ReadPreference}
+import reactivemongo.api.bson.collection.BSONSerializationPack
+import reactivemongo.api.{FailoverStrategy, ReadPreference}
 import reactivemongo.api.commands.Command
-import reactivemongo.bson.BSONDocument
+import reactivemongo.api.bson.BSONDocument
 import reactivemongo.core.errors.ReactiveMongoException
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,14 +19,14 @@ trait FailOnUnindexedQueries extends MongoSuite with BeforeAndAfterAll with Scal
     super.beforeAll()
 
     commandRunner(
-      db = MongoSuite.connection.flatMap(_._2.database("admin")).futureValue,
+      db = MongoSuite.connection.flatMap(_.database("admin")).futureValue,
       command = commandRunner.rawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 1))
     ).one[BSONDocument](ReadPreference.primaryPreferred).futureValue
   }
 
   override protected def afterAll(): Unit = {
     commandRunner(
-      db = MongoSuite.connection.flatMap(_._2.database("admin")).futureValue,
+      db = MongoSuite.connection.flatMap(_.database("admin")).futureValue,
       command = commandRunner.rawCommand(BSONDocument("setParameter" -> 1, "notablescan" -> 0))
     ).one[BSONDocument](ReadPreference.primaryPreferred).futureValue
 

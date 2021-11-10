@@ -19,7 +19,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
 import play.api.inject.bind
 import org.mockito.Mockito.when
@@ -39,9 +39,8 @@ class VersionRepositorySpec
     with FailOnUnindexedQueries {
 
   override def beforeAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
+    dropDatabase()
     super.beforeAll()
-    started(app).futureValue
   }
 
   override def beforeEach(): Unit = {
@@ -59,8 +58,8 @@ class VersionRepositorySpec
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
     super.afterAll()
+    dropDatabase()
   }
 
   val mockTimeService       = mock[TimeService]
