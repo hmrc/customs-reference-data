@@ -42,12 +42,12 @@ sealed trait ErrorDetails {
 
 object ErrorDetails {
 
-  implicit val writes: OWrites[ErrorDetails] = (
-    (__ \ "code").write[String] and
-      (__ \ "message").write[String] and
-      (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
-  )(arg => (arg.code, arg.message, arg.errors))
-
+  implicit def writes[T <: ErrorDetails]: OWrites[T] =
+    (
+      (__ \ "code").write[String] and
+        (__ \ "message").write[String] and
+        (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
+    )(arg => (arg.code, arg.message, arg.errors))
 }
 
 case class InvalidJsonError(_message: String) extends ErrorDetails {
