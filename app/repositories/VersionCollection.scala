@@ -32,7 +32,10 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
 
   override def apply(): Future[JSONCollection] =
     started.flatMap {
-      _ => collection
+      case true => collection
+      case _ =>
+        println("Unable to create indices")
+        throw (new RuntimeException("Unable to create indices"))
     }
 
   private lazy val collection = mongo.database.map(_.collection[JSONCollection](VersionCollection.collectionName))
@@ -115,12 +118,12 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
         .ensure(index)
     )
 
-  private val started: Future[Unit] =
+  private val started: Future[Boolean] =
     for {
-      _ <- addIndex(versionId_index)
-      _ <- addIndex(snapshotDate_index)
-      _ <- addIndex(listNames_index)
-    } yield ()
+      versionIdCreated <- addIndex(versionId_index)
+      snapshotCreated  <- addIndex(snapshotDate_index)
+      listNamesCreated <- addIndex(listNames_index)
+    } yield (versionIdCreated && snapshotCreated && listNamesCreated)
 }
 
 object VersionCollection {
