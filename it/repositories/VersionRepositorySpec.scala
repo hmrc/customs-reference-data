@@ -39,7 +39,6 @@ class VersionRepositorySpec
     with FailOnUnindexedQueries {
 
   override def beforeAll(): Unit = {
-    dropDatabase()
     createCollections()
     super.beforeAll()
   }

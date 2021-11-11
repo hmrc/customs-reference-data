@@ -31,7 +31,6 @@ class ListRepositorySpec
     with ScalaFutures {
 
   override def beforeAll(): Unit = {
-    dropDatabase()
     createCollections()
     super.beforeAll()
   }

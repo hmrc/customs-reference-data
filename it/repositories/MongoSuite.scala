@@ -45,7 +45,7 @@ object MongoSuite extends OptionValues {
 trait MongoSuite extends BeforeAndAfterAll with ScalaFutures {
   self: TestSuite =>
 
-  def database: Future[DefaultDB] =
+  val database: Future[DefaultDB] =
     for {
       uri              <- MongoSuite.parsedUri
       connection       <- MongoSuite.connection
@@ -53,12 +53,24 @@ trait MongoSuite extends BeforeAndAfterAll with ScalaFutures {
     } yield database
 
   def createCollections(): Unit = {
-    database.map(_.collection[JSONCollection](ListCollection.collectionName).create(failsIfExists = false)).futureValue
-    database.map(_.collection[JSONCollection](VersionCollection.collectionName).create(failsIfExists = false)).futureValue
+    database.map {
+      db =>
+        for {
+          _ <- db.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)
+          _ <- db.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)
+          _ <- db.collection[JSONCollection](ListCollection.collectionName).create(failsIfExists = false)
+          _ <- db.collection[JSONCollection](VersionCollection.collectionName).create(failsIfExists = false)
+        } yield ()
+    }.futureValue
   }
 
   def dropDatabase(): Unit = {
-    database.map(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
-    database.map(_.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)).futureValue
+    database.map {
+      db =>
+        for {
+          _ <- db.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)
+          _ <- db.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)
+        } yield ()
+    }.futureValue
   }
 }

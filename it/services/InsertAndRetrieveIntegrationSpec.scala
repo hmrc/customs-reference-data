@@ -112,7 +112,6 @@ class InsertAndRetrieveIntegrationSpec
     }
 
   override def beforeAll(): Unit = {
-    dropDatabase()
     createCollections()
     super.beforeAll()
   }
