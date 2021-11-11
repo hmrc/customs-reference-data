@@ -16,11 +16,7 @@
 
 package models
 
-import akka.NotUsed
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.stream.Materializer
-import akka.stream.scaladsl.Flow
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import akka.util.ByteString
@@ -29,7 +25,6 @@ import generators.ModelArbitraryInstances
 import org.scalatest.OptionValues
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json.JsObject
-import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 
 class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues {
@@ -39,7 +34,6 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
     "must transform stream and turn it into a ByteString" in {
 
       implicit lazy val actorSystem: ActorSystem = ActorSystem()
-      implicit lazy val mat: Materializer        = ActorMaterializer()
 
       val name = arbitraryListName.arbitrary.sample.value
       val meta = arbitraryMetaData.arbitrary.sample.value

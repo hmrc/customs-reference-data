@@ -84,46 +84,6 @@ trait ModelGenerators {
     )
   }
 
-  /**
-    * Generator that sample full reference data push as JSON
-    *
-    * @param numberOfLists The number of lists for the sample reference data json
-    * @param numberOfListItems The number of list items to populate the list's listEntries with
-    * @param messageInformation The metadata for the reference data. This allows the caller to override the default random values and specify their own
-    * @return A [[play.api.libs.json.JsObject]] that represents a full reference data push
-    */
-  @deprecated("Use genReferenceDataListsJson", "")
-  def genCustomsOfficeListsJson(
-    numberOfLists: Int = 5,
-    numberOfListItems: Int = 5,
-    messageInformation: Option[Gen[MessageInformation]] = None,
-    dataItemsGen: Option[Gen[JsObject]] = None
-  ): Gen[JsObject] = {
-    import generators.ModelArbitraryInstances.arbitraryMessageInformation
-
-    require(numberOfLists >= 1, "Number of lists should be greater than 1")
-
-    // This is used to ensure that there are no collisions in the listNames so that we generate the specified number of lists.
-    val suffix: Iterator[String] = Iterator.from(0, 1).map(_.toString)
-
-    val jsObjGen2: Gen[JsObject] = {
-      val listNameGen: Gen[String] = extendedAsciiWithMaxLength(100).map(_ ++ suffix.next())
-      genReferenceList(numberOfListItems, dataItemsGen, listNameGen = Some(listNameGen))
-    }
-
-    for {
-      messageInformation <- messageInformation.getOrElse(arbitraryMessageInformation.arbitrary)
-      listsOfLists       <- Gen.listOfN(numberOfLists, jsObjGen2)
-      listsObject = listsOfLists.foldLeft(Json.obj())(_ ++ _)
-    } yield Json.obj(
-      "messageInformation" -> Json.obj(
-        "messageID"    -> messageInformation.messageId,
-        "snapshotDate" -> messageInformation.snapshotDate
-      ),
-      "lists" -> listsObject
-    )
-  }
-
   def genReferenceDataListsPayload(
     numberOfLists: Int = 5,
     numberOfListItems: Int = 5,
@@ -137,7 +97,7 @@ trait ModelGenerators {
     numberOfListItems: Int = 5,
     dataItemsGen: Option[Gen[JsObject]] = None
   ): Gen[ReferenceDataListsPayload] =
-    genCustomsOfficeListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
+    genReferenceDataListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
       .map(ReferenceDataListsPayload(_))
 
 }

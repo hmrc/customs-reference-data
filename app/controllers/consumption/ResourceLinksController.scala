@@ -37,7 +37,7 @@ class ResourceLinksController @Inject() (
 
   def get: Action[AnyContent] =
     Action.async {
-      implicit request =>
+      _ =>
         listRetrievalService.getResourceLinks().map {
           case Some(resourceLinks) =>
             Ok(Json.toJsObject(resourceLinks))

@@ -1,5 +1,7 @@
 package api
 
+import java.io.InputStream
+
 import base.ItSpecBase
 import models.{ApiDataSource, ListName, VersionId}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
@@ -10,8 +12,6 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSClient, WSResponse}
 import repositories.{DefaultListRepository, ListRepository, MongoSuite, VersionRepository}
 
-import java.io.InputStream
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 
 class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with GuiceOneServerPerSuite with MongoSuite {
@@ -34,7 +34,7 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
     val postUrl = s"http://localhost:$port/customs-reference-data/reference-data-lists"
     def getListUrl(listName: ListName = defaultListName) = s"http://localhost:$port/customs-reference-data/lists/${listName.listName}"
 
-    database.flatMap(_.drop()).futureValue
+    dropDatabase()
 
     val versionId: VersionId = VersionId("test-version-id")
 

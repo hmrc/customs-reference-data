@@ -17,8 +17,6 @@
 package services.consumption
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.stream.Materializer
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.SpecBase
@@ -217,7 +215,6 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
   "streamList" - {
 
     implicit lazy val actorSystem: ActorSystem = ActorSystem()
-    implicit lazy val mat: Materializer        = ActorMaterializer()
 
     "must return reference data as stream" in {
 

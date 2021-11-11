@@ -1,30 +1,21 @@
 package repositories
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, Materializer}
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.GenericListItem
-import models.ListName
-import models.VersionId
-import models.VersionedListName
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.{GenericListItem, ListName, VersionId, VersionedListName}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
-import reactivemongo.api.Cursor
-import reactivemongo.api.DefaultDB
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import play.api.libs.json.{JsObject, Json}
+import reactivemongo.api.{Cursor, DefaultDB}
+import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
-import repositories.SuccessfulWrite
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,9 +31,8 @@ class ListRepositorySpec
     with ScalaFutures {
 
   override def beforeAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
+    createCollections()
     super.beforeAll()
-    started(app).futureValue
   }
 
   override def beforeEach(): Unit = {
@@ -58,7 +48,7 @@ class ListRepositorySpec
   }
 
   override def afterAll(): Unit = {
-    database.flatMap(_.drop()).futureValue
+    dropDatabase()
     super.afterAll()
   }
 
@@ -77,7 +67,6 @@ class ListRepositorySpec
   "getListByNameSource" - {
 
     implicit lazy val actorSystem: ActorSystem = ActorSystem()
-    implicit lazy val mat: Materializer        = ActorMaterializer()
 
     "returns the list items that match the specified VersionId" in {
       val versionId  = VersionId("1")
@@ -214,7 +203,7 @@ class ListRepositorySpec
 
           result must contain allElementsOf(expectedResult)
 
-          database.flatMap(_.drop()).futureValue
+          dropDatabase()
       }
     }
 

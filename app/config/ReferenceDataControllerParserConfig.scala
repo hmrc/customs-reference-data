@@ -16,7 +16,6 @@
 
 package config
 
-import akka.util.ByteString
 import javax.inject.Inject
 import javax.inject.Singleton
 import play.api.Configuration
