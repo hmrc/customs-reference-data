@@ -115,7 +115,7 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
         .ensure(index)
     )
 
-  private val started: Future[Unit] =
+  private lazy val started: Future[Unit] =
     for {
       _ <- addIndex(versionId_index)
       _ <- addIndex(snapshotDate_index)
