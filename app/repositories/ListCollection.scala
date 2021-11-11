@@ -42,7 +42,7 @@ private[repositories] class ListCollection @Inject() (mongo: ReactiveMongoApi)(i
     name = Some("versionId_index")
   )
 
-  private val started: Future[Unit] =
+  private lazy val started: Future[Unit] =
     collection
       .flatMap {
         jsonCollection =>
