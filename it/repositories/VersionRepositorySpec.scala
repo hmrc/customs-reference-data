@@ -40,6 +40,7 @@ class VersionRepositorySpec
 
   override def beforeAll(): Unit = {
     dropDatabase()
+    createCollections()
     super.beforeAll()
   }
 

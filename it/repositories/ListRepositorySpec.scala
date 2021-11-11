@@ -32,6 +32,7 @@ class ListRepositorySpec
 
   override def beforeAll(): Unit = {
     dropDatabase()
+    createCollections()
     super.beforeAll()
   }
 

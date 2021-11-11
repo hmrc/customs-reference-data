@@ -52,6 +52,11 @@ trait MongoSuite extends BeforeAndAfterAll with ScalaFutures {
       database         <- connection.database(uri.db.get)
     } yield database
 
+  def createCollections(): Unit = {
+    database.map(_.collection[JSONCollection](ListCollection.collectionName).create(failsIfExists = false)).futureValue
+    database.map(_.collection[JSONCollection](VersionCollection.collectionName).create(failsIfExists = false)).futureValue
+  }
+
   def dropDatabase(): Unit = {
     database.map(_.collection[JSONCollection](ListCollection.collectionName).drop(failIfNotFound = false)).futureValue
     database.map(_.collection[JSONCollection](VersionCollection.collectionName).drop(failIfNotFound = false)).futureValue
