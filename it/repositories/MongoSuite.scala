@@ -45,7 +45,7 @@ object MongoSuite extends OptionValues {
 trait MongoSuite extends BeforeAndAfterAll with ScalaFutures {
   self: TestSuite =>
 
-  val database: Future[DefaultDB] =
+  lazy val database: Future[DefaultDB] =
     for {
       uri              <- MongoSuite.parsedUri
       connection       <- MongoSuite.connection
