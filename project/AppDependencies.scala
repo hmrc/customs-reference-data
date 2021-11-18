@@ -22,12 +22,12 @@ object AppDependencies {
     "org.scalatestplus.play" %% "scalatestplus-play"       % "5.1.0",
     "org.scalatestplus"      %% "scalatestplus-scalacheck" % "3.1.0.0-RC2",
     "org.pegdown"             % "pegdown"                  % "1.6.0",
-    "org.jsoup"               % "jsoup"                    % "1.10.3",
+    "org.jsoup"               % "jsoup"                    % "1.14.2",
     "com.typesafe.play"      %% "play-test"                % current,
-    "org.mockito"             % "mockito-core"             % "3.3.3",
-    "org.scalacheck"         %% "scalacheck"               % "1.14.3",
+    "org.mockito"             % "mockito-core"             % "3.12.4",
+    "org.scalacheck"         %% "scalacheck"               % "1.15.4",
     "wolfendale"             %% "scalacheck-gen-regexp"    % "0.1.2",
-    "com.vladsch.flexmark"    % "flexmark-all"             % "0.35.10",
+    "com.vladsch.flexmark"    % "flexmark-all"             % "0.36.8",
     "com.typesafe.akka"      %% "akka-stream-testkit"      % PlayVersion.akkaVersion,
     "com.typesafe.akka"      %% "akka-slf4j"               % PlayVersion.akkaVersion
   ).map(_ % "test, it")
