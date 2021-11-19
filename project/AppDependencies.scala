@@ -4,10 +4,10 @@ import sbt._
 
 object AppDependencies {
 
-  private val catsVersion = "2.1.1"
+  private val catsVersion = "2.6.1"
 
   val compile: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % "5.14.0",
+    "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % "5.16.0",
     "org.reactivemongo"   %% "play2-reactivemongo"             % "0.20.13-play28",
     "com.typesafe.play"   %% "play-iteratees"                  % "2.6.1",
     "com.typesafe.play"   %% "play-iteratees-reactive-streams" % "2.6.1",
