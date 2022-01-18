@@ -4,10 +4,10 @@ import sbt._
 
 object AppDependencies {
 
-  private val catsVersion = "2.6.1"
+  private val catsVersion = "2.7.0"
 
   val compile: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % "5.16.0",
+    "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % "5.19.0",
     "org.reactivemongo"   %% "play2-reactivemongo"             % "0.20.13-play28",
     "com.typesafe.play"   %% "play-iteratees"                  % "2.6.1",
     "com.typesafe.play"   %% "play-iteratees-reactive-streams" % "2.6.1",
@@ -24,7 +24,7 @@ object AppDependencies {
     "org.pegdown"             % "pegdown"                  % "1.6.0",
     "org.jsoup"               % "jsoup"                    % "1.14.2",
     "com.typesafe.play"      %% "play-test"                % current,
-    "org.mockito"             % "mockito-core"             % "3.12.4",
+    "org.mockito"             % "mockito-core"             % "4.2.0",
     "org.scalacheck"         %% "scalacheck"               % "1.15.4",
     "wolfendale"             %% "scalacheck-gen-regexp"    % "0.1.2",
     "com.vladsch.flexmark"    % "flexmark-all"             % "0.36.8",
