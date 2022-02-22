@@ -1,33 +1,28 @@
 package repositories
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-
 import base.ItSpecBase
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.ApiDataSource.{ColDataFeed, RefDataFeed}
+import models.{ListName, MessageInformation, VersionId, VersionInformation}
 import org.mockito.Mockito
+import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
+import reactivemongo.api.indexes.IndexType
 import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
-import play.api.inject.bind
-import org.mockito.Mockito.when
-import models.ApiDataSource.ColDataFeed
-import models.ApiDataSource.RefDataFeed
 import services.consumption.TimeService
 
+import java.time.{LocalDate, LocalDateTime}
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 class VersionRepositorySpec
     extends ItSpecBase
@@ -70,6 +65,26 @@ class VersionRepositorySpec
         bind[TimeService].to(mockTimeService)
       )
       .build()
+
+  "must create the following indexes" in {
+    val repo = app.injector.instanceOf[VersionRepository]
+    Await.result(repo.getLatestListNames(), Duration.Inf) // triggers index creation
+
+    val indexes = database.flatMap {
+      result =>
+        result.collection[JSONCollection](VersionCollection.collectionName).indexesManager.list()
+    }.futureValue.map {
+      index =>
+        (index.name.get, index.key)
+    }
+
+    indexes must contain theSameElementsAs List(
+      ("listNames_index", Seq(("listNames.listName", IndexType.Ascending))),
+      ("snapshotDate_index", Seq(("snapshotDate", IndexType.Descending))),
+      ("versionId_index", Seq(("versionId", IndexType.Ascending))),
+      ("_id_", Seq(("_id", IndexType.Ascending)))
+    )
+  }
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {

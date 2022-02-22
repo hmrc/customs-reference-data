@@ -70,7 +70,7 @@ class VersionRepository @Inject() (versionCollection: VersionCollection, timeSer
   def getLatestListNames(): Future[Seq[ListName]] = {
     case class ListNames(listNames: Seq[ListName])
     implicit val reads: Reads[ListNames] =
-      (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
+      (__ \ "listNames").read[Seq[ListName]].map(ListNames)
 
     def getListName(coll: JSONCollection)(source: ApiDataSource): Future[Option[Seq[ListName]]] =
       coll

@@ -16,14 +16,13 @@
 
 package repositories
 
-import javax.inject.Inject
-import javax.inject.Singleton
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.indexes.Index
 import reactivemongo.api.indexes.IndexType
-import reactivemongo.api.bson.BSONDocument
 import reactivemongo.play.json.collection.JSONCollection
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
@@ -37,77 +36,24 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
 
   private lazy val collection = mongo.database.map(_.collection[JSONCollection](VersionCollection.collectionName))
 
-  private val versionId_index: Index.Default = Index(
-    key = Seq("versionId" -> IndexType.Ascending),
-    name = Some("versionId_index"),
-    unique = true,
-    background = false,
-    sparse = false,
-    expireAfterSeconds = None,
-    storageEngine = None,
-    weights = None,
-    defaultLanguage = None,
-    languageOverride = None,
-    textIndexVersion = None,
-    sphereIndexVersion = None,
-    bits = None,
-    min = None,
-    max = None,
-    bucketSize = None,
-    collation = None,
-    wildcardProjection = None,
-    version = None,
-    partialFilter = None,
-    options = BSONDocument.empty
-  )
+  private val versionId_index: Index.Default =
+    IndexBuilder.index(
+      key = Seq("versionId" -> IndexType.Ascending),
+      name = Some("versionId_index"),
+      unique = true
+    )
 
-  private val snapshotDate_index: Index.Default = Index(
-    key = Seq("snapshotDate" -> IndexType.Ascending),
-    name = Some("snapshotDate_index"),
-    unique = false,
-    background = false,
-    sparse = false,
-    expireAfterSeconds = None,
-    storageEngine = None,
-    weights = None,
-    defaultLanguage = None,
-    languageOverride = None,
-    textIndexVersion = None,
-    sphereIndexVersion = None,
-    bits = None,
-    min = None,
-    max = None,
-    bucketSize = None,
-    collation = None,
-    wildcardProjection = None,
-    version = None,
-    partialFilter = None,
-    options = BSONDocument.empty
-  )
+  private val snapshotDate_index: Index.Default =
+    IndexBuilder.index(
+      key = Seq("snapshotDate" -> IndexType.Descending),
+      name = Some("snapshotDate_index")
+    )
 
-  private val listNames_index: Index.Default = Index(
-    key = Seq("listNames.listName" -> IndexType.Ascending),
-    name = Some("listNames_index"),
-    unique = false,
-    background = false,
-    sparse = false,
-    expireAfterSeconds = None,
-    storageEngine = None,
-    weights = None,
-    defaultLanguage = None,
-    languageOverride = None,
-    textIndexVersion = None,
-    sphereIndexVersion = None,
-    bits = None,
-    min = None,
-    max = None,
-    bucketSize = None,
-    collation = None,
-    wildcardProjection = None,
-    version = None,
-    partialFilter = None,
-    options = BSONDocument.empty
-  )
+  private val listNames_index: Index.Default =
+    IndexBuilder.index(
+      key = Seq("listNames.listName" -> IndexType.Ascending),
+      name = Some("listNames_index")
+    )
 
   private def addIndex(index: Index.Default): Future[Boolean] =
     collection.flatMap(
