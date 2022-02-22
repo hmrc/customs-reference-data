@@ -11,8 +11,6 @@ import scala.concurrent.Future
 class TestListRepository @Inject()(defaultListRepository: DefaultListRepository) extends ListRepository {
   override def getListByName(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]] = defaultListRepository.getListByName(listNameDetails)
 
-  override def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] = defaultListRepository.getListByName(listNameDetails)
-
   override def getListNames(version: VersionId): Future[Seq[ListName]] = defaultListRepository.getListNames(version)
 
   override def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] = {
