@@ -17,8 +17,6 @@
 package services.consumption
 
 import akka.stream.scaladsl.Source
-import cats.data.OptionT
-import cats.implicits._
 import models._
 import play.api.libs.json.JsObject
 import repositories.ListRepository
@@ -33,13 +31,10 @@ class ListRetrievalService @Inject() (
   versionRepository: VersionRepository
 )(implicit ec: ExecutionContext) {
 
-  def getStreamedList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] =
-    OptionT
-      .liftF(listRepository.getListByName(VersionedListName(listName, versionId)))
-      .map {
-        _.via(ProjectEmbeddedJsonFlow(listName).project)
-      }
-      .value
+  def getStreamedList(listName: ListName, versionId: VersionId): Future[Source[JsObject, Future[_]]] =
+    listRepository.getListByName(VersionedListName(listName, versionId)).map {
+      _.via(ProjectEmbeddedJsonFlow(listName).project)
+    }
 
   def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
     versionRepository.getLatest(listName)

@@ -67,7 +67,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))
 
         val result = route(app, fakeRequest).get
 
@@ -86,7 +86,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
-        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))
 
         val result = route(app, fakeRequest).get
 
@@ -94,24 +94,6 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
         verify(mockListRetrievalService, never()).getStreamedList(eqTo(referenceDataList.id), any())
-      }
-
-      "should return NotFound when stream list returns None" in {
-
-        val referenceDataList = arbitrary[ReferenceDataList].sample.value
-        val version           = arbitrary[VersionInformation].sample.value
-
-        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
-
-        when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(None))
-
-        val result = route(app, fakeRequest).get
-
-        status(result) mustBe NOT_FOUND
-
-        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-        verify(mockListRetrievalService).getStreamedList(referenceDataList.id, version.versionId)
       }
     }
   }

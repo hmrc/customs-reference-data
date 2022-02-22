@@ -182,7 +182,6 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               service
                 .getStreamedList(referenceDataList.id, versionInformation.versionId)
                 .futureValue
-                .value
                 .runWith(TestSink.probe[JsObject])
                 .request(4)
                 .expectNextN(expectedSourceValues)

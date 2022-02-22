@@ -43,7 +43,7 @@ class ListRetrievalController @Inject() (
       (
         for {
           latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList  <- OptionT(listRetrievalService.getStreamedList(listName, latestVersion.versionId))
+          streamedList  <- OptionT.liftF(listRetrievalService.getStreamedList(listName, latestVersion.versionId))
           nestJson = StreamReferenceData(listName, MetaData(latestVersion))
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {
