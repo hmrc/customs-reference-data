@@ -148,7 +148,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
     }
   }
 
-  "streamList" - {
+  "getStreamedList" - {
 
     implicit lazy val actorSystem: ActorSystem = ActorSystem()
 
@@ -180,7 +180,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               val service = application.injector.instanceOf[ListRetrievalService]
 
               service
-                .streamList(referenceDataList.id, versionInformation.versionId)
+                .getStreamedList(referenceDataList.id, versionInformation.versionId)
                 .futureValue
                 .value
                 .runWith(TestSink.probe[JsObject])

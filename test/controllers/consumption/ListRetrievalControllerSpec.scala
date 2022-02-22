@@ -67,14 +67,14 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(Some(source)))
 
         val result = route(app, fakeRequest).get
 
         status(result) mustBe OK
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-        verify(mockListRetrievalService).streamList(referenceDataList.id, version.versionId)
+        verify(mockListRetrievalService).getStreamedList(referenceDataList.id, version.versionId)
       }
 
       "should return NotFound when latest version returns None" in {
@@ -86,14 +86,14 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
-        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(Some(source)))
 
         val result = route(app, fakeRequest).get
 
         status(result) mustBe NOT_FOUND
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-        verify(mockListRetrievalService, never()).streamList(eqTo(referenceDataList.id), any())
+        verify(mockListRetrievalService, never()).getStreamedList(eqTo(referenceDataList.id), any())
       }
 
       "should return NotFound when stream list returns None" in {
@@ -104,14 +104,14 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(None))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(None))
 
         val result = route(app, fakeRequest).get
 
         status(result) mustBe NOT_FOUND
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-        verify(mockListRetrievalService).streamList(referenceDataList.id, version.versionId)
+        verify(mockListRetrievalService).getStreamedList(referenceDataList.id, version.versionId)
       }
     }
   }

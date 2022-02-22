@@ -33,7 +33,7 @@ class ListRetrievalService @Inject() (
   versionRepository: VersionRepository
 )(implicit ec: ExecutionContext) {
 
-  def streamList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] =
+  def getStreamedList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] =
     OptionT
       .liftF(listRepository.getListByName(VersionedListName(listName, versionId)))
       .map {
