@@ -28,27 +28,21 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
+class ListRetrievalService @Inject() (
+  listRepository: ListRepository,
+  versionRepository: VersionRepository
+)(implicit ec: ExecutionContext) {
 
-  def streamList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] = {
-    val versionedListName = VersionedListName(listName, versionId)
-    (for {
-      referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
-    } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)).value
-  }
+  def streamList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] =
+    OptionT
+      .liftF(listRepository.getListByNameSource(VersionedListName(listName, versionId)))
+      .map {
+        _.via(ProjectEmbeddedJsonFlow(listName).project)
+      }
+      .value
 
-  def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] = versionRepository.getLatest(listName)
-
-  def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    (for {
-      versionInformation <- OptionT(getLatestVersion(listName))
-      versionedListName = VersionedListName(listName, versionInformation.versionId)
-      referenceDataList <- OptionT.liftF(listRepository.getListByName(versionedListName))
-      if referenceDataList.nonEmpty
-    } yield {
-      val metaData: MetaData = MetaData(versionInformation)
-      ReferenceDataList(listName, metaData, referenceDataList)
-    }).value
+  def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
+    versionRepository.getLatest(listName)
 
   def getResourceLinks(): Future[Option[ResourceLinks]] =
     versionRepository.getLatestListNames().map {

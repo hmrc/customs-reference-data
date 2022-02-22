@@ -6,7 +6,7 @@ import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import generators.{BaseGenerators, ModelArbitraryInstances}
 import models.{GenericListItem, ListName, VersionId, VersionedListName}
-import org.scalacheck.Arbitrary
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -61,7 +61,7 @@ class ListRepositorySpec
         .many(data)
     }.futureValue
 
-  def listOfItemsForVersion(versionId: VersionId) = {
+  private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength(5)(arbitraryGenericListItem)
   }
@@ -103,7 +103,7 @@ class ListRepositorySpec
 
       val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
 
-      val data = targetList.map(x => (x - "listName" - "snapshotDate" - "versionId" - "messageID"))
+      val data = targetList.map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
 
       result
         .futureValue
@@ -221,7 +221,7 @@ class ListRepositorySpec
 
           val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
 
-          result must contain allElementsOf(expectedResult)
+          result must contain allElementsOf expectedResult
 
           dropDatabase()
       }
