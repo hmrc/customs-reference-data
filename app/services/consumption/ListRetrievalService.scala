@@ -30,20 +30,18 @@ import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
 
-  def streamList(listName: ListName): Future[Option[Source[JsObject, Future[_]]]] =
-    (
-      for {
-        versionInformation <- OptionT(versionRepository.getLatest(listName))
-        versionedListName = VersionedListName(listName, versionInformation.versionId)
-        referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
-      } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)
-    ).value
+  def streamList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] = {
+    val versionedListName = VersionedListName(listName, versionId)
+    (for {
+      referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
+    } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)).value
+  }
 
-  def getMetaData(listName: ListName): Future[Option[MetaData]] = versionRepository.getLatest(listName).map(_.map(MetaData(_)))
+  def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] = versionRepository.getLatest(listName)
 
   def getList(listName: ListName): Future[Option[ReferenceDataList]] =
     (for {
-      versionInformation <- OptionT(versionRepository.getLatest(listName))
+      versionInformation <- OptionT(getLatestVersion(listName))
       versionedListName = VersionedListName(listName, versionInformation.versionId)
       referenceDataList <- OptionT.liftF(listRepository.getListByName(versionedListName))
       if referenceDataList.nonEmpty

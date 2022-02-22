@@ -164,9 +164,9 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
     }
   }
 
-  "getMetaData" - {
+  "getLatestVersion" - {
 
-    "must return MetaData when given the latest version information" in {
+    "must return VersionInformation when given the latest version information" in {
 
       val mockVersionRepository = mock[VersionRepository]
 
@@ -183,9 +183,9 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
 
               val service = application.injector.instanceOf[ListRetrievalService]
-              val result  = service.getMetaData(versionInformation.listNames.head)
+              val result  = service.getLatestVersion(versionInformation.listNames.head)
 
-              result.futureValue.value mustBe MetaData(versionInformation)
+              result.futureValue.value mustBe versionInformation
           }
       }
     }
@@ -205,7 +205,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(None))
 
           val service = application.injector.instanceOf[ListRetrievalService]
-          val result  = service.getMetaData(ListName("Invalid"))
+          val result  = service.getLatestVersion(ListName("Invalid"))
 
           result.futureValue mustBe None
       }
@@ -244,35 +244,12 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               val service = application.injector.instanceOf[ListRetrievalService]
 
               service
-                .streamList(referenceDataList.id)
+                .streamList(referenceDataList.id, versionInformation.versionId)
                 .futureValue
                 .value
                 .runWith(TestSink.probe[JsObject])
                 .request(4)
                 .expectNextN(expectedSourceValues)
-          }
-      }
-    }
-
-    "must return None if no version information is found" in {
-
-      val mockVersionRepository = mock[VersionRepository]
-
-      val app = baseApplicationBuilder.andThen(
-        _.overrides(
-          bind[VersionRepository].toInstance(mockVersionRepository)
-        )
-      )
-
-      running(app) {
-        application =>
-          forAll(arbitrary[ReferenceDataList]) {
-            referenceDataList =>
-              when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(None))
-
-              val service = application.injector.instanceOf[ListRetrievalService]
-
-              service.streamList(referenceDataList.id).futureValue mustBe None
           }
       }
     }

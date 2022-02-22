@@ -19,9 +19,12 @@ package controllers.consumption
 import akka.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import models.MetaData
 import models.ReferenceDataList
+import models.VersionInformation
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.TestData
@@ -57,34 +60,24 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
       "should return OK" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
-        val metaData          = arbitrary[MetaData].sample.value
+        val version           = arbitrary[VersionInformation].sample.value
 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
-        when(mockListRetrievalService.getMetaData(any())).thenReturn(Future.successful(Some(metaData)))
-        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(Some(source)))
+        when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
+        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(Some(source)))
 
         val result = route(app, fakeRequest).get
 
         status(result) mustBe OK
+
+        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
+        verify(mockListRetrievalService).streamList(referenceDataList.id, version.versionId)
       }
 
-      "should return NotFound when StreamList returns None" in {
-
-        val referenceDataList = arbitrary[ReferenceDataList].sample.value
-
-        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
-
-        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(None))
-
-        val result = route(app, fakeRequest).get
-
-        status(result) mustBe NOT_FOUND
-      }
-
-      "should return NotFound when MetaData returns None" in {
+      "should return NotFound when latest version returns None" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
 
@@ -92,12 +85,33 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
 
-        when(mockListRetrievalService.streamList(any())).thenReturn(Future.successful(Some(source)))
-        when(mockListRetrievalService.getMetaData(any())).thenReturn(Future.successful(None))
+        when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
+        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(Some(source)))
 
         val result = route(app, fakeRequest).get
 
         status(result) mustBe NOT_FOUND
+
+        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
+        verify(mockListRetrievalService, never()).streamList(eqTo(referenceDataList.id), any())
+      }
+
+      "should return NotFound when stream list returns None" in {
+
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
+        val version           = arbitrary[VersionInformation].sample.value
+
+        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
+
+        when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
+        when(mockListRetrievalService.streamList(any(), any())).thenReturn(Future.successful(None))
+
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe NOT_FOUND
+
+        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
+        verify(mockListRetrievalService).streamList(referenceDataList.id, version.versionId)
       }
     }
   }
