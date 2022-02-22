@@ -17,7 +17,6 @@
 package repositories
 
 import akka.stream.Materializer
-import akka.stream.scaladsl.Sink
 import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import models.GenericListItem
@@ -35,8 +34,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 trait ListRepository {
-  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]]
-  def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]]
+  def getListByName(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]]
   def getListNames(version: VersionId): Future[Seq[ListName]]
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult]
 }
@@ -47,7 +45,7 @@ class DefaultListRepository @Inject() (
 )(implicit ec: ExecutionContext, mt: Materializer)
     extends ListRepository {
 
-  def getListByNameSource(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]] =
+  def getListByName(listNameDetails: VersionedListName): Future[Source[JsObject, Future[_]]] =
     listCollection.apply().map {
       collection =>
         import collection.aggregationFramework.PipelineOperator
@@ -63,13 +61,6 @@ class DefaultListRepository @Inject() (
           }
           .documentSource()
     }
-
-  def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
-    getListByNameSource(listNameDetails).flatMap(
-      _.map {
-        jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject]
-      }.runWith(Sink.seq[JsObject])
-    )
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
     listCollection().flatMap {

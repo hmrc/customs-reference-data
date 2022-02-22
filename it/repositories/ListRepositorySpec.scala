@@ -84,7 +84,7 @@ class ListRepositorySpec
     )
   }
 
-  "getListByNameSource" - {
+  "getListByName" - {
 
     implicit lazy val actorSystem: ActorSystem = ActorSystem()
 
@@ -101,7 +101,7 @@ class ListRepositorySpec
 
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+      val result: Future[Source[JsObject, Future[_]]] = repository.getListByName(VersionedListName(listName, versionId))
 
       val data = targetList.map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
 
@@ -117,89 +117,13 @@ class ListRepositorySpec
       val listName   = arbitrary[ListName].sample.value
       val repository = app.injector.instanceOf[ListRepository]
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+      val result: Future[Source[JsObject, Future[_]]] = repository.getListByName(VersionedListName(listName, versionId))
 
       result
         .futureValue
         .runWith(TestSink.probe[JsObject])
         .request(1)
         .expectComplete()
-    }
-  }
-
-  "getListByName" - {
-
-    "returns the list items that match the specified VersionId" in {
-      val versionId  = VersionId("1")
-      val dataListV1 = listOfItemsForVersion(versionId).sample.value
-      val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
-      val listName   = arbitrary[ListName].sample.value
-
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-
-      seedData(database, targetList ++ otherList)
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, versionId))
-
-      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
-
-      result.futureValue mustBe expectedResult
-    }
-
-    "returns the list items that match the list name" in {
-      val versionId     = VersionId("1")
-      val dataListV1    = listOfItemsForVersion(versionId).sample.value
-      val dataListV2    = listOfItemsForVersion(versionId).sample.value
-      val listName      = ListName("l1")
-      val otherlistName = ListName("l2")
-
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = otherlistName)).map(Json.toJsObject(_))
-
-      seedData(database, targetList ++ otherList)
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, versionId))
-
-      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
-
-      result.futureValue mustBe expectedResult
-    }
-
-    "returns an empty list when there are no items that that match the list name" in {
-      val versionId = VersionId("1")
-      val listItem  = arbitrary[GenericListItem].sample.value
-      val listName  = ListName("l1")
-
-      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
-
-      seedData(database, Seq(targetList))
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(ListName("other"), versionId))
-
-      result.futureValue mustBe Nil
-    }
-
-    "returns an empty list when there are no items that that the version Id for a list name " in {
-      val versionId = VersionId("1")
-      val listItem  = arbitrary[GenericListItem].sample.value
-      val listName  = ListName("l1")
-
-      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
-
-      seedData(database, Seq(targetList))
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, VersionId("2")))
-
-      result.futureValue mustBe Nil
     }
   }
 

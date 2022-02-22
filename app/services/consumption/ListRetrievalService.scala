@@ -35,7 +35,7 @@ class ListRetrievalService @Inject() (
 
   def streamList(listName: ListName, versionId: VersionId): Future[Option[Source[JsObject, Future[_]]]] =
     OptionT
-      .liftF(listRepository.getListByNameSource(VersionedListName(listName, versionId)))
+      .liftF(listRepository.getListByName(VersionedListName(listName, versionId)))
       .map {
         _.via(ProjectEmbeddedJsonFlow(listName).project)
       }
