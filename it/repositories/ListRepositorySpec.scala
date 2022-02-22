@@ -79,7 +79,7 @@ class ListRepositorySpec
     }
 
     indexes must contain theSameElementsAs List(
-      ("listName_index", Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending)),
+      ("list-name-and-version-id-compound-index", Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending)),
       ("_id_", Seq(("_id", IndexType.Ascending)))
     )
   }

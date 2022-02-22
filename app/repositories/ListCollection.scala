@@ -32,15 +32,15 @@ private[repositories] class ListCollection @Inject() (mongo: ReactiveMongoApi)(i
 
   private lazy val collection: Future[JSONCollection] = mongo.database.map(_.collection[JSONCollection](ListCollection.collectionName))
 
-  private val listNameIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
+  private val listNameAndVersionIdCompoundIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
     key = Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending),
-    name = Some("listName_index")
+    name = Some("list-name-and-version-id-compound-index")
   )
 
   private lazy val started: Future[Unit] = {
     for {
       jsonCollection <- collection
-      _              <- jsonCollection.indexesManager.ensure(listNameIndex)
+      _              <- jsonCollection.indexesManager.ensure(listNameAndVersionIdCompoundIndex)
     } yield ()
   }
 

@@ -79,8 +79,8 @@ class VersionRepositorySpec
     }
 
     indexes must contain theSameElementsAs List(
-      ("listNames_index", Seq("listNames.listName" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
-      ("source_index", Seq("source" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
+      ("list-name-and-snapshot-date-compound-index", Seq("listNames.listName" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
+      ("source-and-snapshot-date-compound-index", Seq("source" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
       ("_id_", Seq(("_id", IndexType.Ascending)))
     )
   }
