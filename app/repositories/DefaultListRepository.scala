@@ -65,28 +65,11 @@ class DefaultListRepository @Inject() (
     }
 
   def getListByName(listNameDetails: VersionedListName): Future[Seq[JsObject]] =
-    listCollection.apply().flatMap {
-      collection =>
-        import collection.aggregationFramework.PipelineOperator
-
-        val query: PipelineOperator = PipelineOperator(Json.obj(s"$$match" -> listNameDetails.query))
-        val projection: PipelineOperator = PipelineOperator(Json.obj(s"$$project" -> {
-          Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
-        }))
-
-        collection
-          .aggregateWith[JsObject](allowDiskUse = true) {
-            _ => (query, List(projection))
-          }
-          .documentSource()
-          .map(
-            jsObject =>
-              (jsObject \ "data")
-                .getOrElse(JsObject.empty)
-                .asInstanceOf[JsObject]
-          )
-          .runWith(Sink.seq[JsObject])
-    }
+    getListByNameSource(listNameDetails).flatMap(
+      _.map {
+        jsObject => (jsObject \ "data").getOrElse(JsObject.empty).asInstanceOf[JsObject]
+      }.runWith(Sink.seq[JsObject])
+    )
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =
     listCollection().flatMap {
