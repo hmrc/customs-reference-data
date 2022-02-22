@@ -16,39 +16,35 @@
 
 package repositories
 
-import javax.inject.Inject
-import javax.inject.Singleton
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.Index.Aux
+import reactivemongo.api.indexes.Index.Default
 import reactivemongo.api.indexes.IndexType
-import reactivemongo.play.json.collection.JSONCollection
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
 @Singleton
-private[repositories] class ListCollection @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) extends (() => Future[JSONCollection]) {
-
-  private lazy val collection: Future[JSONCollection] = mongo.database.map(_.collection[JSONCollection](ListCollection.collectionName))
+private[repositories] class ListCollection @Inject() (
+  mongo: ReactiveMongoApi
+)(implicit ec: ExecutionContext)
+    extends Collection(mongo) {
 
   private val listNameAndVersionIdCompoundIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
     key = Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending),
     name = Some("list-name-and-version-id-compound-index")
   )
 
-  private lazy val started: Future[Unit] = {
-    for {
-      jsonCollection <- collection
-      _              <- jsonCollection.indexesManager.ensure(listNameAndVersionIdCompoundIndex)
-    } yield ()
-  }
+  override val collectionName: String = ListCollection.collectionName
 
-  override def apply(): Future[JSONCollection] =
-    started.flatMap {
-      _ => collection
-    }
+  override val indexes: Seq[Default] = Seq(listNameAndVersionIdCompoundIndex)
 
+  override val indexesToDrop: Seq[String] = Seq(
+    "listName_index",
+    "versionId_index"
+  )
 }
 
 object ListCollection {

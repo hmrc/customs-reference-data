@@ -17,24 +17,19 @@
 package repositories
 
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.api.indexes.Index.Default
 import reactivemongo.api.indexes.Index
 import reactivemongo.api.indexes.IndexType
-import reactivemongo.play.json.collection.JSONCollection
 
 import javax.inject.Inject
 import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
 @Singleton
-private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi)(implicit ec: ExecutionContext) extends (() => Future[JSONCollection]) {
-
-  override def apply(): Future[JSONCollection] =
-    started.flatMap {
-      _ => collection
-    }
-
-  private lazy val collection = mongo.database.map(_.collection[JSONCollection](VersionCollection.collectionName))
+private[repositories] class VersionCollection @Inject() (
+  mongo: ReactiveMongoApi
+)(implicit ec: ExecutionContext)
+    extends Collection(mongo) {
 
   private val listNameAndSnapshotDateCompoundIndex: Index.Default =
     IndexBuilder.index(
@@ -48,12 +43,18 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
       name = Some("source-and-snapshot-date-compound-index")
     )
 
-  private lazy val started: Future[Unit] =
-    for {
-      jsonCollection <- collection
-      _              <- jsonCollection.indexesManager.ensure(listNameAndSnapshotDateCompoundIndex)
-      _              <- jsonCollection.indexesManager.ensure(sourceAndSnapshotDateCompoundIndex)
-    } yield ()
+  override val collectionName: String = VersionCollection.collectionName
+
+  override val indexes: Seq[Default] = Seq(
+    listNameAndSnapshotDateCompoundIndex,
+    sourceAndSnapshotDateCompoundIndex
+  )
+
+  override val indexesToDrop: Seq[String] = Seq(
+    "versionId_index",
+    "snapshotDate_index",
+    "listNames_index"
+  )
 }
 
 object VersionCollection {
