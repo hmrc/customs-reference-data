@@ -79,9 +79,8 @@ class VersionRepositorySpec
     }
 
     indexes must contain theSameElementsAs List(
-      ("listNames_index", Seq(("listNames.listName", IndexType.Ascending))),
-      ("snapshotDate_index", Seq(("snapshotDate", IndexType.Descending))),
-      ("versionId_index", Seq(("versionId", IndexType.Ascending))),
+      ("listNames_index", Seq("listNames.listName" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
+      ("source_index", Seq("source" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending)),
       ("_id_", Seq(("_id", IndexType.Ascending)))
     )
   }
@@ -167,8 +166,8 @@ class VersionRepositorySpec
       val repo = app.injector.instanceOf[VersionRepository]
 
       val newSnapshotDate      = LocalDate.now()
-      val newMessageInfomation = MessageInformation("messageId", newSnapshotDate)
-      val oldMessageInfomation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
+      val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
+      val oldMessageInformation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
 
       when(mockTimeService.now())
         .thenReturn(LocalDateTime.now().minusDays(1))
@@ -179,9 +178,9 @@ class VersionRepositorySpec
       val listNames2 = Seq(ListName("1"), ListName("2"))
       val listNames3 = Seq(ListName("1.1"), ListName("2.1"))
 
-      repo.save(VersionId("1"), oldMessageInfomation, ColDataFeed, listNames1).futureValue
-      repo.save(VersionId("2"), oldMessageInfomation, RefDataFeed, listNames2).futureValue
-      repo.save(VersionId("3"), newMessageInfomation, RefDataFeed, listNames3).futureValue
+      repo.save(VersionId("1"), oldMessageInformation, ColDataFeed, listNames1).futureValue
+      repo.save(VersionId("2"), oldMessageInformation, RefDataFeed, listNames2).futureValue
+      repo.save(VersionId("3"), newMessageInformation, RefDataFeed, listNames3).futureValue
 
       val result         = repo.getLatestListNames().futureValue
       val expectedResult = listNames1 ++ listNames3

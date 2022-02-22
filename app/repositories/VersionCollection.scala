@@ -36,23 +36,16 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
 
   private lazy val collection = mongo.database.map(_.collection[JSONCollection](VersionCollection.collectionName))
 
-  private val versionId_index: Index.Default =
-    IndexBuilder.index(
-      key = Seq("versionId" -> IndexType.Ascending),
-      name = Some("versionId_index"),
-      unique = true
-    )
-
-  private val snapshotDate_index: Index.Default =
-    IndexBuilder.index(
-      key = Seq("snapshotDate" -> IndexType.Descending),
-      name = Some("snapshotDate_index")
-    )
-
   private val listNames_index: Index.Default =
     IndexBuilder.index(
-      key = Seq("listNames.listName" -> IndexType.Ascending),
+      key = Seq("listNames.listName" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending),
       name = Some("listNames_index")
+    )
+
+  private val source_index: Index.Default =
+    IndexBuilder.index(
+      key = Seq("source" -> IndexType.Ascending, "snapshotDate" -> IndexType.Descending),
+      name = Some("source_index")
     )
 
   private def addIndex(index: Index.Default): Future[Boolean] =
@@ -63,9 +56,8 @@ private[repositories] class VersionCollection @Inject() (mongo: ReactiveMongoApi
 
   private lazy val started: Future[Unit] =
     for {
-      _ <- addIndex(versionId_index)
-      _ <- addIndex(snapshotDate_index)
       _ <- addIndex(listNames_index)
+      _ <- addIndex(source_index)
     } yield ()
 }
 

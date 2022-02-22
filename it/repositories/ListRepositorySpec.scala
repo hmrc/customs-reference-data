@@ -8,17 +8,19 @@ import generators.{BaseGenerators, ModelArbitraryInstances}
 import models.{GenericListItem, ListName, VersionId, VersionedListName}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import play.api.libs.json.{JsObject, Json}
+import reactivemongo.api.indexes.IndexType
 import reactivemongo.api.{Cursor, DefaultDB}
 import reactivemongo.play.json.collection.Helpers.idWrites
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -62,6 +64,24 @@ class ListRepositorySpec
   def listOfItemsForVersion(versionId: VersionId) = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength(5)(arbitraryGenericListItem)
+  }
+
+  "must create the following indexes" in {
+    val repository = app.injector.instanceOf[ListRepository]
+    Await.result(repository.insertList(Nil), Duration.Inf) // triggers index creation
+
+    val indexes = database.flatMap {
+      result =>
+        result.collection[JSONCollection](ListCollection.collectionName).indexesManager.list()
+    }.futureValue.map {
+      index =>
+        (index.name.get, index.key)
+    }
+
+    indexes must contain theSameElementsAs List(
+      ("listName_index", Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending)),
+      ("_id_", Seq(("_id", IndexType.Ascending)))
+    )
   }
 
   "getListByNameSource" - {

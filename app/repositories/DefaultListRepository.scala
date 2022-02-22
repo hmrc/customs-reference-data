@@ -53,14 +53,13 @@ class DefaultListRepository @Inject() (
         import collection.aggregationFramework.PipelineOperator
 
         val query: PipelineOperator = PipelineOperator(Json.obj(s"$$match" -> listNameDetails.query))
-        val sort: PipelineOperator  = PipelineOperator(Json.obj(s"$$sort" -> Json.obj("_id" -> 1)))
         val projection: PipelineOperator = PipelineOperator(Json.obj(s"$$project" -> {
           Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
         }))
 
         collection
           .aggregateWith[JsObject](allowDiskUse = true) {
-            _ => (query, List(sort, projection))
+            _ => (query, List(projection))
           }
           .documentSource()
     }
@@ -71,14 +70,13 @@ class DefaultListRepository @Inject() (
         import collection.aggregationFramework.PipelineOperator
 
         val query: PipelineOperator = PipelineOperator(Json.obj(s"$$match" -> listNameDetails.query))
-        val sort: PipelineOperator  = PipelineOperator(Json.obj(s"$$sort" -> Json.obj("_id" -> 1)))
         val projection: PipelineOperator = PipelineOperator(Json.obj(s"$$project" -> {
           Json.obj("data" -> 1) ++ Json.obj("_id" -> 0)
         }))
 
         collection
           .aggregateWith[JsObject](allowDiskUse = true) {
-            _ => (query, List(sort, projection))
+            _ => (query, List(projection))
           }
           .documentSource()
           .map(
@@ -104,7 +102,7 @@ class DefaultListRepository @Inject() (
           res =>
             if (res.writeErrors.nonEmpty && (res.n > 0 || res.nModified > 0))
               PartialWriteFailure(list.head.listName, res.writeErrors.map(_.index))
-            else if ((list.length <= res.n + res.nModified))
+            else if (list.length <= res.n + res.nModified)
               SuccessfulWrite
             else
               FailedWrite(list.head.listName)

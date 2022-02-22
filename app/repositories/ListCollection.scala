@@ -33,24 +33,16 @@ private[repositories] class ListCollection @Inject() (mongo: ReactiveMongoApi)(i
   private lazy val collection: Future[JSONCollection] = mongo.database.map(_.collection[JSONCollection](ListCollection.collectionName))
 
   private val listNameIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
-    key = Seq("listName" -> IndexType.Ascending),
+    key = Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending),
     name = Some("listName_index")
   )
 
-  private val versionIdIndex: Aux[BSONSerializationPack.type] = IndexBuilder.index(
-    key = Seq("versionId" -> IndexType.Ascending),
-    name = Some("versionId_index")
-  )
-
-  private lazy val started: Future[Unit] =
-    collection
-      .flatMap {
-        jsonCollection =>
-          for {
-            _ <- jsonCollection.indexesManager.ensure(listNameIndex)
-            _ <- jsonCollection.indexesManager.ensure(versionIdIndex)
-          } yield ()
-      }
+  private lazy val started: Future[Unit] = {
+    for {
+      jsonCollection <- collection
+      _              <- jsonCollection.indexesManager.ensure(listNameIndex)
+    } yield ()
+  }
 
   override def apply(): Future[JSONCollection] =
     started.flatMap {
