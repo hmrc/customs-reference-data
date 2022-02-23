@@ -10,15 +10,14 @@ import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
 import models.VersionId
-import models.VersionedListName
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import play.api.libs.json.JsObject
@@ -78,7 +77,7 @@ class ListRepositorySpec
 
       seedData(targetList ++ otherList)
 
-      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(VersionedListName(listName, versionId))
+      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(listName, versionId)
 
       val data = targetList
         .map(Json.toJsObject(_))
@@ -94,7 +93,7 @@ class ListRepositorySpec
       val versionId = VersionId("1")
       val listName  = arbitrary[ListName].sample.value
 
-      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(VersionedListName(listName, versionId))
+      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(listName, versionId)
 
       result.futureValue
         .runWith(TestSink.probe[JsObject])

@@ -16,10 +16,8 @@
 
 package models
 
-import play.api.libs.json.Json
 import play.api.libs.json.Reads
 import play.api.libs.json.Writes
-import repositories.Query
 
 sealed trait ApiDataSource {
   def asString: String
@@ -48,8 +46,5 @@ object ApiDataSource {
     implicitly[Reads[String]]
       .map(fromString.lift)
       .map(_.get)
-
-  implicit val query: Query[ApiDataSource] =
-    Query.fromWrites(ads => Json.obj("source" -> ads))
 
 }

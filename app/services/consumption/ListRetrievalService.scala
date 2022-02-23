@@ -33,7 +33,7 @@ class ListRetrievalService @Inject() (
 )(implicit ec: ExecutionContext) {
 
   def getStreamedList(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] =
-    listRepository.getListByName(VersionedListName(listName, versionId)).map {
+    listRepository.getListByName(listName, versionId).map {
       _.via(ProjectEmbeddedJsonFlow(listName).project)
     }
 

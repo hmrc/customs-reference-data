@@ -23,7 +23,6 @@ import com.mongodb.client.model.InsertManyOptions
 import models.GenericListItem
 import models.ListName
 import models.VersionId
-import models.VersionedListName
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
@@ -50,11 +49,11 @@ class ListRepository @Inject() (
       replaceIndexes = true // TODO - remove or set to false after deployment of CTCTRADERS-2934 changes
     ) {
 
-  def getListByName(listNameDetails: VersionedListName): Future[Source[JsObject, NotUsed]] = {
+  def getListByName(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] = {
     val query = Aggregates.`match`(
       Filters.and(
-        Filters.eq("listName", listNameDetails.listName.listName),
-        Filters.eq("versionId", listNameDetails.versionId.versionId)
+        Filters.eq("listName", listName.listName),
+        Filters.eq("versionId", versionId.versionId)
       )
     )
     val projection = Aggregates.project(

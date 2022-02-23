@@ -175,7 +175,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               val source: Source[JsObject, NotUsed] =
                 Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> sourceElement))
 
-              when(mockListRepository.getListByName(any())).thenReturn(Future.successful(source))
+              when(mockListRepository.getListByName(any(), any())).thenReturn(Future.successful(source))
               when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))
 
               val service = application.injector.instanceOf[ListRetrievalService]

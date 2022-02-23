@@ -111,6 +111,42 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           verify(repository, times(2)).insertList(any())
       }
     }
+
+    "reports the processing as a having failures when there all failure" in {
+      forAll(genReferenceDataListsPayload(numberOfLists = 3), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          val repository        = mock[ListRepository]
+          val versionIdProducer = mock[VersionIdProducer]
+
+          val versionId = VersionId("1")
+
+          when(versionIdProducer.apply()).thenReturn(versionId)
+
+          val listOfListOfItems = payload.toIterable(versionId).toList
+          val failedListName1   = listOfListOfItems.head.head.listName
+          val failedListName2   = listOfListOfItems(1).head.listName
+          val failedListName3   = listOfListOfItems(2).head.listName
+
+          when(repository.insertList(any()))
+            .thenReturn(Future.successful(FailedWrite(failedListName1)))
+            .thenReturn(Future.successful(FailedWrite(failedListName2)))
+            .thenReturn(Future.successful(FailedWrite(failedListName3)))
+
+          val versionRepository = mock[VersionRepository]
+          val validationService = mock[SchemaValidationService]
+
+          when(versionRepository.save(eqTo(versionId), any(), any(), any())).thenReturn(Future.successful(true))
+
+          val service = new ReferenceDataServiceImpl(repository, versionRepository, validationService, versionIdProducer)
+
+          val expectedError = WriteError(
+            s"Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
+          )
+
+          service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
+          verify(repository, times(3)).insertList(any())
+      }
+    }
   }
 
   "validate" - {
