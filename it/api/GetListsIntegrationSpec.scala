@@ -6,6 +6,7 @@ import models.ListName
 import models.VersionId
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
+import play.api.http.Status.ACCEPTED
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsObject
@@ -17,6 +18,7 @@ import repositories.VersionRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
 
 import java.io.InputStream
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 
 class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with GuiceOneServerPerSuite with MongoSupport {
@@ -40,7 +42,8 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
     val postUrl                                          = s"http://localhost:$port/customs-reference-data/reference-data-lists"
     def getListUrl(listName: ListName = defaultListName) = s"http://localhost:$port/customs-reference-data/lists/${listName.listName}"
 
-    dropDatabase()
+    listRepo.collection.drop().toFuture().futureValue
+    versionRepo.collection.drop().toFuture().futureValue
 
     val versionId: VersionId = VersionId("test-version-id")
 
@@ -62,14 +65,15 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
     }
     "When get ListName is called while data ingestion is in progress" - {
       "should return a list from the previous version" in new Setup {
-        ws.url(postUrl).post(Json.parse(request))
+        ws.url(postUrl).post(Json.parse(request)) map {
+          r =>
+            r.status mustBe ACCEPTED
 
-        Thread.sleep(200) // wait for the request to go in
+            val myResponse: WSResponse = ws.url(getListUrl()).get().futureValue
 
-        val myResponse: WSResponse = ws.url(getListUrl()).get().futureValue
-
-        (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustBe versionId.versionId
-        (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustBe defaultData
+            (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustBe versionId.versionId
+            (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustBe defaultData
+        }
       }
     }
   }

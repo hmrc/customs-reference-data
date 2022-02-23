@@ -24,14 +24,13 @@ import models.GenericListItem
 import models.ListName
 import models.VersionId
 import models.VersionedListName
+import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
-import org.mongodb.scala.model.Filters
-import org.mongodb.scala.model.IndexModel
-import org.mongodb.scala.model.IndexOptions
-import org.mongodb.scala.model.Projections
+import org.mongodb.scala.model._
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import javax.inject.Singleton
@@ -52,12 +51,24 @@ class ListRepository @Inject() (
     ) {
 
   def getListByName(listNameDetails: VersionedListName): Future[Source[JsObject, NotUsed]] = {
-    val query      = Filters.and(Filters.eq("listName", listNameDetails.listName.listName), Filters.eq("versionId", listNameDetails.versionId.versionId))
-    val projection = Projections.fields(Projections.include("data"), Projections.exclude("_id"))
+    val query = Aggregates.`match`(
+      Filters.and(
+        Filters.eq("listName", listNameDetails.listName.listName),
+        Filters.eq("versionId", listNameDetails.versionId.versionId)
+      )
+    )
+    val projection = Aggregates.project(
+      Updates.combine(
+        Projections.include("data"),
+        Projections.exclude("_id")
+      )
+    )
+
     collection
-      .aggregate[JsObject](Seq(query, projection))
+      .aggregate[BsonValue](Seq(query, projection))
       .allowDiskUse(true)
       .toFuture()
+      .map(_.map(Codecs.fromBson[JsObject](_)))
       .map(x => Source.apply[JsObject](immutable.Seq[JsObject](x: _*)))
   }
 
