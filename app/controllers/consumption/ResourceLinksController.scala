@@ -16,7 +16,6 @@
 
 package controllers.consumption
 
-import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -25,6 +24,7 @@ import play.api.mvc.ControllerComponents
 import services.consumption.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class ResourceLinksController @Inject() (
@@ -38,7 +38,7 @@ class ResourceLinksController @Inject() (
   def get: Action[AnyContent] =
     Action.async {
       _ =>
-        listRetrievalService.getResourceLinks().map {
+        listRetrievalService.getResourceLinks.map {
           case Some(resourceLinks) =>
             Ok(Json.toJsObject(resourceLinks))
           case None =>

@@ -16,6 +16,7 @@
 
 package controllers.consumption
 
+import akka.NotUsed
 import akka.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
@@ -64,7 +65,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
-        val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
+        val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
         when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))
@@ -83,7 +84,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
 
-        val source: Source[JsObject, Future[_]] = Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value"))))
+        val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
         when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))

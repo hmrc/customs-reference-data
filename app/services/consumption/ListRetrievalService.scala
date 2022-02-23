@@ -16,6 +16,7 @@
 
 package services.consumption
 
+import akka.NotUsed
 import akka.stream.scaladsl.Source
 import models._
 import play.api.libs.json.JsObject
@@ -31,7 +32,7 @@ class ListRetrievalService @Inject() (
   versionRepository: VersionRepository
 )(implicit ec: ExecutionContext) {
 
-  def getStreamedList(listName: ListName, versionId: VersionId): Future[Source[JsObject, Future[_]]] =
+  def getStreamedList(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] =
     listRepository.getListByName(VersionedListName(listName, versionId)).map {
       _.via(ProjectEmbeddedJsonFlow(listName).project)
     }
@@ -39,8 +40,8 @@ class ListRetrievalService @Inject() (
   def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
     versionRepository.getLatest(listName)
 
-  def getResourceLinks(): Future[Option[ResourceLinks]] =
-    versionRepository.getLatestListNames().map {
+  def getResourceLinks: Future[Option[ResourceLinks]] =
+    versionRepository.getLatestListNames.map {
       listNames =>
         if (listNames.nonEmpty)
           Some(ResourceLinks(listNames))

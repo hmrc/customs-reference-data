@@ -16,6 +16,7 @@
 
 package services.consumption
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
@@ -57,11 +58,11 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
         running(app) {
           application =>
-            when(mockVersionRepository.getLatestListNames()).thenReturn(listNames)
+            when(mockVersionRepository.getLatestListNames).thenReturn(listNames)
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
-            service.getResourceLinks().futureValue mustBe None
+            service.getResourceLinks.futureValue mustBe None
         }
       }
 
@@ -79,7 +80,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           application =>
             forAll(listWithMaxLength[ListName](10)) {
               listNames =>
-                when(mockVersionRepository.getLatestListNames()).thenReturn(Future.successful(listNames))
+                when(mockVersionRepository.getLatestListNames).thenReturn(Future.successful(listNames))
 
                 val service = application.injector.instanceOf[ListRetrievalService]
 
@@ -92,7 +93,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
 
-                service.getResourceLinks().futureValue mustBe Some(ResourceLinks(_links = links))
+                service.getResourceLinks.futureValue mustBe Some(ResourceLinks(_links = links))
             }
 
         }
@@ -171,8 +172,8 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
         application =>
           forAll(arbitrary[ReferenceDataList], arbitrary[VersionInformation]) {
             (referenceDataList, versionInformation) =>
-              val source: Source[JsObject, Future[_]] =
-                Source.futureSource(Future.successful(Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> sourceElement))))
+              val source: Source[JsObject, NotUsed] =
+                Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> sourceElement))
 
               when(mockListRepository.getListByName(any())).thenReturn(Future.successful(source))
               when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(versionInformation)))

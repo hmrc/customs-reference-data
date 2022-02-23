@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package repositories
+package models
 
-import models.ListName
+import play.api.libs.json.Reads
+import play.api.libs.json.__
 
-sealed trait ListRepositoryWriteResult
+case class ListNames(listNames: Seq[ListName])
 
-case object SuccessfulWrite                extends ListRepositoryWriteResult
-case class FailedWrite(listName: ListName) extends ListRepositoryWriteResult
+object ListNames {
+
+  implicit val reads: Reads[ListNames] =
+    (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
+}

@@ -34,4 +34,6 @@ object GenericListItem {
       __.read[MessageInformation] and
       __.read[VersionId] and
       (__ \ "data").read[JsObject])(GenericListItem.apply _)
+
+  implicit val format: Format[GenericListItem] = Format(readers, writes)
 }

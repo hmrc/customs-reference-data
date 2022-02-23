@@ -1,26 +1,32 @@
 package repositories
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
-import generators.{BaseGenerators, ModelArbitraryInstances}
-import models.{GenericListItem, ListName, VersionId, VersionedListName}
-import org.scalacheck.{Arbitrary, Gen}
+import generators.BaseGenerators
+import generators.ModelArbitraryInstances
+import models.GenericListItem
+import models.ListName
+import models.VersionId
+import models.VersionedListName
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import play.api.libs.json.{JsObject, Json}
-import reactivemongo.api.indexes.IndexType
-import reactivemongo.api.{Cursor, DefaultDB}
-import reactivemongo.play.json.collection.Helpers.idWrites
-import reactivemongo.play.json.collection.JSONCollection
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -29,37 +35,16 @@ class ListRepositorySpec
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite
-    with MongoSuite
-    with ScalaFutures {
+    with ScalaFutures
+    with DefaultPlayMongoRepositorySupport[GenericListItem] {
 
-  override def beforeAll(): Unit = {
-    createCollections()
-    super.beforeAll()
-  }
+  override protected def repository = new ListRepository(mongoComponent)
 
-  override def beforeEach(): Unit = {
-    database
-      .flatMap(
-        _.collection[JSONCollection](ListCollection.collectionName)
-          .delete()
-          .one(Json.obj())
-      )
+  private def seedData(documents: Seq[GenericListItem]): Unit =
+    repository.collection
+      .insertMany(documents)
+      .toFuture
       .futureValue
-
-    super.beforeEach()
-  }
-
-  override def afterAll(): Unit = {
-    dropDatabase()
-    super.afterAll()
-  }
-
-  private def seedData(database: Future[DefaultDB], data: Seq[JsObject]): Unit =
-    database.flatMap {
-      _.collection[JSONCollection](ListCollection.collectionName)
-        .insert(ordered = true)
-        .many(data)
-    }.futureValue
 
   private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
@@ -67,21 +52,15 @@ class ListRepositorySpec
   }
 
   "must create the following indexes" in {
-    val repository = app.injector.instanceOf[ListRepository]
-    Await.result(repository.insertList(Nil), Duration.Inf) // triggers index creation
+    val indexes = repository.collection.listIndexes().toFuture().futureValue
 
-    val indexes = database.flatMap {
-      result =>
-        result.collection[JSONCollection](ListCollection.collectionName).indexesManager.list()
-    }.futureValue.map {
-      index =>
-        (index.name.get, index.key)
-    }
+    indexes.length mustEqual 3
 
-    indexes must contain theSameElementsAs List(
-      ("list-name-and-version-id-compound-index", Seq("listName" -> IndexType.Ascending, "versionId" -> IndexType.Ascending)),
-      ("_id_", Seq(("_id", IndexType.Ascending)))
-    )
+    indexes(1).get("name").get mustEqual BsonString("version-id-index")
+    indexes(1).get("key").get mustEqual BsonDocument("versionId" -> 1)
+
+    indexes(2).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
+    indexes(2).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
   }
 
   "getListByName" - {
@@ -94,33 +73,30 @@ class ListRepositorySpec
       val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
       val listName   = arbitrary[ListName].sample.value
 
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val targetList = dataListV1.map(_.copy(listName = listName))
+      val otherList  = dataListV2.map(_.copy(listName = listName))
 
-      seedData(database, targetList ++ otherList)
+      seedData(targetList ++ otherList)
 
-      val repository = app.injector.instanceOf[ListRepository]
+      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(VersionedListName(listName, versionId))
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByName(VersionedListName(listName, versionId))
+      val data = targetList
+        .map(Json.toJsObject(_))
+        .map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
 
-      val data = targetList.map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
-
-      result
-        .futureValue
+      result.futureValue
         .runWith(TestSink.probe[JsObject])
         .request(targetList.length)
         .expectNextN(data)
     }
 
     "returns a source that completes immediately when there are no matching items" in {
-      val versionId  = VersionId("1")
-      val listName   = arbitrary[ListName].sample.value
-      val repository = app.injector.instanceOf[ListRepository]
+      val versionId = VersionId("1")
+      val listName  = arbitrary[ListName].sample.value
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByName(VersionedListName(listName, versionId))
+      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(VersionedListName(listName, versionId))
 
-      result
-        .futureValue
+      result.futureValue
         .runWith(TestSink.probe[JsObject])
         .request(1)
         .expectComplete()
@@ -131,17 +107,14 @@ class ListRepositorySpec
 
     "must return list of ListNames" in {
 
-      val toJsObjectSeq: List[GenericListItem] => Seq[JsObject] = _.map(Json.toJsObject[GenericListItem])
-
       val versionId = VersionId("2")
 
       forAll(listOfItemsForVersion(versionId), listOfItemsForVersion(VersionId("1234"))) {
         (genericListItems, oldList) =>
-          seedData(database, toJsObjectSeq(oldList))
-          seedData(database, toJsObjectSeq(genericListItems))
+          seedData(oldList)
+          seedData(genericListItems)
 
-          val repository = app.injector.instanceOf[ListRepository]
-          val result     = repository.getListNames(versionId).futureValue
+          val result = repository.getListNames(versionId).futureValue
 
           val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
 
@@ -153,8 +126,7 @@ class ListRepositorySpec
 
     "must return empty list when no list items are found" in {
 
-      val repository = app.injector.instanceOf[ListRepository]
-      val result     = repository.getListNames(VersionId("123")).futureValue
+      val result = repository.getListNames(VersionId("123")).futureValue
 
       result mustBe Nil
     }
@@ -165,19 +137,9 @@ class ListRepositorySpec
     "must save a list" in {
       val list = listWithMaxLength[GenericListItem](10)(arbitraryGenericListItem).sample.value
 
-      val repository = app.injector.instanceOf[ListRepository]
-
       repository.insertList(list).futureValue mustBe SuccessfulWrite
 
-      val result =
-        database
-          .flatMap(
-            _.collection[JSONCollection](ListCollection.collectionName)
-              .find(Json.obj(), None)
-              .cursor[GenericListItem]()
-              .collect[Seq](11, Cursor.FailOnError())
-          )
-          .futureValue
+      val result = findAll().futureValue
 
       result must contain theSameElementsAs list
     }

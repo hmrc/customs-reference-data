@@ -21,11 +21,19 @@ import play.api.libs.json.Reads
 import play.api.libs.json.Writes
 import repositories.Query
 
-sealed trait ApiDataSource
+sealed trait ApiDataSource {
+  def asString: String
+}
 
 object ApiDataSource {
-  case object RefDataFeed extends ApiDataSource
-  case object ColDataFeed extends ApiDataSource
+
+  case object RefDataFeed extends ApiDataSource {
+    override def asString: String = "RefDataFeed"
+  }
+
+  case object ColDataFeed extends ApiDataSource {
+    override def asString: String = "ColDataFeed"
+  }
 
   val fromString: PartialFunction[String, ApiDataSource] = {
     case "RefDataFeed" => RefDataFeed

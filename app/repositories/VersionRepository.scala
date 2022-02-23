@@ -16,74 +16,91 @@
 
 package repositories
 
-import java.time.LocalDateTime
-
 import cats.data._
 import cats.implicits._
 import com.google.inject.Inject
-import javax.inject.Singleton
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
-import play.api.libs.json._
-import reactivemongo.api.commands.WriteResult
-import reactivemongo.play.json.collection.Helpers.idWrites
-import reactivemongo.play.json.collection.JSONCollection
-import models.ApiDataSource
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource.RefDataFeed
-import repositories.Query.QueryOps
+import models._
+import org.mongodb.scala.model.Filters
+import org.mongodb.scala.model.IndexModel
+import org.mongodb.scala.model.IndexOptions
+import org.mongodb.scala.model.Indexes._
 import services.consumption.TimeService
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
+import java.time.LocalDateTime
+import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
-class VersionRepository @Inject() (versionCollection: VersionCollection, timeService: TimeService)(implicit
-  ec: ExecutionContext
-) {
+class VersionRepository @Inject() (
+  mongoComponent: MongoComponent,
+  timeService: TimeService
+)(implicit ec: ExecutionContext)
+    extends PlayMongoRepository[VersionInformation](
+      mongoComponent = mongoComponent,
+      collectionName = "versions",
+      domainFormat = VersionInformation.format,
+      indexes = VersionRepository.indexes,
+      replaceIndexes = true // TODO - remove or set to false after deployment of CTCTRADERS-2934 changes
+    ) {
 
-  def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[VersionId] = {
+  def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[Boolean] = {
     val time: LocalDateTime = timeService.now()
     val versionInformation  = VersionInformation(messageInformation, versionId, time, feed, listNames)
 
-    versionCollection().flatMap {
-      _.insert(false)
-        .one(Json.toJsObject(versionInformation))
-        .flatMap {
-          wr =>
-            WriteResult
-              .lastError(wr)
-              .fold(Future.successful(versionId))(_ => Future.failed(new Exception("Failed to save version information")))
-        }
-    }
+    collection
+      .insertOne(versionInformation)
+      .toFuture()
+      .map {
+        _.wasAcknowledged()
+      }
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
-    versionCollection().flatMap(
-      _.find(listName.query, None)
-        .sort(Json.obj("snapshotDate" -> -1))
-        .one[VersionInformation]
-    )
+    collection
+      .find(Filters.eq("listNames.listName", listName.listName))
+      .sort(descending("snapshotDate"))
+      .headOption()
 
-  def getLatestListNames(): Future[Seq[ListName]] = {
-    case class ListNames(listNames: Seq[ListName])
-    implicit val reads: Reads[ListNames] =
-      (__ \ "listNames").read[Seq[ListName]].map(ListNames)
+  def getLatestListNames: Future[Seq[ListName]] = {
 
-    def getListName(coll: JSONCollection)(source: ApiDataSource): Future[Option[Seq[ListName]]] =
-      coll
-        .find(source.query, None)
-        .sort(Json.obj("snapshotDate" -> -1))
-        .one[ListNames]
+    def getListName(source: ApiDataSource): Future[Option[Seq[ListName]]] =
+      collection
+        .find(Filters.eq("source", source.asString))
+        .sort(descending("snapshotDate"))
+        .headOption()
         .map(_.map(_.listNames))
 
     (for {
-      db    <- OptionT.liftF(versionCollection())
-      list1 <- OptionT(getListName(db)(RefDataFeed))
-      list2 <- OptionT(getListName(db)(ColDataFeed))
+      list1 <- OptionT(getListName(RefDataFeed))
+      list2 <- OptionT(getListName(ColDataFeed))
     } yield list1 ++ list2).value.map(_.getOrElse(Seq.empty))
   }
 
+}
+
+object VersionRepository {
+
+  val indexes: Seq[IndexModel] = {
+    val listNameAndSnapshotDateCompoundIndex: IndexModel =
+      IndexModel(
+        keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate")),
+        indexOptions = IndexOptions().name("list-name-and-snapshot-date-compound-index")
+      )
+
+    val sourceAndSnapshotDateCompoundIndex: IndexModel =
+      IndexModel(
+        keys = compoundIndex(ascending("source"), descending("snapshotDate")),
+        indexOptions = IndexOptions().name("source-and-snapshot-date-compound-index")
+      )
+
+    Seq(
+      listNameAndSnapshotDateCompoundIndex,
+      sourceAndSnapshotDateCompoundIndex
+    )
+  }
 }
