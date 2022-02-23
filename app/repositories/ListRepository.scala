@@ -50,21 +50,22 @@ class ListRepository @Inject() (
     ) {
 
   def getListByName(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] = {
-    val query = Aggregates.`match`(
+    val filter = Aggregates.filter(
       Filters.and(
         Filters.eq("listName", listName.listName),
         Filters.eq("versionId", versionId.versionId)
       )
     )
+
     val projection = Aggregates.project(
-      Updates.combine(
+      Projections.fields(
         Projections.include("data"),
         Projections.exclude("_id")
       )
     )
 
     collection
-      .aggregate[BsonValue](Seq(query, projection))
+      .aggregate[BsonValue](Seq(filter, projection))
       .allowDiskUse(true)
       .toFuture()
       .map(_.map(Codecs.fromBson[JsObject](_)))
