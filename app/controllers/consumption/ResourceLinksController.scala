@@ -16,7 +16,7 @@
 
 package controllers.consumption
 
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
@@ -31,9 +31,8 @@ class ResourceLinksController @Inject() (
   cc: ControllerComponents,
   listRetrievalService: ListRetrievalService
 )(implicit ec: ExecutionContext)
-    extends BackendController(cc) {
-
-  private val logger: Logger = Logger("ResourceLinksController")
+    extends BackendController(cc)
+    with Logging {
 
   def get: Action[AnyContent] =
     Action.async {

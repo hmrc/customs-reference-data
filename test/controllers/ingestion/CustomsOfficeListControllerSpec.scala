@@ -39,13 +39,13 @@ import scala.concurrent.Future
 
 class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val mockReferenceDataService = mock[ReferenceDataService]
+  val mockReferenceDataService: ReferenceDataService = mock[ReferenceDataService]
 
   private val testJson = Json.obj("foo" -> "bar")
 
   "customsOfficeLists" - {
     def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, controllers.ingestion.routes.CustomsOfficeListController.customsOfficeLists().url)
+      FakeRequest(POST, controllers.ingestion.routes.CustomsOfficeListController.post().url)
         .withJsonBody(testJson)
 
     "returns ACCEPTED when the data has been validated and processed" in {
