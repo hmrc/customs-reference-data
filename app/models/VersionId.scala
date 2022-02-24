@@ -18,14 +18,11 @@ package models
 
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
-import repositories.Query
 
 case class VersionId(versionId: String)
 
 object VersionId {
 
   implicit val formats: OFormat[VersionId] = Json.format[VersionId]
-
-  implicit val query: Query[VersionId] = Query.fromWrites
 
 }

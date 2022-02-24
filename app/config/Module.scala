@@ -20,8 +20,6 @@ import models.CTCUP06Schema
 import models.CTCUP08Schema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
-import repositories.DefaultListRepository
-import repositories.ListRepository
 
 class Module
     extends SimpleModule(
@@ -35,8 +33,7 @@ class Module
         val eagerModules = Seq(
           bind[CTCUP06Schema].toSelf,
           bind[CTCUP08Schema].toSelf,
-          bind[ReferenceDataControllerParserConfig].toSelf,
-          bind[ListRepository].to[DefaultListRepository]
+          bind[ReferenceDataControllerParserConfig].toSelf
         ).map(_.eagerly())
 
         /*

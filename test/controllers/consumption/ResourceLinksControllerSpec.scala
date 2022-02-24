@@ -52,7 +52,7 @@ class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         forAll(arbitrary[ResourceLinks]) {
           resourceLinks =>
-            when(mockListRetrievalService.getResourceLinks())
+            when(mockListRetrievalService.getResourceLinks)
               .thenReturn(Future.successful(Some(resourceLinks)))
 
             val result = route(app, fakeRequest).get
@@ -64,7 +64,7 @@ class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
       "should return 500 when reference data links are unavailable" in {
 
-        when(mockListRetrievalService.getResourceLinks())
+        when(mockListRetrievalService.getResourceLinks)
           .thenReturn(Future.successful(None))
 
         val result = route(app, fakeRequest).get

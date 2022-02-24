@@ -4,20 +4,19 @@ import sbt._
 
 object AppDependencies {
 
-  private val catsVersion = "2.7.0"
-
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % "5.19.0",
-    "org.reactivemongo"   %% "play2-reactivemongo"             % "0.20.13-play28",
+    "uk.gov.hmrc.mongo"   %% "hmrc-mongo-play-28"              % "0.59.0",
     "com.typesafe.play"   %% "play-iteratees"                  % "2.6.1",
     "com.typesafe.play"   %% "play-iteratees-reactive-streams" % "2.6.1",
     "org.leadpony.justify" % "justify"                         % "3.1.0",
     "org.leadpony.joy"     % "joy-classic"                     % "2.1.0",
-    "org.typelevel"       %% "cats-core"                       % catsVersion
+    "org.typelevel"       %% "cats-core"                       % "2.7.0"
   )
 
   val test: Seq[ModuleID] = Seq(
     "org.scalatest"          %% "scalatest"                % "3.2.0",
+    "uk.gov.hmrc.mongo"      %% "hmrc-mongo-test-play-28"  % "0.49.0",
     "org.scalatestplus"      %% "mockito-3-2"              % "3.1.2.0",
     "org.scalatestplus.play" %% "scalatestplus-play"       % "5.1.0",
     "org.scalatestplus"      %% "scalatestplus-scalacheck" % "3.1.0.0-RC2",

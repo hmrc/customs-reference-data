@@ -27,5 +27,5 @@ trait VersionIdProducer extends (() => VersionId)
 
 @Singleton
 private[repositories] class DefaultVersionIdProducer extends VersionIdProducer {
-  override def apply(): VersionId = VersionId(UUID.randomUUID().toString())
+  override def apply(): VersionId = VersionId(UUID.randomUUID().toString)
 }

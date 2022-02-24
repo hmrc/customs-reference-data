@@ -16,13 +16,14 @@
 
 package models
 
-import java.time.LocalDate
-
+import play.api.libs.functional.syntax._
 import play.api.libs.json.Json
 import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 import play.api.libs.json.__
-import play.api.libs.functional.syntax._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
+
+import java.time.LocalDate
 
 case class MessageInformation(messageId: String, snapshotDate: LocalDate)
 
@@ -37,6 +38,6 @@ object MessageInformation extends MongoDateTimeFormats {
 
   implicit val reads: Reads[MessageInformation] =
     ((__ \ "messageID").read[String] and
-      (__ \ "snapshotDate").read[LocalDate])(MessageInformation(_, _))
+      (__ \ "snapshotDate").read(MongoJavatimeFormats.localDateReads))(MessageInformation(_, _))
 
 }

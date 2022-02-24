@@ -16,13 +16,14 @@
 
 package models
 
-import java.time.LocalDateTime
-
-import play.api.libs.functional.syntax.unlift
+import play.api.libs.functional.syntax._
+import play.api.libs.json.Format
 import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 import play.api.libs.json.__
-import play.api.libs.functional.syntax._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
+
+import java.time.LocalDateTime
 
 case class VersionInformation(
   messageInformation: MessageInformation,
@@ -38,7 +39,7 @@ object VersionInformation extends MongoDateTimeFormats {
     (
       __.write[MessageInformation] and
         __.write[VersionId] and
-        (__ \ "createdOn").write[LocalDateTime] and
+        (__ \ "createdOn").write(MongoJavatimeFormats.localDateTimeWrites) and
         (__ \ "source").write[ApiDataSource] and
         (__ \ "listNames").write[Seq[ListName]]
     )(unlift(VersionInformation.unapply))
@@ -47,8 +48,10 @@ object VersionInformation extends MongoDateTimeFormats {
     (
       __.read[MessageInformation] and
         __.read[VersionId] and
-        (__ \ "createdOn").read[LocalDateTime] and
+        (__ \ "createdOn").read(MongoJavatimeFormats.localDateTimeReads) and
         (__ \ "source").read[ApiDataSource] and
         (__ \ "listNames").read[Seq[ListName]]
     )(VersionInformation.apply _)
+
+  implicit val format: Format[VersionInformation] = Format(readers, writes)
 }

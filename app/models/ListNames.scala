@@ -16,12 +16,13 @@
 
 package models
 
-import play.api.libs.json.Json
-import repositories.Query
+import play.api.libs.json.Reads
+import play.api.libs.json.__
 
-case class VersionedListName(listName: ListName, versionId: VersionId)
+case class ListNames(listNames: Seq[ListName])
 
-object VersionedListName {
+object ListNames {
 
-  implicit val query: Query[VersionedListName] = v => Json.toJsObject(v.listName) ++ Json.toJsObject(v.versionId)
+  implicit val reads: Reads[ListNames] =
+    (__ \ "listNames").read[Seq[ListName]].map(ListNames(_))
 }

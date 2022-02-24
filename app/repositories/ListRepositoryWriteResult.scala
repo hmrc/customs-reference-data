@@ -20,6 +20,5 @@ import models.ListName
 
 sealed trait ListRepositoryWriteResult
 
-case object SuccessfulWrite                                               extends ListRepositoryWriteResult
-case class PartialWriteFailure(listName: ListName, errorsIndex: Seq[Int]) extends ListRepositoryWriteResult
-case class FailedWrite(listName: ListName)                                extends ListRepositoryWriteResult
+case object SuccessfulWrite                extends ListRepositoryWriteResult
+case class FailedWrite(listName: ListName) extends ListRepositoryWriteResult

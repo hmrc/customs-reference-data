@@ -1,24 +1,29 @@
 package repositories
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
-import generators.{BaseGenerators, ModelArbitraryInstances}
-import models.{GenericListItem, ListName, VersionId, VersionedListName}
-import org.scalacheck.Arbitrary
+import generators.BaseGenerators
+import generators.ModelArbitraryInstances
+import models.GenericListItem
+import models.ListName
+import models.VersionId
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import play.api.libs.json.{JsObject, Json}
-import reactivemongo.api.{Cursor, DefaultDB}
-import reactivemongo.play.json.collection.Helpers.idWrites
-import reactivemongo.play.json.collection.JSONCollection
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -27,44 +32,32 @@ class ListRepositorySpec
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite
-    with MongoSuite
-    with ScalaFutures {
+    with ScalaFutures
+    with DefaultPlayMongoRepositorySupport[GenericListItem] {
 
-  override def beforeAll(): Unit = {
-    createCollections()
-    super.beforeAll()
-  }
+  override protected def repository = new ListRepository(mongoComponent)
 
-  override def beforeEach(): Unit = {
-    database
-      .flatMap(
-        _.collection[JSONCollection](ListCollection.collectionName)
-          .delete()
-          .one(Json.obj())
-      )
+  private def seedData(documents: Seq[GenericListItem]): Unit =
+    repository.collection
+      .insertMany(documents)
+      .toFuture
       .futureValue
 
-    super.beforeEach()
-  }
-
-  override def afterAll(): Unit = {
-    dropDatabase()
-    super.afterAll()
-  }
-
-  private def seedData(database: Future[DefaultDB], data: Seq[JsObject]): Unit =
-    database.flatMap {
-      _.collection[JSONCollection](ListCollection.collectionName)
-        .insert(ordered = true)
-        .many(data)
-    }.futureValue
-
-  def listOfItemsForVersion(versionId: VersionId) = {
+  private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength(5)(arbitraryGenericListItem)
   }
 
-  "getListByNameSource" - {
+  "must create the following indexes" in {
+    val indexes = repository.collection.listIndexes().toFuture().futureValue
+
+    indexes.length mustEqual 2
+
+    indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
+    indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+  }
+
+  "getListByName" - {
 
     implicit lazy val actorSystem: ActorSystem = ActorSystem()
 
@@ -74,145 +67,33 @@ class ListRepositorySpec
       val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
       val listName   = arbitrary[ListName].sample.value
 
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
+      val targetList = dataListV1.map(_.copy(listName = listName))
+      val otherList  = dataListV2.map(_.copy(listName = listName))
 
-      seedData(database, targetList ++ otherList)
+      seedData(targetList ++ otherList)
 
-      val repository = app.injector.instanceOf[ListRepository]
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
-
-      val data = targetList.map(x => (x - "listName" - "snapshotDate" - "versionId" - "messageID"))
+      val data = targetList
+        .map(Json.toJsObject(_))
+        .map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
 
       result
-        .futureValue
         .runWith(TestSink.probe[JsObject])
         .request(targetList.length)
         .expectNextN(data)
     }
 
     "returns a source that completes immediately when there are no matching items" in {
-      val versionId  = VersionId("1")
-      val listName   = arbitrary[ListName].sample.value
-      val repository = app.injector.instanceOf[ListRepository]
+      val versionId = VersionId("1")
+      val listName  = arbitrary[ListName].sample.value
 
-      val result: Future[Source[JsObject, Future[_]]] = repository.getListByNameSource(VersionedListName(listName, versionId))
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
 
       result
-        .futureValue
         .runWith(TestSink.probe[JsObject])
         .request(1)
         .expectComplete()
-    }
-  }
-
-  "getListByName" - {
-
-    "returns the list items that match the specified VersionId" in {
-      val versionId  = VersionId("1")
-      val dataListV1 = listOfItemsForVersion(versionId).sample.value
-      val dataListV2 = listOfItemsForVersion(VersionId("2")).sample.value
-      val listName   = arbitrary[ListName].sample.value
-
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-
-      seedData(database, targetList ++ otherList)
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, versionId))
-
-      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
-
-      result.futureValue mustBe expectedResult
-    }
-
-    "returns the list items that match the list name" in {
-      val versionId     = VersionId("1")
-      val dataListV1    = listOfItemsForVersion(versionId).sample.value
-      val dataListV2    = listOfItemsForVersion(versionId).sample.value
-      val listName      = ListName("l1")
-      val otherlistName = ListName("l2")
-
-      val targetList = dataListV1.map(_.copy(listName = listName)).map(Json.toJsObject(_))
-      val otherList  = dataListV2.map(_.copy(listName = otherlistName)).map(Json.toJsObject(_))
-
-      seedData(database, targetList ++ otherList)
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, versionId))
-
-      val expectedResult = targetList.map(parentData => (parentData \ "data").getOrElse(JsObject.empty))
-
-      result.futureValue mustBe expectedResult
-    }
-
-    "returns an empty list when there are no items that that match the list name" in {
-      val versionId = VersionId("1")
-      val listItem  = arbitrary[GenericListItem].sample.value
-      val listName  = ListName("l1")
-
-      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
-
-      seedData(database, Seq(targetList))
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(ListName("other"), versionId))
-
-      result.futureValue mustBe Nil
-    }
-
-    "returns an empty list when there are no items that that the version Id for a list name " in {
-      val versionId = VersionId("1")
-      val listItem  = arbitrary[GenericListItem].sample.value
-      val listName  = ListName("l1")
-
-      val targetList = Json.toJsObject(listItem.copy(listName = listName, versionId = versionId))
-
-      seedData(database, Seq(targetList))
-
-      val repository = app.injector.instanceOf[ListRepository]
-
-      val result = repository.getListByName(VersionedListName(listName, VersionId("2")))
-
-      result.futureValue mustBe Nil
-    }
-  }
-
-  "getListNames" - {
-
-    "must return list of ListNames" in {
-
-      val toJsObjectSeq: List[GenericListItem] => Seq[JsObject] = _.map(Json.toJsObject[GenericListItem])
-
-      val versionId = VersionId("2")
-
-      forAll(listOfItemsForVersion(versionId), listOfItemsForVersion(VersionId("1234"))) {
-        (genericListItems, oldList) =>
-          seedData(database, toJsObjectSeq(oldList))
-          seedData(database, toJsObjectSeq(genericListItems))
-
-          val repository = app.injector.instanceOf[ListRepository]
-          val result     = repository.getListNames(versionId).futureValue
-
-          val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
-
-          result must contain allElementsOf(expectedResult)
-
-          dropDatabase()
-      }
-    }
-
-    "must return empty list when no list items are found" in {
-
-      val repository = app.injector.instanceOf[ListRepository]
-      val result     = repository.getListNames(VersionId("123")).futureValue
-
-      result mustBe Nil
     }
   }
 
@@ -221,19 +102,9 @@ class ListRepositorySpec
     "must save a list" in {
       val list = listWithMaxLength[GenericListItem](10)(arbitraryGenericListItem).sample.value
 
-      val repository = app.injector.instanceOf[ListRepository]
-
       repository.insertList(list).futureValue mustBe SuccessfulWrite
 
-      val result =
-        database
-          .flatMap(
-            _.collection[JSONCollection](ListCollection.collectionName)
-              .find(Json.obj(), None)
-              .cursor[GenericListItem]()
-              .collect[Seq](11, Cursor.FailOnError())
-          )
-          .futureValue
+      val result = findAll().futureValue
 
       result must contain theSameElementsAs list
     }

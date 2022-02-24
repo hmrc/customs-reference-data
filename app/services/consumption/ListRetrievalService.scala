@@ -16,9 +16,8 @@
 
 package services.consumption
 
+import akka.NotUsed
 import akka.stream.scaladsl.Source
-import cats.data.OptionT
-import cats.implicits._
 import models._
 import play.api.libs.json.JsObject
 import repositories.ListRepository
@@ -28,32 +27,19 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-class ListRetrievalService @Inject() (listRepository: ListRepository, versionRepository: VersionRepository)(implicit ec: ExecutionContext) {
+class ListRetrievalService @Inject() (
+  listRepository: ListRepository,
+  versionRepository: VersionRepository
+)(implicit ec: ExecutionContext) {
 
-  def streamList(listName: ListName): Future[Option[Source[JsObject, Future[_]]]] =
-    (
-      for {
-        versionInformation <- OptionT(versionRepository.getLatest(listName))
-        versionedListName = VersionedListName(listName, versionInformation.versionId)
-        referenceDataList <- OptionT.liftF(listRepository.getListByNameSource(versionedListName))
-      } yield referenceDataList.via(ProjectEmbeddedJsonFlow(listName).project)
-    ).value
+  def getStreamedList(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
+    listRepository.getListByName(listName, versionId).via(ProjectEmbeddedJsonFlow(listName).project)
 
-  def getMetaData(listName: ListName): Future[Option[MetaData]] = versionRepository.getLatest(listName).map(_.map(MetaData(_)))
+  def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
+    versionRepository.getLatest(listName)
 
-  def getList(listName: ListName): Future[Option[ReferenceDataList]] =
-    (for {
-      versionInformation <- OptionT(versionRepository.getLatest(listName))
-      versionedListName = VersionedListName(listName, versionInformation.versionId)
-      referenceDataList <- OptionT.liftF(listRepository.getListByName(versionedListName))
-      if referenceDataList.nonEmpty
-    } yield {
-      val metaData: MetaData = MetaData(versionInformation)
-      ReferenceDataList(listName, metaData, referenceDataList)
-    }).value
-
-  def getResourceLinks(): Future[Option[ResourceLinks]] =
-    versionRepository.getLatestListNames().map {
+  def getResourceLinks: Future[Option[ResourceLinks]] =
+    versionRepository.getLatestListNames.map {
       listNames =>
         if (listNames.nonEmpty)
           Some(ResourceLinks(listNames))
