@@ -2,6 +2,7 @@ package api
 
 import akka.NotUsed
 import akka.stream.scaladsl.Source
+import config.AppConfig
 import models.GenericListItem
 import models.ListName
 import models.VersionId
@@ -14,7 +15,10 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class TestListRepository @Inject() (mongoComponent: MongoComponent) extends ListRepository(mongoComponent) {
+class TestListRepository @Inject() (
+  mongoComponent: MongoComponent,
+  config: AppConfig
+) extends ListRepository(mongoComponent, config) {
 
   override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)

@@ -20,6 +20,7 @@ import akka.NotUsed
 import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
+import config.AppConfig
 import models.GenericListItem
 import models.ListName
 import models.VersionId
@@ -38,14 +39,15 @@ import scala.concurrent.Future
 
 @Singleton
 class ListRepository @Inject() (
-  mongoComponent: MongoComponent
+  mongoComponent: MongoComponent,
+  config: AppConfig
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[GenericListItem](
       mongoComponent = mongoComponent,
       collectionName = "reference-data-lists",
       domainFormat = GenericListItem.format,
       indexes = ListRepository.indexes,
-      replaceIndexes = true // TODO - remove or set to false after deployment of CTCTRADERS-2934 changes
+      replaceIndexes = config.replaceIndexes
     ) {
 
   def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {

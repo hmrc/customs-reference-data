@@ -17,6 +17,7 @@
 package repositories
 
 import com.google.inject.Inject
+import config.AppConfig
 import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
@@ -34,14 +35,15 @@ import scala.concurrent.Future
 @Singleton
 class VersionRepository @Inject() (
   mongoComponent: MongoComponent,
-  timeService: TimeService
+  timeService: TimeService,
+  config: AppConfig
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[VersionInformation](
       mongoComponent = mongoComponent,
       collectionName = "versions",
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes,
-      replaceIndexes = true // TODO - remove or set to false after deployment of CTCTRADERS-2934 changes
+      replaceIndexes = config.replaceIndexes
     ) {
 
   def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[Boolean] = {
