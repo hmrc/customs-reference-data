@@ -70,7 +70,7 @@ class VersionRepository @Inject() (
 
     def getListName(source: ApiDataSource): Future[Option[Seq[ListName]]] =
       collection
-        .find(Filters.eq("source", source.asString))
+        .find(Filters.eq("source", source.toString))
         .sort(descending("snapshotDate"))
         .headOption()
         .map(_.map(_.listNames))
