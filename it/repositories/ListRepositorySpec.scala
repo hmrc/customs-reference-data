@@ -19,7 +19,6 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
@@ -98,35 +97,6 @@ class ListRepositorySpec
         .runWith(TestSink.probe[JsObject])
         .request(1)
         .expectComplete()
-    }
-  }
-
-  "getListNames" - {
-
-    "must return list of ListNames" in {
-
-      val versionId = VersionId("2")
-
-      forAll(listOfItemsForVersion(versionId), listOfItemsForVersion(VersionId("1234"))) {
-        (genericListItems, oldList) =>
-          seedData(oldList)
-          seedData(genericListItems)
-
-          val result = repository.getListNames(versionId).futureValue
-
-          val expectedResult: Seq[ListName] = genericListItems.map(_.listName)
-
-          result must contain allElementsOf expectedResult
-
-          dropDatabase()
-      }
-    }
-
-    "must return empty list when no list items are found" in {
-
-      val result = repository.getListNames(VersionId("123")).futureValue
-
-      result mustBe Nil
     }
   }
 

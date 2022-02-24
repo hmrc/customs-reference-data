@@ -71,12 +71,6 @@ class ListRepository @Inject() (
     )
   }
 
-  def getListNames(version: VersionId): Future[Seq[ListName]] =
-    collection
-      .distinct[String]("listName", Filters.eq("versionId", version.versionId))
-      .toFuture()
-      .map(_.map(ListName(_)))
-
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
       .insertMany(list, new InsertManyOptions().ordered(true))

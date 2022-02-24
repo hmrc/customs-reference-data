@@ -19,9 +19,6 @@ class TestListRepository @Inject() (mongoComponent: MongoComponent) extends List
   override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)
 
-  override def getListNames(version: VersionId): Future[Seq[ListName]] =
-    super.getListNames(version)
-
   override def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
     super.insertList(list)
