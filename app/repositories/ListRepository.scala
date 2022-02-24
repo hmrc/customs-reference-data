@@ -85,12 +85,6 @@ class ListRepository @Inject() (
 object ListRepository {
 
   val indexes: Seq[IndexModel] = {
-    val versionIdIndex: IndexModel =
-      IndexModel(
-        keys = ascending("versionId"),
-        indexOptions = IndexOptions().name("version-id-index")
-      )
-
     val listNameAndVersionIdCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listName"), ascending("versionId")),
@@ -98,7 +92,6 @@ object ListRepository {
       )
 
     Seq(
-      versionIdIndex,
       listNameAndVersionIdCompoundIndex
     )
   }

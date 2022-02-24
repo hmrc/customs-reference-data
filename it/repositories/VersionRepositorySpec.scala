@@ -141,6 +141,33 @@ class VersionRepositorySpec
 
       result must contain theSameElementsAs expectedResult
     }
+
+    "ensure sort happens before group" in {
+      val newSnapshotDate       = LocalDate.now()
+      val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
+      val oldMessageInformation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
+
+      when(mockTimeService.now())
+        .thenReturn(LocalDateTime.now())
+        .thenReturn(LocalDateTime.now().minusDays(1))
+        .thenReturn(LocalDateTime.now().minusDays(1))
+        .thenReturn(LocalDateTime.now())
+
+      val listNames1 = Seq(ListName("a"), ListName("b"))
+      val listNames2 = Seq(ListName("c"), ListName("d"))
+      val listNames3 = Seq(ListName("1"), ListName("2"))
+      val listNames4 = Seq(ListName("1.1"), ListName("2.1"))
+
+      repository.save(VersionId("1"), newMessageInformation, ColDataFeed, listNames1).futureValue
+      repository.save(VersionId("2"), oldMessageInformation, ColDataFeed, listNames2).futureValue
+      repository.save(VersionId("3"), oldMessageInformation, RefDataFeed, listNames3).futureValue
+      repository.save(VersionId("4"), newMessageInformation, RefDataFeed, listNames4).futureValue
+
+      val result         = repository.getLatestListNames.futureValue
+      val expectedResult = listNames1 ++ listNames4
+
+      result must contain theSameElementsAs expectedResult
+    }
   }
 
   implicit val versionInformationEquality: Equality[VersionInformation] =

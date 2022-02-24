@@ -16,18 +16,14 @@
 
 package repositories
 
-import cats.data._
-import cats.implicits._
 import com.google.inject.Inject
-import models.ApiDataSource.ColDataFeed
-import models.ApiDataSource.RefDataFeed
 import models._
-import org.mongodb.scala.model.Filters
-import org.mongodb.scala.model.IndexModel
-import org.mongodb.scala.model.IndexOptions
+import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
+import org.mongodb.scala.model._
 import services.consumption.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.LocalDateTime
@@ -67,18 +63,14 @@ class VersionRepository @Inject() (
       .headOption()
 
   def getLatestListNames: Future[Seq[ListName]] = {
+    val sort  = Aggregates.sort(descending("snapshotDate"))
+    val group = Aggregates.group("$source", Accumulators.first("listNames", "$listNames"))
 
-    def getListName(source: ApiDataSource): Future[Option[Seq[ListName]]] =
-      collection
-        .find(Filters.eq("source", source.toString))
-        .sort(descending("snapshotDate"))
-        .headOption()
-        .map(_.map(_.listNames))
-
-    (for {
-      list1 <- OptionT(getListName(RefDataFeed))
-      list2 <- OptionT(getListName(ColDataFeed))
-    } yield list1 ++ list2).value.map(_.getOrElse(Seq.empty))
+    collection
+      .aggregate[BsonValue](Seq(sort, group))
+      .map(Codecs.fromBson[ListNames](_))
+      .toFuture()
+      .map(_.flatMap(_.listNames))
   }
 
 }

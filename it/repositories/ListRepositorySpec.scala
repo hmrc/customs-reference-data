@@ -51,13 +51,10 @@ class ListRepositorySpec
   "must create the following indexes" in {
     val indexes = repository.collection.listIndexes().toFuture().futureValue
 
-    indexes.length mustEqual 3
+    indexes.length mustEqual 2
 
-    indexes(1).get("name").get mustEqual BsonString("version-id-index")
-    indexes(1).get("key").get mustEqual BsonDocument("versionId" -> 1)
-
-    indexes(2).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
-    indexes(2).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+    indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
+    indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
   }
 
   "getListByName" - {
