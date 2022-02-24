@@ -16,7 +16,7 @@ import scala.concurrent.Future
 
 class TestListRepository @Inject() (mongoComponent: MongoComponent) extends ListRepository(mongoComponent) {
 
-  override def getListByName(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] =
+  override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)
 
   override def getListNames(version: VersionId): Future[Seq[ListName]] =

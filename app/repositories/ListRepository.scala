@@ -33,7 +33,6 @@ import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import javax.inject.Singleton
-import scala.collection.immutable
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
@@ -49,7 +48,7 @@ class ListRepository @Inject() (
       replaceIndexes = true // TODO - remove or set to false after deployment of CTCTRADERS-2934 changes
     ) {
 
-  def getListByName(listName: ListName, versionId: VersionId): Future[Source[JsObject, NotUsed]] = {
+  def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
     val filter = Aggregates.filter(
       Filters.and(
         Filters.eq("listName", listName.listName),
@@ -64,12 +63,12 @@ class ListRepository @Inject() (
       )
     )
 
-    collection
-      .aggregate[BsonValue](Seq(filter, projection))
-      .allowDiskUse(true)
-      .toFuture()
-      .map(_.map(Codecs.fromBson[JsObject](_)))
-      .map(x => Source.apply[JsObject](immutable.Seq[JsObject](x: _*)))
+    Source.fromPublisher(
+      collection
+        .aggregate[BsonValue](Seq(filter, projection))
+        .allowDiskUse(true)
+        .map(Codecs.fromBson[JsObject](_))
+    )
   }
 
   def getListNames(version: VersionId): Future[Seq[ListName]] =

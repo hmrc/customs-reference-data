@@ -25,7 +25,6 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -77,13 +76,13 @@ class ListRepositorySpec
 
       seedData(targetList ++ otherList)
 
-      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(listName, versionId)
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
 
       val data = targetList
         .map(Json.toJsObject(_))
         .map(_ - "listName" - "snapshotDate" - "versionId" - "messageID")
 
-      result.futureValue
+      result
         .runWith(TestSink.probe[JsObject])
         .request(targetList.length)
         .expectNextN(data)
@@ -93,9 +92,9 @@ class ListRepositorySpec
       val versionId = VersionId("1")
       val listName  = arbitrary[ListName].sample.value
 
-      val result: Future[Source[JsObject, NotUsed]] = repository.getListByName(listName, versionId)
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
 
-      result.futureValue
+      result
         .runWith(TestSink.probe[JsObject])
         .request(1)
         .expectComplete()

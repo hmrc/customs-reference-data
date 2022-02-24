@@ -68,7 +68,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(source)
 
         val result = route(app, fakeRequest).get
 
@@ -87,7 +87,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
         val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 
         when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
-        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(Future.successful(source))
+        when(mockListRetrievalService.getStreamedList(any(), any())).thenReturn(source)
 
         val result = route(app, fakeRequest).get
 

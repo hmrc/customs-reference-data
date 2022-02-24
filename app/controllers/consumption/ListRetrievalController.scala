@@ -43,8 +43,8 @@ class ListRetrievalController @Inject() (
       (
         for {
           latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList  <- OptionT.liftF(listRetrievalService.getStreamedList(listName, latestVersion.versionId))
-          nestJson = StreamReferenceData(listName, MetaData(latestVersion))
+          streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId)
+          nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
