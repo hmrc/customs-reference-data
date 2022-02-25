@@ -1,6 +1,7 @@
 package repositories
 
 import base.ItSpecBase
+import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.ApiDataSource.ColDataFeed
@@ -34,8 +35,9 @@ class VersionRepositorySpec
     with DefaultPlayMongoRepositorySupport[VersionInformation] {
 
   private val mockTimeService: TimeService = mock[TimeService]
+  private val appConfig: AppConfig         = app.injector.instanceOf[AppConfig]
 
-  override protected def repository = new VersionRepository(mongoComponent, mockTimeService)
+  override protected def repository = new VersionRepository(mongoComponent, mockTimeService, appConfig)
 
   "must create the following indexes" in {
     val indexes = repository.collection.listIndexes().toFuture().futureValue
@@ -118,6 +120,40 @@ class VersionRepositorySpec
   }
 
   "getLatestListNames" - {
+    "returns listnames for the latest REF by snapshotDate" in {
+      val newSnapshotDate       = LocalDate.now()
+      val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
+
+      when(mockTimeService.now())
+        .thenReturn(LocalDateTime.now())
+
+      val listNames = Seq(ListName("1"), ListName("2"))
+
+      repository.save(VersionId("1"), newMessageInformation, RefDataFeed, listNames).futureValue
+
+      val result         = repository.getLatestListNames.futureValue
+      val expectedResult = listNames
+
+      result must contain theSameElementsAs expectedResult
+    }
+
+    "returns listnames for the latest COL by snapshotDate" in {
+      val newSnapshotDate       = LocalDate.now()
+      val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
+
+      when(mockTimeService.now())
+        .thenReturn(LocalDateTime.now())
+
+      val listNames = Seq(ListName("1"), ListName("2"))
+
+      repository.save(VersionId("1"), newMessageInformation, ColDataFeed, listNames).futureValue
+
+      val result         = repository.getLatestListNames.futureValue
+      val expectedResult = listNames
+
+      result must contain theSameElementsAs expectedResult
+    }
+
     "returns listnames for the latest REF and COL by snapshotDate" in {
       val newSnapshotDate       = LocalDate.now()
       val newMessageInformation = MessageInformation("messageId", newSnapshotDate)

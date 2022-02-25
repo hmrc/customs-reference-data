@@ -39,14 +39,14 @@ import scala.concurrent.Future
 
 class ReferenceDataListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val mockReferenceDataService = mock[ReferenceDataService]
+  val mockReferenceDataService: ReferenceDataService = mock[ReferenceDataService]
 
   private val testJson = Json.obj("foo" -> "bar")
 
   "referenceDataLists" - {
 
     def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataListController.referenceDataLists().url)
+      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataListController.post().url)
         .withJsonBody(testJson)
 
     "returns ACCEPTED when the data has been validated and processed" in {

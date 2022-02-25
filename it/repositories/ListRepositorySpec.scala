@@ -5,6 +5,7 @@ import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
+import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.GenericListItem
@@ -35,7 +36,9 @@ class ListRepositorySpec
     with ScalaFutures
     with DefaultPlayMongoRepositorySupport[GenericListItem] {
 
-  override protected def repository = new ListRepository(mongoComponent)
+  private val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  override protected def repository = new ListRepository(mongoComponent, appConfig)
 
   private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection

@@ -16,12 +16,12 @@
 
 package models
 
-import java.time.LocalDate
-
 import base.SpecBase
 import play.api.libs.json.Json
 
-class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {
+import java.time.LocalDate
+
+class GenericListItemSpec extends SpecBase {
 
   "Json serialization" in {
     val date = LocalDate.now()
@@ -37,7 +37,7 @@ class GenericListItemSpec extends SpecBase with MongoDateTimeFormats {
     val expectedJson = Json.obj(
       "listName"     -> listName.listName,
       "messageID"    -> "messageIdValue",
-      "snapshotDate" -> date,
+      "snapshotDate" -> Json.obj(s"$$date" -> Json.obj(s"$$numberLong" -> date.toEpochMilli)),
       "versionId"    -> versionId.versionId,
       "data"         -> listItemJson
     )

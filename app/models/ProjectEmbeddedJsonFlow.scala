@@ -17,16 +17,15 @@
 package models
 
 import akka.NotUsed
+import akka.stream.scaladsl.Flow
 import akka.stream.ActorAttributes
 import akka.stream.Attributes
 import akka.stream.Supervision
-import akka.stream.scaladsl.Flow
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsResultException
 
-class ProjectEmbeddedJsonFlow(listName: ListName) {
-  val logger = Logger(this.getClass)
+class ProjectEmbeddedJsonFlow(listName: ListName) extends Logging {
 
   val supervisionStrategy: Attributes = ActorAttributes.supervisionStrategy {
     case x: JsResultException if x.errors.map(_._2).exists(_.exists(_.message.contains("""'data' is undefined on object"""))) =>

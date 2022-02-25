@@ -16,25 +16,17 @@
 
 package controllers.ingestion
 
-import cats.data._
-import cats.implicits._
 import config.ReferenceDataControllerParserConfig
-import javax.inject.Inject
-import logging.Logging
 import models.ApiDataSource.RefDataFeed
-import models.CTCUP06Schema
-import models.ErrorDetails
-import models.ReferenceDataListsPayload
-import models.WriteError
+import models._
 import play.api.libs.json.JsValue
-import play.api.libs.json.Json
-import play.api.mvc.Action
+import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
+import play.api.mvc.PlayBodyParsers
 import services.ingestion.ReferenceDataService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
 class ReferenceDataListController @Inject() (
   cc: ControllerComponents,
@@ -42,28 +34,11 @@ class ReferenceDataListController @Inject() (
   parseConfig: ReferenceDataControllerParserConfig,
   cTCUP06Schema: CTCUP06Schema
 )(implicit ec: ExecutionContext)
-    extends BackendController(cc)
-    with Logging {
+    extends IngestionController(cc, referenceDataService) {
 
-  import parseConfig._
+  override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
 
-  def referenceDataLists(): Action[JsValue] =
-    Action(referenceDataParser(parse)).async {
-      implicit request =>
-        (
-          for {
-            validate <- EitherT.fromEither[Future](referenceDataService.validate(cTCUP06Schema, request.body))
-            referenceDataPayload = ReferenceDataListsPayload(validate)
-            insert <- EitherT.fromOptionF(referenceDataService.insert(RefDataFeed, referenceDataPayload), ()).swap
-          } yield insert
-        ).value.map {
-          case Right(_) => Accepted
-          case Left(writeError: WriteError) =>
-            logger.info(s"Failed to save the data list because of error: ${writeError.message}")
-            InternalServerError(Json.toJsObject(writeError))
-          case Left(errorDetails: ErrorDetails) =>
-            logger.info(errorDetails.message)
-            BadRequest(Json.toJsObject(errorDetails))
-        }
-    }
+  override val schema: SimpleJsonSchemaProvider = cTCUP06Schema
+
+  override val source: ApiDataSource = RefDataFeed
 }
