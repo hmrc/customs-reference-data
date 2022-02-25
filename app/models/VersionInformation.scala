@@ -33,7 +33,7 @@ case class VersionInformation(
   listNames: Seq[ListName]
 )
 
-object VersionInformation extends MongoDateTimeFormats {
+object VersionInformation {
 
   implicit val writes: OWrites[VersionInformation] =
     (

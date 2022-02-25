@@ -17,7 +17,6 @@
 package models
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.Json
 import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 import play.api.libs.json.__
@@ -27,14 +26,13 @@ import java.time.LocalDate
 
 case class MessageInformation(messageId: String, snapshotDate: LocalDate)
 
-object MessageInformation extends MongoDateTimeFormats {
+object MessageInformation {
 
   implicit val oWritesMessageInformation: OWrites[MessageInformation] =
-    messageInformation =>
-      Json.obj(
-        "messageID"    -> messageInformation.messageId,
-        "snapshotDate" -> messageInformation.snapshotDate
-      )
+    (
+      (__ \ "messageID").write[String] and
+        (__ \ "snapshotDate").write(MongoJavatimeFormats.localDateWrites)
+    )(unlift(MessageInformation.unapply))
 
   implicit val reads: Reads[MessageInformation] =
     ((__ \ "messageID").read[String] and
