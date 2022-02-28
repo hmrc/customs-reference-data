@@ -25,6 +25,7 @@ import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models._
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -186,6 +187,113 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                 .request(4)
                 .expectNextN(expectedSourceValues)
           }
+      }
+    }
+  }
+
+  "deleteOutdatedDocuments" - {
+
+    "must return true" - {
+      "when outdated documents successfully deleted" in {
+
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(
+            bind[VersionRepository].toInstance(mockVersionRepository),
+            bind[ListRepository].toInstance(mockListRepository)
+          )
+        )
+
+        running(app) {
+          application =>
+            val versionIds = Seq(VersionId("1"))
+            when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.successful(versionIds))
+            when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(true))
+            when(mockListRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(true))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.deleteOutdatedDocuments()
+
+            result.futureValue mustBe true
+        }
+      }
+    }
+
+    "must return false" - {
+      "when getLatestVersionIds returns error" in {
+
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(
+            bind[VersionRepository].toInstance(mockVersionRepository),
+            bind[ListRepository].toInstance(mockListRepository)
+          )
+        )
+
+        running(app) {
+          application =>
+            when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.failed(new Throwable()))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.deleteOutdatedDocuments()
+
+            result.futureValue mustBe false
+        }
+      }
+
+      "when version repository deletion returns error" in {
+
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(
+            bind[VersionRepository].toInstance(mockVersionRepository),
+            bind[ListRepository].toInstance(mockListRepository)
+          )
+        )
+
+        running(app) {
+          application =>
+            val versionIds = Seq(VersionId("1"))
+            when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.successful(versionIds))
+            when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.failed(new Throwable()))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.deleteOutdatedDocuments()
+
+            result.futureValue mustBe false
+        }
+      }
+
+      "when list repository deletion returns error" in {
+
+        val mockVersionRepository = mock[VersionRepository]
+        val mockListRepository    = mock[ListRepository]
+
+        val app = baseApplicationBuilder.andThen(
+          _.overrides(
+            bind[VersionRepository].toInstance(mockVersionRepository),
+            bind[ListRepository].toInstance(mockListRepository)
+          )
+        )
+
+        running(app) {
+          application =>
+            val versionIds = Seq(VersionId("1"))
+            when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.successful(versionIds))
+            when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(true))
+            when(mockListRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.failed(new Throwable()))
+
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.deleteOutdatedDocuments()
+
+            result.futureValue mustBe false
+        }
       }
     }
   }

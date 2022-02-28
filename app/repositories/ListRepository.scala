@@ -83,9 +83,9 @@ class ListRepository @Inject() (
         case false => FailedWrite(list.head.listName)
       }
 
-  def deleteOutdatedDocuments(latestVersions: Seq[VersionId]): Future[Boolean] =
+  def deleteOutdatedDocuments(latestVersionIds: Seq[VersionId]): Future[Boolean] =
     collection
-      .deleteMany(Filters.nin("versionId", latestVersions.map(_.versionId): _*))
+      .deleteMany(Filters.nin("versionId", latestVersionIds.map(_.versionId): _*))
       .toFuture()
       .map(_.wasAcknowledged())
 }

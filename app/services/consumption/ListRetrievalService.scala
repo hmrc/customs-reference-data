@@ -19,6 +19,7 @@ package services.consumption
 import akka.NotUsed
 import akka.stream.scaladsl.Source
 import models._
+import play.api.Logging
 import play.api.libs.json.JsObject
 import repositories.ListRepository
 import repositories.VersionRepository
@@ -30,13 +31,25 @@ import scala.concurrent.Future
 class ListRetrievalService @Inject() (
   listRepository: ListRepository,
   versionRepository: VersionRepository
-)(implicit ec: ExecutionContext) {
+)(implicit ec: ExecutionContext)
+    extends Logging {
 
   def getStreamedList(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     listRepository.getListByName(listName, versionId).via(ProjectEmbeddedJsonFlow(listName).project)
 
   def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
     versionRepository.getLatest(listName)
+
+  def deleteOutdatedDocuments(): Future[Boolean] =
+    (for {
+      latestVersionIds <- versionRepository.getLatestVersionIds
+      _                <- versionRepository.deleteOutdatedDocuments(latestVersionIds)
+      _                <- listRepository.deleteOutdatedDocuments(latestVersionIds)
+    } yield true).recover {
+      case e: Throwable =>
+        logger.error(s"Error deleting outdated documents: ${e.getMessage}")
+        false
+    }
 
   def getResourceLinks: Future[Option[ResourceLinks]] =
     versionRepository.getLatestListNames.map {

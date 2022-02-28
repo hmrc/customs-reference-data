@@ -19,22 +19,23 @@ package controllers.deletion
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.ControllerComponents
+import services.consumption.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
 class DeletionController @Inject() (
-  cc: ControllerComponents
+  cc: ControllerComponents,
+  listRetrievalService: ListRetrievalService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
   def delete(): Action[AnyContent] =
     Action.async {
-      // get all distinct list names from versions collection
-      // find latest version id for each of these list names
-      // delete any documents from versions and reference-data-lists that do not include one of these version ids
-      Future.successful(Ok)
+      listRetrievalService.deleteOutdatedDocuments() map {
+        case true  => Ok
+        case false => InternalServerError
+      }
     }
 }
