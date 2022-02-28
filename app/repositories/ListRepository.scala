@@ -82,11 +82,23 @@ class ListRepository @Inject() (
         case true  => SuccessfulWrite
         case false => FailedWrite(list.head.listName)
       }
+
+  def deleteOutdatedDocuments(latestVersions: Seq[VersionId]): Future[Boolean] =
+    collection
+      .deleteMany(Filters.nin("versionId", latestVersions.map(_.versionId): _*))
+      .toFuture()
+      .map(_.wasAcknowledged())
 }
 
 object ListRepository {
 
   val indexes: Seq[IndexModel] = {
+    val versionIdIndex: IndexModel =
+      IndexModel(
+        keys = ascending("versionId"),
+        indexOptions = IndexOptions().name("version-id-index")
+      )
+
     val listNameAndVersionIdCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listName"), ascending("versionId")),
@@ -94,6 +106,7 @@ object ListRepository {
       )
 
     Seq(
+      versionIdIndex,
       listNameAndVersionIdCompoundIndex
     )
   }

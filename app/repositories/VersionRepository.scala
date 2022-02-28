@@ -21,6 +21,7 @@ import config.AppConfig
 import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
+import org.mongodb.scala.model.Sorts.orderBy
 import org.mongodb.scala.model._
 import services.consumption.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
@@ -75,26 +76,56 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
+  def getLatestVersionIds: Future[Seq[VersionId]] = {
+    val sort  = Aggregates.sort(orderBy(descending("snapshotDate"), descending("createdOn")))
+    val group = Aggregates.group("$listNames.listName", Accumulators.first("versionId", "$versionId"))
+
+    collection
+      .aggregate[BsonValue](Seq(sort, group))
+      .map(Codecs.fromBson[VersionId](_))
+      .toFuture()
+  }
+
+  def deleteOutdatedDocuments(latestVersions: Seq[VersionId]): Future[Boolean] =
+    collection
+      .deleteMany(Filters.nin("versionId", latestVersions.map(_.versionId): _*))
+      .toFuture()
+      .map(_.wasAcknowledged())
+
 }
 
 object VersionRepository {
 
   val indexes: Seq[IndexModel] = {
+    val versionIdIndex: IndexModel =
+      IndexModel(
+        keys = ascending("versionId"),
+        indexOptions = IndexOptions().name("version-id-index")
+      )
+
     val listNameAndSnapshotDateCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate")),
         indexOptions = IndexOptions().name("list-name-and-snapshot-date-compound-index")
       )
 
-    val sourceAndSnapshotDateCompoundIndex: IndexModel =
+    val snapshotDateIndex: IndexModel =
       IndexModel(
-        keys = compoundIndex(ascending("source"), descending("snapshotDate")),
-        indexOptions = IndexOptions().name("source-and-snapshot-date-compound-index")
+        keys = descending("snapshotDate"),
+        indexOptions = IndexOptions().name("snapshot-date-index")
+      )
+
+    val snapshotDateAndCreatedOnCompoundIndex: IndexModel =
+      IndexModel(
+        keys = compoundIndex(descending("snapshotDate"), descending("createdOn")),
+        indexOptions = IndexOptions().name("snapshot-date-and-created-on-compound-index")
       )
 
     Seq(
+      versionIdIndex,
       listNameAndSnapshotDateCompoundIndex,
-      sourceAndSnapshotDateCompoundIndex
+      snapshotDateIndex,
+      snapshotDateAndCreatedOnCompoundIndex
     )
   }
 }

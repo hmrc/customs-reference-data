@@ -10,9 +10,9 @@ import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
+import models.MessageInformation
 import models.VersionId
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
@@ -24,6 +24,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ListRepositorySpec
@@ -52,12 +53,12 @@ class ListRepositorySpec
   }
 
   "must create the following indexes" in {
-    val indexes = repository.collection.listIndexes().toFuture().futureValue
+    val indexes = repository.collection.listIndexes().toFuture().futureValue.map(Index(_))
 
-    indexes.length mustEqual 2
+    indexes.length mustEqual 3
 
-    indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
-    indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+    indexes must contain(Index("version-id-index", BsonDocument("versionId" -> 1)))
+    indexes must contain(Index("list-name-and-version-id-compound-index", BsonDocument("listName" -> 1, "versionId" -> 1)))
   }
 
   "getListByName" - {
@@ -110,6 +111,36 @@ class ListRepositorySpec
       val result = findAll().futureValue
 
       result must contain theSameElementsAs list
+    }
+  }
+
+  "deleteOutdatedDocuments" - {
+    "must delete outdated documents and return true" in {
+      val messageInformation = MessageInformation("messageId", LocalDate.now())
+
+      val l1 = GenericListItem(
+        arbitrary[ListName].sample.value,
+        messageInformation,
+        VersionId("1"),
+        Json.obj()
+      )
+
+      val l2 = GenericListItem(
+        arbitrary[ListName].sample.value,
+        messageInformation,
+        VersionId("2"),
+        Json.obj()
+      )
+
+      Seq(l1, l2).map(insert(_).futureValue)
+
+      repository.deleteOutdatedDocuments(latestVersions = Seq(VersionId("2"))).futureValue mustBe true
+
+      val documentsAfterDeletion = findAll().futureValue
+
+      val expectedDocumentsAfterDeletion = Seq(l2)
+
+      documentsAfterDeletion must contain theSameElementsAs expectedDocumentsAfterDeletion
     }
   }
 

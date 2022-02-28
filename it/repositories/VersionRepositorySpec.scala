@@ -12,7 +12,6 @@ import models.VersionId
 import models.VersionInformation
 import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
@@ -40,15 +39,14 @@ class VersionRepositorySpec
   override protected def repository = new VersionRepository(mongoComponent, mockTimeService, appConfig)
 
   "must create the following indexes" in {
-    val indexes = repository.collection.listIndexes().toFuture().futureValue
+    val indexes = repository.collection.listIndexes().toFuture().futureValue.map(Index(_))
 
-    indexes.length mustEqual 3
+    indexes.length mustEqual 5
 
-    indexes(1).get("name").get mustEqual BsonString("list-name-and-snapshot-date-compound-index")
-    indexes(1).get("key").get mustEqual BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1)
-
-    indexes(2).get("name").get mustEqual BsonString("source-and-snapshot-date-compound-index")
-    indexes(2).get("key").get mustEqual BsonDocument("source" -> 1, "snapshotDate" -> -1)
+    indexes must contain(Index("version-id-index", BsonDocument("versionId" -> 1)))
+    indexes must contain(Index("list-name-and-snapshot-date-compound-index", BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1)))
+    indexes must contain(Index("snapshot-date-index", BsonDocument("snapshotDate" -> -1)))
+    indexes must contain(Index("snapshot-date-and-created-on-compound-index", BsonDocument("snapshotDate" -> -1, "createdOn" -> -1)))
   }
 
   "save" - {
@@ -203,6 +201,138 @@ class VersionRepositorySpec
       val expectedResult = listNames1 ++ listNames4
 
       result must contain theSameElementsAs expectedResult
+    }
+  }
+
+  "getLatestVersionIds" - {
+    "returns version IDs that cover all latest listnames" in {
+      val now                                         = LocalDate.now()
+      def messageInformation(snapshotDate: LocalDate) = MessageInformation("messageId", snapshotDate)
+
+      val v1 = VersionInformation(
+        messageInformation = messageInformation(now),
+        versionId = VersionId("1"),
+        createdOn = LocalDateTime.now(),
+        source = RefDataFeed,
+        listNames = Seq(
+          ListName("1"),
+          ListName("2"),
+          ListName("3")
+        )
+      )
+
+      val v2 = VersionInformation(
+        messageInformation = messageInformation(now.minusDays(1)),
+        versionId = VersionId("2"),
+        createdOn = LocalDateTime.now(),
+        source = RefDataFeed,
+        listNames = Seq(
+          ListName("1"),
+          ListName("2"),
+          ListName("3")
+        )
+      )
+
+      val v3 = VersionInformation(
+        messageInformation = messageInformation(now.minusDays(1)),
+        versionId = VersionId("3"),
+        createdOn = LocalDateTime.now().minusDays(1),
+        source = RefDataFeed,
+        listNames = Seq(
+          ListName("1"),
+          ListName("2"),
+          ListName("3")
+        )
+      )
+
+      val v4 = VersionInformation(
+        messageInformation = messageInformation(now.minusDays(1)),
+        versionId = VersionId("4"),
+        createdOn = LocalDateTime.now(),
+        source = ColDataFeed,
+        listNames = Seq(
+          ListName("4"),
+          ListName("5"),
+          ListName("6")
+        )
+      )
+
+      val v5 = VersionInformation(
+        messageInformation = messageInformation(now),
+        versionId = VersionId("5"),
+        createdOn = LocalDateTime.now().minusDays(1),
+        source = ColDataFeed,
+        listNames = Seq(
+          ListName("4"),
+          ListName("5"),
+          ListName("6")
+        )
+      )
+
+      val v6 = VersionInformation(
+        messageInformation = messageInformation(now),
+        versionId = VersionId("6"),
+        createdOn = LocalDateTime.now(),
+        source = ColDataFeed,
+        listNames = Seq(
+          ListName("4"),
+          ListName("5"),
+          ListName("6")
+        )
+      )
+
+      val v7 = VersionInformation(
+        messageInformation = messageInformation(now),
+        versionId = VersionId("7"),
+        createdOn = LocalDateTime.now(),
+        source = ColDataFeed,
+        listNames = Seq(
+          ListName("7")
+        )
+      )
+
+      Seq(v1, v2, v3, v4, v5, v6, v7).map(insert(_).futureValue)
+
+      val result = repository.getLatestVersionIds.futureValue
+      val expectedResult = Seq(
+        VersionId("1"),
+        VersionId("6"),
+        VersionId("7")
+      )
+
+      result must contain theSameElementsAs expectedResult
+    }
+  }
+
+  "deleteOutdatedDocuments" - {
+    "must delete outdated documents and return true" in {
+      val messageInformation = MessageInformation("messageId", LocalDate.now())
+
+      val v1 = VersionInformation(
+        messageInformation = messageInformation,
+        versionId = VersionId("1"),
+        createdOn = LocalDateTime.now(),
+        source = RefDataFeed,
+        listNames = Nil
+      )
+
+      val v2 = VersionInformation(
+        messageInformation = messageInformation,
+        versionId = VersionId("2"),
+        createdOn = LocalDateTime.now(),
+        source = RefDataFeed,
+        listNames = Nil
+      )
+
+      Seq(v1, v2).map(insert(_).futureValue)
+
+      repository.deleteOutdatedDocuments(latestVersions = Seq(VersionId("2"))).futureValue mustBe true
+
+      val documentsAfterDeletion = findAll().futureValue
+
+      val expectedDocumentsAfterDeletion = Seq(v2)
+
+      documentsAfterDeletion must contain theSameElementsAs expectedDocumentsAfterDeletion
     }
   }
 
