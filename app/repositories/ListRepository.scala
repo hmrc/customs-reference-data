@@ -91,7 +91,7 @@ class ListRepository @Inject() (
       .toFuture()
       .map {
         x =>
-          logger.info(s"[VersionRepository][deleteOutdatedDocuments] Deleted ${x.getDeletedCount} documents")
+          logger.info(s"[ListRepository][deleteOutdatedDocuments] Deleted ${x.getDeletedCount} documents")
           true
       }
       .recover {

@@ -134,7 +134,7 @@ class ListRepositorySpec
 
       Seq(l1, l2).map(insert(_).futureValue)
 
-      repository.deleteOutdatedDocuments(latestVersionIds = Seq(VersionId("2"))).futureValue mustBe 1
+      repository.deleteOutdatedDocuments(latestVersionIds = Seq(VersionId("2"))).futureValue mustBe true
 
       val documentsAfterDeletion = findAll().futureValue
 
