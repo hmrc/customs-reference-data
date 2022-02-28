@@ -222,30 +222,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
     }
 
     "must return false" - {
-      "when getLatestVersionIds returns error" in {
-
-        val mockVersionRepository = mock[VersionRepository]
-        val mockListRepository    = mock[ListRepository]
-
-        val app = baseApplicationBuilder.andThen(
-          _.overrides(
-            bind[VersionRepository].toInstance(mockVersionRepository),
-            bind[ListRepository].toInstance(mockListRepository)
-          )
-        )
-
-        running(app) {
-          application =>
-            when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.failed(new Throwable()))
-
-            val service = application.injector.instanceOf[ListRetrievalService]
-            val result  = service.deleteOutdatedDocuments()
-
-            result.futureValue mustBe false
-        }
-      }
-
-      "when version repository deletion returns error" in {
+      "when version repository deletion returns false" in {
 
         val mockVersionRepository = mock[VersionRepository]
         val mockListRepository    = mock[ListRepository]
@@ -261,7 +238,8 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           application =>
             val versionIds = Seq(VersionId("1"))
             when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.successful(versionIds))
-            when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.failed(new Throwable()))
+            when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(false))
+            when(mockListRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(true))
 
             val service = application.injector.instanceOf[ListRetrievalService]
             val result  = service.deleteOutdatedDocuments()
@@ -270,7 +248,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
         }
       }
 
-      "when list repository deletion returns error" in {
+      "when list repository deletion returns false" in {
 
         val mockVersionRepository = mock[VersionRepository]
         val mockListRepository    = mock[ListRepository]
@@ -287,7 +265,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
             val versionIds = Seq(VersionId("1"))
             when(mockVersionRepository.getLatestVersionIds).thenReturn(Future.successful(versionIds))
             when(mockVersionRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(true))
-            when(mockListRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.failed(new Throwable()))
+            when(mockListRepository.deleteOutdatedDocuments(eqTo(versionIds))).thenReturn(Future.successful(false))
 
             val service = application.injector.instanceOf[ListRetrievalService]
             val result  = service.deleteOutdatedDocuments()

@@ -28,6 +28,7 @@ import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
+import play.api.Logging
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
@@ -48,7 +49,8 @@ class ListRepository @Inject() (
       domainFormat = GenericListItem.format,
       indexes = ListRepository.indexes,
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
   def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
     val filter = Aggregates.filter(
@@ -87,7 +89,16 @@ class ListRepository @Inject() (
     collection
       .deleteMany(Filters.nin("versionId", latestVersionIds.map(_.versionId): _*))
       .toFuture()
-      .map(_.wasAcknowledged())
+      .map {
+        x =>
+          logger.info(s"[VersionRepository][deleteOutdatedDocuments] Deleted ${x.getDeletedCount} documents")
+          true
+      }
+      .recover {
+        case e =>
+          logger.error(s"Error deleting documents: ${e.getMessage}")
+          false
+      }
 }
 
 object ListRepository {

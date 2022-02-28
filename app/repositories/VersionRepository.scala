@@ -23,6 +23,7 @@ import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model.Sorts.orderBy
 import org.mongodb.scala.model._
+import play.api.Logging
 import services.consumption.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
@@ -45,7 +46,8 @@ class VersionRepository @Inject() (
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes,
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
   def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[Boolean] = {
     val time: LocalDateTime = timeService.now()
@@ -54,9 +56,7 @@ class VersionRepository @Inject() (
     collection
       .insertOne(versionInformation)
       .toFuture()
-      .map {
-        _.wasAcknowledged()
-      }
+      .map(_.wasAcknowledged())
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
@@ -90,7 +90,16 @@ class VersionRepository @Inject() (
     collection
       .deleteMany(Filters.nin("versionId", latestVersionIds.map(_.versionId): _*))
       .toFuture()
-      .map(_.wasAcknowledged())
+      .map {
+        x =>
+          logger.info(s"[VersionRepository][deleteOutdatedDocuments] Deleted ${x.getDeletedCount} documents")
+          true
+      }
+      .recover {
+        case e =>
+          logger.error(s"Error deleting documents: ${e.getMessage}")
+          false
+      }
 
 }
 
