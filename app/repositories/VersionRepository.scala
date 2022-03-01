@@ -61,11 +61,11 @@ class VersionRepository @Inject() (
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     collection
       .find(Filters.eq("listNames.listName", listName.listName))
-      .sort(descending("snapshotDate"))
+      .sort(descending("snapshotDate", "createdOn"))
       .headOption()
 
   def getLatestListNames: Future[Seq[ListName]] = {
-    val sort  = Aggregates.sort(descending("snapshotDate"))
+    val sort  = Aggregates.sort(descending("snapshotDate", "createdOn"))
     val group = Aggregates.group("$source", Accumulators.first("listNames", "$listNames"))
 
     collection
@@ -80,21 +80,21 @@ class VersionRepository @Inject() (
 object VersionRepository {
 
   val indexes: Seq[IndexModel] = {
-    val listNameAndSnapshotDateCompoundIndex: IndexModel =
+    val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
-        keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate")),
-        indexOptions = IndexOptions().name("list-name-and-snapshot-date-compound-index")
+        keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
+        indexOptions = IndexOptions().name("list-name-and-date-compound-index")
       )
 
-    val sourceAndSnapshotDateCompoundIndex: IndexModel =
+    val sourceAndDateCompoundIndex: IndexModel =
       IndexModel(
-        keys = compoundIndex(ascending("source"), descending("snapshotDate")),
-        indexOptions = IndexOptions().name("source-and-snapshot-date-compound-index")
+        keys = compoundIndex(ascending("source"), descending("snapshotDate", "createdOn")),
+        indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
     Seq(
-      listNameAndSnapshotDateCompoundIndex,
-      sourceAndSnapshotDateCompoundIndex
+      listNameAndDateCompoundIndex,
+      sourceAndDateCompoundIndex
     )
   }
 }
