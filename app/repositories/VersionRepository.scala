@@ -21,7 +21,6 @@ import config.AppConfig
 import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
-import org.mongodb.scala.model.Sorts.orderBy
 import org.mongodb.scala.model._
 import play.api.Logging
 import services.consumption.TimeService
@@ -62,11 +61,11 @@ class VersionRepository @Inject() (
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     collection
       .find(Filters.eq("listNames.listName", listName.listName))
-      .sort(descending("snapshotDate"))
+      .sort(descending("snapshotDate", "createdOn"))
       .headOption()
 
   def getLatestListNames: Future[Seq[ListName]] = {
-    val sort  = Aggregates.sort(descending("snapshotDate"))
+    val sort  = Aggregates.sort(descending("snapshotDate", "createdOn"))
     val group = Aggregates.group("$source", Accumulators.first("listNames", "$listNames"))
 
     collection
@@ -77,7 +76,7 @@ class VersionRepository @Inject() (
   }
 
   def getLatestVersionIds: Future[Seq[VersionId]] = {
-    val sort  = Aggregates.sort(orderBy(descending("snapshotDate"), descending("createdOn")))
+    val sort  = Aggregates.sort(descending("snapshotDate", "createdOn"))
     val group = Aggregates.group("$listNames.listName", Accumulators.first("versionId", "$versionId"))
 
     collection
@@ -112,29 +111,22 @@ object VersionRepository {
         indexOptions = IndexOptions().name("version-id-index")
       )
 
-    val listNameAndSnapshotDateCompoundIndex: IndexModel =
+    val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
-        keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate")),
-        indexOptions = IndexOptions().name("list-name-and-snapshot-date-compound-index")
+        keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
+        indexOptions = IndexOptions().name("list-name-and-date-compound-index")
       )
 
-    val snapshotDateIndex: IndexModel =
+    val sourceAndDateCompoundIndex: IndexModel =
       IndexModel(
-        keys = descending("snapshotDate"),
-        indexOptions = IndexOptions().name("snapshot-date-index")
-      )
-
-    val snapshotDateAndCreatedOnCompoundIndex: IndexModel =
-      IndexModel(
-        keys = compoundIndex(descending("snapshotDate"), descending("createdOn")),
-        indexOptions = IndexOptions().name("snapshot-date-and-created-on-compound-index")
+        keys = compoundIndex(ascending("source"), descending("snapshotDate", "createdOn")),
+        indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
     Seq(
       versionIdIndex,
-      listNameAndSnapshotDateCompoundIndex,
-      snapshotDateIndex,
-      snapshotDateAndCreatedOnCompoundIndex
+      listNameAndDateCompoundIndex,
+      sourceAndDateCompoundIndex
     )
   }
 }

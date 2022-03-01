@@ -41,12 +41,11 @@ class VersionRepositorySpec
   "must create the following indexes" in {
     val indexes = repository.collection.listIndexes().toFuture().futureValue.map(Index(_))
 
-    indexes.length mustEqual 5
+    indexes.length mustEqual 4
 
     indexes must contain(Index("version-id-index", BsonDocument("versionId" -> 1)))
-    indexes must contain(Index("list-name-and-snapshot-date-compound-index", BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1)))
-    indexes must contain(Index("snapshot-date-index", BsonDocument("snapshotDate" -> -1)))
-    indexes must contain(Index("snapshot-date-and-created-on-compound-index", BsonDocument("snapshotDate" -> -1, "createdOn" -> -1)))
+    indexes must contain(Index("list-name-and-date-compound-index", BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)))
+    indexes must contain(Index("source-and-date-compound-index", BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)))
   }
 
   "save" - {
@@ -71,49 +70,41 @@ class VersionRepositorySpec
   }
 
   "getLatest with listName filter" - {
-    "returns the latest version for a listName by snapshotDate" in {
-      val latestSnapshotDate = LocalDate.now()
-      val latestCreatedOn    = LocalDateTime.now()
-
-      val oldSnapshotDate = LocalDate.now().minusDays(1)
-      val oldCreatedOn    = LocalDateTime.now().minusDays(1)
-
-      when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
+    "returns the latest version for a listName by snapshotDate and createdOn date" in {
+      val nowDate = LocalDate.now()
+      val nowTime = LocalDateTime.now()
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
-      repository.save(VersionId("1"), messageInformation.copy(snapshotDate = oldSnapshotDate), RefDataFeed, Seq(listName)).futureValue
-      repository.save(VersionId("2"), messageInformation.copy(snapshotDate = latestSnapshotDate), RefDataFeed, Seq(listName)).futureValue
+      val v1 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("1"), nowTime, RefDataFeed, Seq(listName))
+      val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime.plusDays(1), RefDataFeed, Seq(listName))
+      val v3 = VersionInformation(messageInformation.copy(snapshotDate = nowDate.minusDays(1)), VersionId("3"), nowTime.plusDays(2), RefDataFeed, Seq(listName))
 
-      val expectedVersionInformation =
-        VersionInformation(messageInformation.copy(snapshotDate = latestSnapshotDate), VersionId("2"), latestCreatedOn, RefDataFeed, Seq(listName))
+      Seq(v1, v2, v3).map(insert(_).futureValue)
 
       val result: VersionInformation = repository.getLatest(listName).futureValue.value
 
-      result mustEqual expectedVersionInformation
+      result mustEqual v2
     }
 
-    "returns the latest version for a listName when the is a newer version that it does not belong to" in {
-      val snapshotDate    = LocalDate.now()
-      val latestCreatedOn = LocalDateTime.now()
-      val oldCreatedOn    = LocalDateTime.now().minusDays(1)
-
-      when(mockTimeService.now()).thenReturn(oldCreatedOn, latestCreatedOn)
+    "returns the latest version for a listName when there is a newer version that it does not belong to" in {
+      val nowDate = LocalDate.now()
+      val nowTime = LocalDateTime.now()
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName1          = ListName("1")
       val listName2          = ListName("2")
 
-      repository.save(VersionId("1"), messageInformation.copy(snapshotDate = snapshotDate), RefDataFeed, Seq(listName1)).futureValue
-      repository.save(VersionId("2"), messageInformation.copy(snapshotDate = snapshotDate), ColDataFeed, Seq(listName2)).futureValue
+      val v1 =
+        VersionInformation(messageInformation.copy(snapshotDate = nowDate.minusDays(1)), VersionId("1"), nowTime.minusDays(1), RefDataFeed, Seq(listName1))
+      val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime, ColDataFeed, Seq(listName2))
 
-      val expectedVersionInformation =
-        VersionInformation(messageInformation.copy(snapshotDate = snapshotDate), VersionId("1"), latestCreatedOn, RefDataFeed, Seq(listName1))
+      Seq(v1, v2).map(insert(_).futureValue)
 
       val result: VersionInformation = repository.getLatest(listName1).futureValue.value
 
-      result mustEqual expectedVersionInformation
+      result mustEqual v1
     }
   }
 
@@ -122,12 +113,10 @@ class VersionRepositorySpec
       val newSnapshotDate       = LocalDate.now()
       val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
 
-      when(mockTimeService.now())
-        .thenReturn(LocalDateTime.now())
-
       val listNames = Seq(ListName("1"), ListName("2"))
 
-      repository.save(VersionId("1"), newMessageInformation, RefDataFeed, listNames).futureValue
+      val v = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), RefDataFeed, listNames)
+      insert(v).futureValue
 
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
@@ -139,12 +128,10 @@ class VersionRepositorySpec
       val newSnapshotDate       = LocalDate.now()
       val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
 
-      when(mockTimeService.now())
-        .thenReturn(LocalDateTime.now())
-
       val listNames = Seq(ListName("1"), ListName("2"))
 
-      repository.save(VersionId("1"), newMessageInformation, ColDataFeed, listNames).futureValue
+      val v = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), ColDataFeed, listNames)
+      insert(v).futureValue
 
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
@@ -157,18 +144,15 @@ class VersionRepositorySpec
       val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
       val oldMessageInformation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
 
-      when(mockTimeService.now())
-        .thenReturn(LocalDateTime.now().minusDays(1))
-        .thenReturn(LocalDateTime.now().minusDays(1))
-        .thenReturn(LocalDateTime.now())
-
       val listNames1 = Seq(ListName("a"), ListName("b"))
       val listNames2 = Seq(ListName("1"), ListName("2"))
       val listNames3 = Seq(ListName("1.1"), ListName("2.1"))
 
-      repository.save(VersionId("1"), oldMessageInformation, ColDataFeed, listNames1).futureValue
-      repository.save(VersionId("2"), oldMessageInformation, RefDataFeed, listNames2).futureValue
-      repository.save(VersionId("3"), newMessageInformation, RefDataFeed, listNames3).futureValue
+      val v1 = VersionInformation(oldMessageInformation, VersionId("1"), LocalDateTime.now().minusDays(1), ColDataFeed, listNames1)
+      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), LocalDateTime.now().minusDays(1), RefDataFeed, listNames2)
+      val v3 = VersionInformation(newMessageInformation, VersionId("3"), LocalDateTime.now(), RefDataFeed, listNames3)
+
+      Seq(v1, v2, v3).map(insert(_).futureValue)
 
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames3
@@ -181,21 +165,17 @@ class VersionRepositorySpec
       val newMessageInformation = MessageInformation("messageId", newSnapshotDate)
       val oldMessageInformation = MessageInformation("messageId", newSnapshotDate.minusDays(1))
 
-      when(mockTimeService.now())
-        .thenReturn(LocalDateTime.now())
-        .thenReturn(LocalDateTime.now().minusDays(1))
-        .thenReturn(LocalDateTime.now().minusDays(1))
-        .thenReturn(LocalDateTime.now())
-
       val listNames1 = Seq(ListName("a"), ListName("b"))
       val listNames2 = Seq(ListName("c"), ListName("d"))
       val listNames3 = Seq(ListName("1"), ListName("2"))
       val listNames4 = Seq(ListName("1.1"), ListName("2.1"))
 
-      repository.save(VersionId("1"), newMessageInformation, ColDataFeed, listNames1).futureValue
-      repository.save(VersionId("2"), oldMessageInformation, ColDataFeed, listNames2).futureValue
-      repository.save(VersionId("3"), oldMessageInformation, RefDataFeed, listNames3).futureValue
-      repository.save(VersionId("4"), newMessageInformation, RefDataFeed, listNames4).futureValue
+      val v1 = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), ColDataFeed, listNames1)
+      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), LocalDateTime.now().minusDays(1), ColDataFeed, listNames2)
+      val v3 = VersionInformation(oldMessageInformation, VersionId("3"), LocalDateTime.now().minusDays(1), RefDataFeed, listNames3)
+      val v4 = VersionInformation(newMessageInformation, VersionId("4"), LocalDateTime.now(), RefDataFeed, listNames4)
+
+      Seq(v1, v2, v3, v4).map(insert(_).futureValue)
 
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames4
