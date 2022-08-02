@@ -45,7 +45,7 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
       val service        = app.injector.instanceOf[SchemaValidationService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      service.validate(testJsonSchema, json).right.value mustEqual json
+      service.validate(testJsonSchema, json).value mustEqual json
     }
 
     "returns SchemaValidationError with description of the problem when the json does not match the schema specifications" in {

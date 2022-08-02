@@ -32,7 +32,7 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
         val testString = "Test ArrayByte"
 
         val compressedValue = compress(testString.getBytes)
-        val result          = GZipService.decompressArrayByte(compressedValue).right.value
+        val result          = GZipService.decompressArrayByte(compressedValue).value
 
         val decompressedResult = result.map(_.toChar).mkString
 
