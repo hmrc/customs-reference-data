@@ -4,7 +4,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "customs-reference-data"
 
-val silencerVersion = "1.7.1"
+val silencerVersion = "1.7.9"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
@@ -29,7 +29,7 @@ lazy val microservice = Project(appName, file("."))
   )
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.12.11",
+    scalaVersion := "2.12.15",
     PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     ThisBuild / useSuperShell := false,
