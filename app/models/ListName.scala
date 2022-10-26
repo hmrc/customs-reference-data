@@ -29,7 +29,7 @@ object ListName {
   implicit lazy val pathBindable: PathBindable[ListName] = new PathBindable[ListName] {
 
     override def bind(key: String, value: String): Either[String, ListName] =
-      implicitly[PathBindable[String]].bind(key, value).right.map(ListName.apply)
+      implicitly[PathBindable[String]].bind(key, value).map(ListName.apply)
 
     override def unbind(key: String, value: ListName): String =
       value.listName

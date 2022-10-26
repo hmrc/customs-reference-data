@@ -43,7 +43,7 @@ class ListRepositorySpec
   private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection
       .insertMany(documents)
-      .toFuture
+      .toFuture()
       .futureValue
 
   private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
