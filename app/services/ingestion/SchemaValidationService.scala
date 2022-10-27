@@ -16,11 +16,8 @@
 
 package services.ingestion
 
-import java.io.StringReader
-
 import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
-import javax.inject.Inject
 import models.ErrorDetails
 import models.InvalidJsonError
 import models.JsonSchemaProvider
@@ -31,13 +28,14 @@ import org.leadpony.justify.api.ProblemHandler
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 
-import scala.collection.JavaConverters._
+import java.io.StringReader
+import javax.inject.Inject
 import scala.collection.mutable.ListBuffer
 
 private[ingestion] class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
 
   private def problemHandler(schemaValidationProblems: ListBuffer[Problem]): ProblemHandler =
-    _.asScala.foreach {
+    _.forEach {
       problem =>
         schemaValidationProblems += problem
     }

@@ -53,7 +53,7 @@ class ProjectEmbeddedJsonFlowSpec extends SpecBase {
           () =>
             Seq(
               Json.obj("field1" -> "value1")
-            ).toIterator
+            ).iterator
         )
 
       source
@@ -71,7 +71,7 @@ class ProjectEmbeddedJsonFlowSpec extends SpecBase {
           () =>
             Seq(
               Json.obj("field1" -> "value1", "data" -> 1)
-            ).toIterator
+            ).iterator
         )
 
       source

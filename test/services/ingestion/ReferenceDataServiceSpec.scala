@@ -27,7 +27,6 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.OptionValues
 import org.scalatest.TestData
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -41,7 +40,7 @@ import repositories._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with GuiceOneAppPerTest with ScalaCheckPropertyChecks with OptionValues {
+class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with GuiceOneAppPerTest with ScalaCheckPropertyChecks {
 
   val mockVersionRepository: VersionRepository       = mock[VersionRepository]
   val mockValidationService: SchemaValidationService = mock[SchemaValidationService]
@@ -160,7 +159,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val service        = app.injector.instanceOf[ReferenceDataService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      val result = service.validate(testJsonSchema, testJson).right.get
+      val result = service.validate(testJsonSchema, testJson).value
 
       result mustBe testJson
     }
@@ -172,7 +171,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val service        = app.injector.instanceOf[ReferenceDataService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
-      val result = service.validate(testJsonSchema, testJson).left.get
+      val result = service.validate(testJsonSchema, testJson).left.value
 
       result mustBe OtherError("Json failed")
     }

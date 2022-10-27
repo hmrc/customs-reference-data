@@ -28,7 +28,7 @@ class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with Scala
     "urls should match pattern containing url to list" in {
       forAll(arbitrary[ResourceLinks]) {
         resourceLinks =>
-          resourceLinks._links.filterKeys(_ != "self").foreach {
+          resourceLinks._links.view.filterKeys(_ != "self").foreach {
             case (listName, path) =>
               (path \ "href").as[String] mustEqual s"/customs-reference-data/lists/$listName"
           }
