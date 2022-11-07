@@ -27,7 +27,6 @@ object AppDependencies {
     "io.github.wolfendale"   %% "scalacheck-gen-regexp"    % "1.0.0",
     "org.pegdown"             % "pegdown"                  % "1.6.0",
     "org.jsoup"               % "jsoup"                    % "1.15.3",
-    "com.typesafe.akka"      %% "akka-testkit"             % akkaVersion,
     "com.typesafe.akka"      %% "akka-stream-testkit"      % akkaVersion,
     "com.vladsch.flexmark"    % "flexmark-all"             % "0.62.2"
   ).map(_ % "test, it")
