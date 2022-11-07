@@ -5,6 +5,7 @@ object AppDependencies {
 
   private val mongoVersion = "0.73.0"
   private val bootstrapVersion = "7.11.0"
+  private val akkaVersion = "2.6.20"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % bootstrapVersion,
@@ -26,8 +27,8 @@ object AppDependencies {
     "io.github.wolfendale"   %% "scalacheck-gen-regexp"    % "1.0.0",
     "org.pegdown"             % "pegdown"                  % "1.6.0",
     "org.jsoup"               % "jsoup"                    % "1.15.3",
+    "com.typesafe.akka"      %% "akka-testkit"             % akkaVersion,
     "com.typesafe.akka"      %% "akka-stream-testkit"      % akkaVersion,
-    "com.typesafe.akka"      %% "akka-slf4j"               % akkaVersion,
     "com.vladsch.flexmark"    % "flexmark-all"             % "0.62.2"
   ).map(_ % "test, it")
 
