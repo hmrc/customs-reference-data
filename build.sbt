@@ -13,6 +13,8 @@ lazy val microservice = Project(appName, file("."))
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(inConfig(IntegrationTest)(org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings): _*)
+  .settings(headerSettings(IntegrationTest): _*)
+  .settings(automateHeaderSettings(IntegrationTest))
   .settings(RoutesKeys.routesImport += "models._")
   .settings(scoverageSettings: _*)
   .settings(

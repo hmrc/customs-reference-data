@@ -1,17 +1,16 @@
 
 # Customs Reference Data
 
+This service stores data from the EIS Reference Data Library in Mongo.
+
 ## Related test repositories
-The is a Github repo with [Github repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface):
-- sample data for active development or testing of the service  service
+This [GitHub repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface) has:
+- sample data for active development or testing of the service
 - test scenarios for the service
 
 ## Development
 ### Seeding service with data
 - Follow the [instructions in the test repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface)
-
-
-
 
 ### License
 
