@@ -16,15 +16,14 @@
 
 package generators
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-
 import models._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
-import models.ApiDataSource
+
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
@@ -78,6 +77,20 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         versionId          <- arbVersionId.arbitrary
         data               <- arbJsObject.arbitrary
       } yield GenericListItem(listName, messageInformation, versionId, data)
+    }
+
+  implicit def arbitraryNewGenericListItem(implicit
+    arbJsObject: Arbitrary[JsObject],
+    arbVersionId: Arbitrary[VersionId]
+  ): Arbitrary[NewGenericListItem] =
+    Arbitrary {
+      for {
+        listName           <- arbitrary[ListName]
+        messageInformation <- arbitrary[MessageInformation]
+        versionId          <- arbVersionId.arbitrary
+        data               <- arbJsObject.arbitrary
+        createdOn          <- arbitrary[LocalDateTime]
+      } yield NewGenericListItem(listName, messageInformation, versionId, data, createdOn)
     }
 
   implicit val arbitraryVersionId: Arbitrary[VersionId] =
