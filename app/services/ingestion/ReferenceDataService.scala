@@ -22,6 +22,7 @@ import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import repositories._
+import services.consumption.TimeService
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -33,19 +34,24 @@ trait ReferenceDataService {
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
-  repository: ListRepository,
+  oldRepository: ListRepository,
+  newRepository: NewListRepository,
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
-  versionIdProducer: VersionIdProducer
+  versionIdProducer: VersionIdProducer,
+  timeService: TimeService
 )(implicit ec: ExecutionContext)
     extends ReferenceDataService {
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
-    val versionId = versionIdProducer()
+    val versionId                  = versionIdProducer()
+    val now                        = timeService.now()
+    lazy val insertToOldCollection = payload.toIterable(versionId).map(oldRepository.insertList)
+    lazy val insertToNewCollection = payload.toIterable(versionId, now).map(newRepository.insertList)
 
     for {
-      writeResult <- Future.sequence(payload.toIterable(versionId).map(repository.insertList))
-      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames)
+      writeResult <- Future.sequence(insertToOldCollection ++ insertToNewCollection)
+      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {
         case (errors, SuccessfulWrite)       => errors
