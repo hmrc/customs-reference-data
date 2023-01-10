@@ -27,6 +27,8 @@ import generators.ModelArbitraryInstances
 import models.ListName
 import models.NewGenericListItem
 import models.VersionId
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.bson.BsonInt64
 import org.mongodb.scala.bson.BsonString
@@ -53,7 +55,7 @@ class NewListRepositorySpec
     with ScalaFutures
     with DefaultPlayMongoRepositorySupport[NewGenericListItem] {
 
-  private val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  private lazy val appConfig: AppConfig = mock[AppConfig]
 
   override protected def repository = new NewListRepository(mongoComponent, appConfig)
 
@@ -68,17 +70,41 @@ class NewListRepositorySpec
     listWithMaxLength[NewGenericListItem](5)
   }
 
-  "must create the following indexes" in {
-    val indexes = repository.collection.listIndexes().toFuture().futureValue
+  private val ttl = intsAboveValue(0).sample.value
 
-    indexes.length mustEqual 3
+  override def beforeEach(): Unit = {
+    reset(appConfig)
+    when(appConfig.replaceIndexes).thenReturn(true)
+    when(appConfig.ttl).thenReturn(ttl)
+    super.beforeEach()
+  }
 
-    indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
-    indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+  "must create the following indexes" - {
+    "when TTL is enabled" in {
+      when(appConfig.isTtlEnabled).thenReturn(true)
 
-    indexes(2).get("name").get mustEqual BsonString("ttl-index")
-    indexes(2).get("key").get mustEqual BsonDocument("createdOn" -> 1)
-    indexes(2).get("expireAfterSeconds").get mustEqual BsonInt64(60 * 60 * 24 * 30)
+      val indexes = repository.collection.listIndexes().toFuture().futureValue
+
+      indexes.length mustEqual 3
+
+      indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
+      indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+
+      indexes(2).get("name").get mustEqual BsonString("ttl-index")
+      indexes(2).get("key").get mustEqual BsonDocument("createdOn" -> 1)
+      indexes(2).get("expireAfterSeconds").get mustEqual BsonInt64(ttl)
+    }
+
+    "when TTL is not enabled" in {
+      when(appConfig.isTtlEnabled).thenReturn(false)
+
+      val indexes = repository.collection.listIndexes().toFuture().futureValue
+
+      indexes.length mustEqual 2
+
+      indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
+      indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+    }
   }
 
   "getListByName" - {

@@ -98,6 +98,6 @@ object NewListRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    Seq(listNameAndVersionIdCompoundIndex, createdOnIndex)
+    listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
   }
 }
