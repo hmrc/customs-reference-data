@@ -26,7 +26,6 @@ import models.ListName
 import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
-import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary
@@ -34,7 +33,6 @@ import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import services.consumption.TimeService
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.LocalDate
@@ -50,10 +48,9 @@ class VersionRepositorySpec
     with GuiceOneAppPerSuite
     with DefaultPlayMongoRepositorySupport[VersionInformation] {
 
-  private val mockTimeService: TimeService = mock[TimeService]
-  private val appConfig: AppConfig         = app.injector.instanceOf[AppConfig]
+  private val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  override protected def repository = new VersionRepository(mongoComponent, mockTimeService, appConfig)
+  override protected def repository = new VersionRepository(mongoComponent, appConfig)
 
   "must create the following indexes" in {
     val indexes = repository.collection.listIndexes().toFuture().futureValue
@@ -74,9 +71,7 @@ class VersionRepositorySpec
 
       val expectedVersionId = VersionId("1")
 
-      when(mockTimeService.now()).thenReturn(LocalDateTime.now())
-
-      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName)).futureValue
+      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), LocalDateTime.now()).futureValue
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, RefDataFeed, Seq(listName))
 

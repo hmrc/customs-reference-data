@@ -16,14 +16,16 @@
 
 package models
 
-import java.time.LocalDate
-
 import play.api.libs.json._
+
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 sealed trait ReferenceDataPayload {
   def messageInformation: MessageInformation
   def listNames: Seq[ListName]
   def toIterable(versionId: VersionId): Iterable[Seq[GenericListItem]]
+  def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[NewGenericListItem]]
 }
 
 class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
@@ -45,7 +47,16 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
         (for {
           ln <- list.validate[ListName]
           le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).get
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _))).getOrElse(Seq.empty)
+    )
+
+  override def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[NewGenericListItem]] =
+    lists.values.map(
+      list =>
+        (for {
+          ln <- list.validate[ListName]
+          le <- (list \ "listEntries").validate[Vector[JsObject]]
+        } yield le.map(NewGenericListItem(ln, messageInformation, versionId, _, createdOn))).getOrElse(Seq.empty)
     )
 }
 

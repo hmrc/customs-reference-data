@@ -22,7 +22,6 @@ import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
-import services.consumption.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
@@ -35,7 +34,6 @@ import scala.concurrent.Future
 @Singleton
 class VersionRepository @Inject() (
   mongoComponent: MongoComponent,
-  timeService: TimeService,
   config: AppConfig
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[VersionInformation](
@@ -46,9 +44,14 @@ class VersionRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
-  def save(versionId: VersionId, messageInformation: MessageInformation, feed: ApiDataSource, listNames: Seq[ListName]): Future[Boolean] = {
-    val time: LocalDateTime = timeService.now()
-    val versionInformation  = VersionInformation(messageInformation, versionId, time, feed, listNames)
+  def save(
+    versionId: VersionId,
+    messageInformation: MessageInformation,
+    feed: ApiDataSource,
+    listNames: Seq[ListName],
+    createdOn: LocalDateTime
+  ): Future[Boolean] = {
+    val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
     collection
       .insertOne(versionInformation)

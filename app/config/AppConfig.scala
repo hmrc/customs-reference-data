@@ -30,4 +30,6 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   lazy val graphiteHost: String     = config.get[String]("microservice.metrics.graphite.host")
 
   lazy val replaceIndexes: Boolean = config.get[Boolean]("feature-flags.replace-indexes")
+  lazy val ttl: Int                = config.get[Int]("mongodb.timeToLiveInSeconds")
+  lazy val isTtlEnabled: Boolean   = config.get[Boolean]("mongodb.isTtlEnabled")
 }
