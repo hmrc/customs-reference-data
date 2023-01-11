@@ -70,7 +70,7 @@ class NewListRepositorySpec
     listWithMaxLength[NewGenericListItem](5)
   }
 
-  private val ttl = Gen.choose(1, 2592000).sample.value
+  private val ttl = Gen.choose(1, 1209600).sample.value
 
   override def beforeEach(): Unit = {
     reset(appConfig)
