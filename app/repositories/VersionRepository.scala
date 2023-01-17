@@ -101,10 +101,6 @@ object VersionRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    Seq(
-      listNameAndDateCompoundIndex,
-      sourceAndDateCompoundIndex,
-      createdOnIndex
-    )
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
   }
 }
