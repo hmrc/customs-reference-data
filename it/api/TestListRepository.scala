@@ -20,11 +20,11 @@ import akka.NotUsed
 import akka.stream.scaladsl.Source
 import config.AppConfig
 import models.ListName
-import models.NewGenericListItem
+import models.GenericListItem
 import models.VersionId
 import play.api.libs.json.JsObject
 import repositories.ListRepositoryWriteResult
-import repositories.NewListRepository
+import repositories.ListRepository
 import uk.gov.hmrc.mongo.MongoComponent
 
 import javax.inject.Inject
@@ -34,12 +34,12 @@ import scala.concurrent.Future
 class TestListRepository @Inject() (
   mongoComponent: MongoComponent,
   config: AppConfig
-) extends NewListRepository(mongoComponent, config) {
+) extends ListRepository(mongoComponent, config) {
 
   override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)
 
-  override def insertList(list: Seq[NewGenericListItem]): Future[ListRepositoryWriteResult] = {
+  override def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
     super.insertList(list)
   }

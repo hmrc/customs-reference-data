@@ -86,7 +86,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   }
 
-  def haveVersionId(expectedVersionId: VersionId): Matcher[NewGenericListItem] =
+  def haveVersionId(expectedVersionId: VersionId): Matcher[GenericListItem] =
     left =>
       MatchResult(
         left.versionId == expectedVersionId,

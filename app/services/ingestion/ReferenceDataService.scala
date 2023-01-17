@@ -34,7 +34,7 @@ trait ReferenceDataService {
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
-  listRepository: NewListRepository,
+  listRepository: ListRepository,
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,

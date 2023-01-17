@@ -22,7 +22,7 @@ import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
 import models.ListName
-import models.NewGenericListItem
+import models.GenericListItem
 import models.VersionId
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
@@ -39,15 +39,15 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @Singleton
-class NewListRepository @Inject() (
+class ListRepository @Inject() (
   mongoComponent: MongoComponent,
   config: AppConfig
 )(implicit ec: ExecutionContext)
-    extends PlayMongoRepository[NewGenericListItem](
+    extends PlayMongoRepository[GenericListItem](
       mongoComponent = mongoComponent,
       collectionName = "reference-data-lists-new",
-      domainFormat = NewGenericListItem.format,
-      indexes = NewListRepository.indexes(config),
+      domainFormat = GenericListItem.format,
+      indexes = ListRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
     ) {
 
@@ -74,7 +74,7 @@ class NewListRepository @Inject() (
     )
   }
 
-  def insertList(list: Seq[NewGenericListItem]): Future[ListRepositoryWriteResult] =
+  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
       .insertMany(list, new InsertManyOptions().ordered(true))
       .toFuture()
@@ -85,7 +85,7 @@ class NewListRepository @Inject() (
       }
 }
 
-object NewListRepository {
+object ListRepository {
 
   def indexes(config: AppConfig): Seq[IndexModel] = {
     val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(

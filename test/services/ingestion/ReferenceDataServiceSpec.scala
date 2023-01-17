@@ -61,7 +61,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[NewListRepository]
+          val listRepository    = mock[ListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
@@ -87,7 +87,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[NewListRepository]
+          val listRepository    = mock[ListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
@@ -121,7 +121,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 3
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[NewListRepository]
+          val listRepository    = mock[ListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")

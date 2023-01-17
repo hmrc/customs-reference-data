@@ -24,7 +24,7 @@ import java.time.LocalDateTime
 sealed trait ReferenceDataPayload {
   def messageInformation: MessageInformation
   def listNames: Seq[ListName]
-  def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[NewGenericListItem]]
+  def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[GenericListItem]]
 }
 
 class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
@@ -40,13 +40,13 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
 
   override lazy val listNames: Seq[ListName] = lists.keys.map(list => (lists \ list).as[ListName]).toSeq
 
-  override def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[NewGenericListItem]] =
+  override def toIterable(versionId: VersionId, createdOn: LocalDateTime): Iterable[Seq[GenericListItem]] =
     lists.values.map(
       list =>
         (for {
           ln <- list.validate[ListName]
           le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(NewGenericListItem(ln, messageInformation, versionId, _, createdOn))).getOrElse(Seq.empty)
+        } yield le.map(GenericListItem(ln, messageInformation, versionId, _, createdOn))).getOrElse(Seq.empty)
     )
 }
 

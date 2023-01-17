@@ -22,7 +22,7 @@ import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.LocalDateTime
 
-case class NewGenericListItem(
+case class GenericListItem(
   listName: ListName,
   messageInformation: MessageInformation,
   versionId: VersionId,
@@ -30,23 +30,23 @@ case class NewGenericListItem(
   createdOn: LocalDateTime
 )
 
-object NewGenericListItem {
+object GenericListItem {
 
-  implicit val writes: OWrites[NewGenericListItem] = (
+  implicit val writes: OWrites[GenericListItem] = (
     __.write[ListName] and
       __.write[MessageInformation] and
       __.write[VersionId] and
       (__ \ "data").write[JsObject] and
       (__ \ "createdOn").write[LocalDateTime](MongoJavatimeFormats.localDateTimeWrites)
-  )(unlift(NewGenericListItem.unapply))
+  )(unlift(GenericListItem.unapply))
 
-  implicit val reads: Reads[NewGenericListItem] = (
+  implicit val reads: Reads[GenericListItem] = (
     __.read[ListName] and
       __.read[MessageInformation] and
       __.read[VersionId] and
       (__ \ "data").read[JsObject] and
       (__ \ "createdOn").read[LocalDateTime](MongoJavatimeFormats.localDateTimeReads)
-  )(NewGenericListItem.apply _)
+  )(GenericListItem.apply _)
 
-  implicit val format: Format[NewGenericListItem] = Format(reads, writes)
+  implicit val format: Format[GenericListItem] = Format(reads, writes)
 }

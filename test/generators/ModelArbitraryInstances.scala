@@ -69,7 +69,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit def arbitraryNewGenericListItem(implicit
     arbJsObject: Arbitrary[JsObject],
     arbVersionId: Arbitrary[VersionId]
-  ): Arbitrary[NewGenericListItem] =
+  ): Arbitrary[GenericListItem] =
     Arbitrary {
       for {
         listName           <- arbitrary[ListName]
@@ -77,7 +77,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         versionId          <- arbVersionId.arbitrary
         data               <- arbJsObject.arbitrary
         createdOn          <- arbitrary[LocalDateTime]
-      } yield NewGenericListItem(listName, messageInformation, versionId, data, createdOn)
+      } yield GenericListItem(listName, messageInformation, versionId, data, createdOn)
     }
 
   implicit val arbitraryVersionId: Arbitrary[VersionId] =

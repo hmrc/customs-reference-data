@@ -25,7 +25,7 @@ import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.ListName
-import models.NewGenericListItem
+import models.GenericListItem
 import models.VersionId
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.when
@@ -45,7 +45,7 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class NewListRepositorySpec
+class ListRepositorySpec
     extends ItSpecBase
     with BaseGenerators
     with ModelArbitraryInstances
@@ -53,21 +53,21 @@ class NewListRepositorySpec
     with BeforeAndAfterAll
     with GuiceOneAppPerSuite
     with ScalaFutures
-    with DefaultPlayMongoRepositorySupport[NewGenericListItem] {
+    with DefaultPlayMongoRepositorySupport[GenericListItem] {
 
   private lazy val appConfig: AppConfig = mock[AppConfig]
 
-  override protected def repository = new NewListRepository(mongoComponent, appConfig)
+  override protected def repository = new ListRepository(mongoComponent, appConfig)
 
-  private def seedData(documents: Seq[NewGenericListItem]): Unit =
+  private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection
       .insertMany(documents)
       .toFuture()
       .futureValue
 
-  private def listOfItemsForVersion(versionId: VersionId): Gen[List[NewGenericListItem]] = {
+  private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
-    listWithMaxLength[NewGenericListItem](5)
+    listWithMaxLength[GenericListItem](5)
   }
 
   private val ttl = Gen.choose(1, 1209600).sample.value
@@ -150,7 +150,7 @@ class NewListRepositorySpec
   "insertList" - {
 
     "must save a list" in {
-      val list = listWithMaxLength[NewGenericListItem](10).sample.value
+      val list = listWithMaxLength[GenericListItem](10).sample.value
 
       repository.insertList(list).futureValue mustBe SuccessfulWrite
 
