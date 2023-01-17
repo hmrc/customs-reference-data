@@ -93,7 +93,7 @@ object ListRepository {
       indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
     )
 
-    val createdOnIndex: IndexModel = IndexModel(
+    lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
