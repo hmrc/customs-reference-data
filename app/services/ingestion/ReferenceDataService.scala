@@ -34,8 +34,7 @@ trait ReferenceDataService {
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
-  oldRepository: ListRepository,
-  newRepository: NewListRepository,
+  listRepository: NewListRepository,
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
@@ -48,8 +47,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     val now       = timeService.now()
 
     for {
-      _           <- oldRepository.dropCollection()
-      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(newRepository.insertList))
+      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
       _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {

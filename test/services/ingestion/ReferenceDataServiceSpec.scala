@@ -61,27 +61,24 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val oldRepository     = mock[ListRepository]
-          val newRepository     = mock[NewListRepository]
+          val listRepository    = mock[NewListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
-          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
-          when(newRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
+          when(listRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          val service = new ReferenceDataServiceImpl(oldRepository, newRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           service.insert(apiDataSource, payload).futureValue mustBe None
 
-          verify(oldRepository).dropCollection()
-          verify(newRepository, times(numberOfLists)).insertList(any())
+          verify(listRepository, times(numberOfLists)).insertList(any())
           verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
       }
     }
@@ -90,19 +87,16 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val oldRepository     = mock[ListRepository]
-          val newRepository     = mock[NewListRepository]
+          val listRepository    = mock[NewListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
 
-          val failedListName = payload.toIterable(versionId).toList(1).head.listName
+          val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).head.listName
 
-          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
-
-          when(newRepository.insertList(any()))
+          when(listRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite))
             .thenReturn(Future.successful(FailedWrite(failedListName)))
 
@@ -111,7 +105,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          val service = new ReferenceDataServiceImpl(oldRepository, newRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
             s"Failed to insert the following lists: ${failedListName.listName}"
@@ -119,8 +113,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
-          verify(oldRepository).dropCollection()
-          verify(newRepository, times(numberOfLists)).insertList(any())
+          verify(listRepository, times(numberOfLists)).insertList(any())
       }
     }
 
@@ -128,22 +121,19 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 3
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val oldRepository     = mock[ListRepository]
-          val newRepository     = mock[NewListRepository]
+          val listRepository    = mock[NewListRepository]
           val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
 
-          val listOfListOfItems = payload.toIterable(versionId).toList
+          val listOfListOfItems = payload.toIterable(versionId, mockTimeService.now()).toList
           val failedListName1   = listOfListOfItems.head.head.listName
           val failedListName2   = listOfListOfItems(1).head.listName
           val failedListName3   = listOfListOfItems(2).head.listName
 
-          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
-
-          when(newRepository.insertList(any()))
+          when(listRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1)))
             .thenReturn(Future.successful(FailedWrite(failedListName2)))
             .thenReturn(Future.successful(FailedWrite(failedListName3)))
@@ -153,7 +143,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          val service = new ReferenceDataServiceImpl(oldRepository, newRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
             s"Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
@@ -161,8 +151,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
-          verify(oldRepository).dropCollection()
-          verify(newRepository, times(numberOfLists)).insertList(any())
+          verify(listRepository, times(numberOfLists)).insertList(any())
       }
     }
   }
