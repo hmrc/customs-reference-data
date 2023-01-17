@@ -44,13 +44,12 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService {
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
-    val versionId                  = versionIdProducer()
-    val now                        = timeService.now()
-    lazy val insertToOldCollection = payload.toIterable(versionId).map(oldRepository.insertList)
-    lazy val insertToNewCollection = payload.toIterable(versionId, now).map(newRepository.insertList)
+    val versionId = versionIdProducer()
+    val now       = timeService.now()
 
     for {
-      writeResult <- Future.sequence(insertToOldCollection ++ insertToNewCollection)
+      _           <- oldRepository.dropCollection()
+      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(newRepository.insertList))
       _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {
