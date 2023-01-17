@@ -24,8 +24,8 @@ import base.ItSpecBase
 import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
-import models.ListName
 import models.GenericListItem
+import models.ListName
 import models.VersionId
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.when
@@ -83,27 +83,44 @@ class ListRepositorySpec
     "when TTL is enabled" in {
       when(appConfig.isTtlEnabled).thenReturn(true)
 
-      val indexes = repository.collection.listIndexes().toFuture().futureValue
+      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
 
-      indexes.length mustEqual 3
-
-      indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
-      indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
-
-      indexes(2).get("name").get mustEqual BsonString("ttl-index")
-      indexes(2).get("key").get mustEqual BsonDocument("createdOn" -> 1)
-      indexes(2).get("expireAfterSeconds").get mustEqual BsonInt64(ttl)
+      indexes mustEqual Set(
+        (
+          BsonString("_id_"),
+          BsonDocument("_id" -> 1),
+          None
+        ),
+        (
+          BsonString("list-name-and-version-id-compound-index"),
+          BsonDocument("listName" -> 1, "versionId" -> 1),
+          None
+        ),
+        (
+          BsonString("ttl-index"),
+          BsonDocument("createdOn" -> 1),
+          Some(BsonInt64(appConfig.ttl))
+        )
+      )
     }
 
     "when TTL is not enabled" in {
       when(appConfig.isTtlEnabled).thenReturn(false)
 
-      val indexes = repository.collection.listIndexes().toFuture().futureValue
+      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
 
-      indexes.length mustEqual 2
-
-      indexes(1).get("name").get mustEqual BsonString("list-name-and-version-id-compound-index")
-      indexes(1).get("key").get mustEqual BsonDocument("listName" -> 1, "versionId" -> 1)
+      indexes mustEqual Set(
+        (
+          BsonString("_id_"),
+          BsonDocument("_id" -> 1),
+          None
+        ),
+        (
+          BsonString("list-name-and-version-id-compound-index"),
+          BsonDocument("listName" -> 1, "versionId" -> 1),
+          None
+        )
+      )
     }
   }
 

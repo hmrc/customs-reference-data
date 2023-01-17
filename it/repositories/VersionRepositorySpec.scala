@@ -69,33 +69,54 @@ class VersionRepositorySpec
     "when TTL is enabled" in {
       when(appConfig.isTtlEnabled).thenReturn(true)
 
-      val indexes = repository.collection.listIndexes().toFuture().futureValue
+      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
 
-      indexes.length mustEqual 4
-
-      indexes(1).get("name").get mustEqual BsonString("list-name-and-date-compound-index")
-      indexes(1).get("key").get mustEqual BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
-
-      indexes(2).get("name").get mustEqual BsonString("source-and-date-compound-index")
-      indexes(2).get("key").get mustEqual BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
-
-      indexes(3).get("name").get mustEqual BsonString("ttl-index")
-      indexes(3).get("key").get mustEqual BsonDocument("createdOn" -> 1)
-      indexes(3).get("expireAfterSeconds").get mustEqual BsonInt64(appConfig.ttl)
+      indexes mustEqual Set(
+        (
+          BsonString("_id_"),
+          BsonDocument("_id" -> 1),
+          None
+        ),
+        (
+          BsonString("list-name-and-date-compound-index"),
+          BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        ),
+        (
+          BsonString("source-and-date-compound-index"),
+          BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        ),
+        (
+          BsonString("ttl-index"),
+          BsonDocument("createdOn" -> 1),
+          Some(BsonInt64(appConfig.ttl))
+        )
+      )
     }
 
     "when TTL is not enabled" in {
       when(appConfig.isTtlEnabled).thenReturn(false)
 
-      val indexes = repository.collection.listIndexes().toFuture().futureValue
+      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
 
-      indexes.length mustEqual 3
-
-      indexes(1).get("name").get mustEqual BsonString("list-name-and-date-compound-index")
-      indexes(1).get("key").get mustEqual BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
-
-      indexes(2).get("name").get mustEqual BsonString("source-and-date-compound-index")
-      indexes(2).get("key").get mustEqual BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
+      indexes mustEqual Set(
+        (
+          BsonString("_id_"),
+          BsonDocument("_id" -> 1),
+          None
+        ),
+        (
+          BsonString("list-name-and-date-compound-index"),
+          BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        ),
+        (
+          BsonString("source-and-date-compound-index"),
+          BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        )
+      )
     }
   }
 
