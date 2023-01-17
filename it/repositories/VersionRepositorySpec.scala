@@ -27,6 +27,7 @@ import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
 import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.BsonInt64
 import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
@@ -55,13 +56,17 @@ class VersionRepositorySpec
   "must create the following indexes" in {
     val indexes = repository.collection.listIndexes().toFuture().futureValue
 
-    indexes.length mustEqual 3
+    indexes.length mustEqual 4
 
     indexes(1).get("name").get mustEqual BsonString("list-name-and-date-compound-index")
     indexes(1).get("key").get mustEqual BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
 
     indexes(2).get("name").get mustEqual BsonString("source-and-date-compound-index")
     indexes(2).get("key").get mustEqual BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1)
+
+    indexes(3).get("name").get mustEqual BsonString("ttl-index")
+    indexes(3).get("key").get mustEqual BsonDocument("createdOn" -> 1)
+    indexes(3).get("expireAfterSeconds").get mustEqual BsonInt64(appConfig.ttl)
   }
 
   "save" - {
