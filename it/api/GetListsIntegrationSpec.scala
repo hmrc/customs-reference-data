@@ -29,7 +29,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.libs.ws.WSResponse
-import repositories.ListRepository
+import repositories.NewListRepository
 import repositories.VersionRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
 
@@ -42,11 +42,11 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
 
   implicit override lazy val app: Application = GuiceApplicationBuilder()
     .configure()
-    .overrides(bind[ListRepository].to[TestListRepository].eagerly())
+    .overrides(bind[NewListRepository].to[TestListRepository].eagerly())
     .build()
 
   class Setup() {
-    lazy val listRepo: ListRepository       = app.injector.instanceOf[ListRepository]
+    lazy val listRepo: NewListRepository    = app.injector.instanceOf[NewListRepository]
     lazy val versionRepo: VersionRepository = app.injector.instanceOf[VersionRepository]
     lazy val ws: WSClient                   = app.injector.instanceOf[WSClient]
 

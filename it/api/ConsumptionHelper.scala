@@ -16,14 +16,15 @@
 
 package api
 
-import java.time.LocalDate
-
-import models.GenericListItem
 import models.ListName
 import models.MessageInformation
+import models.NewGenericListItem
 import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 trait ConsumptionHelper {
 
@@ -39,15 +40,16 @@ trait ConsumptionHelper {
 
   val defaultData: Seq[JsObject] = Seq(firstDefaultDataItem, secondDefaultDataItem)
 
-  def getListItem(versionId: VersionId, data: JsObject): GenericListItem =
-    GenericListItem(
+  def getListItem(versionId: VersionId, data: JsObject): NewGenericListItem =
+    NewGenericListItem(
       defaultListName,
       defaultMessageInformation,
       versionId,
-      data
+      data,
+      LocalDateTime.now()
     )
 
-  def basicList(versionId: VersionId): Seq[GenericListItem] =
+  def basicList(versionId: VersionId): Seq[NewGenericListItem] =
     Seq(
       getListItem(versionId, firstDefaultDataItem),
       getListItem(versionId, secondDefaultDataItem)
