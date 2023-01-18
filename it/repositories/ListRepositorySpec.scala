@@ -54,7 +54,7 @@ class ListRepositorySpec
 
     "must not throw an error" - {
       "when collection does not exist" in {
-        repository.collection.drop().toFuture().futureValue
+        dropCollection()
         val result: Unit = repository.dropCollection().futureValue
         result mustBe ()
       }

@@ -45,7 +45,7 @@ class ListRepository @Inject() (
     with Logging {
 
   def dropCollection(): Future[Unit] = {
-    logger.info("Dropping old collection")
+    logger.info(s"Dropping $collectionName")
     collection.drop().toFuture().map(_ => ())
   }
 }
