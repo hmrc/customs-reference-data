@@ -16,21 +16,14 @@
 
 package repositories
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
 import com.google.inject.Inject
-import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
 import models.GenericListItem
-import models.ListName
-import models.VersionId
-import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
-import play.api.libs.json.JsObject
+import play.api.Logging
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import javax.inject.Singleton
@@ -48,40 +41,13 @@ class ListRepository @Inject() (
       domainFormat = GenericListItem.format,
       indexes = ListRepository.indexes,
       replaceIndexes = config.replaceIndexes
-    ) {
-
-  def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
-    val filter = Aggregates.filter(
-      Filters.and(
-        Filters.eq("listName", listName.listName),
-        Filters.eq("versionId", versionId.versionId)
-      )
     )
+    with Logging {
 
-    val projection = Aggregates.project(
-      Projections.fields(
-        Projections.include("data"),
-        Projections.exclude("_id")
-      )
-    )
-
-    Source.fromPublisher(
-      collection
-        .aggregate[BsonValue](Seq(filter, projection))
-        .allowDiskUse(true)
-        .map(Codecs.fromBson[JsObject](_))
-    )
+  def dropCollection(): Future[Unit] = {
+    logger.info(s"Dropping $collectionName")
+    collection.drop().toFuture().map(_ => ())
   }
-
-  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
-    collection
-      .insertMany(list, new InsertManyOptions().ordered(true))
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true  => SuccessfulWrite
-        case false => FailedWrite(list.head.listName)
-      }
 }
 
 object ListRepository {

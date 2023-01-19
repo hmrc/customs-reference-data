@@ -68,7 +68,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
-          when(oldRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
+          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
           when(newRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
 
           val versionRepository = mock[VersionRepository]
@@ -80,7 +80,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           service.insert(apiDataSource, payload).futureValue mustBe None
 
-          verify(oldRepository, times(numberOfLists)).insertList(any())
+          verify(oldRepository).dropCollection()
           verify(newRepository, times(numberOfLists)).insertList(any())
           verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
       }
@@ -100,9 +100,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val failedListName = payload.toIterable(versionId).toList(1).head.listName
 
-          when(oldRepository.insertList(any()))
-            .thenReturn(Future.successful(SuccessfulWrite))
-            .thenReturn(Future.successful(FailedWrite(failedListName)))
+          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
 
           when(newRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite))
@@ -116,11 +114,12 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val service = new ReferenceDataServiceImpl(oldRepository, newRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
-            s"Failed to insert the following lists: ${failedListName.listName}, ${failedListName.listName}"
+            s"Failed to insert the following lists: ${failedListName.listName}"
           )
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
-          verify(oldRepository, times(numberOfLists)).insertList(any())
+
+          verify(oldRepository).dropCollection()
           verify(newRepository, times(numberOfLists)).insertList(any())
       }
     }
@@ -142,10 +141,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val failedListName2   = listOfListOfItems(1).head.listName
           val failedListName3   = listOfListOfItems(2).head.listName
 
-          when(oldRepository.insertList(any()))
-            .thenReturn(Future.successful(FailedWrite(failedListName1)))
-            .thenReturn(Future.successful(FailedWrite(failedListName2)))
-            .thenReturn(Future.successful(FailedWrite(failedListName3)))
+          when(oldRepository.dropCollection()).thenReturn(Future.successful(()))
 
           when(newRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1)))
@@ -160,11 +156,13 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val service = new ReferenceDataServiceImpl(oldRepository, newRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
-            s"Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}, ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
+            s"Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
           )
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
-          verify(oldRepository, times(numberOfLists)).insertList(any())
+
+          verify(oldRepository).dropCollection()
+          verify(newRepository, times(numberOfLists)).insertList(any())
       }
     }
   }
