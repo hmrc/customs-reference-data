@@ -18,7 +18,7 @@ package api
 
 import models.ListName
 import models.MessageInformation
-import models.NewGenericListItem
+import models.GenericListItem
 import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -40,8 +40,8 @@ trait ConsumptionHelper {
 
   val defaultData: Seq[JsObject] = Seq(firstDefaultDataItem, secondDefaultDataItem)
 
-  def getListItem(versionId: VersionId, data: JsObject): NewGenericListItem =
-    NewGenericListItem(
+  def getListItem(versionId: VersionId, data: JsObject): GenericListItem =
+    GenericListItem(
       defaultListName,
       defaultMessageInformation,
       versionId,
@@ -49,7 +49,7 @@ trait ConsumptionHelper {
       LocalDateTime.now()
     )
 
-  def basicList(versionId: VersionId): Seq[NewGenericListItem] =
+  def basicList(versionId: VersionId): Seq[GenericListItem] =
     Seq(
       getListItem(versionId, firstDefaultDataItem),
       getListItem(versionId, secondDefaultDataItem)

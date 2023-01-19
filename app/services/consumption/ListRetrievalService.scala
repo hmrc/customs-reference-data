@@ -20,7 +20,7 @@ import akka.NotUsed
 import akka.stream.scaladsl.Source
 import models._
 import play.api.libs.json.JsObject
-import repositories.NewListRepository
+import repositories.ListRepository
 import repositories.VersionRepository
 
 import javax.inject.Inject
@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 class ListRetrievalService @Inject() (
-  listRepository: NewListRepository,
+  listRepository: ListRepository,
   versionRepository: VersionRepository
 )(implicit ec: ExecutionContext) {
 

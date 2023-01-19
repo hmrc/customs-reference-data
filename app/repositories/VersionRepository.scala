@@ -27,6 +27,7 @@ import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -40,7 +41,7 @@ class VersionRepository @Inject() (
       mongoComponent = mongoComponent,
       collectionName = "versions",
       domainFormat = VersionInformation.format,
-      indexes = VersionRepository.indexes,
+      indexes = VersionRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
     ) {
 
@@ -82,7 +83,7 @@ class VersionRepository @Inject() (
 
 object VersionRepository {
 
-  val indexes: Seq[IndexModel] = {
+  def indexes(config: AppConfig): Seq[IndexModel] = {
     val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
@@ -95,9 +96,11 @@ object VersionRepository {
         indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
-    Seq(
-      listNameAndDateCompoundIndex,
-      sourceAndDateCompoundIndex
+    lazy val createdOnIndex: IndexModel = IndexModel(
+      keys = Indexes.ascending("createdOn"),
+      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
+
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
   }
 }

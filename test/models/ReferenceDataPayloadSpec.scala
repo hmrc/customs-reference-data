@@ -18,12 +18,13 @@ package models
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import generators.ModelGenerators.genReferenceDataListsJson
 import generators.ModelGenerators._
 import org.scalacheck.Gen
 import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
+import java.time.LocalDateTime
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
@@ -38,6 +39,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       "returns all the listNames for all lists" in {
 
         val versionId = VersionId("1")
+        val createdOn = LocalDateTime.now()
 
         forAll(Gen.choose(1, 5), Gen.choose(1, 5)) {
           (numberOfLists, numberOfListItems) =>
@@ -45,7 +47,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
               data =>
                 val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                val expectedResult = referenceDataPayload.toIterable(versionId).flatMap(_.map(_.listName)).toSeq.distinct.toSet
+                val expectedResult = referenceDataPayload.toIterable(versionId, createdOn).flatMap(_.map(_.listName)).toSeq.distinct.toSet
 
                 referenceDataPayload.listNames.toSet mustEqual expectedResult
             }
@@ -57,6 +59,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       "returns an iterator of the lists with list entries" in {
 
         val versionId = VersionId("1")
+        val createdOn = LocalDateTime.now()
 
         forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
           (numberOfLists, numberOfListItems) =>
@@ -64,7 +67,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
               data =>
                 val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                val referenceDataLists = referenceDataPayload.toIterable(versionId)
+                val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
 
                 referenceDataLists.foreach {
                   x =>

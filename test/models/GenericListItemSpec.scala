@@ -19,12 +19,13 @@ package models
 import base.SpecBase
 import play.api.libs.json.Json
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 class GenericListItemSpec extends SpecBase {
 
   "Json serialization" in {
-    val date = LocalDate.now()
+    val now  = LocalDateTime.of(2020, 1, 1, 9, 0, 0)
+    val date = now.toLocalDate
 
     val listName    = ListName("listNameValue")
     val messageInfo = MessageInformation("messageIdValue", date)
@@ -32,14 +33,15 @@ class GenericListItemSpec extends SpecBase {
 
     val listItemJson = Json.obj("key" -> "value")
 
-    val genericListItem = GenericListItem(listName, messageInfo, versionId, listItemJson)
+    val genericListItem = GenericListItem(listName, messageInfo, versionId, listItemJson, now)
 
     val expectedJson = Json.obj(
       "listName"     -> listName.listName,
       "messageID"    -> "messageIdValue",
-      "snapshotDate" -> Json.obj(s"$$date" -> Json.obj(s"$$numberLong" -> date.toEpochMilli)),
+      "snapshotDate" -> Json.obj(s"$$date" -> Json.obj(s"$$numberLong" -> "1577836800000")),
       "versionId"    -> versionId.versionId,
-      "data"         -> listItemJson
+      "data"         -> listItemJson,
+      "createdOn"    -> Json.obj(s"$$date" -> Json.obj(s"$$numberLong" -> "1577869200000"))
     )
 
     Json.toJsObject(genericListItem) mustEqual expectedJson

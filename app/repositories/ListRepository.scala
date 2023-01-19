@@ -16,16 +16,24 @@
 
 package repositories
 
+import akka.NotUsed
+import akka.stream.scaladsl.Source
 import com.google.inject.Inject
+import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
+import models.ListName
 import models.GenericListItem
+import models.VersionId
+import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
-import play.api.Logging
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -37,30 +45,59 @@ class ListRepository @Inject() (
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[GenericListItem](
       mongoComponent = mongoComponent,
-      collectionName = "reference-data-lists",
+      collectionName = "reference-data-lists-new",
       domainFormat = GenericListItem.format,
-      indexes = ListRepository.indexes,
+      indexes = ListRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
-    )
-    with Logging {
+    ) {
 
-  def dropCollection(): Future[Unit] = {
-    logger.info(s"Dropping $collectionName")
-    collection.drop().toFuture().map(_ => ())
+  def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
+    val filter = Aggregates.filter(
+      Filters.and(
+        Filters.eq("listName", listName.listName),
+        Filters.eq("versionId", versionId.versionId)
+      )
+    )
+
+    val projection = Aggregates.project(
+      Projections.fields(
+        Projections.include("data"),
+        Projections.exclude("_id")
+      )
+    )
+
+    Source.fromPublisher(
+      collection
+        .aggregate[BsonValue](Seq(filter, projection))
+        .allowDiskUse(true)
+        .map(Codecs.fromBson[JsObject](_))
+    )
   }
+
+  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
+    collection
+      .insertMany(list, new InsertManyOptions().ordered(true))
+      .toFuture()
+      .map(_.wasAcknowledged())
+      .map {
+        case true  => SuccessfulWrite
+        case false => FailedWrite(list.head.listName)
+      }
 }
 
 object ListRepository {
 
-  val indexes: Seq[IndexModel] = {
-    val listNameAndVersionIdCompoundIndex: IndexModel =
-      IndexModel(
-        keys = compoundIndex(ascending("listName"), ascending("versionId")),
-        indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
-      )
-
-    Seq(
-      listNameAndVersionIdCompoundIndex
+  def indexes(config: AppConfig): Seq[IndexModel] = {
+    val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(
+      keys = compoundIndex(ascending("listName"), ascending("versionId")),
+      indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
     )
+
+    lazy val createdOnIndex: IndexModel = IndexModel(
+      keys = Indexes.ascending("createdOn"),
+      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
+    )
+
+    listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
   }
 }

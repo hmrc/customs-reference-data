@@ -16,6 +16,10 @@
 
 package base
 
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.BsonInt64
+import org.mongodb.scala.bson.BsonString
+import org.mongodb.scala.bson.Document
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
@@ -29,5 +33,15 @@ trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaF
   type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
 
   val baseApplicationBuilder: AppFunction = identity
+
+  implicit class RichDocument(document: Document) {
+
+    def tupled(): (BsonString, BsonDocument, Option[BsonInt64]) =
+      (
+        document.get[BsonString]("name").get,
+        document.get[BsonDocument]("key").get,
+        document.get[BsonInt64]("expireAfterSeconds")
+      )
+  }
 
 }

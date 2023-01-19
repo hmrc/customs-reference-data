@@ -33,7 +33,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.Json
 import play.api.test.Helpers._
-import repositories.NewListRepository
+import repositories.ListRepository
 import repositories.VersionRepository
 
 import scala.concurrent.Future
@@ -156,11 +156,11 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
     "must return reference data as stream" in {
 
       val mockVersionRepository = mock[VersionRepository]
-      val mockListRepository    = mock[NewListRepository]
+      val mockListRepository    = mock[ListRepository]
 
       val app = baseApplicationBuilder.andThen(
         _.overrides(
-          bind[NewListRepository].toInstance(mockListRepository),
+          bind[ListRepository].toInstance(mockListRepository),
           bind[VersionRepository].toInstance(mockVersionRepository)
         )
       )

@@ -16,24 +16,37 @@
 
 package models
 
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-case class GenericListItem(listName: ListName, messageInformation: MessageInformation, versionId: VersionId, data: JsObject)
+import java.time.LocalDateTime
+
+case class GenericListItem(
+  listName: ListName,
+  messageInformation: MessageInformation,
+  versionId: VersionId,
+  data: JsObject,
+  createdOn: LocalDateTime
+)
 
 object GenericListItem {
 
-  implicit val writes: OWrites[GenericListItem] =
-    (__.write[ListName] and
+  implicit val writes: OWrites[GenericListItem] = (
+    __.write[ListName] and
       __.write[MessageInformation] and
       __.write[VersionId] and
-      (__ \ "data").write[JsObject])(unlift(GenericListItem.unapply))
+      (__ \ "data").write[JsObject] and
+      (__ \ "createdOn").write[LocalDateTime](MongoJavatimeFormats.localDateTimeWrites)
+  )(unlift(GenericListItem.unapply))
 
-  implicit val readers: Reads[GenericListItem] =
-    (__.read[ListName] and
+  implicit val reads: Reads[GenericListItem] = (
+    __.read[ListName] and
       __.read[MessageInformation] and
       __.read[VersionId] and
-      (__ \ "data").read[JsObject])(GenericListItem.apply _)
+      (__ \ "data").read[JsObject] and
+      (__ \ "createdOn").read[LocalDateTime](MongoJavatimeFormats.localDateTimeReads)
+  )(GenericListItem.apply _)
 
-  implicit val format: Format[GenericListItem] = Format(readers, writes)
+  implicit val format: Format[GenericListItem] = Format(reads, writes)
 }
