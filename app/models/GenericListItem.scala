@@ -20,14 +20,14 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 case class GenericListItem(
   listName: ListName,
   messageInformation: MessageInformation,
   versionId: VersionId,
   data: JsObject,
-  createdOn: LocalDateTime
+  createdOn: Instant
 )
 
 object GenericListItem {
@@ -37,7 +37,7 @@ object GenericListItem {
       __.write[MessageInformation] and
       __.write[VersionId] and
       (__ \ "data").write[JsObject] and
-      (__ \ "createdOn").write[LocalDateTime](MongoJavatimeFormats.localDateTimeWrites)
+      (__ \ "createdOn").write[Instant](MongoJavatimeFormats.instantWrites)
   )(unlift(GenericListItem.unapply))
 
   implicit val reads: Reads[GenericListItem] = (
@@ -45,7 +45,7 @@ object GenericListItem {
       __.read[MessageInformation] and
       __.read[VersionId] and
       (__ \ "data").read[JsObject] and
-      (__ \ "createdOn").read[LocalDateTime](MongoJavatimeFormats.localDateTimeReads)
+      (__ \ "createdOn").read[Instant](MongoJavatimeFormats.instantReads)
   )(GenericListItem.apply _)
 
   implicit val format: Format[GenericListItem] = Format(reads, writes)

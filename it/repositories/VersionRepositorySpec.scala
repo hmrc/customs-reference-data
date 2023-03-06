@@ -40,7 +40,8 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec
@@ -127,9 +128,9 @@ class VersionRepositorySpec
 
       val expectedVersionId = VersionId("1")
 
-      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), LocalDateTime.now()).futureValue
+      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), Instant.now()).futureValue
 
-      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, LocalDateTime.now, RefDataFeed, Seq(listName))
+      val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, Instant.now, RefDataFeed, Seq(listName))
 
       result mustEqual true
 
@@ -142,14 +143,20 @@ class VersionRepositorySpec
   "getLatest with listName filter" - {
     "returns the latest version for a listName by snapshotDate and createdOn date" in {
       val nowDate = LocalDate.now()
-      val nowTime = LocalDateTime.now()
+      val nowTime = Instant.now()
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName           = Arbitrary.arbitrary[ListName].sample.value
 
       val v1 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("1"), nowTime, RefDataFeed, Seq(listName))
-      val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime.plusDays(1), RefDataFeed, Seq(listName))
-      val v3 = VersionInformation(messageInformation.copy(snapshotDate = nowDate.minusDays(1)), VersionId("3"), nowTime.plusDays(2), RefDataFeed, Seq(listName))
+      val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime.plus(1, ChronoUnit.DAYS), RefDataFeed, Seq(listName))
+      val v3 = VersionInformation(
+        messageInformation.copy(snapshotDate = nowDate.minusDays(1)),
+        VersionId("3"),
+        nowTime.plus(2, ChronoUnit.DAYS),
+        RefDataFeed,
+        Seq(listName)
+      )
 
       Seq(v1, v2, v3).map(insert(_).futureValue)
 
@@ -160,14 +167,20 @@ class VersionRepositorySpec
 
     "returns the latest version for a listName when there is a newer version that it does not belong to" in {
       val nowDate = LocalDate.now()
-      val nowTime = LocalDateTime.now()
+      val nowTime = Instant.now()
 
       val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
       val listName1          = ListName("1")
       val listName2          = ListName("2")
 
       val v1 =
-        VersionInformation(messageInformation.copy(snapshotDate = nowDate.minusDays(1)), VersionId("1"), nowTime.minusDays(1), RefDataFeed, Seq(listName1))
+        VersionInformation(
+          messageInformation.copy(snapshotDate = nowDate.minusDays(1)),
+          VersionId("1"),
+          nowTime.minus(1, ChronoUnit.DAYS),
+          RefDataFeed,
+          Seq(listName1)
+        )
       val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime, ColDataFeed, Seq(listName2))
 
       Seq(v1, v2).map(insert(_).futureValue)
@@ -185,7 +198,7 @@ class VersionRepositorySpec
 
       val listNames = Seq(ListName("1"), ListName("2"))
 
-      val v = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), RefDataFeed, listNames)
+      val v = VersionInformation(newMessageInformation, VersionId("1"), Instant.now(), RefDataFeed, listNames)
       insert(v).futureValue
 
       val result         = repository.getLatestListNames.futureValue
@@ -200,7 +213,7 @@ class VersionRepositorySpec
 
       val listNames = Seq(ListName("1"), ListName("2"))
 
-      val v = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), ColDataFeed, listNames)
+      val v = VersionInformation(newMessageInformation, VersionId("1"), Instant.now(), ColDataFeed, listNames)
       insert(v).futureValue
 
       val result         = repository.getLatestListNames.futureValue
@@ -218,9 +231,9 @@ class VersionRepositorySpec
       val listNames2 = Seq(ListName("1"), ListName("2"))
       val listNames3 = Seq(ListName("1.1"), ListName("2.1"))
 
-      val v1 = VersionInformation(oldMessageInformation, VersionId("1"), LocalDateTime.now().minusDays(1), ColDataFeed, listNames1)
-      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), LocalDateTime.now().minusDays(1), RefDataFeed, listNames2)
-      val v3 = VersionInformation(newMessageInformation, VersionId("3"), LocalDateTime.now(), RefDataFeed, listNames3)
+      val v1 = VersionInformation(oldMessageInformation, VersionId("1"), Instant.now().minus(1, ChronoUnit.DAYS), ColDataFeed, listNames1)
+      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), Instant.now().minus(1, ChronoUnit.DAYS), RefDataFeed, listNames2)
+      val v3 = VersionInformation(newMessageInformation, VersionId("3"), Instant.now(), RefDataFeed, listNames3)
 
       Seq(v1, v2, v3).map(insert(_).futureValue)
 
@@ -240,10 +253,10 @@ class VersionRepositorySpec
       val listNames3 = Seq(ListName("1"), ListName("2"))
       val listNames4 = Seq(ListName("1.1"), ListName("2.1"))
 
-      val v1 = VersionInformation(newMessageInformation, VersionId("1"), LocalDateTime.now(), ColDataFeed, listNames1)
-      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), LocalDateTime.now().minusDays(1), ColDataFeed, listNames2)
-      val v3 = VersionInformation(oldMessageInformation, VersionId("3"), LocalDateTime.now().minusDays(1), RefDataFeed, listNames3)
-      val v4 = VersionInformation(newMessageInformation, VersionId("4"), LocalDateTime.now(), RefDataFeed, listNames4)
+      val v1 = VersionInformation(newMessageInformation, VersionId("1"), Instant.now(), ColDataFeed, listNames1)
+      val v2 = VersionInformation(oldMessageInformation, VersionId("2"), Instant.now().minus(1, ChronoUnit.DAYS), ColDataFeed, listNames2)
+      val v3 = VersionInformation(oldMessageInformation, VersionId("3"), Instant.now().minus(1, ChronoUnit.DAYS), RefDataFeed, listNames3)
+      val v4 = VersionInformation(newMessageInformation, VersionId("4"), Instant.now(), RefDataFeed, listNames4)
 
       Seq(v1, v2, v3, v4).map(insert(_).futureValue)
 

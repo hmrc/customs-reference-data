@@ -16,11 +16,10 @@
 
 package services.consumption
 
-import java.time.LocalDateTime
-
+import java.time.Instant
 import javax.inject.Singleton
 
 @Singleton
 class TimeService {
-  def now(): LocalDateTime = LocalDateTime.now()
+  def now(): Instant = Instant.now()
 }

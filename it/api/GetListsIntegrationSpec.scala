@@ -34,7 +34,7 @@ import repositories.VersionRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
 
 import java.io.InputStream
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 
@@ -63,7 +63,7 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
     versionRepo.collection.drop().toFuture().futureValue
 
     val versionId: VersionId = VersionId("test-version-id")
-    val now                  = LocalDateTime.now()
+    val now                  = Instant.now()
 
     versionRepo.save(versionId, defaultMessageInformation, ApiDataSource.RefDataFeed, Seq(defaultListName), now).futureValue
 

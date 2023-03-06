@@ -24,7 +24,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.Instant
 
 trait ConsumptionHelper {
 
@@ -46,7 +46,7 @@ trait ConsumptionHelper {
       defaultMessageInformation,
       versionId,
       data,
-      LocalDateTime.now()
+      Instant.now()
     )
 
   def basicList(versionId: VersionId): Seq[GenericListItem] =

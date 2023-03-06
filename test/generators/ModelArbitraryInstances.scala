@@ -23,7 +23,7 @@ import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.Instant
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
@@ -76,7 +76,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
         messageInformation <- arbitrary[MessageInformation]
         versionId          <- arbVersionId.arbitrary
         data               <- arbJsObject.arbitrary
-        createdOn          <- arbitrary[LocalDateTime]
+        createdOn          <- arbitrary[Instant]
       } yield GenericListItem(listName, messageInformation, versionId, data, createdOn)
     }
 
@@ -86,7 +86,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit val arbitraryApiDataSource: Arbitrary[ApiDataSource] =
     Arbitrary(Gen.oneOf(ApiDataSource.RefDataFeed, ApiDataSource.ColDataFeed))
 
-  implicit def arbitraryVersionInformation(implicit ldt: Arbitrary[LocalDateTime]): Arbitrary[VersionInformation] =
+  implicit def arbitraryVersionInformation(implicit ldt: Arbitrary[Instant]): Arbitrary[VersionInformation] =
     Arbitrary {
       for {
         mi  <- arbitrary[MessageInformation]

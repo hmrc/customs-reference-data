@@ -139,6 +139,8 @@ class ListRepositorySpec
 
       seedData(targetList ++ otherList)
 
+      println(("over here", targetList))
+
       val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
 
       val data = targetList
