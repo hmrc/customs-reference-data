@@ -22,8 +22,8 @@ import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import play.api.libs.json.JsObject
 
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 
 trait ModelArbitraryInstances extends JavaTimeGenerators {
 
@@ -99,6 +99,8 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
 
   implicit def arbitraryReferenceDataPayload: Arbitrary[ReferenceDataPayload] =
     Arbitrary(Gen.oneOf(ModelGenerators.genReferenceDataListsPayload(), ModelGenerators.genCustomsOfficeListsPayload()))
+
+  implicit val arbitraryInstant: Arbitrary[Instant] = Arbitrary(ModelGenerators.genInstant)
 }
 
 object ModelArbitraryInstances extends ModelArbitraryInstances
