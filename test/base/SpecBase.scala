@@ -16,6 +16,12 @@
 
 package base
 
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.BsonInt64
+import org.mongodb.scala.bson.BsonNumber
+import org.mongodb.scala.bson.BsonString
+import org.mongodb.scala.bson.Document
+import org.mongodb.scala.model.IndexModel
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -53,5 +59,22 @@ trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with EitherVa
 
     def toEpochMilli: String =
       date.atStartOfDay.atZone(ZoneOffset.UTC).toInstant.toEpochMilli.toString
+  }
+
+  implicit class RichIndexModel(indexModel: IndexModel) {
+
+    def tupled(): (BsonString, BsonDocument, Option[BsonNumber]) = {
+      val document = indexModel.getKeys.toBsonDocument
+      val ttl =
+        if (document.containsKey("expireAfterSeconds"))
+          Some(document.get("expireAfterSeconds").asNumber())
+        else None
+
+      (
+        document.get("name").asString(),
+        document.get("key").asDocument(),
+        ttl
+      )
+    }
   }
 }

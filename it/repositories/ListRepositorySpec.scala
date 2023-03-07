@@ -57,7 +57,9 @@ class ListRepositorySpec
 
   private lazy val appConfig: AppConfig = mock[AppConfig]
 
-  override protected def repository = new ListRepository(mongoComponent, appConfig)
+  override protected val repository = {
+    new ListRepository(mongoComponent, appConfig)
+  }
 
   private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection
@@ -82,6 +84,7 @@ class ListRepositorySpec
   "must create the following indexes" - {
     "when TTL is enabled" in {
       when(appConfig.isTtlEnabled).thenReturn(true)
+      repository.collection.listIndexes().toFuture().futureValue.foreach(println)
 
       val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
 
