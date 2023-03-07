@@ -55,7 +55,7 @@ class VersionRepositorySpec
 
   private lazy val appConfig: AppConfig = mock[AppConfig]
 
-  override protected def repository = new VersionRepository(mongoComponent, appConfig)
+  override protected val repository = new VersionRepository(mongoComponent, appConfig)
 
   private val ttl = Gen.choose(1, 1209600).sample.value
 

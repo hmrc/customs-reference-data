@@ -3,7 +3,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val mongoVersion = "0.74.0"
+  private val mongoVersion = "1.0.0"
   private val bootstrapVersion = "7.12.0"
   private val akkaVersion = "2.6.20"
 

@@ -34,14 +34,4 @@ trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaF
 
   val baseApplicationBuilder: AppFunction = identity
 
-  implicit class RichDocument(document: Document) {
-
-    def tupled(): (BsonString, BsonDocument, Option[BsonInt64]) =
-      (
-        document.get[BsonString]("name").get,
-        document.get[BsonDocument]("key").get,
-        document.get[BsonInt64]("expireAfterSeconds")
-      )
-  }
-
 }

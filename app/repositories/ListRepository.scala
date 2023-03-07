@@ -51,6 +51,10 @@ class ListRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
+  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+
+  indexes.foreach(println)
+
   def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
     val filter = Aggregates.filter(
       Filters.and(
