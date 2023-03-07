@@ -26,22 +26,16 @@ import models.ListName
 import models.MessageInformation
 import models.VersionId
 import models.VersionInformation
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.when
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonInt64
-import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-import java.time.LocalDate
-import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.time.Instant
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec
@@ -53,73 +47,9 @@ class VersionRepositorySpec
     with GuiceOneAppPerSuite
     with DefaultPlayMongoRepositorySupport[VersionInformation] {
 
-  private lazy val appConfig: AppConfig = mock[AppConfig]
+  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   override protected val repository = new VersionRepository(mongoComponent, appConfig)
-
-  private val ttl = Gen.choose(1, 1209600).sample.value
-
-  override def beforeEach(): Unit = {
-    reset(appConfig)
-    when(appConfig.replaceIndexes).thenReturn(true)
-    when(appConfig.ttl).thenReturn(ttl)
-    super.beforeEach()
-  }
-
-  "must create the following indexes" - {
-    "when TTL is enabled" in {
-      when(appConfig.isTtlEnabled).thenReturn(true)
-
-      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
-
-      indexes mustEqual Set(
-        (
-          BsonString("_id_"),
-          BsonDocument("_id" -> 1),
-          None
-        ),
-        (
-          BsonString("list-name-and-date-compound-index"),
-          BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-          None
-        ),
-        (
-          BsonString("source-and-date-compound-index"),
-          BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-          None
-        ),
-        (
-          BsonString("ttl-index"),
-          BsonDocument("createdOn" -> 1),
-          Some(BsonInt64(appConfig.ttl))
-        )
-      )
-    }
-
-    "when TTL is not enabled" in {
-      when(appConfig.isTtlEnabled).thenReturn(false)
-
-      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
-
-      indexes mustEqual Set(
-        (
-          BsonString("_id_"),
-          BsonDocument("_id" -> 1),
-          None
-        ),
-        (
-          BsonString("list-name-and-date-compound-index"),
-          BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-          None
-        ),
-        (
-          BsonString("source-and-date-compound-index"),
-          BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-          None
-        )
-      )
-    }
-  }
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {

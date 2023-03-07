@@ -21,8 +21,8 @@ import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
-import models.ListName
 import models.GenericListItem
+import models.ListName
 import models.VersionId
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
@@ -52,8 +52,6 @@ class ListRepository @Inject() (
     ) {
 
   override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
-
-  indexes.foreach(println)
 
   def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
     val filter = Aggregates.filter(

@@ -28,7 +28,7 @@ import uk.gov.hmrc.mongo.test.MongoSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
+class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
   private val mockConfig = mock[AppConfig]
   private val ttl        = Gen.choose(1, 1209600).sample.value
@@ -44,17 +44,22 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
 
   "indexes" - {
     "when TTL index is enabled" - {
-      "must return 2 indexes" in {
+      "must return 3 indexes" in {
         when(mockConfig.isTtlEnabled).thenReturn(true)
 
-        val repository = new ListRepository(mongoComponent, mockConfig)
+        val repository = new VersionRepository(mongoComponent, mockConfig)
 
         val indexes = repository.indexes.map(_.tupled()).toSet
 
         indexes mustEqual Set(
           (
-            "list-name-and-version-id-compound-index",
-            BsonDocument("listName" -> 1, "versionId" -> 1),
+            "list-name-and-date-compound-index",
+            BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+            None
+          ),
+          (
+            "source-and-date-compound-index",
+            BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
             None
           ),
           (
@@ -67,17 +72,22 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
     }
 
     "when TTL index is disabled" - {
-      "must return 1 index" in {
+      "must return 2 indexes" in {
         when(mockConfig.isTtlEnabled).thenReturn(false)
 
-        val repository = new ListRepository(mongoComponent, mockConfig)
+        val repository = new VersionRepository(mongoComponent, mockConfig)
 
         val indexes = repository.indexes.map(_.tupled()).toSet
 
         indexes mustEqual Set(
           (
-            "list-name-and-version-id-compound-index",
-            BsonDocument("listName" -> 1, "versionId" -> 1),
+            "list-name-and-date-compound-index",
+            BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+            None
+          ),
+          (
+            "source-and-date-compound-index",
+            BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
             None
           )
         )

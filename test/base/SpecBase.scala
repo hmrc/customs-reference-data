@@ -17,10 +17,6 @@
 package base
 
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonInt64
-import org.mongodb.scala.bson.BsonNumber
-import org.mongodb.scala.bson.BsonString
-import org.mongodb.scala.bson.Document
 import org.mongodb.scala.model.IndexModel
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
@@ -35,6 +31,7 @@ import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.Base64
+import java.util.concurrent.TimeUnit
 import java.util.zip.GZIPOutputStream
 
 trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with EitherValues with ScalaFutures with IntegrationPatience with MockitoSugar {
@@ -63,17 +60,15 @@ trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with EitherVa
 
   implicit class RichIndexModel(indexModel: IndexModel) {
 
-    def tupled(): (BsonString, BsonDocument, Option[BsonNumber]) = {
-      val document = indexModel.getKeys.toBsonDocument
-      val ttl =
-        if (document.containsKey("expireAfterSeconds"))
-          Some(document.get("expireAfterSeconds").asNumber())
-        else None
-
+    def tupled(): (String, BsonDocument, Option[Long]) = {
+      val options = indexModel.getOptions
       (
-        document.get("name").asString(),
-        document.get("key").asDocument(),
-        ttl
+        options.getName,
+        indexModel.getKeys.toBsonDocument,
+        options.getExpireAfter(TimeUnit.SECONDS) match {
+          case null => None
+          case x    => Some(x)
+        }
       )
     }
   }

@@ -16,10 +16,6 @@
 
 package base
 
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonInt64
-import org.mongodb.scala.bson.BsonString
-import org.mongodb.scala.bson.Document
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
