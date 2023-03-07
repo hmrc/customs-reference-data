@@ -24,7 +24,7 @@ import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances {
 
@@ -39,7 +39,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       "returns all the listNames for all lists" in {
 
         val versionId = VersionId("1")
-        val createdOn = LocalDateTime.now()
+        val createdOn = Instant.now()
 
         forAll(Gen.choose(1, 5), Gen.choose(1, 5)) {
           (numberOfLists, numberOfListItems) =>
@@ -59,7 +59,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       "returns an iterator of the lists with list entries" in {
 
         val versionId = VersionId("1")
-        val createdOn = LocalDateTime.now()
+        val createdOn = Instant.now()
 
         forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
           (numberOfLists, numberOfListItems) =>

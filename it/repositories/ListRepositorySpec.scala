@@ -27,17 +27,12 @@ import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
 import models.VersionId
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.when
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.bson.BsonInt64
-import org.mongodb.scala.bson.BsonString
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -55,9 +50,9 @@ class ListRepositorySpec
     with ScalaFutures
     with DefaultPlayMongoRepositorySupport[GenericListItem] {
 
-  private lazy val appConfig: AppConfig = mock[AppConfig]
+  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  override protected def repository = new ListRepository(mongoComponent, appConfig)
+  override protected val repository = new ListRepository(mongoComponent, appConfig)
 
   private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection
@@ -68,60 +63,6 @@ class ListRepositorySpec
   private def listOfItemsForVersion(versionId: VersionId): Gen[List[GenericListItem]] = {
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength[GenericListItem](5)
-  }
-
-  private val ttl = Gen.choose(1, 1209600).sample.value
-
-  override def beforeEach(): Unit = {
-    reset(appConfig)
-    when(appConfig.replaceIndexes).thenReturn(true)
-    when(appConfig.ttl).thenReturn(ttl)
-    super.beforeEach()
-  }
-
-  "must create the following indexes" - {
-    "when TTL is enabled" in {
-      when(appConfig.isTtlEnabled).thenReturn(true)
-
-      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
-
-      indexes mustEqual Set(
-        (
-          BsonString("_id_"),
-          BsonDocument("_id" -> 1),
-          None
-        ),
-        (
-          BsonString("list-name-and-version-id-compound-index"),
-          BsonDocument("listName" -> 1, "versionId" -> 1),
-          None
-        ),
-        (
-          BsonString("ttl-index"),
-          BsonDocument("createdOn" -> 1),
-          Some(BsonInt64(appConfig.ttl))
-        )
-      )
-    }
-
-    "when TTL is not enabled" in {
-      when(appConfig.isTtlEnabled).thenReturn(false)
-
-      val indexes = repository.collection.listIndexes().toFuture().futureValue.map(_.tupled()).toSet
-
-      indexes mustEqual Set(
-        (
-          BsonString("_id_"),
-          BsonDocument("_id" -> 1),
-          None
-        ),
-        (
-          BsonString("list-name-and-version-id-compound-index"),
-          BsonDocument("listName" -> 1, "versionId" -> 1),
-          None
-        )
-      )
-    }
   }
 
   "getListByName" - {

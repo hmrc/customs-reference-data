@@ -20,12 +20,14 @@ import base.SpecBase
 import play.api.libs.json.Json
 
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class GenericListItemSpec extends SpecBase {
 
   "Json serialization" in {
-    val now  = LocalDateTime.of(2020, 1, 1, 9, 0, 0)
-    val date = now.toLocalDate
+    val dateTime    = LocalDateTime.of(2020, 1, 1, 9, 0, 0)
+    val instantTime = dateTime.toInstant(ZoneOffset.UTC)
+    val date        = dateTime.toLocalDate
 
     val listName    = ListName("listNameValue")
     val messageInfo = MessageInformation("messageIdValue", date)
@@ -33,7 +35,7 @@ class GenericListItemSpec extends SpecBase {
 
     val listItemJson = Json.obj("key" -> "value")
 
-    val genericListItem = GenericListItem(listName, messageInfo, versionId, listItemJson, now)
+    val genericListItem = GenericListItem(listName, messageInfo, versionId, listItemJson, instantTime)
 
     val expectedJson = Json.obj(
       "listName"     -> listName.listName,

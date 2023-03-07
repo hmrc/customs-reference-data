@@ -38,7 +38,7 @@ import play.api.libs.json.Json
 import repositories._
 import services.consumption.TimeService
 
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -47,7 +47,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
   private val mockValidationService: SchemaValidationService = mock[SchemaValidationService]
   private val mockTimeService: TimeService                   = mock[TimeService]
 
-  private val now: LocalDateTime = LocalDateTime.now()
+  private val now: Instant = Instant.now()
 
   when(mockTimeService.now()).thenReturn(now)
 

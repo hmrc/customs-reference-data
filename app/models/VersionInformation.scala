@@ -23,12 +23,12 @@ import play.api.libs.json.Reads
 import play.api.libs.json.__
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 case class VersionInformation(
   messageInformation: MessageInformation,
   versionId: VersionId,
-  createdOn: LocalDateTime,
+  createdOn: Instant,
   source: ApiDataSource,
   listNames: Seq[ListName]
 )
@@ -39,7 +39,7 @@ object VersionInformation {
     (
       __.write[MessageInformation] and
         __.write[VersionId] and
-        (__ \ "createdOn").write(MongoJavatimeFormats.localDateTimeWrites) and
+        (__ \ "createdOn").write(MongoJavatimeFormats.instantWrites) and
         (__ \ "source").write[ApiDataSource] and
         (__ \ "listNames").write[Seq[ListName]]
     )(unlift(VersionInformation.unapply))
@@ -48,7 +48,7 @@ object VersionInformation {
     (
       __.read[MessageInformation] and
         __.read[VersionId] and
-        (__ \ "createdOn").read(MongoJavatimeFormats.localDateTimeReads) and
+        (__ \ "createdOn").read(MongoJavatimeFormats.instantReads) and
         (__ \ "source").read[ApiDataSource] and
         (__ \ "listNames").read[Seq[ListName]]
     )(VersionInformation.apply _)

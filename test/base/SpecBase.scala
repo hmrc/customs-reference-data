@@ -16,6 +16,8 @@
 
 package base
 
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.model.IndexModel
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -29,6 +31,7 @@ import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.Base64
+import java.util.concurrent.TimeUnit
 import java.util.zip.GZIPOutputStream
 
 trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with EitherValues with ScalaFutures with IntegrationPatience with MockitoSugar {
@@ -53,5 +56,20 @@ trait SpecBase extends AnyFreeSpec with Matchers with OptionValues with EitherVa
 
     def toEpochMilli: String =
       date.atStartOfDay.atZone(ZoneOffset.UTC).toInstant.toEpochMilli.toString
+  }
+
+  implicit class RichIndexModel(indexModel: IndexModel) {
+
+    def tupled(): (String, BsonDocument, Option[Long]) = {
+      val options = indexModel.getOptions
+      (
+        options.getName,
+        indexModel.getKeys.toBsonDocument,
+        options.getExpireAfter(TimeUnit.SECONDS) match {
+          case null => None
+          case x    => Some(x)
+        }
+      )
+    }
   }
 }

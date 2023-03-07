@@ -26,7 +26,7 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
@@ -45,12 +45,14 @@ class VersionRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
+  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+
   def save(
     versionId: VersionId,
     messageInformation: MessageInformation,
     feed: ApiDataSource,
     listNames: Seq[ListName],
-    createdOn: LocalDateTime
+    createdOn: Instant
   ): Future[Boolean] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 

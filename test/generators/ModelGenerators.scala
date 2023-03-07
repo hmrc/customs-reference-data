@@ -23,6 +23,8 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.Json
 
+import java.time.Instant
+
 trait ModelGenerators {
   self: BaseGenerators with JavaTimeGenerators =>
 
@@ -99,6 +101,10 @@ trait ModelGenerators {
   ): Gen[ReferenceDataListsPayload] =
     genReferenceDataListsJson(numberOfLists, numberOfListItems, dataItemsGen = dataItemsGen)
       .map(ReferenceDataListsPayload(_))
+
+  val genInstant: Gen[Instant] = Gen
+    .chooseNum(0L, 10000L)
+    .map(Instant.ofEpochMilli)
 
 }
 
