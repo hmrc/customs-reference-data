@@ -18,7 +18,9 @@ package controllers.ingestion
 
 import config.ReferenceDataControllerParserConfig
 import models.ApiDataSource.RefDataFeed
-import models._
+import models.ApiDataSource
+import models.CTCUP06Schema
+import models.SimpleJsonSchemaProvider
 import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
@@ -38,7 +40,8 @@ class ReferenceDataListController @Inject() (
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
 
-  override val schema: SimpleJsonSchemaProvider = cTCUP06Schema
+  override val schema: SimpleJsonSchemaProvider =
+    cTCUP06Schema
 
   override val source: ApiDataSource = RefDataFeed
 }

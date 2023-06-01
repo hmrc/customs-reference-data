@@ -1,0 +1,4 @@
+# microservice specific routes
+
+POST    /reference-data-lists                           controllers.v2.ingestion.ReferenceDataListController.post()
+POST    /customs-office-lists                           controllers.v2.ingestion.CustomsOfficeListController.post()

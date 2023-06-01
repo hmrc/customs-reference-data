@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.ingestion
+package controllers.v2.ingestion
 
 import config.ReferenceDataControllerParserConfig
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource
-import models.CTCUP08Schema
 import models.SimpleJsonSchemaProvider
+import models.v2.CTCUP08Schema
 import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents

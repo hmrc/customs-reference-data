@@ -1,0 +1,1211 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "messageInformation": {
+      "type": "object",
+      "properties": {
+        "messageID": {
+          "type": "string"
+        },
+        "snapshotDate": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "messageID",
+        "snapshotDate"
+      ]
+    },
+    "lists": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "documentType": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "documentType",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "documentType": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "documentType",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "currency",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "currency",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "unLocodeExtendedCode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "unLocodeExtendedCode",
+                    "state",
+                    "name"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "unLocodeExtendedCode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "unLocodeExtendedCode",
+                    "state",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "activeFrom": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activeFrom",
+                    "code",
+                    "state",
+                    "description"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "messageInformation",
+    "lists"
+  ]
+}
