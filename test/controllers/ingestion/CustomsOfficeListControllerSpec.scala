@@ -45,10 +45,12 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
   "customsOfficeLists" - {
     def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, controllers.ingestion.routes.CustomsOfficeListController.post().url)
+      FakeRequest(POST, "/customs-reference-data/customs-office-lists")
         .withJsonBody(testJson)
+        .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
 
     "returns ACCEPTED when the data has been validated and processed" in {
+
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
 

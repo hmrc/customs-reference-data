@@ -62,8 +62,9 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
         val version           = arbitrary[VersionInformation].sample.value
+        val url               = s"/customs-reference-data/lists/${referenceDataList.id.listName}"
 
-        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
+        val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
 
         val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 
@@ -81,8 +82,9 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
       "should return NotFound when latest version returns None" in {
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
+        val url               = s"/customs-reference-data/lists/${referenceDataList.id.listName}"
 
-        val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ListRetrievalController.get(referenceDataList.id).url)
+        val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
 
         val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
 

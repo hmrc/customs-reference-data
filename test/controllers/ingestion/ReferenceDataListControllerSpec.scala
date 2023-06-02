@@ -46,8 +46,9 @@ class ReferenceDataListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
   "referenceDataLists" - {
 
     def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, controllers.ingestion.routes.ReferenceDataListController.post().url)
+      FakeRequest(POST, "/customs-reference-data/reference-data-lists")
         .withJsonBody(testJson)
+        .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
 
     "returns ACCEPTED when the data has been validated and processed" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))

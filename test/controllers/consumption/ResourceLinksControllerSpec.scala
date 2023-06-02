@@ -35,9 +35,9 @@ import scala.concurrent.Future
 
 class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances {
 
-  private val fakeRequest = FakeRequest(GET, controllers.consumption.routes.ResourceLinksController.get.url)
-
   private val mockListRetrievalService = mock[ListRetrievalService]
+  private val url                      = "/customs-reference-data/lists"
+  private val fakeRequest              = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
 
   override def newAppForTest(testData: TestData): Application =
     new GuiceApplicationBuilder()
