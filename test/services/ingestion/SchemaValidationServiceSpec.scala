@@ -28,9 +28,9 @@ import play.api.inject.SimpleModule
 import play.api.inject.bind
 import play.api.libs.json.Json
 
-private[this] class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
+class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
 
-private[this] class TestModule extends SimpleModule((_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
+class TestModule extends SimpleModule((_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
 
 class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with EitherValues {
 

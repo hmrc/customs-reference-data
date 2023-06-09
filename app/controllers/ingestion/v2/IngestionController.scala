@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.v2.ingestion
+package controllers.ingestion.v2
 
 import cats.data.EitherT
 import cats.implicits._
@@ -26,7 +26,7 @@ import play.api.mvc.Action
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
 import play.api.mvc.PlayBodyParsers
-import services.ingestion.ReferenceDataService
+import services.ingestion.v2.ReferenceDataService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject

@@ -14,34 +14,33 @@
  * limitations under the License.
  */
 
-package controllers.v2.ingestion
+package controllers.ingestion.v2
 
 import config.ReferenceDataControllerParserConfig
-import models.ApiDataSource.RefDataFeed
+import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource
 import models.SimpleJsonSchemaProvider
-import models.v2.CTCUP06Schema
+import models.v2.CTCUP08Schema
 import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
 import play.api.mvc.PlayBodyParsers
-import services.ingestion.ReferenceDataService
+import services.ingestion.v2.ReferenceDataService
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class ReferenceDataListController @Inject() (
+class CustomsOfficeListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
-  cTCUP06Schema: CTCUP06Schema
+  cTCUP08Schema: CTCUP08Schema
 )(implicit ec: ExecutionContext)
     extends IngestionController(cc, referenceDataService) {
 
-  override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
+  override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.customsOfficeParser(parse)
 
-  override val schema: SimpleJsonSchemaProvider =
-    cTCUP06Schema
+  override val schema: SimpleJsonSchemaProvider = cTCUP08Schema
 
-  override val source: ApiDataSource = RefDataFeed
+  override val source: ApiDataSource = ColDataFeed
 }

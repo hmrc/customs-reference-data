@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package services.v2.ingestion
+package services.ingestion.v2
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
