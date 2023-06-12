@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.ingestion.v2
+package controllers.ingestion.v1
 
 import cats.data.EitherT
 import cats.implicits._
@@ -26,7 +26,7 @@ import play.api.mvc.Action
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
 import play.api.mvc.PlayBodyParsers
-import services.ingestion.v2.ReferenceDataService
+import services.ingestion.v1.ReferenceDataService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
@@ -58,7 +58,7 @@ abstract class IngestionController @Inject() (
         ).value.map {
           case Right(_) => Accepted
           case Left(writeError: WriteError) =>
-            logger.info(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
+            logger.info(s"[controllers.ingestion.v1.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
             logger.info(errorDetails.message)

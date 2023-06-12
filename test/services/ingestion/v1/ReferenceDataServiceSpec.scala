@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package services.ingestion.v2
+package services.ingestion.v1
 
 import base.SpecBase
 import generators.ModelArbitraryInstances._
@@ -35,11 +35,9 @@ import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import repositories.FailedWrite
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
-import repositories.v2.ListRepository
-import repositories.v2.VersionRepository
+import repositories._
+import repositories.v1.ListRepository
+import repositories.v1.VersionRepository
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 import services.ingestion.TestJsonSchema
@@ -114,7 +112,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
-            s"[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName.listName}"
+            s"[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName.listName}"
           )
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
@@ -152,7 +150,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
           val expectedError = WriteError(
-            s"[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
+            s"[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
           )
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError

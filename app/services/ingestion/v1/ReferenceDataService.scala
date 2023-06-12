@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package services.ingestion.v2
+package services.ingestion.v1
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
 import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
-import repositories.v2.ListRepository
-import repositories.v2.VersionRepository
-import repositories.FailedWrite
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
+import repositories._
+import repositories.v1.ListRepository
+import repositories.v1.VersionRepository
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
@@ -59,7 +57,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
         case (errors, SuccessfulWrite)       => errors
         case (errors, FailedWrite(listName)) => errors.orElse(Some(Seq())).map(_ :+ listName)
       }
-      .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
+      .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
