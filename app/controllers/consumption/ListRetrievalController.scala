@@ -22,7 +22,7 @@ import cats.implicits._
 import javax.inject.Inject
 import models.ListName
 import models.MetaData
-import models.StreamReferenceData
+import models.v2.StreamReferenceData
 import play.api.http.HttpEntity
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
