@@ -20,7 +20,7 @@ import cats.data.OptionT
 import cats.implicits._
 import models.ListName
 import models.MetaData
-import models.v1.StreamReferenceData
+import models.v2.StreamReferenceData
 import play.api.http.HttpEntity
 import play.api.mvc.Action
 import play.api.mvc.AnyContent

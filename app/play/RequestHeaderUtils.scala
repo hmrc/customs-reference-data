@@ -21,9 +21,9 @@ import play.api.mvc.RequestHeader
 
 object RequestHeaderUtils {
 
-  private val acceptHeaderRegex = "application/vnd\\.hmrc\\.(.*)\\+gzip".r
-
-  private val uriRegex = "(/[a-zA-Z0-9-_]*)/?.*$".r
+  private val writeAcceptHeaderRegex = "application/vnd\\.hmrc\\.(.*)\\+gzip".r
+  private val readAcceptHeaderRegex  = "application/vnd\\.hmrc\\.(.*)\\+json".r
+  private val uriRegex               = "(/[a-zA-Z0-9-_]*)/?.*$".r
 
   def extractUriContext(requestHeader: RequestHeader) =
     (uriRegex.findFirstMatchIn(requestHeader.uri) map (_.group(1))).get
@@ -42,8 +42,13 @@ object RequestHeaderUtils {
   private def getVersion(originalRequest: RequestHeader) =
     originalRequest.headers.get(ACCEPT) flatMap {
       acceptHeaderValue =>
-        acceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) map (_.group(1))
-    } getOrElse "1.0"
+        writeAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) map (_.group(1))
+    } getOrElse (
+      originalRequest.headers.get(ACCEPT) flatMap {
+        acceptHeaderValue =>
+          readAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) map (_.group(1))
+      } getOrElse "1.0"
+    )
 
   private def versionedUri(urlPath: String, version: String) =
     urlPath match {

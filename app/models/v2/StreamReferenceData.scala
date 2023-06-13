@@ -31,7 +31,7 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
        |{
        |   "_links": {
        |     "self": {
-       |       "href": "${controllers.consumption.v2.routes.ListRetrievalController.get(listName).url}"
+       |       "href": "${controllers.consumption.v2.routes.ListRetrievalController.get(listName).url.substring(5)}"
        |     }
        |   },
        |   "meta": ${Json.toJsObject(metaData)},
