@@ -1,5 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
   "type": "object",
   "properties": {
     "messageInformation": {
@@ -18,9 +19,9 @@
       ]
     },
     "lists": {
-      "type": "array",
-      "items": [
-        {
+      "type": "object",
+      "properties": {
+        "CountryCodesCommonTransit": {
           "type": "object",
           "properties": {
             "listName": {
@@ -28,54 +29,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -83,7 +59,7 @@
             "listEntries"
           ]
         },
-        {
+        "CountryCodesFullList": {
           "type": "object",
           "properties": {
             "listName": {
@@ -91,54 +67,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -146,7 +97,7 @@
             "listEntries"
           ]
         },
-        {
+        "CountryWithoutZip": {
           "type": "object",
           "properties": {
             "listName": {
@@ -154,38 +105,21 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code"
-                  ]
+                  "code": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code"
+                ]
+              }
             }
           },
           "required": [
@@ -193,7 +127,7 @@
             "listEntries"
           ]
         },
-        {
+        "CountryCustomsSecurityAgreementArea": {
           "type": "object",
           "properties": {
             "listName": {
@@ -201,54 +135,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -256,7 +165,7 @@
             "listEntries"
           ]
         },
-        {
+        "CountryAddressPostcodeBased": {
           "type": "object",
           "properties": {
             "listName": {
@@ -264,54 +173,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -319,7 +203,7 @@
             "listEntries"
           ]
         },
-        {
+        "TransportModeCode": {
           "type": "object",
           "properties": {
             "listName": {
@@ -327,54 +211,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -382,7 +241,7 @@
             "listEntries"
           ]
         },
-        {
+        "PreviousDocumentType": {
           "type": "object",
           "properties": {
             "listName": {
@@ -390,54 +249,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -445,7 +279,7 @@
             "listEntries"
           ]
         },
-        {
+        "DocumentTypeExcise": {
           "type": "object",
           "properties": {
             "listName": {
@@ -453,54 +287,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -508,7 +317,7 @@
             "listEntries"
           ]
         },
-        {
+        "KindOfPackages": {
           "type": "object",
           "properties": {
             "listName": {
@@ -516,54 +325,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -571,7 +355,7 @@
             "listEntries"
           ]
         },
-        {
+        "KindOfPackagesBulk": {
           "type": "object",
           "properties": {
             "listName": {
@@ -579,54 +363,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -634,7 +393,7 @@
             "listEntries"
           ]
         },
-        {
+        "KindOfPackagesUnpacked": {
           "type": "object",
           "properties": {
             "listName": {
@@ -642,54 +401,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -697,7 +431,7 @@
             "listEntries"
           ]
         },
-        {
+        "AdditionalReference": {
           "type": "object",
           "properties": {
             "listName": {
@@ -705,54 +439,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "documentType": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "documentType",
-                    "state",
-                    "description"
-                  ]
+                  "documentType": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "documentType": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "documentType",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "documentType",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -760,7 +469,7 @@
             "listEntries"
           ]
         },
-        {
+        "AdditionalInformation": {
           "type": "object",
           "properties": {
             "listName": {
@@ -768,54 +477,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -823,7 +507,7 @@
             "listEntries"
           ]
         },
-        {
+        "CurrencyCodes": {
           "type": "object",
           "properties": {
             "listName": {
@@ -831,54 +515,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "currency",
-                    "state",
-                    "description"
-                  ]
+                  "currency": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "currency",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "currency",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -886,7 +545,7 @@
             "listEntries"
           ]
         },
-        {
+        "UnLocodeExtended": {
           "type": "object",
           "properties": {
             "listName": {
@@ -894,54 +553,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "unLocodeExtendedCode": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "unLocodeExtendedCode",
-                    "state",
-                    "name"
-                  ]
+                  "unLocodeExtendedCode": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "unLocodeExtendedCode": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "unLocodeExtendedCode",
-                    "state",
-                    "name"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "unLocodeExtendedCode",
+                  "state",
+                  "name"
+                ]
+              }
             }
           },
           "required": [
@@ -949,7 +583,7 @@
             "listEntries"
           ]
         },
-        {
+        "Unit": {
           "type": "object",
           "properties": {
             "listName": {
@@ -957,54 +591,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -1012,7 +621,7 @@
             "listEntries"
           ]
         },
-        {
+        "FunctionalErrorCodesIeCA": {
           "type": "object",
           "properties": {
             "listName": {
@@ -1020,54 +629,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -1075,7 +659,7 @@
             "listEntries"
           ]
         },
-        {
+        "BusinessRejectionTypeDepExp": {
           "type": "object",
           "properties": {
             "listName": {
@@ -1083,54 +667,29 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -1138,7 +697,7 @@
             "listEntries"
           ]
         },
-        {
+        "RejectionCodeDepartureExport": {
           "type": "object",
           "properties": {
             "listName": {
@@ -1146,54 +705,67 @@
             },
             "listEntries": {
               "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "activeFrom": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        "Nationality": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
                   },
-                  "required": [
-                    "activeFrom",
-                    "code",
-                    "state",
-                    "description"
-                  ]
-                }
-              ]
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
             }
           },
           "required": [
@@ -1201,6 +773,28 @@
             "listEntries"
           ]
         }
+      },
+      "required": [
+        "CountryCodesCommonTransit",
+        "CountryCodesFullList",
+        "CountryWithoutZip",
+        "CountryCustomsSecurityAgreementArea",
+        "CountryAddressPostcodeBased",
+        "TransportModeCode",
+        "PreviousDocumentType",
+        "DocumentTypeExcise",
+        "KindOfPackages",
+        "KindOfPackagesBulk",
+        "KindOfPackagesUnpacked",
+        "AdditionalReference",
+        "AdditionalInformation",
+        "CurrencyCodes",
+        "UnLocodeExtended",
+        "Unit",
+        "FunctionalErrorCodesIeCA",
+        "BusinessRejectionTypeDepExp",
+        "RejectionCodeDepartureExport",
+        "Nationality"
       ]
     }
   },

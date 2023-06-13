@@ -25,4 +25,4 @@ import javax.inject.Singleton
 
 @Singleton
 class CTCUP08Schema @Inject() (env: Environment, jsonValidationService: JsonValidationService)
-    extends SimpleJsonSchemaProvider(env, jsonValidationService)("schemas/CTCUP08.schema.json")
+    extends SimpleJsonSchemaProvider(env, jsonValidationService)("schemas/v1/CTCUP08.schema.json")

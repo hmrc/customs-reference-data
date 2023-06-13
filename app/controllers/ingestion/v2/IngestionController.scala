@@ -58,7 +58,7 @@ abstract class IngestionController @Inject() (
         ).value.map {
           case Right(_) => Accepted
           case Left(writeError: WriteError) =>
-            logger.info(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
+            logger.debug(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
             logger.info(errorDetails.message)
