@@ -2,6 +2,7 @@
 
 GET     /lists                                          controllers.consumption.v2.ResourceLinksController.get
 GET     /lists/:listName                                controllers.consumption.v2.ListRetrievalController.get(listName: ListName)
+GET     /filtered-lists/:listName                       controllers.consumption.v2.ListRetrievalController.getFiltered(listName: ListName, filters: Seq[(String, String)])
 
 POST    /reference-data-lists                           controllers.ingestion.v2.ReferenceDataListController.post()
 POST    /customs-office-lists                           controllers.ingestion.v2.CustomsOfficeListController.post()

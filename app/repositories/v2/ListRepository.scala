@@ -25,6 +25,7 @@ import models.GenericListItem
 import models.ListName
 import models.VersionId
 import org.mongodb.scala.bson.BsonValue
+import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
@@ -74,6 +75,31 @@ class ListRepository @Inject() (
     Source.fromPublisher(
       collection
         .aggregate[BsonValue](Seq(filter, projection))
+        .allowDiskUse(true)
+        .map(Codecs.fromBson[JsObject](_))
+    )
+  }
+
+  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filters: Seq[(String, String)]): Source[JsObject, NotUsed] = {
+    val standardFilters: Bson = Aggregates.filter(
+      Filters.and(
+        Filters.eq(fieldName = "listName", value = listName.listName),
+        Filters.eq(fieldName = "versionId", value = versionId.versionId)
+      )
+    )
+
+    val additionalFilters: Seq[Bson] = filters.map(f => Filters.eq(f._1, f._2))
+
+    val projection = Aggregates.project(
+      Projections.fields(
+        Projections.include("data"),
+        Projections.exclude("_id")
+      )
+    )
+
+    Source.fromPublisher(
+      collection
+        .aggregate[BsonValue](Seq(standardFilters, projection) ++ additionalFilters)
         .allowDiskUse(true)
         .map(Codecs.fromBson[JsObject](_))
     )

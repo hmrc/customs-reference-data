@@ -37,12 +37,28 @@ class ListRetrievalController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
+  // TODO - bounce a request on this endpoint where it is < v2.0
   def get(listName: ListName): Action[AnyContent] =
     Action.async {
       (
         for {
           latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
           streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId)
+          nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
+        } yield streamedList.via(nestJson.nestInJson)
+      ).value.map {
+        case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+        case None         => NotFound
+      }
+    }
+
+  // TODO - bounce a request on this endpoint where it is < v2.0
+  def getFiltered(listName: ListName, filters: Seq[(String, String)]): Action[AnyContent] =
+    Action.async {
+      (
+        for {
+          latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
+          streamedList = listRetrievalService.getFilteredList(listName, latestVersion.versionId, filters)
           nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {
