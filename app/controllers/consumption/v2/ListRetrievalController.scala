@@ -18,6 +18,7 @@ package controllers.consumption.v2
 
 import cats.data.OptionT
 import cats.implicits._
+import models.FilterParams
 import models.ListName
 import models.MetaData
 import models.v2.StreamReferenceData
@@ -53,12 +54,12 @@ class ListRetrievalController @Inject() (
     }
 
   // TODO - bounce a request on this endpoint where it is < v2.0
-  def getFiltered(listName: ListName, filters: Seq[(String, String)]): Action[AnyContent] =
+  def getFiltered(listName: ListName, filter: FilterParams): Action[AnyContent] =
     Action.async {
       (
         for {
           latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList = listRetrievalService.getFilteredList(listName, latestVersion.versionId, filters)
+          streamedList = listRetrievalService.getFilteredList(listName, latestVersion.versionId, filter)
           nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {

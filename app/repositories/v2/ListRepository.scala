@@ -21,6 +21,7 @@ import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
+import models.FilterParams
 import models.GenericListItem
 import models.ListName
 import models.VersionId
@@ -80,7 +81,7 @@ class ListRepository @Inject() (
     )
   }
 
-  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filters: Seq[(String, String)]): Source[JsObject, NotUsed] = {
+  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] = {
     val standardFilters: Bson = Aggregates.filter(
       Filters.and(
         Filters.eq(fieldName = "listName", value = listName.listName),
@@ -88,7 +89,7 @@ class ListRepository @Inject() (
       )
     )
 
-    val additionalFilters: Seq[Bson] = filters.map(f => Filters.eq(f._1, f._2))
+    val additionalFilters: Seq[Bson] = filter.parameters.map(f => Filters.eq(f._1, f._2))
 
     val projection = Aggregates.project(
       Projections.fields(
