@@ -82,6 +82,7 @@ class ListRepository @Inject() (
   }
 
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] = {
+
     val standardFilters: Bson = Aggregates.filter(
       Filters.and(
         Filters.eq(fieldName = "listName", value = listName.listName),
@@ -89,7 +90,12 @@ class ListRepository @Inject() (
       )
     )
 
-    val additionalFilters: Seq[Bson] = filter.parameters.map(f => Filters.eq(f._1, f._2))
+    val extraFilters: Seq[Bson] = filter.parameters.map(
+      f =>
+        Aggregates.filter(
+          Filters.eq(fieldName = f._1, value = f._2)
+        )
+    )
 
     val projection = Aggregates.project(
       Projections.fields(
@@ -100,7 +106,7 @@ class ListRepository @Inject() (
 
     Source.fromPublisher(
       collection
-        .aggregate[BsonValue](Seq(standardFilters, projection) ++ additionalFilters)
+        .aggregate[BsonValue](Seq(standardFilters, projection) ++ extraFilters)
         .allowDiskUse(true)
         .map(Codecs.fromBson[JsObject](_))
     )

@@ -27,9 +27,11 @@ object FilterParams {
 
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, FilterParams]] =
         if (params.isEmpty)
-          Some(Left(""))
-        else
-          Some(Right(FilterParams(Seq("" -> "", "" -> ""))))
+          Some(Left("[FilterParams:queryStringBindable:bind] - no parameters found"))
+        else {
+          val queryParams: Seq[(String, String)] = params.toSeq.map(p => (p._1, p._2.head))
+          Some(Right(FilterParams(queryParams)))
+        }
 
       override def unbind(key: String, filters: FilterParams) = s"$key=$filters}"
     }
