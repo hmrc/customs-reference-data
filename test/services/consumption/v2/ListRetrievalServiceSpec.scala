@@ -190,4 +190,44 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
     }
   }
 
+  "getFilteredList" - {
+
+    implicit lazy val actorSystem: ActorSystem = ActorSystem()
+
+    "must return filtered reference data as stream" in {
+
+      val filterParams: FilterParams = new FilterParams(Seq("data.filter" -> "me"))
+      val referenceDataList          = arbitrary[ReferenceDataList].sample.value
+      val version                    = arbitrary[VersionInformation].sample.value
+
+      val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> Json.obj("filter" -> "me")))
+
+      val mockVersionRepository = mock[VersionRepository]
+      val mockListRepository    = mock[ListRepository]
+
+      val app = baseApplicationBuilder.andThen(
+        _.overrides(
+          bind[ListRepository].toInstance(mockListRepository),
+          bind[VersionRepository].toInstance(mockVersionRepository)
+        )
+      )
+
+      val sourceElement        = Json.obj("filter" -> "me")
+      val expectedSourceValues = scala.collection.immutable.Seq.fill(4)(sourceElement)
+
+      running(app) {
+        application =>
+          when(mockListRepository.getListByNameWithFilter(any(), any(), any())).thenReturn(source)
+          when(mockVersionRepository.getLatest(any())).thenReturn(Future.successful(Some(version)))
+
+          val service = application.injector.instanceOf[ListRetrievalService]
+
+          service
+            .getFilteredList(referenceDataList.id, version.versionId, filterParams)
+            .runWith(TestSink.probe[JsObject])
+            .request(4)
+            .expectNextN(expectedSourceValues)
+      }
+    }
+  }
 }

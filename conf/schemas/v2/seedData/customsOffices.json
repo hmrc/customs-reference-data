@@ -1,0 +1,102 @@
+{
+  "messageInformation": {
+    "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
+    "snapshotDate": "2023-01-01"
+  },
+  "lists": {
+    "customsOffices": {
+      "listName": "CustomsOffices",
+      "listEntries": [
+        {
+          "state": "valid",
+          "activeFrom": "2019-01-01",
+          "id": "GB000001",
+          "name": "TEST OFFICE (UK)",
+          "LanguageCode": "EN",
+          "countryId": "GB",
+          "phoneNumber": "+ (376) 879900",
+          "eMailAddress": "Helpdesk_ncts@andorra.ad",
+          "roles": [
+            {
+              "role": "AUT"
+            },
+            {
+              "role": "CAU"
+            },
+            {
+              "role": "DEP"
+            },
+            {
+              "role": "ENQ"
+            },
+            {
+              "role": "DES"
+            },
+            {
+              "role": "REC"
+            }
+          ]
+        },
+        {
+          "state": "valid",
+          "activeFrom": "2019-01-01",
+          "id": "XI000001",
+          "name": "TEST OFFICE (XI)",
+          "LanguageCode": "ES",
+          "countryId": "XI",
+          "phoneNumber": "+ (376) 879900",
+          "roles": [
+            {
+              "role": "AUT"
+            },
+            {
+              "role": "CAU"
+            },
+            {
+              "role": "DEP"
+            },
+            {
+              "role": "ENQ"
+            },
+            {
+              "role": "DES"
+            },
+            {
+              "role": "REC"
+            }
+          ]
+        },
+        {
+          "state": "valid",
+          "activeFrom": "2019-01-01",
+          "id": "AD000001",
+          "name": "BUREAU DE SANT JULIÀ DE LÒRIA",
+          "LanguageCode": "FR",
+          "countryId": "AD",
+          "phoneNumber": "+ (376) 879900",
+          "eMailAddress": "Helpdesk_ncts@andorra.ad",
+          "roles": [
+            {
+              "role": "AUT"
+            },
+            {
+              "role": "CAU"
+            },
+            {
+              "role": "DEP"
+            },
+            {
+              "role": "ENQ"
+            },
+            {
+              "role": "DES"
+            },
+            {
+              "role": "REC"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

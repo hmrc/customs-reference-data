@@ -79,7 +79,6 @@
                   "LanguageCode",
                   "countryId",
                   "phoneNumber",
-                  "eMailAddress",
                   "roles"
                 ]
               }

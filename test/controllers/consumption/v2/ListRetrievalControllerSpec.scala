@@ -20,6 +20,7 @@ import akka.NotUsed
 import akka.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
+import models.FilterParams
 import models.ReferenceDataList
 import models.VersionInformation
 import org.mockito.ArgumentMatchers.any
@@ -97,6 +98,52 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
         verify(mockListRetrievalService, never()).getStreamedList(eqTo(referenceDataList.id), any())
+      }
+    }
+
+    "getFiltered" - {
+
+      "should return OK" in {
+
+        val filterParams: FilterParams = new FilterParams(Seq("countryId" -> "GB", "role" -> "DEP"))
+
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
+        val version           = arbitrary[VersionInformation].sample.value
+        val url               = s"/customs-reference-data/filtered-lists/${referenceDataList.id.listName}?countryId=GB&role=DEP"
+
+        val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
+
+        val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
+
+        when(mockListRetrievalService getLatestVersion (any())).thenReturn(Future.successful(Some(version)))
+        when(mockListRetrievalService.getFilteredList(any(), any(), any())).thenReturn(source)
+
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe OK
+
+        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
+        verify(mockListRetrievalService).getFilteredList(referenceDataList.id, version.versionId, filterParams)
+      }
+
+      "should return NotFound when latest version returns None" in {
+
+        val referenceDataList = arbitrary[ReferenceDataList].sample.value
+        val url               = s"/customs-reference-data/filtered-lists/${referenceDataList.id.listName}?countryId=GB&role=DEP"
+
+        val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
+
+        val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value"))
+
+        when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
+        when(mockListRetrievalService.getFilteredList(any(), any(), any())).thenReturn(source)
+
+        val result = route(app, fakeRequest).get
+
+        status(result) mustBe NOT_FOUND
+
+        verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
+        verify(mockListRetrievalService, never()).getFilteredList(eqTo(referenceDataList.id), any(), any())
       }
     }
   }

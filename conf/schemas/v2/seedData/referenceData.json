@@ -1,0 +1,344 @@
+{
+  "messageInformation": {
+    "messageID": "74bd0784-8dc9-4eba-a435-9914ace26995",
+    "snapshotDate": "2023-01-01"
+  },
+  "lists": {
+    "CountryCodesCommonTransit": {
+      "listName": "CountryCodesCommonTransit",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
+    "CountryCodesFullList": {
+      "listName": "CountryCodesFullList",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
+    "CountryWithoutZip": {
+      "listName": "CountryWithoutZip",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR"
+        }
+      ]
+    },
+    "CountryCustomsSecurityAgreementArea": {
+      "listName": "CountryCustomsSecurityAgreementArea",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
+    "CountryAddressPostcodeBased": {
+      "listName": "CountryAddressPostcodeBased",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "IE",
+          "state": "valid",
+          "description": "Ireland"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "NL",
+          "state": "valid",
+          "description": "Netherlands"
+        }
+      ]
+    },
+    "TransportModeCode": {
+      "listName": "TransportModeCode",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "17",
+          "state": "valid",
+          "description": "(semi) Trailer on sea-going vessel"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "4",
+          "state": "valid",
+          "description": "Air transport"
+        }
+      ]
+    },
+    "PreviousDocumentType": {
+      "listName": "PreviousDocumentType",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "T1",
+          "state": "valid",
+          "description": "Document T1"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "T2F",
+          "state": "valid",
+          "description": "Internal Community transit Declaration"
+        }
+      ]
+    },
+    "DocumentTypeExcise": {
+      "listName": "DocumentTypeExcise",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "18",
+          "state": "valid",
+          "description": "Movement certificate A.TR.1"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "2",
+          "state": "valid",
+          "description": "Certificate of conformity"
+        }
+      ]
+    },
+    "KindOfPackages": {
+      "listName": "KindOfPackages",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1A",
+          "state": "valid",
+          "description": "Drum, steel"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1B",
+          "state": "valid",
+          "description": "Drum, aluminum"
+        }
+      ]
+    },
+    "KindOfPackagesBulk": {
+      "listName": "KindOfPackagesBulk",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1A",
+          "state": "valid",
+          "description": "Drum, steel"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1B",
+          "state": "valid",
+          "description": "Drum, aluminum"
+        }
+      ]
+    },
+    "KindOfPackagesUnpacked": {
+      "listName": "KindOfPackagesUnpacked",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1A",
+          "state": "valid",
+          "description": "Drum, steel"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1B",
+          "state": "valid",
+          "description": "Drum, aluminum"
+        }
+      ]
+    },
+    "AdditionalReference": {
+      "listName": "AdditionalReference",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "documentType": "Y023",
+          "state": "valid",
+          "description": "Consignee (AEO certificate number)"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "documentType": "Y022",
+          "state": "valid",
+          "description": "Consignor / exporter (AEO certificate number)"
+        }
+      ]
+    },
+    "AdditionalInformation": {
+      "listName": "AdditionalInformation",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "10600",
+          "state": "valid",
+          "description": "Negotiable Bill of lading 'to order blank endorsed'"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "DG0",
+          "state": "valid",
+          "description": "Export subject to restriction"
+        }
+      ]
+    },
+    "CurrencyCodes": {
+      "listName": "CurrencyCodes",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "currency": "CHF",
+          "state": "valid",
+          "description": "Swiss Franc"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "currency": "EUR",
+          "state": "valid",
+          "description": "Euro"
+        }
+      ]
+    },
+    "UnLocodeExtended": {
+      "listName": "UnLocodeExtended",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "unLocodeExtendedCode": "ADALV",
+          "state": "valid",
+          "name": "Andorra la Vella"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "unLocodeExtendedCode": "ADALV",
+          "state": "valid",
+          "name": "Andorra la Vella"
+        }
+      ]
+    },
+    "Unit": {
+      "listName": "Unit",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "CTM",
+          "state": "valid",
+          "description": "Carats (one metric carat = 2 x 10-4kg)"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GRM",
+          "state": "valid",
+          "description": "Gram"
+        }
+      ]
+    },
+    "FunctionalErrorCodesIeCA": {
+      "listName": "FunctionalErrorCodesIeCA",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "12",
+          "state": "valid",
+          "description": "Codelist violation"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "13",
+          "state": "valid",
+          "description": "Condition violation (Missing)"
+        }
+      ]
+    },
+    "BusinessRejectionTypeDepExp": {
+      "listName": "BusinessRejectionTypeDepExp",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "013",
+          "state": "valid",
+          "description": "Amendment rejection"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "015",
+          "state": "valid",
+          "description": "Declaration rejection"
+        }
+      ]
+    },
+    "RejectionCodeDepartureExport": {
+      "listName": "RejectionCodeDepartureExport",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "12",
+          "state": "valid",
+          "description": "Message with functional error(s) - Violation of Rules &amp; Conditions"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "7",
+          "state": "valid",
+          "description": "Guarantee not valid for this customs territory"
+        }
+      ]
+    },
+    "Nationality": {
+      "listName": "Nationality",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    }
+  }
+}
