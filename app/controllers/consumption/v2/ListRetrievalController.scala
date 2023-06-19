@@ -38,7 +38,6 @@ class ListRetrievalController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  // TODO - bounce a request on this endpoint where it is < v2.0
   def get(listName: ListName): Action[AnyContent] =
     Action.async {
       (
@@ -53,7 +52,6 @@ class ListRetrievalController @Inject() (
       }
     }
 
-  // TODO - bounce a request on this endpoint where it is < v2.0
   def getFiltered(listName: ListName, filter: FilterParams): Action[AnyContent] =
     Action.async {
       (

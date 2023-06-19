@@ -46,7 +46,6 @@ abstract class IngestionController @Inject() (
 
   val source: ApiDataSource
 
-  // TODO - bounce a request on this endpoint where it is < v2.0
   def post(): Action[JsValue] =
     Action(parseRequestBody(parse)).async {
       implicit request =>
