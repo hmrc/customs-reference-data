@@ -12,4 +12,10 @@
 GET     /v2.0/customs-reference-data/lists/:listName                                controllers.consumption.testOnly.ListRetrievalController.get(listName: ListName)
 GET     /v2.0/customs-reference-data/filtered-lists/:listName                       controllers.consumption.testOnly.ListRetrievalController.getFiltered(listName: ListName, filter: FilterParams)
 
+# Add all the application routes to the app.routes file
+->         /v1.0/customs-reference-data              app_version_1_0.Routes
+->         /v2.0/customs-reference-data              app_version_2_0.Routes
+->         /                                         health.Routes
+
+GET        /admin/metrics                            com.kenshoo.play.metrics.MetricsController.metrics
 
