@@ -51,7 +51,7 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
 
-      (result \ "_links" \ "self" \ "href").as[String] mustBe controllers.consumption.v1.routes.ListRetrievalController.get(name).url.substring(5)
+      (result \ "_links" \ "self" \ "href").as[String] mustBe s"/customs-reference-data/lists/${name.listName}"
       (result \ "meta").as[MetaData] mustBe meta
       (result \ "id").as[String] mustBe name.listName
       (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))

@@ -45,7 +45,10 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
       .map(a => ByteString(Json.stringify(Json.toJson(a))))
       .intersperse(ByteString(jsonFormat), ByteString(","), ByteString("]}"))
 
-  private def removeVersionFromHref(href: String): String = href.substring(5)
+  private def removeVersionFromHref(href: String): String = {
+    val regex = """v(\d+).(\d+)/""".r
+    regex.replaceAllIn(href, "")
+  }
 }
 
 object StreamReferenceData {
