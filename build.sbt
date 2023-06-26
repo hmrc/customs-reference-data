@@ -1,6 +1,5 @@
 import play.sbt.routes.RoutesKeys
 import scoverage.ScoverageKeys
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "customs-reference-data"
 
@@ -8,7 +7,6 @@ lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(resolvers += Resolver.jcenterRepo)
-  .settings(publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(itSettings): _*)
