@@ -24,11 +24,12 @@ import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.MetaData
 import org.scalatest.OptionValues
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
-class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues {
+class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues with GuiceOneAppPerSuite {
 
   "StreamReferenceData" - {
 
@@ -55,6 +56,8 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       (result \ "meta").as[MetaData] mustBe meta
       (result \ "id").as[String] mustBe name.listName
       (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))
+
+      actorSystem.terminate()
     }
   }
 }
