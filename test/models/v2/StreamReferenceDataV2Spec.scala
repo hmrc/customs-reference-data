@@ -23,19 +23,22 @@ import akka.util.ByteString
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.MetaData
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.OptionValues
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
-class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues with GuiceOneAppPerSuite {
+class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues with BeforeAndAfterAll {
+
+  implicit lazy val actorSystem: ActorSystem = ActorSystem()
+
+  override def afterAll(): Unit =
+    actorSystem.terminate()
 
   "StreamReferenceData" - {
 
     "must transform stream and turn it into a ByteString" in {
-
-      implicit lazy val actorSystem: ActorSystem = ActorSystem()
 
       val name = arbitraryListName.arbitrary.sample.value
       val meta = arbitraryMetaData.arbitrary.sample.value
