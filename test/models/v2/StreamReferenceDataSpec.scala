@@ -54,7 +54,7 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
         .expectNextN(11)
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
-      val url    = controllers.consumption.v1.routes.ListRetrievalController.get(name).url
+      val url    = controllers.consumption.v2.routes.ListRetrievalController.get(name).url
 
       val href = (result \ "_links" \ "self" \ "href").as[String]
       url must include(href)
