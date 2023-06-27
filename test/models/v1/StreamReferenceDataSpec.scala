@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.v2
+package models.v1
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
@@ -54,9 +54,10 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
         .expectNextN(11)
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
+      val url    = controllers.consumption.v1.routes.ListRetrievalController.get(name).url
 
       val href = (result \ "_links" \ "self" \ "href").as[String]
-      href must include(s"/customs-reference-data/lists/${name.listName}")
+      url must include(href)
       href mustNot include("v1.0/")
       href mustNot include("v2.0/")
 
@@ -64,7 +65,6 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       (result \ "id").as[String] mustBe name.listName
       (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))
 
-      actorSystem.terminate()
     }
   }
 }
