@@ -51,13 +51,19 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
         .expectNextN(11)
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
+      val url    = s"${removeVersionFromHref(controllers.consumption.v1.routes.ListRetrievalController.get(name).url)}"
 
-      (result \ "_links" \ "self" \ "href").as[String] mustBe s"/customs-reference-data/lists/${name.listName}"
+      (result \ "_links" \ "self" \ "href").as[String] mustBe url
       (result \ "meta").as[MetaData] mustBe meta
       (result \ "id").as[String] mustBe name.listName
       (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))
 
       actorSystem.terminate()
+    }
+
+    def removeVersionFromHref(href: String): String = {
+      val regex = """v(\d+).(\d+)/""".r
+      regex.replaceAllIn(href, "")
     }
   }
 }
