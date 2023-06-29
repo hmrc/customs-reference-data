@@ -94,7 +94,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe NOT_FOUND
+        status(result) mustBe NO_CONTENT
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
         verify(mockListRetrievalService, never()).getStreamedList(eqTo(referenceDataList.id), any())
@@ -140,7 +140,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe NOT_FOUND
+        status(result) mustBe NO_CONTENT
 
         verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
         verify(mockListRetrievalService, never()).getFilteredList(eqTo(referenceDataList.id), any(), any())
