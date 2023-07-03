@@ -144,19 +144,7 @@
             "listEntries": {
               "type": "array",
               "items": {
-                "type": "object",
-                "properties": {
-                  "activeFrom": {
-                    "type": "string"
-                  },
-                  "code": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "activeFrom",
-                  "code"
-                ]
+                "type": "string"
               }
             }
           },

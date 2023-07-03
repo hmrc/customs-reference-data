@@ -58,14 +58,20 @@
     "CountryWithoutZip": {
       "listName": "CountryWithoutZip",
       "listEntries": [
-        {
-          "activeFrom": "2023-01-23",
-          "code": "GB"
-        },
-        {
-          "activeFrom": "2023-01-23",
-          "code": "FR"
-        }
+        "AE",
+        "AG",
+        "AI",
+        "AO",
+        "AW",
+        "BF",
+        "BI",
+        "BJ",
+        "BM",
+        "BO",
+        "BQ",
+        "BS",
+        "BW",
+        "BZ"
       ]
     },
     "CountryCustomsSecurityAgreementArea": {
