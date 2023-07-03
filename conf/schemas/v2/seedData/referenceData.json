@@ -58,20 +58,26 @@
     "CountryWithoutZip": {
       "listName": "CountryWithoutZip",
       "listEntries": [
-        "AE",
-        "AG",
-        "AI",
-        "AO",
-        "AW",
-        "BF",
-        "BI",
-        "BJ",
-        "BM",
-        "BO",
-        "BQ",
-        "BS",
-        "BW",
-        "BZ"
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "AE",
+          "state": "valid"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "AG",
+          "state": "valid"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "BO",
+          "state": "valid"
+        }
       ]
     },
     "CountryCustomsSecurityAgreementArea": {
