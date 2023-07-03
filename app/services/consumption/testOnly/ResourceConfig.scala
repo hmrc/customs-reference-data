@@ -47,4 +47,7 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
 
   val unLocode: String =
     config.get[String]("resourceFiles.unLocodeExtended")
+
+  val nationality: String =
+    config.get[String]("resourceFiles.nationality")
 }

@@ -20,6 +20,7 @@ import models._
 import models.testOnly.Country
 import models.testOnly.CountryWithoutZip
 import models.testOnly.CustomsOffice
+import models.testOnly.Nationality
 import models.testOnly.Role
 import models.testOnly.UnLocode
 import play.api.Environment
@@ -71,4 +72,7 @@ class ListRetrievalService @Inject() (
 
   def getUnLocodeExtended: Seq[UnLocode] =
     getData[UnLocode](config.unLocode)
+
+  def getNationality: Seq[Nationality] =
+    getData[Nationality](config.nationality)
 }

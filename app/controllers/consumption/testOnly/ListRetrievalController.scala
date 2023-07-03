@@ -70,6 +70,10 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
           )
+        case "Nationality" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
+          )
         case _ => Future.successful(NotFound)
       }
     }
