@@ -18,6 +18,7 @@ package services.consumption.testOnly
 
 import models._
 import models.testOnly.Country
+import models.testOnly.CountryWithoutZip
 import models.testOnly.CustomsOffice
 import models.testOnly.Role
 import models.testOnly.UnLocode
@@ -65,8 +66,8 @@ class ListRetrievalService @Inject() (
   def getCountryAddressPostcodeBased: Seq[Country] =
     getData[Country](config.countryAddressPostcodeBased)
 
-  def getCountryWithoutZip: Seq[Country] =
-    getData[Country](config.countryWithoutZip)
+  def getCountryWithoutZip: Seq[CountryWithoutZip] =
+    getData[CountryWithoutZip](config.countryWithoutZip)
 
   def getUnLocodeExtended: Seq[UnLocode] =
     getData[UnLocode](config.unLocode)
