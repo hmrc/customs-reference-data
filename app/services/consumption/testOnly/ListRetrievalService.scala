@@ -20,6 +20,7 @@ import models._
 import models.testOnly.Country
 import models.testOnly.CustomsOffice
 import models.testOnly.Role
+import models.testOnly.UnLocode
 import play.api.Environment
 
 import javax.inject.Inject
@@ -49,8 +50,24 @@ class ListRetrievalService @Inject() (
     )
   }
 
-  def getCountryCodesCommonTransit: Seq[Country] = getData[Country](config.countryCodesCTC)
+  def getCountryCodesFullList: Seq[Country] =
+    getData[Country](config.countryCodesFullList)
+
+  def getCountryCodesCommunity: Seq[Country] =
+    getData[Country](config.countryCodesCommunity)
+
+  def getCountryCodesCommonTransit: Seq[Country] =
+    getData[Country](config.countryCodesCTC)
 
   def getCountryCustomsSecurityAgreementArea: Seq[Country] =
     getData[Country](config.countryCustomsOfficeSecurityAgreementArea)
+
+  def getCountryAddressPostcodeBased: Seq[Country] =
+    getData[Country](config.countryAddressPostcodeBased)
+
+  def getCountryWithoutZip: Seq[Country] =
+    getData[Country](config.countryWithoutZip)
+
+  def getUnLocodeExtended: Seq[UnLocode] =
+    getData[UnLocode](config.unLocode)
 }

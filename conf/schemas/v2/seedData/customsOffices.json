@@ -18,10 +18,10 @@
           "eMailAddress": "Helpdesk_ncts@andorra.ad",
           "roles": [
             {
-              "role": "AUT"
+              "role": "TRA"
             },
             {
-              "role": "CAU"
+              "role": "DES"
             },
             {
               "role": "DEP"
@@ -93,6 +93,9 @@
             },
             {
               "role": "REC"
+            },
+            {
+              "role": "TRA"
             }
           ]
         }

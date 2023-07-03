@@ -30,7 +30,21 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val countryCodesCTC: String =
     config.get[String]("resourceFiles.countryCodesCTC")
 
+  val countryCodesFullList: String =
+    config.get[String]("resourceFiles.countryCodesFullList")
+
+  val countryCodesCommunity: String =
+    config.get[String]("resourceFiles.countryCodesCommunity")
+
   val countryCustomsOfficeSecurityAgreementArea: String =
     config.get[String]("resourceFiles.countryCustomsOfficeSecurityAgreementArea")
 
+  val countryAddressPostcodeBased: String =
+    config.get[String]("resourceFiles.countryAddressPostcodeBased")
+
+  val countryWithoutZip: String =
+    config.get[String]("resourceFiles.countryWithoutZip")
+
+  val unLocode: String =
+    config.get[String]("resourceFiles.unLocodeExtended")
 }

@@ -1,0 +1,17 @@
+[
+  {
+    "code": "FR",
+    "state": "valid",
+    "description": "France"
+  },
+  {
+    "code": "IT",
+    "state": "valid",
+    "description": "Italy"
+  },
+  {
+    "code": "AT",
+    "state": "valid",
+    "description": "Austria"
+  }
+]

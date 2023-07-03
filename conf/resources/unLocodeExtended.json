@@ -1,0 +1,145 @@
+[
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "ADALV",
+    "name": "Andorra la Vella",
+    "function": "--34-6--",
+    "status": "AI",
+    "date": "0601",
+    "coordinates": "4230N 00131E",
+    "comment": "Muy Vella"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "ADCAN",
+    "name": "Canillo",
+    "function": "--3-----",
+    "status": "RL",
+    "date": "0307",
+    "coordinates": "4234N 00135E"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2022-08-02",
+    "unLocodeExtendedCode": "ADFMO",
+    "name": "La Farga de Moles",
+    "function": "--3----B",
+    "status": "RQ",
+    "date": "0307"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "AEFAT",
+    "name": "Fateh Terminal",
+    "function": "1-------",
+    "status": "QQ",
+    "date": "8103"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "AEHSN",
+    "name": "Hassyan",
+    "subdivision": "DU",
+    "function": "1-3-----",
+    "status": "AA",
+    "date": "1901",
+    "coordinates": "2454N 05454E"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2022-08-02",
+    "unLocodeExtendedCode": "AMHRA",
+    "name": "Hrazdan",
+    "function": "-23-----",
+    "status": "AM",
+    "date": "2101",
+    "coordinates": "4032N 04446E"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "AUABL",
+    "name": "Amberley",
+    "subdivision": "QLD",
+    "function": "---4----",
+    "status": "AC",
+    "date": "9709"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "AUBAK",
+    "name": "Bakers Creek",
+    "subdivision": "QLD",
+    "function": "--3-----",
+    "status": "UR",
+    "date": "9701"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "BEAAB",
+    "name": "Aalst",
+    "subdivision": "VOV",
+    "function": "1-3-----",
+    "status": "RN",
+    "date": "0307",
+    "coordinates": "5056N 00402E"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2022-08-05",
+    "unLocodeExtendedCode": "BRALQ",
+    "name": "Alegrete",
+    "subdivision": "RS",
+    "function": "---4----",
+    "status": "XX",
+    "date": "2107"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "CAALK",
+    "name": "Adlavik",
+    "subdivision": "NL",
+    "function": "1-3-----",
+    "status": "AS",
+    "date": "0501",
+    "coordinates": "5455N 05855W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "DEAAL",
+    "name": "Aalen",
+    "subdivision": "BW",
+    "function": "-23-----",
+    "status": "AF",
+    "date": "9501"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2022-08-02",
+    "unLocodeExtendedCode": "FRG6E",
+    "name": "Goyave",
+    "function": "--3-----",
+    "status": "",
+    "date": "2101",
+    "coordinates": "1608N 06134W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "GBACF",
+    "name": "Abercraf",
+    "subdivision": "POW",
+    "function": "--3--6--",
+    "status": "AQ",
+    "date": "0601",
+    "coordinates": "5148N 00342W"
+  }
+]

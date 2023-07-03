@@ -42,13 +42,33 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
           )
+        case "CountryCodesFullList" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesFullList)))
+          )
         case "CountryCodesCommonTransit" =>
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
           )
+        case "CountryCodesCommunity" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
+          )
         case "CountryCustomsSecurityAgreementArea" =>
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
+          )
+        case "CountryAddressPostcodeBased" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryAddressPostcodeBased)))
+          )
+        case "CountryWithoutZip" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryWithoutZip)))
+          )
+        case "UnLocodeExtended" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
           )
         case _ => Future.successful(NotFound)
       }
