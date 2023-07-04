@@ -1,0 +1,2648 @@
+[
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "1A",
+    "description": "Drum, steel",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "1B",
+    "description": "Drum, aluminium",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "1D",
+    "description": "Drum, plywood",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "1F",
+    "description": "Container, flexible",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "1G",
+    "description": "Drum, fibre",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "1W",
+    "description": "Drum, wooden",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "2C",
+    "description": "Barrel, wooden",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "3A",
+    "description": "Jerrican, steel",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "3H",
+    "description": "Jerrican, plastic",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "43",
+    "description": "Bag, super bulk",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "44",
+    "description": "Bag, polybag",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4A",
+    "description": "Box, steel",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4B",
+    "description": "Box, aluminium",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4C",
+    "description": "Box, natural wood",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4D",
+    "description": "Box, plywood",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4F",
+    "description": "Box, reconstituted wood",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4G",
+    "description": "Box, fibreboard",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "4H",
+    "description": "Box, plastic",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "5H",
+    "description": "Bag, woven plastic",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "5L",
+    "description": "Bag, textile",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "5M",
+    "description": "Bag, paper",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "6H",
+    "description": "Composite packaging, plastic receptacle",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "6P",
+    "description": "Composite packaging, glass receptacle",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "7A",
+    "description": "Case, car",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "7B",
+    "description": "Case, wooden",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "8A",
+    "description": "Pallet, wooden",
+    "type" : "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "8B",
+    "description": "Crate, wooden",
+"type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "8C",
+    "description": "Bundle, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AA",
+    "description": "Intermediate bulk container, rigid plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AB",
+    "description": "Receptacle, fibre",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AC",
+    "description": "Receptacle, paper",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AD",
+    "description": "Receptacle, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "AE",
+    "description": "Aerosol",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AF",
+    "description": "Pallet, modular, collars 80cm * 60cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AG",
+    "description": "Pallet, shrinkwrapped",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AH",
+    "description": "Pallet, 100cm * 110cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AI",
+    "description": "Clamshell",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AJ",
+    "description": "Cone",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "AL",
+    "description": "Ball",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "AM",
+    "description": "Ampoule, non-protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "AP",
+    "description": "Ampoule, protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "AT",
+    "description": "Atomizer",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "AV",
+    "description": "Capsule",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "B4",
+    "description": "Belt",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BA",
+    "description": "Barrel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BB",
+    "description": "Bobbin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BC",
+    "description": "Bottlecrate / bottlerack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BD",
+    "description": "Board",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BE",
+    "description": "Bundle",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BF",
+    "description": "Balloon, non-protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BG",
+    "description": "Bag",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BH",
+    "description": "Bunch",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BI",
+    "description": "Bin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BJ",
+    "description": "Bucket",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BK",
+    "description": "Basket",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BL",
+    "description": "Bale, compressed",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BM",
+    "description": "Basin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BN",
+    "description": "Bale, non-compressed",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BO",
+    "description": "Bottle, non-protected, cylindrical",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BP",
+    "description": "Balloon, protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BQ",
+    "description": "Bottle, protected cylindrical",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BR",
+    "description": "Bar",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BS",
+    "description": "Bottle, non-protected, bulbous",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BT",
+    "description": "Bolt",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BU",
+    "description": "Butt",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BV",
+    "description": "Bottle, protected bulbous",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BW",
+    "description": "Box, for liquids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BX",
+    "description": "Box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "BY",
+    "description": "Board, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "BZ",
+    "description": "Bars, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CA",
+    "description": "Can, rectangular",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CB",
+    "description": "Crate, beer",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CC",
+    "description": "Churn",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CD",
+    "description": "Can, with handle and spout",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CE",
+    "description": "Creel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CF",
+    "description": "Coffer",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CG",
+    "description": "Cage",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CH",
+    "description": "Chest",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CI",
+    "description": "Canister",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CJ",
+    "description": "Coffin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CK",
+    "description": "Cask",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CL",
+    "description": "Coil",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CM",
+    "description": "Card",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CN",
+    "description": "Container, not otherwise specified as transport equipment",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CO",
+    "description": "Carboy, non-protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CP",
+    "description": "Carboy, protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CQ",
+    "description": "Cartridge",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CR",
+    "description": "Crate",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CS",
+    "description": "Case",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CT",
+    "description": "Carton",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CU",
+    "description": "Cup",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CV",
+    "description": "Cover",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "CW",
+    "description": "Cage, roll",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CX",
+    "description": "Can, cylindrical",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CY",
+    "description": "Cylinder",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "CZ",
+    "description": "Canvas",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DA",
+    "description": "Crate, multiple layer, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DB",
+    "description": "Crate, multiple layer, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DC",
+    "description": "Crate, multiple layer, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DG",
+    "description": "Cage, Commonwealth Handling Equipment Pool (CHEP)",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DH",
+    "description": "Box, Commonwealth Handling Equipment Pool (CHEP), Eurobox",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DI",
+    "description": "Drum, iron",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "DJ",
+    "description": "Demijohn, non-protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DK",
+    "description": "Crate, bulk, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DL",
+    "description": "Crate, bulk, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DM",
+    "description": "Crate, bulk, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DN",
+    "description": "Dispenser",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "DP",
+    "description": "Demijohn, protected",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "DR",
+    "description": "Drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DS",
+    "description": "Tray, one layer no cover, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DT",
+    "description": "Tray, one layer no cover, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DU",
+    "description": "Tray, one layer no cover, polystyrene",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DV",
+    "description": "Tray, one layer no cover, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DW",
+    "description": "Tray, two layers no cover, plastic tray",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DX",
+    "description": "Tray, two layers no cover, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "DY",
+    "description": "Tray, two layers no cover, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EC",
+    "description": "Bag, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ED",
+    "description": "Case, with pallet base",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EE",
+    "description": "Case, with pallet base, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EF",
+    "description": "Case, with pallet base, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EG",
+    "description": "Case, with pallet base, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EH",
+    "description": "Case, with pallet base, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EI",
+    "description": "Case, isothermic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "EN",
+    "description": "Envelope",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FB",
+    "description": "Flexibag",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FC",
+    "description": "Crate, fruit",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FD",
+    "description": "Crate, framed",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FE",
+    "description": "Flexitank",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FI",
+    "description": "Firkin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FL",
+    "description": "Flask",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FO",
+    "description": "Footlocker",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FP",
+    "description": "Filmpack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FR",
+    "description": "Frame",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "FT",
+    "description": "Foodtainer",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "FW",
+    "description": "Cart, flatbed",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "FX",
+    "description": "Bag, flexible container",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GB",
+    "description": "Bottle, gas",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GI",
+    "description": "Girder",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GL",
+    "description": "Container, gallon",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GR",
+    "description": "Receptacle, glass",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GU",
+    "description": "Tray, containing horizontally stacked flat items",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GY",
+    "description": "Bag, gunny",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "GZ",
+    "description": "Girders, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "HA",
+    "description": "Basket, with handle, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "HB",
+    "description": "Basket, with handle, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "HC",
+    "description": "Basket, with handle, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "HG",
+    "description": "Hogshead",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "HN",
+    "description": "Hanger",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "HR",
+    "description": "Hamper",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IA",
+    "description": "Package, display, wooden",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IB",
+    "description": "Package, display, cardboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IC",
+    "description": "Package, display, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ID",
+    "description": "Package, display, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IE",
+    "description": "Package, show",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IF",
+    "description": "Package, flow",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IG",
+    "description": "Package, paper wrapped",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IH",
+    "description": "Drum, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "IK",
+    "description": "Package, cardboard, with bottle grip-holes",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "IL",
+    "description": "Tray, rigid, lidded stackable (CEN TS 14482:2002)",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "IN",
+    "description": "Ingot",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "IZ",
+    "description": "Ingots, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JB",
+    "description": "Bag, jumbo",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JC",
+    "description": "Jerrican, rectangular",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JG",
+    "description": "Jug",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JR",
+    "description": "Jar",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JT",
+    "description": "Jutebag",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "JY",
+    "description": "Jerrican, cylindrical",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "KG",
+    "description": "Keg",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "KI",
+    "description": "Kit",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "LE",
+    "description": "Luggage",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "LG",
+    "description": "Log",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "LT",
+    "description": "Lot",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "LU",
+    "description": "Lug",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "LV",
+    "description": "Liftvan",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "LZ",
+    "description": "Logs, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MA",
+    "description": "Crate, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MB",
+    "description": "Bag, multiply",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MC",
+    "description": "Crate, milk",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "ME",
+    "description": "Container, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "MR",
+    "description": "Receptacle, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MS",
+    "description": "Sack, multi-wall",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MT",
+    "description": "Mat",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "MW",
+    "description": "Receptacle, plastic wrapped",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "MX",
+    "description": "Matchbox",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NA",
+    "description": "Not available",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "NE",
+    "description": "Unpacked or unpackaged",
+    "type": "Unpacked"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NF",
+    "description": "Unpacked or unpackaged, single unit",
+    "type": "Unpacked"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NG",
+    "description": "Unpacked or unpackaged, multiple units",
+    "type": "Unpacked"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "NS",
+    "description": "Nest",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "NT",
+    "description": "Net",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NU",
+    "description": "Net, tube, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NV",
+    "description": "Net, tube, textile",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OA",
+    "description": "Pallet, CHEP 40 cm x 60 cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OB",
+    "description": "Pallet, CHEP 80 cm x 120 cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OC",
+    "description": "Pallet, CHEP 100 cm x 120 cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OD",
+    "description": "Pallet, AS 4068-1993",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OE",
+    "description": "Pallet, ISO T11",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OF",
+    "description": "Platform, unspecified weight or dimension",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OK",
+    "description": "Block",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OT",
+    "description": "Octabin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "OU",
+    "description": "Container, outer",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "P2",
+    "description": "Pan",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PA",
+    "description": "Packet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PB",
+    "description": "Pallet, box Combined open-ended box and pallet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PC",
+    "description": "Parcel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PD",
+    "description": "Pallet, modular, collars 80cm * 100cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PE",
+    "description": "Pallet, modular, collars 80cm * 120cm",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PF",
+    "description": "Pen",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PG",
+    "description": "Plate",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PH",
+    "description": "Pitcher",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PI",
+    "description": "Pipe",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PJ",
+    "description": "Punnet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PK",
+    "description": "Package",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PL",
+    "description": "Pail",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PN",
+    "description": "Plank",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PO",
+    "description": "Pouch",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PP",
+    "description": "Piece",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PR",
+    "description": "Receptacle, plastic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PT",
+    "description": "Pot",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PU",
+    "description": "Tray",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PV",
+    "description": "Pipes, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PX",
+    "description": "Pallet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "PY",
+    "description": "Plates, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "PZ",
+    "description": "Planks, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QA",
+    "description": "Drum, steel, non-removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QB",
+    "description": "Drum, steel, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QC",
+    "description": "Drum, aluminium, non-removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QD",
+    "description": "Drum, aluminium, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QF",
+    "description": "Drum, plastic, non-removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QG",
+    "description": "Drum, plastic, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QH",
+    "description": "Barrel, wooden, bung type",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QJ",
+    "description": "Barrel, wooden, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QK",
+    "description": "Jerrican, steel, non-removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QL",
+    "description": "Jerrican, steel, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QM",
+    "description": "Jerrican, plastic, non-removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QN",
+    "description": "Jerrican, plastic, removable head",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QP",
+    "description": "Box, wooden, natural wood, ordinary",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QQ",
+    "description": "Box, wooden, natural wood, with sift proof walls",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QR",
+    "description": "Box, plastic, expanded",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "QS",
+    "description": "Box, plastic, solid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RD",
+    "description": "Rod",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RG",
+    "description": "Ring",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "RJ",
+    "description": "Rack, clothing hanger",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "RK",
+    "description": "Rack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RL",
+    "description": "Reel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RO",
+    "description": "Roll",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RT",
+    "description": "Rednet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "RZ",
+    "description": "Rods, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SA",
+    "description": "Sack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SB",
+    "description": "Slab",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SC",
+    "description": "Crate, shallow",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SD",
+    "description": "Spindle",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SE",
+    "description": "Sea-chest",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SH",
+    "description": "Sachet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SI",
+    "description": "Skid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SK",
+    "description": "Case, skeleton",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SL",
+    "description": "Slipsheet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SM",
+    "description": "Sheetmetal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SO",
+    "description": "Spool",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SP",
+    "description": "Sheet, plastic wrapping",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SS",
+    "description": "Case, steel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "ST",
+    "description": "Sheet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SU",
+    "description": "Suitcase",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SV",
+    "description": "Envelope, steel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SW",
+    "description": "Shrinkwrapped",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SX",
+    "description": "Set",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "SY",
+    "description": "Sleeve",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "SZ",
+    "description": "Sheets, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "T1",
+    "description": "Tablet",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "TB",
+    "description": "Tub",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TC",
+    "description": "Tea-chest",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "TD",
+    "description": "Tube, collapsible",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TE",
+    "description": "Tyre",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TG",
+    "description": "Tank container, generic",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "TI",
+    "description": "Tierce",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TK",
+    "description": "Tank, rectangular",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "TL",
+    "description": "Tub, with lid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TN",
+    "description": "Tin",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TO",
+    "description": "Tun",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TR",
+    "description": "Trunk",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TS",
+    "description": "Truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TT",
+    "description": "Bag, tote",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TU",
+    "description": "Tube",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "TV",
+    "description": "Tube, with nozzle",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TW",
+    "description": "Pallet, triwall",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TY",
+    "description": "Tank, cylindrical",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "TZ",
+    "description": "Tubes, in bundle/bunch/truss",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "UC",
+    "description": "Uncaged",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "UN",
+    "description": "Unit",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VA",
+    "description": "Vat",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VG",
+    "description": "Bulk, gas (at 1031 mbar and 15°C)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VI",
+    "description": "Vial",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VK",
+    "description": "Vanpack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VL",
+    "description": "Bulk, liquid",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VN",
+    "description": "Vehicle",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VO",
+    "description": "Bulk, solid, large particles (&quot;nodules&quot;)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VP",
+    "description": "Vacuum-packed",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VQ",
+    "description": "Bulk, liquefied gas (at abnormal temperature/pressure)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VR",
+    "description": "Bulk, solid, granular particles (&quot;grains&quot;)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VS",
+    "description": "Bulk, scrap metal",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VY",
+    "description": "Bulk, solid, fine particles (&quot;powders&quot;)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WA",
+    "description": "Intermediate bulk container",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "WB",
+    "description": "Wickerbottle",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WC",
+    "description": "Intermediate bulk container, steel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WD",
+    "description": "Intermediate bulk container, aluminium",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WF",
+    "description": "Intermediate bulk container, metal",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WG",
+    "description": "Intermediate bulk container, steel, pressurised > 10 kpa",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WH",
+    "description": "Intermediate bulk container, aluminium, pressurised > 10 kpa",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WJ",
+    "description": "Intermediate bulk container, metal, pressure 10 kpa",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WK",
+    "description": "Intermediate bulk container, steel, liquid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WL",
+    "description": "Intermediate bulk container, aluminium, liquid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WM",
+    "description": "Intermediate bulk container, metal, liquid",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WN",
+    "description": "Intermediate bulk container, woven plastic, without coat/liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WP",
+    "description": "Intermediate bulk container, woven plastic, coated",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WQ",
+    "description": "Intermediate bulk container, woven plastic, with liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WR",
+    "description": "Intermediate bulk container, woven plastic, coated and liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WS",
+    "description": "Intermediate bulk container, plastic film",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WT",
+    "description": "Intermediate bulk container, textile without coat/liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WU",
+    "description": "Intermediate bulk container, natural wood, with inner liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WV",
+    "description": "Intermediate bulk container, textile, coated",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WW",
+    "description": "Intermediate bulk container, textile, with liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WX",
+    "description": "Intermediate bulk container, textile, coated and liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WY",
+    "description": "Intermediate bulk container, plywood, with inner liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "WZ",
+    "description": "Intermediate bulk container, reconstituted wood, with inner liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XA",
+    "description": "Bag, woven plastic, without inner coat/liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XB",
+    "description": "Bag, woven plastic, sift proof",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XC",
+    "description": "Bag, woven plastic, water resistant",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XD",
+    "description": "Bag, plastics film",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XF",
+    "description": "Bag, textile, without inner coat/liner",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XG",
+    "description": "Bag, textile, sift proof",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XH",
+    "description": "Bag, textile, water resistant",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XJ",
+    "description": "Bag, paper, multi-wall",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "XK",
+    "description": "Bag, paper, multi-wall, water resistant",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YA",
+    "description": "Composite packaging, plastic receptacle in steel drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YB",
+    "description": "Composite packaging, plastic receptacle in steel crate box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YC",
+    "description": "Composite packaging, plastic receptacle in aluminium drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YD",
+    "description": "Composite packaging, plastic receptacle in aluminium crate",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YF",
+    "description": "Composite packaging, plastic receptacle in wooden box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YG",
+    "description": "Composite packaging, plastic receptacle in plywood drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YH",
+    "description": "Composite packaging, plastic receptacle in plywood box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YJ",
+    "description": "Composite packaging, plastic receptacle in fibre drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YK",
+    "description": "Composite packaging, plastic receptacle in fibreboard box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YL",
+    "description": "Composite packaging, plastic receptacle in plastic drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YM",
+    "description": "Composite packaging, plastic receptacle in solid plastic box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YN",
+    "description": "Composite packaging, glass receptacle in steel drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YP",
+    "description": "Composite packaging, glass receptacle in steel crate box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YQ",
+    "description": "Composite packaging, glass receptacle in aluminium drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YR",
+    "description": "Composite packaging, glass receptacle in aluminium crate",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YS",
+    "description": "Composite packaging, glass receptacle in wooden box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YT",
+    "description": "Composite packaging, glass receptacle in plywood drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YV",
+    "description": "Composite packaging, glass receptacle in wickerwork hamper",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YW",
+    "description": "Composite packaging, glass receptacle in fibre drum",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YX",
+    "description": "Composite packaging, glass receptacle in fibreboard box",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YY",
+    "description": "Composite packaging, glass receptacle in expandable plastic pack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "YZ",
+    "description": "Composite packaging, glass receptacle in solid plastic pack",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZA",
+    "description": "Intermediate bulk container, paper, multi-wall",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZB",
+    "description": "Bag, large",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZC",
+    "description": "Intermediate bulk container, paper, multi-wall, water resistant",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZD",
+    "description": "Intermediate bulk container, rigid plastic, with structural equipment, solids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZF",
+    "description": "Intermediate bulk container, rigid plastic, freestanding, solids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZG",
+    "description": "Intermediate bulk container, rigid plastic, with structural equipment, pressurised",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZH",
+    "description": "Intermediate bulk container, rigid plastic, freestanding, pressurised",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZJ",
+    "description": "Intermediate bulk container, rigid plastic, with structural equipment, liquids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2018-02-06",
+    "code": "ZK",
+    "description": "Intermediate bulk container, rigid plastic, freestanding, liquids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2018-02-06",
+    "code": "ZL",
+    "description": "Intermediate bulk container, composite, rigid plastic, solids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZM",
+    "description": "Intermediate bulk container, composite, flexible plastic, solids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZN",
+    "description": "Intermediate bulk container, composite, rigid plastic, pressurised",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZP",
+    "description": "Intermediate bulk container, composite, flexible plastic, pressurised",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2018-02-06",
+    "code": "ZQ",
+    "description": "Intermediate bulk container, composite, rigid plastic, liquids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZR",
+    "description": "Intermediate bulk container, composite, flexible plastic, liquids",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZS",
+    "description": "Intermediate bulk container, composite",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZT",
+    "description": "Intermediate bulk container, fibreboard",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZU",
+    "description": "Intermediate bulk container, flexible",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZV",
+    "description": "Intermediate bulk container, metal, other than steel",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZW",
+    "description": "Intermediate bulk container, natural wood",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZX",
+    "description": "Intermediate bulk container, plywood",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZY",
+    "description": "Intermediate bulk container, reconstituted wood",
+    "type": "Other"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "ZZ",
+    "description": "Mutually defined",
+    "type": "Other"
+  }
+]

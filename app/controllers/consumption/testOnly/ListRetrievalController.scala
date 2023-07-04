@@ -74,6 +74,26 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
           )
+        case "PreviousDocumentType" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getPreviousDocumentType)))
+          )
+        case "SupportingDocumentType" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getSupportingDocumentType)))
+          )
+        case "TransportDocumentType" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getTransportDocumentType)))
+          )
+        case "KindOfPackages" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
+          )
+        case "Unit" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
+          )
         case _ => Future.successful(NotFound)
       }
     }

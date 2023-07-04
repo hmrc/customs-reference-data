@@ -20,8 +20,13 @@ import models._
 import models.testOnly.Country
 import models.testOnly.CountryWithoutZip
 import models.testOnly.CustomsOffice
+import models.testOnly.KindOfPackage
+import models.testOnly.Metric
 import models.testOnly.Nationality
+import models.testOnly.PreviousDocumentType
 import models.testOnly.Role
+import models.testOnly.SupportingDocumentType
+import models.testOnly.TransportDocumentType
 import models.testOnly.UnLocode
 import play.api.Environment
 
@@ -75,4 +80,19 @@ class ListRetrievalService @Inject() (
 
   def getNationality: Seq[Nationality] =
     getData[Nationality](config.nationality)
+
+  def getPreviousDocumentType: Seq[PreviousDocumentType] =
+    getData[PreviousDocumentType](config.previousDocumentType)
+
+  def getSupportingDocumentType: Seq[SupportingDocumentType] =
+    getData[SupportingDocumentType](config.supportingDocumentType)
+
+  def getTransportDocumentType: Seq[TransportDocumentType] =
+    getData[TransportDocumentType](config.transportDocumentType)
+
+  def getKindOfPackages: Seq[KindOfPackage] =
+    getData[KindOfPackage](config.kindOfPackage)
+
+  def getUnit: Seq[Metric] =
+    getData[Metric](config.metric)
 }

@@ -50,4 +50,19 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
 
   val nationality: String =
     config.get[String]("resourceFiles.nationality")
+
+  val previousDocumentType: String =
+    config.get[String]("resourceFiles.previousDocumentType")
+
+  val supportingDocumentType: String =
+    config.get[String]("resourceFiles.supportingDocumentType")
+
+  val transportDocumentType: String =
+    config.get[String]("resourceFiles.transportDocumentType")
+
+  val kindOfPackage: String =
+    config.get[String]("resourceFiles.kindOfPackage")
+
+  val metric: String =
+    config.get[String]("resourceFiles.metric")
 }
