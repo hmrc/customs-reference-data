@@ -283,6 +283,82 @@
             "listEntries"
           ]
         },
+        "SupportingDocumentType": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        "TransportDocumentType": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
         "PreviousDocumentType": {
           "type": "object",
           "properties": {
@@ -824,6 +900,8 @@
         "CountryCustomsSecurityAgreementArea",
         "CountryAddressPostcodeBased",
         "TransportModeCode",
+        "SupportingDocumentType",
+        "TransportDocumentType",
         "PreviousDocumentType",
         "DocumentTypeExcise",
         "KindOfPackages",
