@@ -135,6 +135,44 @@
             "listEntries"
           ]
         },
+        "CountryCodesForAddress": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
         "CountryWithoutZip": {
           "type": "object",
           "properties": {
