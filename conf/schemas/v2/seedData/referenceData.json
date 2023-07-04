@@ -131,6 +131,40 @@
         }
       ]
     },
+    "SupportingDocumentType": {
+      "listName": "SupportingDocumentType",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "C085",
+          "state": "valid",
+          "description": "Document C085"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "C640",
+          "state": "valid",
+          "description": "Document C640"
+        }
+      ]
+    },
+    "TransportDocumentType": {
+      "listName": "TransportDocumentType",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "N703",
+          "state": "valid",
+          "description": "Document N703"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "N704",
+          "state": "valid",
+          "description": "Document type N704"
+        }
+      ]
+    },
     "PreviousDocumentType": {
       "listName": "PreviousDocumentType",
       "listEntries": [
