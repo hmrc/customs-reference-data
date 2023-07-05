@@ -20,6 +20,7 @@ import models._
 import models.testOnly.AdditionalReference
 import models.testOnly.Country
 import models.testOnly.CountryWithoutZip
+import models.testOnly.CurrencyCode
 import models.testOnly.CustomsOffice
 import models.testOnly.KindOfPackage
 import models.testOnly.Metric
@@ -108,4 +109,7 @@ class ListRetrievalService @Inject() (
 
   def getUnit: Seq[Metric] =
     getData[Metric](config.metric)
+
+  def getCurrencyCodes: Seq[CurrencyCode] =
+    getData[CurrencyCode](config.currencyCode)
 }

@@ -110,6 +110,10 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
           )
+        case "CurrencyCodes" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCurrencyCodes)))
+          )
         case _ => Future.successful(NotFound)
       }
     }
