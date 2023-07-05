@@ -36,6 +36,9 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val countryCodesCommunity: String =
     config.get[String]("resourceFiles.countryCodesCommunity")
 
+  val countryCodesForAddress: String =
+    config.get[String]("resourceFiles.countryCodesForAddress")
+
   val countryCustomsOfficeSecurityAgreementArea: String =
     config.get[String]("resourceFiles.countryCustomsOfficeSecurityAgreementArea")
 

@@ -54,6 +54,10 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
           )
+        case "CountryCodesForAddress" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesForAddress)))
+          )
         case "CountryCustomsSecurityAgreementArea" =>
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
