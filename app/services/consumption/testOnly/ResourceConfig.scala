@@ -63,6 +63,18 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val kindOfPackage: String =
     config.get[String]("resourceFiles.kindOfPackage")
 
+  val kindOfPackageBulk: String =
+    config.get[String]("resourceFiles.kindOfPackageBulk")
+
+  val kindOfPackageUnpacked: String =
+    config.get[String]("resourceFiles.kindOfPackageUnpacked")
+
+  val additionalReference: String =
+    config.get[String]("resourceFiles.additionalReference")
+
+  val additionalInformation: String =
+    config.get[String]("resourceFiles.additionalInformation")
+
   val metric: String =
     config.get[String]("resourceFiles.metric")
 }

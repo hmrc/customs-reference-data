@@ -90,6 +90,22 @@ class ListRetrievalController @Inject() (
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
           )
+        case "KindOfPackagesBulk" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesBulk)))
+          )
+        case "KindOfPackagesUnpacked" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesUnpacked)))
+          )
+        case "AdditionalReference" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalReference)))
+          )
+        case "AdditionalInformation" =>
+          Future.successful(
+            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalInformation)))
+          )
         case "Unit" =>
           Future.successful(
             Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))

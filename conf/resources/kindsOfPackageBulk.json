@@ -1,0 +1,58 @@
+[
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VL",
+    "description": "Bulk, liquid",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VR",
+    "description": "Bulk, solid, granular particles (&quot;grains&quot;)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VS",
+    "description": "Bulk, scrap metal",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VY",
+    "description": "Bulk, solid, fine particles (&quot;powders&quot;)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VQ",
+    "description": "Bulk, liquefied gas (at abnormal temperature/pressure)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VG",
+    "description": "Bulk, gas (at 1031 mbar and 15°C)",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "VL",
+    "description": "Bulk, liquid",
+    "type": "Bulk"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "VO",
+    "description": "Bulk, solid, large particles (&quot;nodules&quot;)",
+    "type": "Bulk"
+  }
+]

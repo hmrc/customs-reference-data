@@ -1,0 +1,23 @@
+[
+  {
+    "state": "valid",
+    "activeFrom": "2015-07-01",
+    "code": "NE",
+    "description": "Unpacked or unpackaged",
+    "type": "Unpacked"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NF",
+    "description": "Unpacked or unpackaged, single unit",
+    "type": "Unpacked"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2015-10-01",
+    "code": "NG",
+    "description": "Unpacked or unpackaged, multiple units",
+    "type": "Unpacked"
+  }
+]

@@ -17,6 +17,7 @@
 package services.consumption.testOnly
 
 import models._
+import models.testOnly.AdditionalReference
 import models.testOnly.Country
 import models.testOnly.CountryWithoutZip
 import models.testOnly.CustomsOffice
@@ -92,6 +93,18 @@ class ListRetrievalService @Inject() (
 
   def getKindOfPackages: Seq[KindOfPackage] =
     getData[KindOfPackage](config.kindOfPackage)
+
+  def getKindOfPackagesBulk: Seq[KindOfPackage] =
+    getData[KindOfPackage](config.kindOfPackageBulk)
+
+  def getKindOfPackagesUnpacked: Seq[KindOfPackage] =
+    getData[KindOfPackage](config.kindOfPackageUnpacked)
+
+  def getAdditionalReference: Seq[AdditionalReference] =
+    getData[AdditionalReference](config.additionalReference)
+
+  def getAdditionalInformation: Seq[AdditionalReference] =
+    getData[AdditionalReference](config.additionalInformation)
 
   def getUnit: Seq[Metric] =
     getData[Metric](config.metric)
