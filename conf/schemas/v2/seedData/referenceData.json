@@ -55,6 +55,40 @@
         }
       ]
     },
+    "CountryCodesForAddress": {
+      "listName": "CountryCodesForAddress",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
+    "CountryCodesWithAddress": {
+      "listName": "CountryCodesWithAddress",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
     "CountryWithoutZip": {
       "listName": "CountryWithoutZip",
       "listEntries": [
