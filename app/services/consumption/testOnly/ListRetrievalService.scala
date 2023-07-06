@@ -71,6 +71,9 @@ class ListRetrievalService @Inject() (
   def getCountryCodesCommonTransit: Seq[Country] =
     getData[Country](config.countryCodesCommonTransit)
 
+  def getCountryCodesCTC: Seq[Country] =
+    getData[Country](config.countryCodesCTC)
+
   def getCountryCustomsSecurityAgreementArea: Seq[Country] =
     getData[Country](config.countryCustomsOfficeSecurityAgreementArea)
 

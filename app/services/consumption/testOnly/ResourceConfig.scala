@@ -30,6 +30,9 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val countryCodesCommonTransit: String =
     config.get[String]("resourceFiles.countryCodesCommonTransit")
 
+  val countryCodesCTC: String =
+    config.get[String]("resourceFiles.countryCodesCTC")
+
   val countryCodesFullList: String =
     config.get[String]("resourceFiles.countryCodesFullList")
 
