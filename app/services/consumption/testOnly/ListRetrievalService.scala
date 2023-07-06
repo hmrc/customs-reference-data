@@ -17,19 +17,7 @@
 package services.consumption.testOnly
 
 import models._
-import models.testOnly.AdditionalReference
-import models.testOnly.Country
-import models.testOnly.CountryWithoutZip
-import models.testOnly.CurrencyCode
-import models.testOnly.CustomsOffice
-import models.testOnly.KindOfPackage
-import models.testOnly.Metric
-import models.testOnly.Nationality
-import models.testOnly.PreviousDocumentType
-import models.testOnly.Role
-import models.testOnly.SupportingDocumentType
-import models.testOnly.TransportDocumentType
-import models.testOnly.UnLocode
+import models.testOnly.{AdditionalInformation, AdditionalReference, Country, CountryWithoutZip, CurrencyCode, CustomsOffice, KindOfPackage, Metric, Nationality, PreviousDocumentType, Role, SupportingDocumentType, TransportDocumentType, UnLocode}
 import play.api.Environment
 
 import javax.inject.Inject
@@ -110,8 +98,8 @@ class ListRetrievalService @Inject() (
   def getAdditionalReference: Seq[AdditionalReference] =
     getData[AdditionalReference](config.additionalReference)
 
-  def getAdditionalInformation: Seq[AdditionalReference] =
-    getData[AdditionalReference](config.additionalInformation)
+  def getAdditionalInformation: Seq[AdditionalInformation] =
+    getData[AdditionalInformation](config.additionalInformation)
 
   def getUnit: Seq[Metric] =
     getData[Metric](config.metric)
