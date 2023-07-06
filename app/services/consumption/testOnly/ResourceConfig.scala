@@ -27,8 +27,8 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val customsOfficeP5: String =
     config.get[String]("resourceFiles.customsOfficesP5")
 
-  val countryCodesCTC: String =
-    config.get[String]("resourceFiles.countryCodesCTC")
+  val countryCodesCommonTransit: String =
+    config.get[String]("resourceFiles.countryCodesCommonTransit")
 
   val countryCodesFullList: String =
     config.get[String]("resourceFiles.countryCodesFullList")
