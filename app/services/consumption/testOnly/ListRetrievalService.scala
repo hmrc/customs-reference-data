@@ -50,6 +50,21 @@ class ListRetrievalService @Inject() (
   def getCountryCodesFullList: Seq[Country] =
     getData[Country](config.countryCodesFullList)
 
+  def getCountryCodesWithFilter(filterParams: FilterParams): Seq[Country] = {
+
+    val data = getData[Country](config.countryCodesFullList)
+
+    val countryCode = filterParams.parameters.toMap.get("data.code")
+
+    data.filter(
+      x =>
+        countryCode match {
+          case Some(code) => x.code == code
+          case _ => true
+        }
+    )
+  }
+
   def getCountryCodesCommunity: Seq[Country] =
     getData[Country](config.countryCodesCommunity)
 

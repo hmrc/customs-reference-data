@@ -143,6 +143,14 @@ class ListRetrievalController @Inject() (
               )
             )
           )
+        case "CountryCodesFullList" =>
+          Ok(
+            Json.obj(
+              "data" -> Json.toJson(
+                listRetrievalService.getCountryCodesWithFilter(filterParams)
+              )
+            )
+          )
         case _ => Future.successful(NotFound)
       }
     }
