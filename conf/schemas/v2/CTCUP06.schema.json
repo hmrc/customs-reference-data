@@ -966,6 +966,44 @@
             "listName",
             "listEntries"
           ]
+        },
+        "ControlType": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
         }
       },
       "required": [
@@ -993,7 +1031,8 @@
         "FunctionalErrorCodesIeCA",
         "BusinessRejectionTypeDepExp",
         "RejectionCodeDepartureExport",
-        "Nationality"
+        "Nationality",
+        "ControlType"
       ]
     }
   },

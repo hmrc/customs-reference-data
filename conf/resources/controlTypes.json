@@ -1,0 +1,42 @@
+[
+  {
+    "code": "10",
+    "description": "Documentary controls"
+  },
+  {
+    "code": "20",
+    "description": "Nuclear/radioactive material check"
+  },
+  {
+    "code": "30",
+    "description": "Non-intrusive inspection"
+  },
+  {
+    "code": "40",
+    "description": "Physical controls"
+  },
+  {
+    "code": "41",
+    "description": "Identification of consignment and seals"
+  },
+  {
+    "code": "42",
+    "description": "Intrusive inspection"
+  },
+  {
+    "code": "43",
+    "description": "Quantity control / Partial or total"
+  },
+  {
+    "code": "44",
+    "description": "Nature and characteristics of the goods"
+  },
+  {
+    "code": "45",
+    "description": "Sampling"
+  },
+  {
+    "code": "50",
+    "description": "Other"
+  }
+]

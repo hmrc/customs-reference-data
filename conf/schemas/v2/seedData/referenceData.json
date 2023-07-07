@@ -436,6 +436,23 @@
           "description": "France"
         }
       ]
+    },
+    "ControlType": {
+      "listName": "ControlType",
+      "listEntries": [
+        {
+          "activeFrom": "2022-05-10",
+          "code": "10",
+          "state": "valid",
+          "description": "Documentary controls"
+        },
+        {
+          "activeFrom": "2022-05-10",
+          "code": "20",
+          "state": "valid",
+          "description": "Nuclear/radioactive material check"
+        }
+      ]
     }
   }
 }

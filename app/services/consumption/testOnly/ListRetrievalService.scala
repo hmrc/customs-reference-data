@@ -17,7 +17,7 @@
 package services.consumption.testOnly
 
 import models._
-import models.testOnly.{AdditionalInformation, AdditionalReference, Country, CountryWithoutZip, CurrencyCode, CustomsOffice, KindOfPackage, Metric, Nationality, PreviousDocumentType, Role, SupportingDocumentType, TransportDocumentType, UnLocode}
+import models.testOnly._
 import play.api.Environment
 
 import javax.inject.Inject
@@ -106,4 +106,7 @@ class ListRetrievalService @Inject() (
 
   def getCurrencyCodes: Seq[CurrencyCode] =
     getData[CurrencyCode](config.currencyCode)
+
+  def getControlType: Seq[ControlType] =
+    getData[ControlType](config.currencyCode)
 }
