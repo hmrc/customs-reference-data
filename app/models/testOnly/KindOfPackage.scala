@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import play.api.libs.json.OWrites
 import play.api.libs.json.Reads
 
-case class KindOfPackage(code: String, description: String, `type`: Option[PackageType])
+case class KindOfPackage(code: String, description: String)
 
 object KindOfPackage {
 

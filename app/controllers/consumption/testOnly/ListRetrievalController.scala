@@ -36,97 +36,53 @@ class ListRetrievalController @Inject() (
     extends BackendController(cc) {
 
   def get(listName: ListName): Action[AnyContent] =
-    Action.async {
+    Action {
       listName.listName match {
         case "CustomsOffices" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
         case "CountryCodesFullList" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesFullList)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesFullList)))
         case "CountryCodesCommonTransit" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
         case "CountryCodesCTC" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCTC)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCTC)))
         case "CountryCodesCommunity" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
         case "CountryCodesForAddress" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesForAddress)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesForAddress)))
         case "CountryCustomsSecurityAgreementArea" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
         case "CountryAddressPostcodeBased" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryAddressPostcodeBased)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryAddressPostcodeBased)))
         case "CountryWithoutZip" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryWithoutZip)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryWithoutZip)))
         case "UnLocodeExtended" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
         case "Nationality" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
         case "PreviousDocumentType" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getPreviousDocumentType)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getPreviousDocumentType)))
         case "SupportingDocumentType" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getSupportingDocumentType)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getSupportingDocumentType)))
         case "TransportDocumentType" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getTransportDocumentType)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getTransportDocumentType)))
         case "KindOfPackages" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
         case "KindOfPackagesBulk" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesBulk)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesBulk)))
         case "KindOfPackagesUnpacked" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesUnpacked)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesUnpacked)))
         case "AdditionalReference" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalReference)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalReference)))
         case "AdditionalInformation" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalInformation)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalInformation)))
         case "Unit" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
         case "CurrencyCodes" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCurrencyCodes)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCurrencyCodes)))
         case "ControlType" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getControlType)))
-          )
-        case _ => Future.successful(NotFound)
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getControlType)))
+        case _ => NotFound
       }
     }
 

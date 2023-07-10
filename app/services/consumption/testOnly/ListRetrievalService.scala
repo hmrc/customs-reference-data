@@ -92,14 +92,14 @@ class ListRetrievalService @Inject() (
   def getNationality: Seq[Nationality] =
     getData[Nationality](config.nationality)
 
-  def getPreviousDocumentType: Seq[PreviousDocumentType] =
-    getData[PreviousDocumentType](config.previousDocumentType)
+  def getPreviousDocumentType: Seq[DocumentType] =
+    getData[DocumentType](config.previousDocumentType)
 
-  def getSupportingDocumentType: Seq[SupportingDocumentType] =
-    getData[SupportingDocumentType](config.supportingDocumentType)
+  def getSupportingDocumentType: Seq[DocumentType] =
+    getData[DocumentType](config.supportingDocumentType)
 
-  def getTransportDocumentType: Seq[TransportDocumentType] =
-    getData[TransportDocumentType](config.transportDocumentType)
+  def getTransportDocumentType: Seq[DocumentType] =
+    getData[DocumentType](config.transportDocumentType)
 
   def getKindOfPackages: Seq[KindOfPackage] =
     getData[KindOfPackage](config.kindOfPackage)
