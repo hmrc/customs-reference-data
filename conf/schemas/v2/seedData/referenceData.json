@@ -55,6 +55,23 @@
         }
       ]
     },
+    "CountryCodesCTC": {
+      "listName": "CountryCodesCTC",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "GB",
+          "state": "valid",
+          "description": "United Kingdom"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "FR",
+          "state": "valid",
+          "description": "France"
+        }
+      ]
+    },
     "CountryCodesForAddress": {
       "listName": "CountryCodesForAddress",
       "listEntries": [
@@ -434,6 +451,40 @@
           "code": "FR",
           "state": "valid",
           "description": "France"
+        }
+      ]
+    },
+    "ControlType": {
+      "listName": "ControlType",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "10",
+          "state": "valid",
+          "description": "Documentary Control"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "20",
+          "state": "valid",
+          "description": "Nuclear/radioactive material check"
+        }
+      ]
+    },
+    "SpecificCircumstancesIndicatorCode": {
+      "listName": "SpecificCircumstancesIndicatorCode",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "A20",
+          "state": "valid",
+          "description": "Express consignments in the context of exit summary declarations"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "XXX",
+          "state": "valid",
+          "description": "Authorised economic operators"
         }
       ]
     }
