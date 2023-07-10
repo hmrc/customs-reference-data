@@ -27,9 +27,9 @@ lazy val microservice = Project(appName, file("."))
 
 lazy val scoverageSettings =
   Seq(
-    ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
+    ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.testOnly;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
     ScoverageKeys.coverageMinimumStmtTotal := 85.00,
-    ScoverageKeys.coverageExcludedFiles := "<empty>;.*javascript.*;.*Routes.*;",
+    ScoverageKeys.coverageExcludedFiles := "<empty>;.*javascript.*;.*json.*;.*Routes.*;",
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     Test / parallelExecution := false

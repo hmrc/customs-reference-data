@@ -60,7 +60,7 @@ class ListRetrievalService @Inject() (
       x =>
         countryCode match {
           case Some(code) => x.code == code
-          case _ => true
+          case _          => true
         }
     )
   }
