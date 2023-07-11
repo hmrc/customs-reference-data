@@ -58,44 +58,26 @@ class ListRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
 
-  def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] = {
-    val filter = Aggregates.filter(
+  def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams] = None): Source[JsObject, NotUsed] = {
+
+    val standardFilters = Aggregates.filter(
       Filters.and(
         Filters.eq("listName", listName.listName),
         Filters.eq("versionId", versionId.versionId)
       )
     )
 
-    val projection = Aggregates.project(
-      Projections.fields(
-        Projections.include("data"),
-        Projections.exclude("_id")
+    val extraFilters: Seq[Bson] = filter
+      .map(
+        x =>
+          x.parameters.map(
+            f =>
+              Aggregates.filter(
+                Filters.eq(fieldName = f._1, value = f._2)
+              )
+          )
       )
-    )
-
-    Source.fromPublisher(
-      collection
-        .aggregate[BsonValue](Seq(filter, projection))
-        .allowDiskUse(true)
-        .map(Codecs.fromBson[JsObject](_))
-    )
-  }
-
-  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] = {
-
-    val standardFilters: Bson = Aggregates.filter(
-      Filters.and(
-        Filters.eq(fieldName = "listName", value = listName.listName),
-        Filters.eq(fieldName = "versionId", value = versionId.versionId)
-      )
-    )
-
-    val extraFilters: Seq[Bson] = filter.parameters.map(
-      f =>
-        Aggregates.filter(
-          Filters.eq(fieldName = f._1, value = f._2)
-        )
-    )
+      .getOrElse(Seq.empty)
 
     val projection = Aggregates.project(
       Projections.fields(
@@ -111,6 +93,9 @@ class ListRepository @Inject() (
         .map(Codecs.fromBson[JsObject](_))
     )
   }
+
+  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
+    getListByName(listName, versionId, Some(filter))
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
