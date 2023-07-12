@@ -1,0 +1,18 @@
+[
+  {
+    "code": "20100",
+    "description": "Export from one EFTA country subject to restriction or export from the Union subject to restriction"
+  },
+  {
+    "code": "20200",
+    "description": "Export from one EFTA country subject to duties or export from the Union subject to duties"
+  },
+  {
+    "code": "20300",
+    "description": "Export"
+  },
+  {
+    "code": "30600",
+    "description": "In EXS, where negotiable bills of lading 'to order blank endorsed' are concerned and the consignee particulars are unknown."
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "code": "C085",
+    "description": "Common Health Entry Document for Plants and Plant Products (CHED-PP) (as set out in Part 2, Section C of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
+  },
+  {
+    "code": "C640",
+    "description": "Common Veterinary Entry Document (CVED) in accordance with Commission Regulation (EC) No. 282/2004, used for veterinary checks on live animals"
+  },
+  {
+    "code": "C641",
+    "description": "Dissostichus - catch document import"
+  },
+  {
+    "code": "C651",
+    "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+  },
+  {
+    "code": "C656",
+    "description": "Dissostichus - Catch document export"
+  },
+  {
+    "code": "C658",
+    "description": "Fallback Accompanying Document for movements of excise goods under suspension of excise duty (FAD), as referred to in Article 8(1) Reg. (EC) No 684/2009"
+  },
+  {
+    "code": "C673",
+    "description": "Catch certificate"
+  },
+  {
+    "code": "C678",
+    "description": "Common entry document (CED) (model of which is set out in Annex II of the Regulation (EC) No 669/2009 (OJ L 194))"
+  },
+  {
+    "code": "C690",
+    "description": "FLEGT import licence for timber"
+  },
+  {
+    "code": "L001",
+    "description": "Import licence AGRIM"
+  },
+  {
+    "code": "L079",
+    "description": "Textile products: import licence"
+  },
+  {
+    "code": "L100",
+    "description": "Import licence &quot;controlled substances&quot; (ozone), issued by the Commission"
+  },
+  {
+    "code": "L116",
+    "description": "Kimberley Process Certificate"
+  },
+  {
+    "code": "N002",
+    "description": "Certificate of conformity with the European Union marketing standards for fresh fruit and vegetables"
+  },
+  {
+    "code": "N003",
+    "description": "Certificate of quality"
+  },
+  {
+    "code": "N018",
+    "description": "ATR certificate"
+  },
+  {
+    "code": "N325",
+    "description": "Proforma invoice"
+  },
+  {
+    "code": "N380",
+    "description": "Commercial invoice"
+  },
+  {
+    "code": "N820",
+    "description": "Transit declaration &quot;T&quot;"
+  },
+  {
+    "code": "N821",
+    "description": "External Community transit declaration / common transit, T1"
+  },
+  {
+    "code": "N822",
+    "description": "Internal Community transit declaration T2"
+  },
+  {
+    "code": "N825",
+    "description": "T2L document"
+  },
+  {
+    "code": "N851",
+    "description": "Phytosanitary certificate"
+  },
+  {
+    "code": "N852",
+    "description": "Analysis and health certificate"
+  },
+  {
+    "code": "N853",
+    "description": "Common Veterinary Entry Document (CVED) in accordance with Regulation (EC) No. 136/2004, used for veterinary check on products"
+  },
+  {
+    "code": "N861",
+    "description": "Universal certificate of origin"
+  },
+  {
+    "code": "N862",
+    "description": "Declaration of origin"
+  },
+  {
+    "code": "N864",
+    "description": "Preference certificate of origin (declaration of preferential origin on the invoice; EUR.2)"
+  },
+  {
+    "code": "N865",
+    "description": "Certificate of origin Form A"
+  },
+  {
+    "code": "N911",
+    "description": "Import licence"
+  },
+  {
+    "code": "N933",
+    "description": "Cargo declaration (arrival)"
+  },
+  {
+    "code": "N941",
+    "description": "Embargo permit"
+  },
+  {
+    "code": "N951",
+    "description": "TIF form"
+  },
+  {
+    "code": "N954",
+    "description": "Movement certificate EUR.1"
+  },
+  {
+    "code": "NZZZ",
+    "description": "Document equivalent to ‘ZZZ’ defined in Commission Delegated Regulation (EU) 2016/341 (Appendix D2: Additional codes for the computerised transit system)"
+  }
+]

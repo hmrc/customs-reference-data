@@ -1,0 +1,38 @@
+[
+  {
+    "currency": "CHF",
+    "description": "Swiss Franc"
+  },
+  {
+    "currency": "CZK",
+    "description": "Czech Koruna"
+  },
+  {
+    "currency": "DKK",
+    "description": "Danisk Krone"
+  },
+  {
+    "currency": "EUR",
+    "description": "Euro"
+  },
+  {
+    "currency": "GBP",
+    "description": "Pound Sterling"
+  },
+  {
+    "currency": "HUF",
+    "description": "Florint"
+  },
+  {
+    "currency": "ISK",
+    "description": "Icelandic Krona"
+  },
+  {
+    "currency": "MKD",
+    "description": "Macedonian Denar"
+  },
+  {
+    "currency": "NOK",
+    "description": "Norwegian Krone"
+  }
+]

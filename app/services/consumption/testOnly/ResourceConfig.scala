@@ -27,10 +27,66 @@ private[testOnly] class ResourceConfig @Inject() (config: Configuration) {
   val customsOfficeP5: String =
     config.get[String]("resourceFiles.customsOfficesP5")
 
+  val countryCodesCommonTransit: String =
+    config.get[String]("resourceFiles.countryCodesCommonTransit")
+
   val countryCodesCTC: String =
     config.get[String]("resourceFiles.countryCodesCTC")
+
+  val countryCodesFullList: String =
+    config.get[String]("resourceFiles.countryCodesFullList")
+
+  val countryCodesCommunity: String =
+    config.get[String]("resourceFiles.countryCodesCommunity")
+
+  val countryCodesForAddress: String =
+    config.get[String]("resourceFiles.countryCodesForAddress")
 
   val countryCustomsOfficeSecurityAgreementArea: String =
     config.get[String]("resourceFiles.countryCustomsOfficeSecurityAgreementArea")
 
+  val countryAddressPostcodeBased: String =
+    config.get[String]("resourceFiles.countryAddressPostcodeBased")
+
+  val countryWithoutZip: String =
+    config.get[String]("resourceFiles.countryWithoutZip")
+
+  val unLocode: String =
+    config.get[String]("resourceFiles.unLocodeExtended")
+
+  val nationality: String =
+    config.get[String]("resourceFiles.nationality")
+
+  val previousDocumentType: String =
+    config.get[String]("resourceFiles.previousDocumentType")
+
+  val supportingDocumentType: String =
+    config.get[String]("resourceFiles.supportingDocumentType")
+
+  val transportDocumentType: String =
+    config.get[String]("resourceFiles.transportDocumentType")
+
+  val kindOfPackage: String =
+    config.get[String]("resourceFiles.kindOfPackage")
+
+  val kindOfPackageBulk: String =
+    config.get[String]("resourceFiles.kindOfPackageBulk")
+
+  val kindOfPackageUnpacked: String =
+    config.get[String]("resourceFiles.kindOfPackageUnpacked")
+
+  val additionalReference: String =
+    config.get[String]("resourceFiles.additionalReference")
+
+  val additionalInformation: String =
+    config.get[String]("resourceFiles.additionalInformation")
+
+  val metric: String =
+    config.get[String]("resourceFiles.metric")
+
+  val currencyCode: String =
+    config.get[String]("resourceFiles.currencyCode")
+
+  val controlType: String =
+    config.get[String]("resourceFiles.controlType")
 }

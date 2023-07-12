@@ -36,21 +36,53 @@ class ListRetrievalController @Inject() (
     extends BackendController(cc) {
 
   def get(listName: ListName): Action[AnyContent] =
-    Action.async {
+    Action {
       listName.listName match {
         case "CustomsOffices" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
+        case "CountryCodesFullList" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesFullList)))
         case "CountryCodesCommonTransit" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
+        case "CountryCodesCTC" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCTC)))
+        case "CountryCodesCommunity" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
+        case "CountryCodesForAddress" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesForAddress)))
         case "CountryCustomsSecurityAgreementArea" =>
-          Future.successful(
-            Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
-          )
-        case _ => Future.successful(NotFound)
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
+        case "CountryAddressPostcodeBased" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryAddressPostcodeBased)))
+        case "CountryWithoutZip" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryWithoutZip)))
+        case "UnLocodeExtended" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
+        case "Nationality" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
+        case "PreviousDocumentType" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getPreviousDocumentType)))
+        case "SupportingDocumentType" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getSupportingDocumentType)))
+        case "TransportDocumentType" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getTransportDocumentType)))
+        case "KindOfPackages" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
+        case "KindOfPackagesBulk" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesBulk)))
+        case "KindOfPackagesUnpacked" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesUnpacked)))
+        case "AdditionalReference" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalReference)))
+        case "AdditionalInformation" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalInformation)))
+        case "Unit" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
+        case "CurrencyCodes" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCurrencyCodes)))
+        case "ControlType" =>
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getControlType)))
+        case _ => NotFound
       }
     }
 
@@ -63,6 +95,16 @@ class ListRetrievalController @Inject() (
               Json.obj(
                 "data" -> Json.toJson(
                   listRetrievalService.getCustomsOfficeWithFilter(filterParams)
+                )
+              )
+            )
+          )
+        case "CountryCodesFullList" =>
+          Future.successful(
+            Ok(
+              Json.obj(
+                "data" -> Json.toJson(
+                  listRetrievalService.getCountryCodesWithFilter(filterParams)
                 )
               )
             )
