@@ -17,23 +17,24 @@
 package services.consumption.testOnly
 
 import play.api.Environment
+import play.api.libs.json.JsArray
 import play.api.libs.json.Json
-import play.api.libs.json.Reads
 
+import javax.inject.Inject
 import scala.io.Source
+import scala.util.Failure
+import scala.util.Try
 
-trait ResourceService {
+class ResourceService @Inject() (env: Environment) {
 
-  val env: Environment
-
-  protected def getData[A](dataFile: String)(implicit ev: Reads[A]): Seq[A] =
+  def getJson(codeList: String): Try[JsArray] =
     env
-      .resourceAsStream(dataFile)
+      .resourceAsStream(s"resources/$codeList.json")
       .map {
         inputStream =>
           val rawData = Source.fromInputStream(inputStream).mkString
-
-          Json.parse(rawData).as[Seq[A]]
+          Json.parse(rawData)
       }
-      .getOrElse(throw new Exception(s"Could not find file $dataFile"))
+      .map(_.validate[JsArray].asTry)
+      .getOrElse(Failure(new Exception(s"Could not find code list $codeList")))
 }

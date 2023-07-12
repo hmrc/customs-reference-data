@@ -18,6 +18,7 @@ package controllers.consumption.testOnly
 
 import models.FilterParams
 import models.ListName
+import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
@@ -26,74 +27,34 @@ import services.consumption.testOnly.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.util.Failure
+import scala.util.Success
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
   listRetrievalService: ListRetrievalService
-)(implicit ec: ExecutionContext)
-    extends BackendController(cc) {
+) extends BackendController(cc)
+    with Logging {
 
   def get(listName: ListName): Action[AnyContent] =
     Action {
-      listName.listName match {
-        case "CustomsOffices" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOffice)))
-        case "CountryCodesFullList" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesFullList)))
-        case "CountryCodesCommonTransit" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommonTransit)))
-        case "CountryCodesCTC" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCTC)))
-        case "CountryCodesCommunity" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesCommunity)))
-        case "CountryCodesForAddress" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesForAddress)))
-        case "CountryCustomsSecurityAgreementArea" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCustomsSecurityAgreementArea)))
-        case "CountryAddressPostcodeBased" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryAddressPostcodeBased)))
-        case "CountryWithoutZip" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryWithoutZip)))
-        case "UnLocodeExtended" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnLocodeExtended)))
-        case "Nationality" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getNationality)))
-        case "PreviousDocumentType" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getPreviousDocumentType)))
-        case "SupportingDocumentType" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getSupportingDocumentType)))
-        case "TransportDocumentType" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getTransportDocumentType)))
-        case "KindOfPackages" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackages)))
-        case "KindOfPackagesBulk" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesBulk)))
-        case "KindOfPackagesUnpacked" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getKindOfPackagesUnpacked)))
-        case "AdditionalReference" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalReference)))
-        case "AdditionalInformation" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getAdditionalInformation)))
-        case "Unit" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getUnit)))
-        case "CurrencyCodes" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCurrencyCodes)))
-        case "ControlType" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getControlType)))
-        case _ => NotFound
+      listRetrievalService.get(listName.listName) match {
+        case Success(json) =>
+          Ok(Json.obj("data" -> json))
+        case Failure(exception) =>
+          logger.error(exception.getMessage)
+          NotFound
       }
     }
 
   def getFiltered(listName: ListName, filterParams: FilterParams): Action[AnyContent] =
     Action {
-      listName.listName match {
-        case "CustomsOffices" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOfficeWithFilter(filterParams))))
-        case "CountryCodesFullList" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesWithFilter(filterParams))))
-        case _ => NotFound
+      listRetrievalService.getWithFilter(listName.listName, filterParams) match {
+        case Success(json) =>
+          Ok(Json.obj("data" -> json))
+        case Failure(exception) =>
+          logger.error(exception.getMessage)
+          NotFound
       }
     }
 }

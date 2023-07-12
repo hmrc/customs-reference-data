@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-package models.testOnly
+package services.consumption
 
-import play.api.libs.json.Json
-import play.api.libs.json.OWrites
-import play.api.libs.json.Reads
+import play.api.libs.json.JsError
+import play.api.libs.json.JsResult
+import play.api.libs.json.JsSuccess
 
-case class CountryWithoutZip(state: String, code: String)
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
-object CountryWithoutZip {
+package object testOnly {
 
-  implicit val writes: OWrites[CountryWithoutZip] = Json.writes[CountryWithoutZip]
+  implicit class RichJsResult[A](jsResult: JsResult[A]) {
 
-  implicit val readFromFile: Reads[CountryWithoutZip] = Json.reads[CountryWithoutZip]
-
+    def asTry: Try[A] =
+      jsResult match {
+        case JsSuccess(value, _) => Success(value)
+        case JsError(errors)     => Failure(new Exception(errors.mkString))
+      }
+  }
 }
