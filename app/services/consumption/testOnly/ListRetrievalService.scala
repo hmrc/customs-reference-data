@@ -27,21 +27,19 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
   def get(codeList: String): Try[JsArray] = resourceService.getJson(codeList)
 
   def getWithFilter(codeList: String, filterParams: FilterParams): Try[JsArray] =
-    for {
-      json  <- resourceService.getJson(codeList)
-      array <- json.validate[JsArray].asTry
-    } yield {
-      val filteredValues = array.value.filter {
-        obj =>
-          filterParams.parameters.forall {
-            case (key, value) =>
-              val nodes = key.split("\\.").tail // removes "data" from path nodes
-              val values = nodes.tail.foldLeft(obj \\ nodes.head) {
-                case (acc, node) => acc.flatMap(_ \\ node)
-              }
-              values.contains(JsString(value))
-          }
-      }
-      JsArray(filteredValues)
+    resourceService.getJson(codeList).map {
+      json =>
+        val filteredValues = json.value.filter {
+          value =>
+            filterParams.parameters.forall {
+              case (filterParamKey, filterParamValue) =>
+                val nodes = filterParamKey.split("\\.").tail // removes "data" from path nodes
+                val values = nodes.tail.foldLeft(value \\ nodes.head) {
+                  case (acc, node) => acc.flatMap(_ \\ node)
+                }
+                values.contains(JsString(filterParamValue))
+            }
+        }
+        JsArray(filteredValues)
     }
 }
