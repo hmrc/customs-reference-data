@@ -18,20 +18,18 @@ package services.consumption.testOnly
 
 import models._
 import models.testOnly._
-import play.api.Environment
+import play.api.libs.json._
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.util.Try
 
-class ListRetrievalService @Inject() (
-)(implicit ec: ExecutionContext, override val env: Environment, config: ResourceConfig)
-    extends ResourceService {
+class ListRetrievalService @Inject() (resourceService: ResourceService)(implicit config: ResourceConfig) {
 
-  def getCustomsOffice: Seq[CustomsOffice] = getData[CustomsOffice](config.customsOfficeP5)
+  def get(codeList: String): Try[JsValue] = resourceService.getJson(codeList)
 
-  def getCustomsOfficeWithFilter(filterParams: FilterParams): Seq[CustomsOffice] = {
+  def getCustomsOfficesWithFilter(filterParams: FilterParams): Seq[CustomsOffice] = {
 
-    val data = getData[CustomsOffice](config.customsOfficeP5)
+    val data = resourceService.getData[CustomsOffice](config.customsOffices)
 
     val country = filterParams.parameters.toMap.get("data.countryId")
     val role    = filterParams.parameters.toMap.get("data.roles.role")
@@ -47,12 +45,9 @@ class ListRetrievalService @Inject() (
     )
   }
 
-  def getCountryCodesFullList: Seq[Country] =
-    getData[Country](config.countryCodesFullList)
-
   def getCountryCodesWithFilter(filterParams: FilterParams): Seq[Country] = {
 
-    val data = getData[Country](config.countryCodesFullList)
+    val data = resourceService.getData[Country](config.countryCodesFullList)
 
     val countryCode = filterParams.parameters.toMap.get("data.code")
 
@@ -64,64 +59,4 @@ class ListRetrievalService @Inject() (
         }
     )
   }
-
-  def getCountryCodesCommunity: Seq[Country] =
-    getData[Country](config.countryCodesCommunity)
-
-  def getCountryCodesForAddress: Seq[Country] =
-    getData[Country](config.countryCodesForAddress)
-
-  def getCountryCodesCommonTransit: Seq[Country] =
-    getData[Country](config.countryCodesCommonTransit)
-
-  def getCountryCodesCTC: Seq[Country] =
-    getData[Country](config.countryCodesCTC)
-
-  def getCountryCustomsSecurityAgreementArea: Seq[Country] =
-    getData[Country](config.countryCustomsOfficeSecurityAgreementArea)
-
-  def getCountryAddressPostcodeBased: Seq[Country] =
-    getData[Country](config.countryAddressPostcodeBased)
-
-  def getCountryWithoutZip: Seq[CountryWithoutZip] =
-    getData[CountryWithoutZip](config.countryWithoutZip)
-
-  def getUnLocodeExtended: Seq[UnLocode] =
-    getData[UnLocode](config.unLocode)
-
-  def getNationality: Seq[Nationality] =
-    getData[Nationality](config.nationality)
-
-  def getPreviousDocumentType: Seq[DocumentType] =
-    getData[DocumentType](config.previousDocumentType)
-
-  def getSupportingDocumentType: Seq[DocumentType] =
-    getData[DocumentType](config.supportingDocumentType)
-
-  def getTransportDocumentType: Seq[DocumentType] =
-    getData[DocumentType](config.transportDocumentType)
-
-  def getKindOfPackages: Seq[KindOfPackage] =
-    getData[KindOfPackage](config.kindOfPackage)
-
-  def getKindOfPackagesBulk: Seq[KindOfPackage] =
-    getData[KindOfPackage](config.kindOfPackageBulk)
-
-  def getKindOfPackagesUnpacked: Seq[KindOfPackage] =
-    getData[KindOfPackage](config.kindOfPackageUnpacked)
-
-  def getAdditionalReference: Seq[AdditionalReference] =
-    getData[AdditionalReference](config.additionalReference)
-
-  def getAdditionalInformation: Seq[AdditionalInformation] =
-    getData[AdditionalInformation](config.additionalInformation)
-
-  def getUnit: Seq[Metric] =
-    getData[Metric](config.metric)
-
-  def getCurrencyCodes: Seq[CurrencyCode] =
-    getData[CurrencyCode](config.currencyCode)
-
-  def getControlType: Seq[ControlType] =
-    getData[ControlType](config.currencyCode)
 }

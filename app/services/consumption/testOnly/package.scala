@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package models.testOnly
+package services.consumption
 
-import play.api.libs.json._
+import play.api.libs.json.JsError
+import play.api.libs.json.JsResult
+import play.api.libs.json.JsSuccess
 
-case class DocumentType(code: String, description: Option[String])
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
-object DocumentType {
-  implicit val writes: OWrites[DocumentType]     = Json.writes[DocumentType]
-  implicit val readFromFile: Reads[DocumentType] = Json.reads[DocumentType]
+package object testOnly {
+
+  implicit class RichJsResult[A](jsResult: JsResult[A]) {
+
+    def asTry: Try[A] =
+      jsResult match {
+        case JsSuccess(value, _) => Success(value)
+        case JsError(errors)     => Failure(new Exception(errors.mkString))
+      }
+  }
 }

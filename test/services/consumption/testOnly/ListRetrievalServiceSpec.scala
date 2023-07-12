@@ -17,92 +17,124 @@
 package services.consumption.testOnly
 
 import base.SpecBase
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
 import models.FilterParams
-import models.testOnly.Country
 import models.testOnly.CustomsOffice
 import models.testOnly.Role
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalacheck.Gen
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 
-class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances with BaseGenerators with ScalaCheckDrivenPropertyChecks {
+class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
-  "getCustomsOffice" - {
+  private val codeListGen = Gen.oneOf(
+    "CustomsOffices",
+    "CountryCodesCTC",
+    "CountryCodesCommonTransit",
+    "CountryCustomsSecurityAgreementArea",
+    "CountryAddressPostcodeBased",
+    "CountryWithoutZip",
+    "UnLocodeExtended",
+    "CountryCodesFullList",
+    "CountryCodesCommunity",
+    "CountryCodesForAddress",
+    "Nationality",
+    "PreviousDocumentType",
+    "SupportingDocumentType",
+    "TransportDocumentType",
+    "KindOfPackages",
+    "KindOfPackagesBulk",
+    "KindOfPackagesUnpacked",
+    "AdditionalReference",
+    "AdditionalInformation",
+    "Unit",
+    "CurrencyCodes",
+    "ControlType",
+    "SpecificCircumstanceIndicatorCode"
+  )
 
-    "must return many of type CustomsOffice" in {
+  "get" - {
+    "should succeed" - {
+      "when code list found" in {
+        running(baseApplicationBuilder) {
+          application =>
+            val service = application.injector.instanceOf[ListRetrievalService]
+            forAll(codeListGen) {
+              codeList =>
+                val result = service.get(codeList)
+                if (!result.isSuccess) println(codeList)
+                result.isSuccess mustBe true
+            }
+        }
+      }
+    }
 
-      running(baseApplicationBuilder) {
-        application =>
-          val service = application.injector.instanceOf[ListRetrievalService]
+    "should fail" - {
+      "when code list not found" in {
+        running(baseApplicationBuilder) {
+          application =>
+            val service = application.injector.instanceOf[ListRetrievalService]
+            val result  = service.get("foo")
+            result.isSuccess mustBe false
+        }
+      }
+    }
+  }
 
-          val result = service.getCustomsOffice
-          result.nonEmpty mustBe true
-          result.foreach(
-            co => co.isInstanceOf[CustomsOffice] mustBe true
+  "getCustomsOfficesWithFilter" - {
+
+    val customsOffices = Seq(
+      CustomsOffice("XI000142", "Belfast EPU", "XI", None, Seq(Role("DEP"), Role("TRA"))),
+      CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA"))),
+      CustomsOffice("GB000005", "Chelmsford Airport", "GB", None, Seq(Role("TRA")))
+    )
+
+    "must return values that match the filter" - {
+      "when one filter" in {
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getData[CustomsOffice](any())(any())).thenReturn(customsOffices)
+
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          }
+          .build()
+
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("data.countryId" -> "GB"))
+          val result       = service.getCustomsOfficesWithFilter(filterParams)
+
+          result mustBe Seq(
+            CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA"))),
+            CustomsOffice("GB000005", "Chelmsford Airport", "GB", None, Seq(Role("TRA")))
           )
-      }
-    }
-
-    "getCustomsOfficeWithFilter" - {
-
-      "must return many of type CustomsOffice where matches filters" in {
-
-        val filterParams1: FilterParams = FilterParams(parameters = Seq("data.countryId" -> "GB"))
-        val filterParams2: FilterParams = FilterParams(parameters = Seq("data.countryId" -> "GB", "data.roles.role" -> "DEP"))
-
-        running(baseApplicationBuilder) {
-          application =>
-            val service = application.injector.instanceOf[ListRetrievalService]
-
-            val fullList: Seq[CustomsOffice]     = service.getCustomsOffice
-            val country: Seq[CustomsOffice]      = service.getCustomsOfficeWithFilter(filterParams1)
-            val countryRoles: Seq[CustomsOffice] = service.getCustomsOfficeWithFilter(filterParams2)
-
-            country.nonEmpty mustBe true
-            country.foreach(
-              co => co.isInstanceOf[CustomsOffice] mustBe true
-            )
-            country.length < fullList.length mustBe true
-            country.count(x => x.countryId != "GB") mustBe 0
-
-            countryRoles.nonEmpty mustBe true
-            countryRoles.foreach(
-              co => co.isInstanceOf[CustomsOffice] mustBe true
-            )
-            countryRoles.length < fullList.length mustBe true
-            countryRoles.length < country.length mustBe true
-            countryRoles.count(x => !x.roles.contains(Role("DEP"))) mustBe 0
         }
       }
-    }
 
-    "getCountryCodesCommonTransit" - {
+      "when multiple filters" in {
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getData[CustomsOffice](any())(any())).thenReturn(customsOffices)
 
-      "must return CTC country codes" in {
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          }
+          .build()
 
-        running(baseApplicationBuilder) {
-          application =>
-            val service = application.injector.instanceOf[ListRetrievalService]
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("data.countryId" -> "GB", "data.roles.role" -> "AUT"))
+          val result       = service.getCustomsOfficesWithFilter(filterParams)
 
-            val result = service.getCountryCodesCommonTransit
-            result.nonEmpty mustBe true
-            result.foreach(c => c.isInstanceOf[Country] mustBe true)
-        }
-      }
-    }
-
-    "getCountryCustomsSecurityAgreementArea" - {
-
-      "must return getCountryCustomsSecurityAgreementArea country codes" in {
-
-        running(baseApplicationBuilder) {
-          application =>
-            val service = application.injector.instanceOf[ListRetrievalService]
-
-            val result = service.getCountryCustomsSecurityAgreementArea
-            result.nonEmpty mustBe true
-            result.foreach(c => c.isInstanceOf[Country] mustBe true)
+          result mustBe Seq(
+            CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA")))
+          )
         }
       }
     }
