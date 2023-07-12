@@ -49,12 +49,12 @@ class ListRetrievalController @Inject() (
 
   def getFiltered(listName: ListName, filterParams: FilterParams): Action[AnyContent] =
     Action {
-      listName.listName match {
-        case "CustomsOffices" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOfficesWithFilter(filterParams))))
-        case "CountryCodesFullList" =>
-          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesWithFilter(filterParams))))
-        case _ => NotFound
+      listRetrievalService.getWithFilter(listName.listName, filterParams) match {
+        case Success(json) =>
+          Ok(Json.obj("data" -> json))
+        case Failure(exception) =>
+          logger.error(exception.getMessage)
+          NotFound
       }
     }
 }

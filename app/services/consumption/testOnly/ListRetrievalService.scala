@@ -17,46 +17,31 @@
 package services.consumption.testOnly
 
 import models._
-import models.testOnly._
 import play.api.libs.json._
 
 import javax.inject.Inject
 import scala.util.Try
 
-class ListRetrievalService @Inject() (resourceService: ResourceService)(implicit config: ResourceConfig) {
+class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
   def get(codeList: String): Try[JsValue] = resourceService.getJson(codeList)
 
-  def getCustomsOfficesWithFilter(filterParams: FilterParams): Seq[CustomsOffice] = {
-
-    val data = resourceService.getData[CustomsOffice](config.customsOffices)
-
-    val country = filterParams.parameters.toMap.get("data.countryId")
-    val role    = filterParams.parameters.toMap.get("data.roles.role")
-
-    data.filter(
-      x =>
-        (country, role) match {
-          case (Some(country), Some(role)) => x.countryId == country && x.roles.contains(Role(role))
-          case (Some(country), _)          => x.countryId == country
-          case (_, Some(role))             => x.roles.contains(Role(role))
-          case _                           => true
-        }
-    )
-  }
-
-  def getCountryCodesWithFilter(filterParams: FilterParams): Seq[Country] = {
-
-    val data = resourceService.getData[Country](config.countryCodesFullList)
-
-    val countryCode = filterParams.parameters.toMap.get("data.code")
-
-    data.filter(
-      x =>
-        countryCode match {
-          case Some(code) => x.code == code
-          case _          => true
-        }
-    )
-  }
+  def getWithFilter(codeList: String, filterParams: FilterParams): Try[JsValue] =
+    for {
+      json  <- resourceService.getJson(codeList)
+      array <- json.validate[JsArray].asTry
+    } yield {
+      val filteredValues = array.value.filter {
+        obj =>
+          filterParams.parameters.forall {
+            case (key, value) =>
+              val nodes = key.split("\\.").tail // removes "data" from path nodes
+              val values = nodes.tail.foldLeft(obj \\ nodes.head) {
+                case (acc, node) => acc.flatMap(_ \\ node)
+              }
+              values.contains(JsString(value))
+          }
+      }
+      JsArray(filteredValues)
+    }
 }

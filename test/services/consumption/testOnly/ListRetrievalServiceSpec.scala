@@ -18,15 +18,16 @@ package services.consumption.testOnly
 
 import base.SpecBase
 import models.FilterParams
-import models.testOnly.CustomsOffice
-import models.testOnly.Role
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.Helpers._
+
+import scala.util.Success
 
 class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
@@ -84,57 +85,135 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     }
   }
 
-  "getCustomsOfficesWithFilter" - {
+  "getWithFilter" - {
+    "when customs offices" - {
 
-    val customsOffices = Seq(
-      CustomsOffice("XI000142", "Belfast EPU", "XI", None, Seq(Role("DEP"), Role("TRA"))),
-      CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA"))),
-      CustomsOffice("GB000005", "Chelmsford Airport", "GB", None, Seq(Role("TRA")))
-    )
+      val customsOffices = Json.parse("""
+          |[
+          |  {
+          |    "name": "CO1",
+          |    "id": "XI1",
+          |    "countryId": "XI",
+          |    "roles": [
+          |      {
+          |        "role": "DEP"
+          |      },
+          |      {
+          |        "role": "TRA"
+          |      }
+          |    ]
+          |  },
+          |  {
+          |    "name": "CO2",
+          |    "id": "GB1",
+          |    "countryId": "GB",
+          |    "roles": [
+          |      {
+          |        "role": "TRA"
+          |      },
+          |      {
+          |        "role": "AUT"
+          |      }
+          |    ]
+          |  },
+          |  {
+          |    "name": "CO3",
+          |    "id": "GB2",
+          |    "countryId": "GB",
+          |    "roles": [
+          |      {
+          |        "role": "TRA"
+          |      },
+          |      {
+          |        "role": "DES"
+          |      }
+          |    ]
+          |  }
+          |]
+          |""".stripMargin)
 
-    "must return values that match the filter" - {
-      "when one filter" in {
-        val mockResourceService = mock[ResourceService]
-        when(mockResourceService.getData[CustomsOffice](any())(any())).thenReturn(customsOffices)
+      "must return values that match the filter" - {
+        "when one filter" in {
+          val mockResourceService = mock[ResourceService]
+          when(mockResourceService.getJson(any())).thenReturn(Success(customsOffices))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          val app = baseApplicationBuilder
+            .apply {
+              new GuiceApplicationBuilder()
+                .overrides(bind[ResourceService].toInstance(mockResourceService))
+            }
+            .build()
+
+          running(app) {
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("data.countryId" -> "GB"))
+            val result       = service.getWithFilter("CustomsOffices", filterParams)
+            result.get mustBe Json.parse("""
+                |[
+                |  {
+                |    "name": "CO2",
+                |    "id": "GB1",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "AUT"
+                |      }
+                |    ]
+                |  },
+                |  {
+                |    "name": "CO3",
+                |    "id": "GB2",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "DES"
+                |      }
+                |    ]
+                |  }
+                |]
+                |""".stripMargin)
           }
-          .build()
-
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("data.countryId" -> "GB"))
-          val result       = service.getCustomsOfficesWithFilter(filterParams)
-
-          result mustBe Seq(
-            CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA"))),
-            CustomsOffice("GB000005", "Chelmsford Airport", "GB", None, Seq(Role("TRA")))
-          )
         }
-      }
 
-      "when multiple filters" in {
-        val mockResourceService = mock[ResourceService]
-        when(mockResourceService.getData[CustomsOffice](any())(any())).thenReturn(customsOffices)
+        "when multiple filters" in {
+          val mockResourceService = mock[ResourceService]
+          when(mockResourceService.getJson(any())).thenReturn(Success(customsOffices))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          val app = baseApplicationBuilder
+            .apply {
+              new GuiceApplicationBuilder()
+                .overrides(bind[ResourceService].toInstance(mockResourceService))
+            }
+            .build()
+
+          running(app) {
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("data.countryId" -> "GB", "data.roles.role" -> "AUT"))
+            val result       = service.getWithFilter("CustomsOffices", filterParams)
+            result.get mustBe Json.parse("""
+                |[
+                |  {
+                |    "name": "CO2",
+                |    "id": "GB1",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "AUT"
+                |      }
+                |    ]
+                |  }
+                |]
+                |""".stripMargin)
           }
-          .build()
-
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("data.countryId" -> "GB", "data.roles.role" -> "AUT"))
-          val result       = service.getCustomsOfficesWithFilter(filterParams)
-
-          result mustBe Seq(
-            CustomsOffice("GB000001", "Central Community Transit Office.", "GB", None, Seq(Role("AUT"), Role("TRA")))
-          )
         }
       }
     }
