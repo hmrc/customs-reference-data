@@ -87,29 +87,13 @@ class ListRetrievalController @Inject() (
     }
 
   def getFiltered(listName: ListName, filterParams: FilterParams): Action[AnyContent] =
-    Action.async {
+    Action {
       listName.listName match {
         case "CustomsOffices" =>
-          Future.successful(
-            Ok(
-              Json.obj(
-                "data" -> Json.toJson(
-                  listRetrievalService.getCustomsOfficeWithFilter(filterParams)
-                )
-              )
-            )
-          )
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCustomsOfficeWithFilter(filterParams))))
         case "CountryCodesFullList" =>
-          Future.successful(
-            Ok(
-              Json.obj(
-                "data" -> Json.toJson(
-                  listRetrievalService.getCountryCodesWithFilter(filterParams)
-                )
-              )
-            )
-          )
-        case _ => Future.successful(NotFound)
+          Ok(Json.obj("data" -> Json.toJson(listRetrievalService.getCountryCodesWithFilter(filterParams))))
+        case _ => NotFound
       }
     }
 }
