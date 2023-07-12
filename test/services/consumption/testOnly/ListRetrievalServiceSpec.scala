@@ -24,6 +24,7 @@ import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.JsArray
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 
@@ -66,7 +67,6 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             forAll(codeListGen) {
               codeList =>
                 val result = service.get(codeList)
-                if (!result.isSuccess) println(codeList)
                 result.isSuccess mustBe true
             }
         }
@@ -88,7 +88,8 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
   "getWithFilter" - {
     "when customs offices" - {
 
-      val customsOffices = Json.parse("""
+      val customsOffices = Json
+        .parse("""
           |[
           |  {
           |    "name": "CO1",
@@ -131,6 +132,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
           |  }
           |]
           |""".stripMargin)
+        .as[JsArray]
 
       "must return values that match the filter" - {
         "when one filter" in {
@@ -214,6 +216,27 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |]
                 |""".stripMargin)
           }
+        }
+      }
+    }
+
+    "when countries" - {
+
+      "must return values that match the filter" in {
+        running(baseApplicationBuilder) {
+          app =>
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("data.code" -> "AD"))
+            val result       = service.getWithFilter("CountryCodesFullList", filterParams)
+            result.get mustBe Json.parse("""
+              |[
+              |  {
+              |    "code": "AD",
+              |    "state": "valid",
+              |    "description": "Andorra"
+              |  }
+              |]
+              |""".stripMargin)
         }
       }
     }

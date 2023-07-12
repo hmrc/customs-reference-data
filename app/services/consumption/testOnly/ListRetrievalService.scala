@@ -24,9 +24,9 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String): Try[JsValue] = resourceService.getJson(codeList)
+  def get(codeList: String): Try[JsArray] = resourceService.getJson(codeList)
 
-  def getWithFilter(codeList: String, filterParams: FilterParams): Try[JsValue] =
+  def getWithFilter(codeList: String, filterParams: FilterParams): Try[JsArray] =
     for {
       json  <- resourceService.getJson(codeList)
       array <- json.validate[JsArray].asTry
