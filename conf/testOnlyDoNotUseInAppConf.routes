@@ -9,5 +9,8 @@
 # !!!WARNING!!! Every route defined in this file MUST be prefixed with "/test-only/". This is because NGINX is blocking every uri containing the string "test-only" in production.
 # Failing to follow this rule may result in test routes deployed in production.
 
-# Add all the application routes to the prod.routes file
-->         /                          prod.Routes
+GET     /v2.0/customs-reference-data/test-only/lists/:listName                                controllers.consumption.testOnly.ListRetrievalController.get(listName: ListName)
+GET     /v2.0/customs-reference-data/test-only/filtered-lists/:listName                       controllers.consumption.testOnly.ListRetrievalController.getFiltered(listName: ListName, filter: FilterParams)
+
+
+->      /                                                                                     prod.Routes

@@ -1,7 +1,7 @@
 # microservice specific routes
 
-GET     /lists                   controllers.consumption.ResourceLinksController.get
-GET     /lists/:listName         controllers.consumption.ListRetrievalController.get(listName: ListName)
+GET     /lists                   controllers.consumption.v1.ResourceLinksController.get
+GET     /lists/:listName         controllers.consumption.v1.ListRetrievalController.get(listName: ListName)
 
-POST    /reference-data-lists                           controllers.ingestion.ReferenceDataListController.post()
-POST    /customs-office-lists                           controllers.ingestion.CustomsOfficeListController.post()
+POST    /reference-data-lists                           controllers.ingestion.v1.ReferenceDataListController.post()
+POST    /customs-office-lists                           controllers.ingestion.v1.CustomsOfficeListController.post()

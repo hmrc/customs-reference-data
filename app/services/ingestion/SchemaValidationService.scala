@@ -32,7 +32,7 @@ import java.io.StringReader
 import javax.inject.Inject
 import scala.collection.mutable.ListBuffer
 
-private[ingestion] class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
+class SchemaValidationService @Inject() (jsonValidationService: JsonValidationService) {
 
   private def problemHandler(schemaValidationProblems: ListBuffer[Problem]): ProblemHandler =
     _.forEach {

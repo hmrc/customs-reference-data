@@ -1,0 +1,66 @@
+[
+  {
+    "code": "CTM",
+    "description": "Carats (one metric carat = 2 x 10-4kg)"
+  },
+  {
+    "code": "DTN",
+    "description": "Hectokilogram"
+  },
+  {
+    "code": "GRM",
+    "description": "Gram"
+  },
+  {
+    "code": "HLT",
+    "description": "Hectolitre"
+  },
+  {
+    "code": "KGM",
+    "description": "Kilogram"
+  },
+  {
+    "code": "KLT",
+    "description": "1000 litres"
+  },
+  {
+    "code": "KUR",
+    "description": "Kilogram of uranium"
+  },
+  {
+    "code": "LTR",
+    "description": "Litre"
+  },
+  {
+    "code": "MIL",
+    "description": "1000 items"
+  },
+  {
+    "code": "MTK",
+    "description": "Square metre"
+  },
+  {
+    "code": "MTQ",
+    "description": "Cubic metre 1 000"
+  },
+  {
+    "code": "MTR",
+    "description": "Metre"
+  },
+  {
+    "code": "NAR",
+    "description": "Number of items"
+  },
+  {
+    "code": "NCL",
+    "description": "Number of cells"
+  },
+  {
+    "code": "NPR",
+    "description": "Number of pairs"
+  },
+  {
+    "code": "TNE",
+    "description": "Tonne"
+  }
+]

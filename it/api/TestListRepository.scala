@@ -24,7 +24,7 @@ import models.GenericListItem
 import models.VersionId
 import play.api.libs.json.JsObject
 import repositories.ListRepositoryWriteResult
-import repositories.ListRepository
+import repositories.v1.ListRepository
 import uk.gov.hmrc.mongo.MongoComponent
 
 import javax.inject.Inject

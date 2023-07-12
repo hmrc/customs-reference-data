@@ -1,0 +1,32 @@
+[
+  {
+    "code": "AD",
+    "state": "valid",
+    "description": "Andorra"
+  },
+  {
+    "code": "FR",
+    "state": "valid",
+    "description": "France"
+  },
+  {
+    "code": "GB",
+    "state": "valid",
+    "description": "United Kingdom"
+  },
+  {
+    "code": "IT",
+    "state": "valid",
+    "description": "Italy"
+  },
+  {
+    "code": "AT",
+    "state": "valid",
+    "description": "Austria"
+  },
+  {
+    "code": "SM",
+    "state": "valid",
+    "description": "San Marino"
+  }
+]

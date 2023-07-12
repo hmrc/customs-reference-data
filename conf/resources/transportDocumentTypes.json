@@ -1,0 +1,66 @@
+[
+  {
+    "code": "N235",
+    "description": "Container list"
+  },
+  {
+    "code": "N271",
+    "description": "Packing list"
+  },
+  {
+    "code": "N703",
+    "description": "House waybill"
+  },
+  {
+    "code": "N704",
+    "description": "Master bill of lading"
+  },
+  {
+    "code": "N705",
+    "description": "Bill of lading"
+  },
+  {
+    "code": "N714",
+    "description": "House bill of lading"
+  },
+  {
+    "code": "N720",
+    "description": "Consignment note CIM"
+  },
+  {
+    "code": "N722",
+    "description": "Road list - SMGS"
+  },
+  {
+    "code": "N730",
+    "description": "Road consignment note"
+  },
+  {
+    "code": "N740",
+    "description": "Air waybill"
+  },
+  {
+    "code": "N741",
+    "description": "Master airwaybill"
+  },
+  {
+    "code": "N750",
+    "description": "Movement by post including parcel post"
+  },
+  {
+    "code": "N760",
+    "description": "Multimodal / combined transport document"
+  },
+  {
+    "code": "N785",
+    "description": "Cargo manifest"
+  },
+  {
+    "code": "N787",
+    "description": "Bordereau (cargo load list)"
+  },
+  {
+    "code": "N955",
+    "description": "ATA carnet"
+  }
+]

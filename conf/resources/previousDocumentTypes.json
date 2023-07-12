@@ -1,0 +1,134 @@
+[
+  {
+    "code": "C512",
+    "description": "SDE - Authorisation to use simplified declaration (Column 7a, Annex A of Delegated Regulation (EU) 2015/2446)"
+  },
+  {
+    "code": "C605",
+    "description": "Information sheet INF3"
+  },
+  {
+    "code": "C612",
+    "description": "Internal Community transit Declaration — Article 227 of the Code"
+  },
+  {
+    "code": "C620",
+    "description": "Proof of the customs status of Union goods T2LF"
+  },
+  {
+    "code": "N235",
+    "description": "Container list"
+  },
+  {
+    "code": "N270",
+    "description": "Delivery note"
+  },
+  {
+    "code": "N271",
+    "description": "Packing list"
+  },
+  {
+    "code": "N325",
+    "description": "Proforma invoice"
+  },
+  {
+    "code": "N337",
+    "description": "Temporary storage declaration"
+  },
+  {
+    "code": "N355",
+    "description": "Entry summary declaration"
+  },
+  {
+    "code": "N380",
+    "description": "Commercial invoice"
+  },
+  {
+    "code": "N703",
+    "description": "House waybill"
+  },
+  {
+    "code": "N704",
+    "description": "Master bill of lading"
+  },
+  {
+    "code": "N705",
+    "description": "Bill of lading"
+  },
+  {
+    "code": "N714",
+    "description": "House bill of lading"
+  },
+  {
+    "code": "N720",
+    "description": "Consignment note CIM"
+  },
+  {
+    "code": "N722",
+    "description": "Road list SMGS"
+  },
+  {
+    "code": "N730",
+    "description": "Road consignment note"
+  },
+  {
+    "code": "N740",
+    "description": "Air waybill"
+  },
+  {
+    "code": "N750",
+    "description": "Movement by post including parcel post"
+  },
+  {
+    "code": "N760",
+    "description": "Multimodal/combined transport document"
+  },
+  {
+    "code": "N785",
+    "description": "Cargo manifest"
+  },
+  {
+    "code": "N787",
+    "description": "Bordereau (cargo load list)"
+  },
+  {
+    "code": "N820",
+    "description": "Transit declaration &quot;T&quot;"
+  },
+  {
+    "code": "N821",
+    "description": "External Community transit declaration / common transit, T1"
+  },
+  {
+    "code": "N822",
+    "description": "Internal Community transit declaration T2"
+  },
+  {
+    "code": "N825",
+    "description": "T2L document"
+  },
+  {
+    "code": "N830",
+    "description": "Goods declaration for exportation"
+  },
+  {
+    "code": "N952",
+    "description": "TIR carnet"
+  },
+  {
+    "code": "N955",
+    "description": "ATA carnet"
+  },
+  {
+    "code": "NCLE",
+    "description": "Reference/date of entry in the declarant’s records"
+  },
+  {
+    "code": "NMNS",
+    "description": "Cargo manifest — simplified procedure"
+  },
+  {
+    "code": "NMRN",
+    "description": "Declaration / notification MRN"
+  }
+]

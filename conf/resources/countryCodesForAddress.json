@@ -1,0 +1,52 @@
+[
+  {
+    "code": "AD",
+    "state": "valid",
+    "description": "Andorra"
+  },
+  {
+    "code": "AE",
+    "state": "valid",
+    "description": "United Arab Emirates"
+  },
+  {
+    "code": "AR",
+    "state": "valid",
+    "description": "Argentina"
+  },
+  {
+    "code": "AU",
+    "state": "valid",
+    "description": "Australia"
+  },
+  {
+    "code": "FR",
+    "state": "valid",
+    "description": "France"
+  },
+  {
+    "code": "GB",
+    "state": "valid",
+    "description": "United Kingdom"
+  },
+  {
+    "code": "IT",
+    "state": "valid",
+    "description": "Italy"
+  },
+  {
+    "code": "AT",
+    "state": "valid",
+    "description": "Austria"
+  },
+  {
+    "code": "SM",
+    "state": "valid",
+    "description": "San Marino"
+  },
+  {
+    "code": "DE",
+    "state": "valid",
+    "description": "Germany"
+  }
+]

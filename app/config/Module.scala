@@ -16,8 +16,8 @@
 
 package config
 
-import models.CTCUP06Schema
-import models.CTCUP08Schema
+import models.v1.CTCUP06Schema
+import models.v1.CTCUP08Schema
 import org.leadpony.justify.api.JsonValidationService
 import play.api.inject._
 
