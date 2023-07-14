@@ -1,0 +1,30 @@
+[
+  {
+    "code": "A",
+    "description": "Payment in cash"
+  },
+  {
+    "code": "B",
+    "description": "Payment by credit card"
+  },
+  {
+    "code": "C",
+    "description": "Payment by cheque"
+  },
+  {
+    "code": "H",
+    "description": "Electronic credit transfer"
+  },
+  {
+    "code": "Y",
+    "description": "Account holder with carrier"
+  },
+  {
+    "code": "Z",
+    "description": "Not pre-paid"
+  },
+  {
+    "code": "D",
+    "description": "Other"
+  }
+]
