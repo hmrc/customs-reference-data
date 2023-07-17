@@ -56,7 +56,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "CurrencyCodes",
     "ControlType",
     "SpecificCircumstanceIndicatorCode",
-    "MethodOfPayment"
+    "TransportChargesMethodOfPayment"
   )
 
   "get" - {
