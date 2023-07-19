@@ -1,0 +1,46 @@
+[
+  {
+    "code": "12",
+    "description": "Codelist violation"
+  },
+  {
+    "code": "13",
+    "description": "Condition violation (Missing)"
+  },
+  {
+    "code": "14",
+    "description": "Rule violation"
+  },
+  {
+    "code": "15",
+    "description": "Condition violation (Not allowed)"
+  },
+  {
+    "code": "26",
+    "description": "Duplicate Message ID"
+  },
+  {
+    "code": "50",
+    "description": "Transitional constraint violation"
+  },
+  {
+    "code": "51",
+    "description": "EDI violation post downgrade"
+  },
+  {
+    "code": "52",
+    "description": "Functional violation post downgrade"
+  },
+  {
+    "code": "90",
+    "description": "Unknown MRN"
+  },
+  {
+    "code": "92",
+    "description": "Message out of sequence"
+  },
+  {
+    "code": "93",
+    "description": "Invalid MRN"
+  }
+]

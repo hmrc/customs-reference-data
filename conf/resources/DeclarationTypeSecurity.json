@@ -1,0 +1,18 @@
+[
+  {
+    "code": "0",
+    "description": "Not used for safety and security purposes"
+  },
+  {
+    "code": "1",
+    "description": "ENS"
+  },
+  {
+    "code": "2",
+    "description": "EXS"
+  },
+  {
+    "code": "3",
+    "description": "ENS &amp; EXS"
+  }
+]

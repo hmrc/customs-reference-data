@@ -1043,7 +1043,7 @@
             "listEntries"
           ]
         },
-        "SpecificCircumstancesIndicatorCode": {
+        "SpecificCircumstanceIndicatorCode": {
           "type": "object",
           "properties": {
             "listName": {
@@ -1083,34 +1083,47 @@
         }
       },
       "required": [
+        "AdditionalInformation",
+        "AdditionalReference",
+        "AdditionalSupplyChainActorRoleCode",
+        "AuthorisationTypeDeparture",
+        "AuthorisationTypeDestination",
+        "BusinessRejectionTypeDepExp",
+        "ControlType",
+        "CountryAddressPostcodeBased",
         "CountryCodesCommonTransit",
-        "CountryCodesFullList",
         "CountryCodesCommunity",
         "CountryCodesCTC",
         "CountryCodesForAddress",
+        "CountryCodesFullList",
         "CountryCodesWithAddress",
-        "CountryWithoutZip",
         "CountryCustomsSecurityAgreementArea",
-        "CountryAddressPostcodeBased",
-        "TransportModeCode",
-        "SupportingDocumentType",
-        "TransportDocumentType",
-        "PreviousDocumentType",
+        "CountryWithoutZip",
+        "CurrencyCodes",
+        "DeclarationType",
+        "DeclarationTypeItemLevel",
+        "DeclarationTypeSecurity",
         "DocumentTypeExcise",
+        "FunctionalErrorCodesIeCA",
+        "IncidentCode",
         "KindOfPackages",
         "KindOfPackagesBulk",
         "KindOfPackagesUnpacked",
-        "AdditionalReference",
-        "AdditionalInformation",
-        "CurrencyCodes",
-        "UnLocodeExtended",
-        "Unit",
-        "FunctionalErrorCodesIeCA",
-        "BusinessRejectionTypeDepExp",
-        "RejectionCodeDepartureExport",
         "Nationality",
-        "ControlType",
-        "SpecificCircumstancesIndicatorCode"
+        "PreviousDocumentType",
+        "QualifierOfIdentificationIncident",
+        "QualifierOfTheIdentification",
+        "RejectionCodeDepartureExport",
+        "SpecificCircumstanceIndicatorCode",
+        "SupportingDocumentType",
+        "TransportChargesMethodOfPayment",
+        "TransportDocumentType",
+        "TransportModeCode",
+        "TypeOfIdentificationOfMeansOfTransport",
+        "TypeOfIdentificationofMeansOfTransportActive",
+        "TypeOfLocation",
+        "Unit",
+        "UnLocodeExtended"
       ]
     }
   },

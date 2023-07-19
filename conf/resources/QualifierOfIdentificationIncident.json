@@ -1,0 +1,14 @@
+[
+  {
+    "code": "U",
+    "description": "UN/LOCODE"
+  },
+  {
+    "code": "W",
+    "description": "GPS coordinates"
+  },
+  {
+    "code": "Z",
+    "description": "Free text"
+  }
+]

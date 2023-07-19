@@ -1,0 +1,18 @@
+[
+  {
+    "code": "CS",
+    "description": "Consolidator"
+  },
+  {
+    "code": "FW",
+    "description": "Freight Forwarder"
+  },
+  {
+    "code": "MF",
+    "description": "Manufacturer"
+  },
+  {
+    "code": "WH",
+    "description": "Warehouse Keeper"
+  }
+]

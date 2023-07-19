@@ -1,0 +1,30 @@
+[
+  {
+    "code": "T",
+    "description": "Postal code"
+  },
+  {
+    "code": "U",
+    "description": "UN/LOCODE"
+  },
+  {
+    "code": "V",
+    "description": "Customs office identifier"
+  },
+  {
+    "code": "W",
+    "description": "GPS coordinates"
+  },
+  {
+    "code": "X",
+    "description": "EORI number"
+  },
+  {
+    "code": "Y",
+    "description": "Authorisation number"
+  },
+  {
+    "code": "Z",
+    "description": "Free text"
+  }
+]
