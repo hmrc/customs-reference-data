@@ -471,8 +471,8 @@
         }
       ]
     },
-    "SpecificCircumstancesIndicatorCode": {
-      "listName": "SpecificCircumstancesIndicatorCode",
+    "SpecificCircumstanceIndicatorCode": {
+      "listName": "SpecificCircumstanceIndicatorCode",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",

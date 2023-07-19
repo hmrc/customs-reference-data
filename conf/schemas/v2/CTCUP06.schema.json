@@ -1043,7 +1043,7 @@
             "listEntries"
           ]
         },
-        "SpecificCircumstancesIndicatorCode": {
+        "SpecificCircumstanceIndicatorCode": {
           "type": "object",
           "properties": {
             "listName": {
@@ -1862,7 +1862,7 @@
         "RejectionCodeDepartureExport",
         "Nationality",
         "ControlType",
-        "SpecificCircumstancesIndicatorCode",
+        "SpecificCircumstanceIndicatorCode",
         "DeclarationType",
         "DeclarationTypeSecurity",
         "TypeOfLocation",
