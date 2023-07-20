@@ -44,7 +44,7 @@ object XmlToJsonConverter {
     XML.load(inputStream)
   }
 
-  /***
+  /**
     * Amend XML paths or add fields as appropriate
     */
   private def convertXmlToJson(xml: Elem): JsValue =
