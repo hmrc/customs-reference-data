@@ -573,8 +573,8 @@
         }
       ]
     },
-    "TypeOfIdentificationOfMeansOfTransportActive": {
-      "listName": "TypeOfIdentificationOfMeansOfTransportActive",
+    "TypeOfIdentificationOfMeansofTransportActive": {
+      "listName": "TypeOfIdentificationOfMeansofTransportActive",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",
@@ -741,8 +741,8 @@
         }
       ]
     },
-    "HSCode": {
-      "listName": "HSCode",
+    "HScode": {
+      "listName": "HScode",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",
@@ -809,6 +809,108 @@
           "code": "0005",
           "state": "valid",
           "description": "CARTRIDGES FOR WEAPONS with bursting charge"
+        }
+      ]
+    },
+    "GuaranteeTypeWithReference": {
+      "listName": "GuaranteeTypeWithReference",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "0",
+          "state": "valid",
+          "description": "Guarantee waiver"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1",
+          "state": "valid",
+          "description": "Comprehensive guarantee"
+        }
+      ]
+    },
+    "GuaranteeTypeWithGRN": {
+      "listName": "GuaranteeTypeWithGRN",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "0",
+          "state": "valid",
+          "description": "Guarantee waiver"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1",
+          "state": "valid",
+          "description": "Comprehensive guarantee"
+        }
+      ]
+    },
+    "GuaranteeTypeEUNonTIR": {
+      "listName": "GuaranteeTypeEUNonTIR",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "0",
+          "state": "valid",
+          "description": "Guarantee waiver"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1",
+          "state": "valid",
+          "description": "Comprehensive guarantee"
+        }
+      ]
+    },
+    "GuaranteeTypeCTC": {
+      "listName": "GuaranteeTypeCTC",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "0",
+          "state": "valid",
+          "description": "Guarantee waiver"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "1",
+          "state": "valid",
+          "description": "Comprehensive guarantee"
+        }
+      ]
+    },
+    "CountryAddressPostcodeOnly": {
+      "listName": "CountryAddressPostcodeOnly",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "IE",
+          "state": "valid",
+          "description": "Ireland"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "LU",
+          "state": "valid",
+          "description": "Luxembourg"
+        }
+      ]
+    },
+    "PreviousDocumentUnionGoods": {
+      "listName": "PreviousDocumentUnionGoods",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "C612",
+          "state": "valid",
+          "description": "Internal Community transit Declaration…"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "C620",
+          "state": "valid",
+          "description": "Proof of the customs status…"
         }
       ]
     }
