@@ -1,0 +1,30 @@
+[
+  {
+    "qualifier": "T",
+    "description": "Postal code"
+  },
+  {
+    "qualifier": "U",
+    "description": "UN/LOCODE"
+  },
+  {
+    "qualifier": "V",
+    "description": "Customs office identifier"
+  },
+  {
+    "qualifier": "W",
+    "description": "GPS coordinates"
+  },
+  {
+    "qualifier": "X",
+    "description": "EORI number"
+  },
+  {
+    "qualifier": "Y",
+    "description": "Authorisation number"
+  },
+  {
+    "qualifier": "Z",
+    "description": "Free text"
+  }
+]

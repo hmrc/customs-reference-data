@@ -1,0 +1,14 @@
+[
+  {
+    "qualifier": "U",
+    "description": "UN/LOCODE"
+  },
+  {
+    "qualifier": "W",
+    "description": "GPS coordinates"
+  },
+  {
+    "qualifier": "Z",
+    "description": "Free text"
+  }
+]

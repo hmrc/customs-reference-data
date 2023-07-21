@@ -34,3 +34,5 @@ tmp
 .idea_modules
 bin
 project/metals.sbt
+conf/resources/input.xml
+conf/resources/output.json

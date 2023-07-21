@@ -1,0 +1,18 @@
+[
+  {
+    "type": "A",
+    "description": "Designated location"
+  },
+  {
+    "type": "B",
+    "description": "Authorised place"
+  },
+  {
+    "type": "C",
+    "description": "Approved place"
+  },
+  {
+    "type": "D",
+    "description": "Other"
+  }
+]

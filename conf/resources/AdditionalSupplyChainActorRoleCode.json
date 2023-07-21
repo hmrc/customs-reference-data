@@ -1,0 +1,18 @@
+[
+  {
+    "role": "CS",
+    "description": "Consolidator"
+  },
+  {
+    "role": "FW",
+    "description": "Freight Forwarder"
+  },
+  {
+    "role": "MF",
+    "description": "Manufacturer"
+  },
+  {
+    "role": "WH",
+    "description": "Warehouse Keeper"
+  }
+]
