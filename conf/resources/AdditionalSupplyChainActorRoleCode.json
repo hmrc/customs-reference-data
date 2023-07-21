@@ -1,18 +1,18 @@
 [
   {
-    "code": "CS",
+    "role": "CS",
     "description": "Consolidator"
   },
   {
-    "code": "FW",
+    "role": "FW",
     "description": "Freight Forwarder"
   },
   {
-    "code": "MF",
+    "role": "MF",
     "description": "Manufacturer"
   },
   {
-    "code": "WH",
+    "role": "WH",
     "description": "Warehouse Keeper"
   }
 ]
