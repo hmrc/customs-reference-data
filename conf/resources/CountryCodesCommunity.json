@@ -13,5 +13,10 @@
     "code": "AT",
     "state": "valid",
     "description": "Austria"
+  },
+  {
+    "code": "XI",
+    "state": "valid",
+    "description": "United Kingdom (Northern Ireland)"
   }
 ]
