@@ -47,6 +47,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "CountryCustomsSecurityAgreementArea",
     "CountryWithoutZip",
     "CurrencyCodes",
+    "CUSCode",
     "CustomsOffices",
     "DeclarationType",
     "DeclarationTypeAdditional",
@@ -54,6 +55,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "DeclarationTypeSecurity",
     "FunctionalErrorCodesIeCA",
     "GuaranteeType",
+    "HScode",
     "KindOfPackages",
     "KindOfPackagesBulk",
     "KindOfPackagesUnpacked",
@@ -69,6 +71,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "TypeOfIdentificationOfMeansOfTransport",
     "TypeOfIdentificationofMeansOfTransportActive",
     "TypeOfLocation",
+    "UnDangerousGoodsCode",
     "Unit",
     "UnLocodeExtended"
   )
