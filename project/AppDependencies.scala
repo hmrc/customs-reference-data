@@ -3,8 +3,8 @@ import sbt._
 
 object AppDependencies {
 
-  private val mongoVersion = "1.2.0"
-  private val bootstrapVersion = "7.15.0"
+  private val mongoVersion = "1.3.0"
+  private val bootstrapVersion = "7.19.0"
   private val akkaVersion = "2.6.20"
 
   val compile: Seq[ModuleID] = Seq(
@@ -12,7 +12,7 @@ object AppDependencies {
     "uk.gov.hmrc.mongo"   %% "hmrc-mongo-play-28"              % mongoVersion,
     "org.leadpony.justify" % "justify"                         % "3.1.0",
     "org.leadpony.joy"     % "joy-classic"                     % "2.1.0",
-    "org.typelevel"       %% "cats-core"                       % "2.8.0"
+    "org.typelevel"       %% "cats-core"                       % "2.9.0"
   )
 
   val test: Seq[ModuleID] = Seq(
@@ -20,7 +20,7 @@ object AppDependencies {
     "org.scalatest"          %% "scalatest"                % "3.2.15",
     "uk.gov.hmrc"            %% "bootstrap-test-play-28"   % bootstrapVersion,
     "com.typesafe.play"      %% "play-test"                % current,
-    "org.mockito"             % "mockito-core"             % "4.11.0",
+    "org.mockito"             % "mockito-core"             % "5.2.0",
     "org.scalatestplus"      %% "mockito-4-6"              % "3.2.15.0",
     "org.scalacheck"         %% "scalacheck"               % "1.17.0",
     "org.scalatestplus"      %% "scalacheck-1-17"          % "3.2.15.0",
