@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "Errors schema",
+  "description": "Error response schema",
+  "required": [
+    "code",
+    "message"
+  ],
+  "properties": {
+    "code": {
+      "$id": "#/properties/code",
+      "type": "string",
+      "description": "A code describing the client error, for  logging and debugging",
+      "oneOf": [
+        {
+          "enum": [
+            "INVALID_JSON"
+          ],
+          "description": "The request body  was empty or not valid JSON"
+        },
+        {
+          "enum": [
+            "SCHEMA_ERROR"
+          ],
+          "description": "The JSON request  was not conformant with the schema. Schematic errors are detailed in the  errors property below."
+        },
+        {
+          "enum": [
+            "OTHER_ERROR"
+          ],
+          "description": "Something else  was wrong with the client request."
+        }
+      ],
+      "examples": [
+        "INVALID_JSON"
+      ]
+    },
+    "message": {
+      "$id": "#/properties/message",
+      "type": "string",
+      "description": "A technical message describing the error, for  logging and debugging.",
+      "examples": [
+        "Bad request"
+      ]
+    },
+    "errors": {
+      "$id": "#/properties/errors",
+      "type": "array",
+      "description": "Optionally, a list of more specific error  details.",
+      "items": {
+        "$id": "#/properties/errors/items",
+        "type": "object",
+        "description": "Specific error details.",
+        "examples": [
+          {
+            "code": "SCHEMA_ERROR",
+            "message": "Value \"NOT_A_VALID_CODE\" is not  defined in enum.",
+            "path": "http://example.com/example.json#/oneOf/2 /enum"
+          },
+          {
+            "code": "SCHEMA_ERROR",
+            "message": "Value \"NOT_ANOTHER_INVALID_CODE\" is  not defined in enum.",
+            "path": "http://example.com/example.json#/oneOf/3 /enum"
+          }
+        ],
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "$id": "#/properties/errors/items/properties/code",
+            "type": "string",
+            "description": "A code for the type of specific  error, for logging and debugging. These will change from time to time and  do not form part of the schema.",
+            "examples": [
+              "MISSING_FIELD"
+            ]
+          },
+          "message": {
+            "$id": "#/properties/errors/items/properties /message",
+            "type": "string",
+            "description": "A freeform message describing the specific error, for logging and debugging.",
+            "examples": [
+              "This field is required"
+            ]
+          },
+          "path": {
+            "$id": "#/properties/errors/items/properties/path",
+            "type": "string",
+            "description": "A path to the field that caused  the error, for logging and debugging.",
+            "examples": [
+              "http://example.com /example.json#/oneOf/3/enum"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
