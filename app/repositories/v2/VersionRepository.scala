@@ -45,7 +45,7 @@ class VersionRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
   def save(
     versionId: VersionId,

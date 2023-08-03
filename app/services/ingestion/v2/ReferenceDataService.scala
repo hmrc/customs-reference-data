@@ -16,21 +16,16 @@
 
 package services.ingestion.v2
 
-import com.google.inject.ImplementedBy
-import com.google.inject.Inject
+import com.google.inject.{ImplementedBy, Inject}
 import models._
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsValue
-import repositories.v2.ListRepository
-import repositories.v2.VersionRepository
-import repositories.FailedWrite
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
+import play.api.Logging
+import play.api.libs.json.{JsObject, JsValue}
+import repositories._
+import repositories.v2.{ListRepository, VersionRepository}
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
@@ -45,15 +40,17 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionIdProducer: VersionIdProducer,
   timeService: TimeService
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService {
+    extends ReferenceDataService
+    with Logging {
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
-    val versionId = versionIdProducer()
-    val now       = timeService.now()
+    val versionId: VersionId = versionIdProducer()
+    val now                  = timeService.now()
 
     for {
-      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
-      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
+      writeResult  <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
+      insertResult <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
+      _            <- cleanUp(payload, versionId, insertResult)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {
         case (errors, SuccessfulWrite)       => errors
@@ -61,6 +58,16 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
       }
       .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
   }
+
+  private def cleanUp(list: ReferenceDataPayload, versionId: VersionId, insertResult: Boolean): Future[ListRepositoryDeleteResult] =
+    if (insertResult) {
+      logger.info(s"Deleting ${list.listNames.toString} data with an import id less than ${versionId.versionId}")
+      // TODO versionRepository.deleteOldImports(list, versionId.versionId)
+      listRepository.deleteOldImports(list, versionId)
+    } else {
+      logger.warn(s"Not deleting any ${list.listNames.toString} data as the import failed")
+      Future.successful(FailedDelete(list.listNames))
+    }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)

@@ -21,27 +21,20 @@ import akka.stream.scaladsl.Source
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
-import models.FilterParams
-import models.GenericListItem
-import models.ListName
-import models.VersionId
+import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
-import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model.Indexes.compoundIndex
+import org.mongodb.scala.model.Indexes.{ascending, compoundIndex}
 import org.mongodb.scala.model._
+import play.api.Logging
 import play.api.libs.json.JsObject
-import repositories.FailedWrite
-import repositories.ListRepositoryWriteResult
-import repositories.SuccessfulWrite
+import repositories._
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListRepository @Inject() (
@@ -54,9 +47,10 @@ class ListRepository @Inject() (
       domainFormat = GenericListItem.format,
       indexes = ListRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
   def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams] = None): Source[JsObject, NotUsed] = {
 
@@ -96,6 +90,24 @@ class ListRepository @Inject() (
 
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
+
+  def deleteOldImports(payload: ReferenceDataPayload, versionId: VersionId): Future[ListRepositoryDeleteResult] = {
+
+    val filter = Aggregates.filter(
+      Filters.and(
+        Filters.lt("importId", versionId.versionId)
+      )
+    )
+
+    collection
+      .deleteMany(filter)
+      .toFuture()
+      .map(_.wasAcknowledged())
+      .map {
+        case true  => SuccessfulDelete
+        case false => FailedDelete(payload.listNames)
+      }
+  }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
