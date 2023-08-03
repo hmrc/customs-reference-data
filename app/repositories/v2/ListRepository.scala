@@ -95,7 +95,7 @@ class ListRepository @Inject() (
 
     val filter = Aggregates.filter(
       Filters.and(
-        Filters.lt("importId", versionId.versionId)
+        Filters.lt("versionId", versionId.versionId)
       )
     )
 
