@@ -84,23 +84,15 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def deleteOldImports(versionId: VersionId): Future[VersionRepositoryDeleteResult] = {
-
-    val filter = Aggregates.filter(
-      Filters.and(
-        Filters.lt("versionId", versionId.versionId)
-      )
-    )
-
+  def deleteOldImports(createdOn: Instant, versionId: VersionId): Future[VersionRepositoryDeleteResult] =
     collection
-      .deleteMany(filter)
+      .deleteMany(Filters.lt("createdOn", createdOn))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
         case true  => SuccessfulVersionDelete
         case false => FailedVersionDelete(versionId.versionId)
       }
-  }
 
 }
 

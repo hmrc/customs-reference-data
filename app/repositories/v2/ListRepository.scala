@@ -34,6 +34,7 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
@@ -94,23 +95,15 @@ class ListRepository @Inject() (
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
 
-  def deleteOldImports(payload: ReferenceDataPayload, versionId: VersionId): Future[ListRepositoryDeleteResult] = {
-
-    val filter = Aggregates.filter(
-      Filters.and(
-        Filters.lt("versionId", versionId.versionId)
-      )
-    )
-
+  def deleteOldImports(payload: ReferenceDataPayload, createdOn: Instant): Future[ListRepositoryDeleteResult] =
     collection
-      .deleteMany(filter)
+      .deleteMany(Filters.lt("createdOn", createdOn))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
         case true  => SuccessfulDelete
         case false => FailedDelete(payload.listNames)
       }
-  }
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection

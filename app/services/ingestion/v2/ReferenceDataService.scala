@@ -28,6 +28,7 @@ import repositories.v2.VersionRepository
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
@@ -49,12 +50,12 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
     val versionId: VersionId = versionIdProducer()
-    val now                  = timeService.now()
+    val now: Instant         = timeService.now()
 
     for {
       writeResult  <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
       insertResult <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-      _            <- cleanUp(payload, versionId, insertResult, writeResult.toList)
+      _            <- cleanUp(payload, versionId, insertResult, writeResult.toList, now)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {
         case (errors, SuccessfulWrite)       => errors
@@ -67,22 +68,23 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     list: ReferenceDataPayload,
     versionId: VersionId,
     insertResult: Boolean,
-    writeResult: List[ListRepositoryWriteResult]
+    writeResult: List[ListRepositoryWriteResult],
+    now: Instant
   ): Future[Boolean] = {
     // Can not delete the old version if any of the writes failed!
     val writeFailure: Boolean = writeResult.exists(r => r.isInstanceOf[FailedWrite])
 
     if (insertResult && !writeFailure) {
-      logger.info(s"Deleting ${list.listNames.toString} data with a version id less than ${versionId.versionId}")
+      logger.info(s"Deleting ${list.listNames.toString} data with a created at date less than $now")
       for {
-        x <- listRepository.deleteOldImports(list, versionId)
-        y <- versionRepository.deleteOldImports(versionId)
+        x <- listRepository.deleteOldImports(list, now)
+        y <- versionRepository.deleteOldImports(now, versionId)
       } yield (x == SuccessfulDelete, y == SuccessfulVersionDelete) match {
         case (true, false) =>
-          logger.warn(s"Delete version failed for data with a version id less than : ${versionId.versionId}")
+          logger.warn(s"Delete version failed for data with a created at date less than : $now")
           false
         case (false, true) =>
-          logger.warn(s"Delete list failed for data with a version id less than : ${versionId.versionId}")
+          logger.warn(s"Delete list failed for data with a created at date less than : $now")
           false
         case _ => true
       }
