@@ -24,17 +24,20 @@ import config.AppConfig
 import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
-import org.mongodb.scala.model.Indexes.{ascending, compoundIndex}
+import org.mongodb.scala.model.Indexes.ascending
+import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
 import play.api.Logging
 import play.api.libs.json.JsObject
 import repositories._
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+import uk.gov.hmrc.mongo.play.json.Codecs
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 @Singleton
 class ListRepository @Inject() (

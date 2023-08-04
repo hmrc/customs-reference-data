@@ -36,6 +36,8 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import repositories.FailedWrite
+import repositories.SuccessfulDelete
+import repositories.SuccessfulVersionDelete
 import repositories.SuccessfulWrite
 import repositories.VersionIdProducer
 import repositories.v2.ListRepository
@@ -78,6 +80,12 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
+          when(listRepository.deleteOldImports(any(), any()))
+            .thenReturn(Future.successful(SuccessfulDelete))
+
+          when(versionRepository.deleteOldImports(any()))
+            .thenReturn(Future.successful(SuccessfulVersionDelete))
+
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
@@ -86,6 +94,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           verify(listRepository, times(numberOfLists)).insertList(any())
           verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
+
+          verify(listRepository, times(1)).deleteOldImports(any(), any())
+          verify(versionRepository, times(1)).deleteOldImports(any())
       }
     }
 
@@ -120,6 +131,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
           verify(listRepository, times(numberOfLists)).insertList(any())
+
+          verify(listRepository, times(0)).deleteOldImports(any(), any())
+          verify(versionRepository, times(0)).deleteOldImports(any())
       }
     }
 
@@ -158,6 +172,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
           verify(listRepository, times(numberOfLists)).insertList(any())
+
+          verify(listRepository, times(0)).deleteOldImports(any(), any())
+          verify(versionRepository, times(0)).deleteOldImports(any())
       }
     }
   }

@@ -22,6 +22,9 @@ import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
+import repositories.SuccessfulVersionDelete
+import repositories.VersionRepositoryDeleteResult
+import repositories.FailedVersionDelete
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
@@ -79,6 +82,24 @@ class VersionRepository @Inject() (
       .map(Codecs.fromBson[ListNames](_))
       .toFuture()
       .map(_.flatMap(_.listNames))
+  }
+
+  def deleteOldImports(versionId: VersionId): Future[VersionRepositoryDeleteResult] = {
+
+    val filter = Aggregates.filter(
+      Filters.and(
+        Filters.lt("versionId", versionId.versionId)
+      )
+    )
+
+    collection
+      .deleteMany(filter)
+      .toFuture()
+      .map(_.wasAcknowledged())
+      .map {
+        case true  => SuccessfulVersionDelete
+        case false => FailedVersionDelete(versionId.versionId)
+      }
   }
 
 }
