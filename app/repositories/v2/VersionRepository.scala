@@ -16,24 +16,21 @@
 
 package repositories.v2
 
+import cats.data.EitherT
 import com.google.inject.Inject
 import config.AppConfig
 import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
-import repositories.SuccessfulVersionDelete
-import repositories.VersionRepositoryDeleteResult
-import repositories.FailedVersionDelete
+import repositories.{ErrorState, FailedToSave, SuccessState}
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class VersionRepository @Inject() (
@@ -56,15 +53,19 @@ class VersionRepository @Inject() (
     feed: ApiDataSource,
     listNames: Seq[ListName],
     createdOn: Instant
-  ): Future[Boolean] = {
+  ): EitherT[Future, OtherError, SuccessState.type] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
-    collection
+    EitherT(
+      collection
       .insertOne(versionInformation)
       .toFuture()
+      .map(_.wasAcknowledged())
       .map {
-        _.wasAcknowledged()
+        case true  => Right(SuccessState)
+        case false => Left(OtherError(versionId.versionId))
       }
+    )
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
@@ -84,15 +85,17 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def deleteOldImports(createdOn: Instant, versionId: VersionId): Future[VersionRepositoryDeleteResult] =
-    collection
+  def deleteOldImports(createdOn: Instant, versionId: VersionId): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
       .deleteMany(Filters.lt("createdOn", createdOn))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulVersionDelete
-        case false => FailedVersionDelete(versionId.versionId)
+        case true => Right(SuccessState)
+        case false => Left(OtherError(versionId.versionId))
       }
+    )
 
 }
 

@@ -16,25 +16,22 @@
 
 package services.ingestion.v2
 
-import com.google.inject.ImplementedBy
-import com.google.inject.Inject
+import cats.data.EitherT
+import com.google.inject.{ImplementedBy, Inject}
 import models._
 import play.api.Logging
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue}
 import repositories._
-import repositories.v2.ListRepository
-import repositories.v2.VersionRepository
+import repositories.v2.{ListRepository, VersionRepository}
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
 import java.time.Instant
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
 
@@ -48,50 +45,18 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService
     with Logging {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]] = {
     val versionId: VersionId = versionIdProducer()
     val now: Instant         = timeService.now()
 
+    import cats.syntax.all._
+
     for {
-      writeResult  <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
-      insertResult <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-      _            <- cleanUp(payload, versionId, insertResult, writeResult.toList, now)
+      writeResult  <- payload.toIterable(versionId, now).toList.traverse(listRepository.insertList)
+      _            <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
+      _            <- listRepository.deleteOldImports(payload, now)
+      _            <- versionRepository.deleteOldImports(now, versionId)
     } yield writeResult
-      .foldLeft[Option[Seq[ListName]]](None) {
-        case (errors, SuccessfulWrite)       => errors
-        case (errors, FailedWrite(listName)) => errors.orElse(Some(Seq())).map(_ :+ listName)
-      }
-      .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
-  }
-
-  private def cleanUp(
-    list: ReferenceDataPayload,
-    versionId: VersionId,
-    insertResult: Boolean,
-    writeResult: List[ListRepositoryWriteResult],
-    now: Instant
-  ): Future[Boolean] = {
-    // Can not delete the old version if any of the writes failed!
-    val writeFailure: Boolean = writeResult.exists(r => r.isInstanceOf[FailedWrite])
-
-    if (insertResult && !writeFailure) {
-      logger.info(s"Deleting ${list.listNames.toString} data with a created at date less than $now")
-      for {
-        x <- listRepository.deleteOldImports(list, now)
-        y <- versionRepository.deleteOldImports(now, versionId)
-      } yield (x == SuccessfulDelete, y == SuccessfulVersionDelete) match {
-        case (true, false) =>
-          logger.warn(s"Delete version failed for data with a created at date less than : $now")
-          false
-        case (false, true) =>
-          logger.warn(s"Delete list failed for data with a created at date less than : $now")
-          false
-        case _ => true
-      }
-    } else {
-      logger.warn(s"Insert failed for : ${versionId.versionId} for lists: ${list.listNames.toString}")
-      Future.successful(false)
-    }
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

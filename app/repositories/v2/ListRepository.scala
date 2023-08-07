@@ -18,6 +18,7 @@ package repositories.v2
 
 import akka.NotUsed
 import akka.stream.scaladsl.Source
+import cats.data.EitherT
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
@@ -95,25 +96,30 @@ class ListRepository @Inject() (
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
 
-  def deleteOldImports(payload: ReferenceDataPayload, createdOn: Instant): Future[ListRepositoryDeleteResult] =
-    collection
-      .deleteMany(Filters.lt("createdOn", createdOn))
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true  => SuccessfulDelete
-        case false => FailedDelete(payload.listNames)
-      }
+  def deleteOldImports(payload: ReferenceDataPayload, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
+        .deleteMany(Filters.lt("createdOn", createdOn))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(s"Failed to delete lists: ${payload.listNames}"))
+        }
+    )
 
-  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
-    collection
-      .insertMany(list, new InsertManyOptions().ordered(true))
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true  => SuccessfulWrite
-        case false => FailedWrite(list.head.listName)
-      }
+
+  def insertList(list: Seq[GenericListItem]): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
+        .insertMany(list, new InsertManyOptions().ordered(true))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(s"Failed to insert lists: ${list}"))
+        }
+    )
 }
 
 object ListRepository {
