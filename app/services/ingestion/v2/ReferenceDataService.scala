@@ -45,6 +45,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService
     with Logging {
 
+
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]] = {
     val versionId: VersionId = versionIdProducer()
     val now: Instant         = timeService.now()
@@ -52,7 +53,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     import cats.syntax.all._
 
     for {
-      writeResult  <- payload.toIterable(versionId, now).toList.traverse(listRepository.insertList)
+      writeResult  <- payload.toIterable(versionId, now).toList.traverse(listRepository.insertList) // TODO can we add the below logic into this inset list to help prevent complete failures when one list fail to insert
       _            <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
       _            <- listRepository.deleteOldImports(payload, now)
       _            <- versionRepository.deleteOldImports(now, versionId)

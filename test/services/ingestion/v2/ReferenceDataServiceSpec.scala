@@ -17,12 +17,10 @@
 package services.ingestion.v2
 
 import base.SpecBase
+import cats.data.EitherT
 import generators.ModelArbitraryInstances._
 import generators.ModelGenerators.genReferenceDataListsPayload
-import models.ApiDataSource
-import models.OtherError
-import models.VersionId
-import models.WriteError
+import models.{ApiDataSource, ErrorDetails, OtherError, VersionId, WriteError}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
@@ -35,11 +33,7 @@ import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import repositories.FailedWrite
-import repositories.SuccessfulDelete
-import repositories.SuccessfulVersionDelete
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
+import repositories.{FailedWrite, SuccessState, SuccessfulDelete, SuccessfulVersionDelete, SuccessfulWrite, VersionIdProducer}
 import repositories.v2.ListRepository
 import repositories.v2.VersionRepository
 import services.consumption.TimeService
@@ -75,22 +69,25 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
-          when(listRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
+
+          when(listRepository.insertList(any()))
+            .thenReturn(EitherT(Future.successful(Right(repositories.SuccessState))))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
 
           when(listRepository.deleteOldImports(any(), any()))
-            .thenReturn(Future.successful(SuccessfulDelete))
+            .thenReturn(EitherT(Future.successful(Right(repositories.SuccessState))))
 
           when(versionRepository.deleteOldImports(any(), any()))
-            .thenReturn(Future.successful(SuccessfulVersionDelete))
+            .thenReturn(EitherT(Future.successful(Right(repositories.SuccessState))))
 
-          when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
+          when(versionRepository.save(eqTo(versionId), any(), any(), any(), any()))
+            .thenReturn(EitherT(Future.successful(Right(repositories.SuccessState))))
 
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
-          service.insert(apiDataSource, payload).futureValue mustBe None
+          service.insert(apiDataSource, payload).isRight mustBe true
 
           verify(listRepository, times(numberOfLists)).insertList(any())
           verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
@@ -114,13 +111,11 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).head.listName
 
           when(listRepository.insertList(any()))
-            .thenReturn(Future.successful(SuccessfulWrite))
-            .thenReturn(Future.successful(FailedWrite(failedListName)))
+            .thenReturn(EitherT(Future.successful(Right(repositories.SuccessState))))
+            .thenReturn(EitherT(Future.successful(Left(OtherError("error")))))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
-
-          when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
