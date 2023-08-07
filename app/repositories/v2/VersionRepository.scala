@@ -23,14 +23,18 @@ import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
-import repositories.{ErrorState, FailedToSave, SuccessState}
+import repositories.ErrorState
+import repositories.FailedToSave
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+import uk.gov.hmrc.mongo.play.json.Codecs
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 @Singleton
 class VersionRepository @Inject() (
@@ -53,19 +57,41 @@ class VersionRepository @Inject() (
     feed: ApiDataSource,
     listNames: Seq[ListName],
     createdOn: Instant
-  ): EitherT[Future, OtherError, SuccessState.type] = {
+  ): EitherT[Future, ErrorDetails, SuccessState.type] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
     EitherT(
       collection
-      .insertOne(versionInformation)
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true  => Right(SuccessState)
-        case false => Left(OtherError(versionId.versionId))
-      }
+        .insertOne(versionInformation)
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(versionId.versionId))
+        }
     )
+  }
+
+  def deleteListVersion(list: Seq[GenericListItem], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+
+    val standardFilters = Aggregates.filter(
+      Filters.and(
+        Filters.eq("listNames.listName", list.map(x => x.listName)),
+        Filters.lt("createdOn", createdOn)
+      )
+    )
+
+    EitherT(
+      collection
+        .deleteMany(standardFilters)
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(s"Failed to delete lists: $list"))
+        }
+    )
+
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
@@ -88,13 +114,13 @@ class VersionRepository @Inject() (
   def deleteOldImports(createdOn: Instant, versionId: VersionId): EitherT[Future, ErrorDetails, SuccessState.type] =
     EitherT(
       collection
-      .deleteMany(Filters.lt("createdOn", createdOn))
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true => Right(SuccessState)
-        case false => Left(OtherError(versionId.versionId))
-      }
+        .deleteMany(Filters.lt("createdOn", createdOn))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(versionId.versionId))
+        }
     )
 
 }

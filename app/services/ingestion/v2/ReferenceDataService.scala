@@ -17,17 +17,21 @@
 package services.ingestion.v2
 
 import cats.data.EitherT
-import com.google.inject.{ImplementedBy, Inject}
+import com.google.inject.ImplementedBy
+import com.google.inject.Inject
 import models._
 import play.api.Logging
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 import repositories._
-import repositories.v2.{ListRepository, VersionRepository}
+import repositories.v2.ListRepository
+import repositories.v2.VersionRepository
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
 import java.time.Instant
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
@@ -45,6 +49,23 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService
     with Logging {
 
+  private def transactionalInsert(
+    list: Seq[GenericListItem],
+    now: Instant,
+    versionId: VersionId,
+    msgInfo: MessageInformation,
+    feed: ApiDataSource
+  ): EitherT[Future, ErrorDetails, SuccessState.type] = {
+
+    import cats.syntax.all._
+
+    for {
+      _ <- listRepository.insertList(list)
+      _ <- list.toList.traverse(x => listRepository.deleteList(x, now))
+      _ <- versionRepository.deleteListVersion(list, now)
+      _ <- versionRepository.save(versionId, msgInfo, feed, list.map(x => x.listName), now)
+    } yield SuccessState
+  }
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]] = {
     val versionId: VersionId = versionIdProducer()
@@ -52,12 +73,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
     import cats.syntax.all._
 
-    for {
-      writeResult  <- payload.toIterable(versionId, now).toList.traverse(listRepository.insertList) // TODO can we add the below logic into this inset list to help prevent complete failures when one list fail to insert
-      _            <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-      _            <- listRepository.deleteOldImports(payload, now)
-      _            <- versionRepository.deleteOldImports(now, versionId)
-    } yield writeResult
+    payload.toIterable(versionId, now).toList.traverse(transactionalInsert(_, now, versionId, payload.messageInformation, feed))
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

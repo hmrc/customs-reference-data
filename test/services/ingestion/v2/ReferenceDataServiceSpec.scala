@@ -20,7 +20,11 @@ import base.SpecBase
 import cats.data.EitherT
 import generators.ModelArbitraryInstances._
 import generators.ModelGenerators.genReferenceDataListsPayload
-import models.{ApiDataSource, ErrorDetails, OtherError, VersionId, WriteError}
+import models.ApiDataSource
+import models.ErrorDetails
+import models.OtherError
+import models.VersionId
+import models.WriteError
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
@@ -33,7 +37,12 @@ import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import repositories.{FailedWrite, SuccessState, SuccessfulDelete, SuccessfulVersionDelete, SuccessfulWrite, VersionIdProducer}
+import repositories.FailedWrite
+import repositories.SuccessState
+import repositories.SuccessfulDelete
+import repositories.SuccessfulVersionDelete
+import repositories.SuccessfulWrite
+import repositories.VersionIdProducer
 import repositories.v2.ListRepository
 import repositories.v2.VersionRepository
 import services.consumption.TimeService

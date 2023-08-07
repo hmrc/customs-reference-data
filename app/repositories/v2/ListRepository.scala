@@ -35,6 +35,7 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
+import java.lang.System.Logger
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -108,6 +109,32 @@ class ListRepository @Inject() (
         }
     )
 
+  def deleteList(list: GenericListItem, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+
+    val standardFilters = Aggregates.filter(
+      Filters.and(
+        Filters.eq("listName", list.listName.listName),
+        Filters.lt("createdOn", createdOn)
+      )
+    )
+
+    EitherT(
+      collection
+        .deleteMany(Filters.eq("listName", list.listName.listName))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(s"Failed to delete lists: ${list.listName.listName}"))
+        }
+        .recover {
+          x =>
+            logger.warn(x.getMessage)
+            Left(OtherError(s"ACHI Failed to delete lists: ${list.listName.listName} ${x.getMessage}"))
+        }
+    )
+
+  }
 
   def insertList(list: Seq[GenericListItem]): EitherT[Future, ErrorDetails, SuccessState.type] =
     EitherT(
@@ -117,7 +144,12 @@ class ListRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to insert lists: ${list}"))
+          case false => Left(OtherError(s"Failed to insert lists: $list"))
+        }
+        .recover {
+          x =>
+            logger.warn(x.getMessage)
+            Left(OtherError(s"ACHI Failed to delete lists: $list"))
         }
     )
 }
