@@ -23,6 +23,7 @@ import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
+import play.api.Logging
 import repositories.ErrorState
 import repositories.FailedToSave
 import repositories.SuccessState
@@ -47,7 +48,8 @@ class VersionRepository @Inject() (
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
@@ -74,12 +76,13 @@ class VersionRepository @Inject() (
 
   def deleteListVersion(list: Seq[GenericListItem], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
-    val standardFilters = Aggregates.filter(
+    val x = list.map(x => x.listName).map(y => y.listName)
+
+    val standardFilters =
       Filters.and(
-        Filters.eq("listNames.listName", list.map(x => x.listName)),
+        Filters.in("listNames.listName", x),
         Filters.lt("createdOn", createdOn)
       )
-    )
 
     EitherT(
       collection
@@ -89,6 +92,11 @@ class VersionRepository @Inject() (
         .map {
           case true  => Right(SuccessState)
           case false => Left(OtherError(s"Failed to delete lists: $list"))
+        }
+        .recover {
+          x =>
+            logger.warn(x.getMessage)
+            Left(OtherError(s"Failed to delete lists: $list ${x.getMessage}"))
         }
     )
 

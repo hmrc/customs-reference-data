@@ -111,16 +111,15 @@ class ListRepository @Inject() (
 
   def deleteList(list: GenericListItem, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
-    val standardFilters = Aggregates.filter(
+    val standardFilters =
       Filters.and(
         Filters.eq("listName", list.listName.listName),
         Filters.lt("createdOn", createdOn)
       )
-    )
 
     EitherT(
       collection
-        .deleteMany(Filters.eq("listName", list.listName.listName))
+        .deleteMany(standardFilters)
         .toFuture()
         .map(_.wasAcknowledged())
         .map {
@@ -130,7 +129,7 @@ class ListRepository @Inject() (
         .recover {
           x =>
             logger.warn(x.getMessage)
-            Left(OtherError(s"ACHI Failed to delete lists: ${list.listName.listName} ${x.getMessage}"))
+            Left(OtherError(s"Failed to delete lists: ${list.listName.listName} ${x.getMessage}"))
         }
     )
 
