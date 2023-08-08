@@ -97,18 +97,6 @@ class ListRepository @Inject() (
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
 
-  def deleteOldImports(payload: ReferenceDataPayload, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
-    EitherT(
-      collection
-        .deleteMany(Filters.lt("createdOn", createdOn))
-        .toFuture()
-        .map(_.wasAcknowledged())
-        .map {
-          case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: ${payload.listNames}"))
-        }
-    )
-
   def deleteList(list: GenericListItem, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
     val standardFilters =

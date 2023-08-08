@@ -59,11 +59,15 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
     import cats.syntax.all._
 
+    val listNames: Seq[ListName] = list.map(x => x.listName)
+
+    println(s"ACHI: $listNames")
+
     for {
       _ <- listRepository.insertList(list)
       _ <- list.toList.traverse(x => listRepository.deleteList(x, now))
       _ <- versionRepository.deleteListVersion(list, now)
-      _ <- versionRepository.save(versionId, msgInfo, feed, list.map(x => x.listName), now)
+      _ <- versionRepository.save(versionId, msgInfo, feed, listNames, now)
     } yield SuccessState
   }
 

@@ -36,7 +36,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import repositories.SuccessfulWrite
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -111,7 +111,7 @@ class ListRepositorySpec
     "must save a list" in {
       val list = listWithMaxLength[GenericListItem](10).sample.value
 
-      repository.insertList(list).futureValue mustBe SuccessfulWrite
+      repository.insertList(list).value.futureValue mustBe Right(SuccessState)
 
       val result = findAll().futureValue
 

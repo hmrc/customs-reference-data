@@ -119,18 +119,6 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def deleteOldImports(createdOn: Instant, versionId: VersionId): EitherT[Future, ErrorDetails, SuccessState.type] =
-    EitherT(
-      collection
-        .deleteMany(Filters.lt("createdOn", createdOn))
-        .toFuture()
-        .map(_.wasAcknowledged())
-        .map {
-          case true  => Right(SuccessState)
-          case false => Left(OtherError(versionId.versionId))
-        }
-    )
-
 }
 
 object VersionRepository {
