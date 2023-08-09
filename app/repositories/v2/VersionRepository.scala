@@ -24,8 +24,6 @@ import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
 import play.api.Logging
-import repositories.ErrorState
-import repositories.FailedToSave
 import repositories.SuccessState
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
@@ -53,6 +51,7 @@ class VersionRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
+  // TODO - Add more granular errors for the specific fails encountered
   private def otherError(error: String): Left[OtherError, Nothing] = {
     logger.warn(error)
     Left(OtherError(error))
@@ -104,7 +103,7 @@ class VersionRepository @Inject() (
         }
         .recover {
           x =>
-            otherError(s"Failed to save lists: $list - ${x.getMessage}")
+            otherError(s"Failed to delete lists: $list - ${x.getMessage}")
         }
     )
 

@@ -35,7 +35,6 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
-import java.lang.System.Logger
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -58,6 +57,7 @@ class ListRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
+  // TODO - Add more granular errors for the specific fails encountered
   private def otherError(error: String): Left[OtherError, Nothing] = {
     logger.warn(error)
     Left(OtherError(error))
@@ -117,11 +117,11 @@ class ListRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: ${list.listName.listName}"))
+          case false => Left(OtherError(s"Failed to delete list: ${list.listName.listName}"))
         }
         .recover {
           x =>
-            otherError(s"Failed to delete lists: ${list.listName.listName} - ${x.getMessage}")
+            otherError(s"Failed to delete list: ${list.listName.listName} - ${x.getMessage}")
         }
     )
 
