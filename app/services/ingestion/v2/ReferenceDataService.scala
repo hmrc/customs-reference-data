@@ -61,8 +61,6 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
     val listNames: Seq[ListName] = list.map(x => x.listName)
 
-    println(s"ACHI: $listNames")
-
     for {
       _ <- listRepository.insertList(list)
       _ <- list.toList.traverse(x => listRepository.deleteList(x, now))
