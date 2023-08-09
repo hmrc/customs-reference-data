@@ -53,6 +53,11 @@ class VersionRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
+  private def otherError(error: String): Left[OtherError, Nothing] = {
+    logger.warn(error)
+    Left(OtherError(error))
+  }
+
   def save(
     versionId: VersionId,
     messageInformation: MessageInformation,
@@ -70,6 +75,10 @@ class VersionRepository @Inject() (
         .map {
           case true  => Right(SuccessState)
           case false => Left(OtherError(versionId.versionId))
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to save lists: $listNames - ${x.getMessage}")
         }
     )
   }
@@ -95,8 +104,7 @@ class VersionRepository @Inject() (
         }
         .recover {
           x =>
-            logger.warn(x.getMessage)
-            Left(OtherError(s"Failed to delete lists: $list ${x.getMessage}"))
+            otherError(s"Failed to save lists: $list - ${x.getMessage}")
         }
     )
 

@@ -58,6 +58,11 @@ class ListRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
+  private def otherError(error: String): Left[OtherError, Nothing] = {
+    logger.warn(error)
+    Left(OtherError(error))
+  }
+
   def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams] = None): Source[JsObject, NotUsed] = {
 
     val standardFilters = Aggregates.filter(
@@ -116,8 +121,7 @@ class ListRepository @Inject() (
         }
         .recover {
           x =>
-            logger.warn(x.getMessage)
-            Left(OtherError(s"Failed to delete lists: ${list.listName.listName} ${x.getMessage}"))
+            otherError(s"Failed to delete lists: ${list.listName.listName} - ${x.getMessage}")
         }
     )
 
@@ -135,8 +139,7 @@ class ListRepository @Inject() (
         }
         .recover {
           x =>
-            logger.warn(x.getMessage)
-            Left(OtherError(s"ACHI Failed to delete lists: $list"))
+            otherError(s"Failed to insert lists: $list - ${x.getMessage}")
         }
     )
 }
