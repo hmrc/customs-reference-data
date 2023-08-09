@@ -57,6 +57,12 @@ class ListRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
 
+  // TODO - Add more granular errors for the specific fails encountered
+  private def otherError(error: String): Left[OtherError, Nothing] = {
+    logger.warn(error)
+    Left(OtherError(error))
+  }
+
   def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams] = None): Source[JsObject, NotUsed] = {
 
     val standardFilters = Aggregates.filter(
@@ -96,18 +102,30 @@ class ListRepository @Inject() (
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
 
-  def deleteOldImports(payload: ReferenceDataPayload, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
+  def deleteList(list: GenericListItem, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+
+    val standardFilters =
+      Filters.and(
+        Filters.eq("listName", list.listName.listName),
+        Filters.lt("createdOn", createdOn)
+      )
+
     EitherT(
       collection
-        .deleteMany(Filters.lt("createdOn", createdOn))
+        .deleteMany(standardFilters)
         .toFuture()
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: ${payload.listNames}"))
+          case false => Left(OtherError(s"Failed to delete list: ${list.listName.listName}"))
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to delete list: ${list.listName.listName} - ${x.getMessage}")
         }
     )
 
+  }
 
   def insertList(list: Seq[GenericListItem]): EitherT[Future, ErrorDetails, SuccessState.type] =
     EitherT(
@@ -117,7 +135,11 @@ class ListRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to insert lists: ${list}"))
+          case false => Left(OtherError(s"Failed to insert lists: $list"))
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to insert lists: $list - ${x.getMessage}")
         }
     )
 }

@@ -17,26 +17,26 @@
 package repositories.v2
 
 import base.ItSpecBase
+import cats.data.EitherT
 import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource.RefDataFeed
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
+import models._
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class VersionRepositorySpec
     extends ItSpecBase
@@ -58,11 +58,12 @@ class VersionRepositorySpec
 
       val expectedVersionId = VersionId("1")
 
-      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), Instant.now()).futureValue
+      val result: EitherT[Future, ErrorDetails, SuccessState.type] =
+        repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), Instant.now())
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, Instant.now, RefDataFeed, Seq(listName))
 
-      result mustEqual true
+      result.value.futureValue mustBe Right(SuccessState)
 
       val savedVersionInformation = findAll().futureValue.head
 

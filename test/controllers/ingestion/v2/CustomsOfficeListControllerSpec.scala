@@ -17,7 +17,9 @@
 package controllers.ingestion.v2
 
 import base.SpecBase
+import cats.data.EitherT
 import models.ApiDataSource.ColDataFeed
+import models.ErrorDetails
 import models.OtherError
 import models.WriteError
 import org.mockito.ArgumentMatchers.{eq => eqTo, _}
@@ -33,8 +35,10 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SuccessState
 import services.ingestion.v2.ReferenceDataService
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
@@ -52,7 +56,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "returns ACCEPTED when the data has been validated and processed" in {
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.rightT[Future, ErrorDetails](List(SuccessState)))
 
       val result = route(app, fakeRequest).value
 
@@ -70,11 +74,11 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Some(WriteError("error"))))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.leftT[Future, List[SuccessState.type]](OtherError("error")))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      status(result) mustBe Status.BAD_REQUEST
       contentAsJson(result) mustBe Json.toJsObject(WriteError("error"))
     }
   }

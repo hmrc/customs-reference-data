@@ -23,14 +23,17 @@ import models._
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
-import repositories.{ErrorState, FailedToSave, SuccessState}
+import play.api.Logging
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+import uk.gov.hmrc.mongo.play.json.Codecs
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 @Singleton
 class VersionRepository @Inject() (
@@ -43,9 +46,16 @@ class VersionRepository @Inject() (
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
   override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
+
+  // TODO - Add more granular errors for the specific fails encountered
+  private def otherError(error: String): Left[OtherError, Nothing] = {
+    logger.warn(error)
+    Left(OtherError(error))
+  }
 
   def save(
     versionId: VersionId,
@@ -53,19 +63,50 @@ class VersionRepository @Inject() (
     feed: ApiDataSource,
     listNames: Seq[ListName],
     createdOn: Instant
-  ): EitherT[Future, OtherError, SuccessState.type] = {
+  ): EitherT[Future, ErrorDetails, SuccessState.type] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
     EitherT(
       collection
-      .insertOne(versionInformation)
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true  => Right(SuccessState)
-        case false => Left(OtherError(versionId.versionId))
-      }
+        .insertOne(versionInformation)
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(versionId.versionId))
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to save lists: $listNames - ${x.getMessage}")
+        }
     )
+  }
+
+  def deleteListVersion(list: Seq[GenericListItem], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+
+    val x = list.map(x => x.listName).map(y => y.listName)
+
+    val standardFilters =
+      Filters.and(
+        Filters.in("listNames.listName", x),
+        Filters.lt("createdOn", createdOn)
+      )
+
+    EitherT(
+      collection
+        .deleteMany(standardFilters)
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => Left(OtherError(s"Failed to delete lists: $list"))
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to delete lists: $list - ${x.getMessage}")
+        }
+    )
+
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
@@ -84,18 +125,6 @@ class VersionRepository @Inject() (
       .toFuture()
       .map(_.flatMap(_.listNames))
   }
-
-  def deleteOldImports(createdOn: Instant, versionId: VersionId): EitherT[Future, ErrorDetails, SuccessState.type] =
-    EitherT(
-      collection
-      .deleteMany(Filters.lt("createdOn", createdOn))
-      .toFuture()
-      .map(_.wasAcknowledged())
-      .map {
-        case true => Right(SuccessState)
-        case false => Left(OtherError(versionId.versionId))
-      }
-    )
 
 }
 
