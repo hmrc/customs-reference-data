@@ -511,7 +511,7 @@
             "listEntries"
           ]
         },
-        "DocumentTypeExcise": {
+        "PreviousDocumentTypeExcise": {
           "type": "object",
           "properties": {
             "listName": {
@@ -2086,7 +2086,7 @@
         "DeclarationTypeAdditional",
         "DeclarationTypeItemLevel",
         "DeclarationTypeSecurity",
-        "DocumentTypeExcise",
+        "PreviousDocumentTypeExcise",
         "FunctionalErrorCodesIeCA",
         "GuaranteeType",
         "GuaranteeTypeCTC",
