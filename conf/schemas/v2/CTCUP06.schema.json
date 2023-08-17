@@ -2060,63 +2060,141 @@
             "listName",
             "listEntries"
           ]
+        },
+        "RequestedDocumentType": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
+        },
+        "InvalidGuaranteeReason": {
+          "type": "object",
+          "properties": {
+            "listName": {
+              "type": "string"
+            },
+            "listEntries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "activeFrom": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activeFrom",
+                  "code",
+                  "state",
+                  "description"
+                ]
+              }
+            }
+          },
+          "required": [
+            "listName",
+            "listEntries"
+          ]
         }
       },
       "required": [
-        "AdditionalInformation",
-        "AdditionalReference",
-        "AdditionalSupplyChainActorRoleCode",
-        "AuthorisationTypeDeparture",
-        "AuthorisationTypeDestination",
-        "BusinessRejectionTypeDepExp",
-        "ControlType",
-        "CountryAddressPostcodeBased",
-        "CountryAddressPostcodeOnly",
         "CountryCodesCommonTransit",
+        "CountryCodesFullList",
         "CountryCodesCommunity",
         "CountryCodesCTC",
         "CountryCodesForAddress",
-        "CountryCodesFullList",
         "CountryCodesWithAddress",
-        "CountryCustomsSecurityAgreementArea",
         "CountryWithoutZip",
-        "CurrencyCodes",
-        "CUSCode",
-        "DeclarationType",
-        "DeclarationTypeAdditional",
-        "DeclarationTypeItemLevel",
-        "DeclarationTypeSecurity",
+        "CountryCustomsSecurityAgreementArea",
+        "CountryAddressPostcodeBased",
+        "TransportModeCode",
+        "SupportingDocumentType",
+        "TransportDocumentType",
+        "PreviousDocumentType",
         "DocumentTypeExcise",
-        "FunctionalErrorCodesIeCA",
-        "GuaranteeType",
-        "GuaranteeTypeCTC",
-        "GuaranteeTypeEUNonTIR",
-        "GuaranteeTypeWithGRN",
-        "GuaranteeTypeWithReference",
-        "HScode",
-        "IncidentCode",
         "KindOfPackages",
         "KindOfPackagesBulk",
         "KindOfPackagesUnpacked",
-        "Nationality",
-        "PreviousDocumentExportType",
-        "PreviousDocumentType",
-        "PreviousDocumentUnionGoods",
-        "QualifierOfIdentificationIncident",
-        "QualifierOfTheIdentification",
+        "AdditionalReference",
+        "AdditionalInformation",
+        "CurrencyCodes",
+        "UnLocodeExtended",
+        "Unit",
+        "FunctionalErrorCodesIeCA",
+        "BusinessRejectionTypeDepExp",
         "RejectionCodeDepartureExport",
-        "RepresentativeStatusCode",
+        "Nationality",
+        "ControlType",
         "SpecificCircumstanceIndicatorCode",
-        "SupportingDocumentType",
-        "TransportChargesMethodOfPayment",
-        "TransportDocumentType",
-        "TransportModeCode",
+        "DeclarationType",
+        "DeclarationTypeSecurity",
+        "TypeOfLocation",
+        "QualifierOfTheIdentification",
         "TypeOfIdentificationOfMeansOfTransport",
         "TypeOfIdentificationOfMeansofTransportActive",
-        "TypeOfLocation",
+        "AdditionalSupplyChainActorRoleCode",
+        "AuthorisationTypeDeparture",
+        "TransportChargesMethodOfPayment",
+        "GuaranteeType",
+        "DeclarationTypeItemLevel",
+        "AuthorisationTypeDestination",
+        "QualifierOfIdentificationIncident",
+        "IncidentCode",
+        "CUSCode",
+        "HScode",
+        "DeclarationTypeAdditional",
+        "RepresentativeStatusCode",
+        "PreviousDocumentExportType",
         "UnDangerousGoodsCode",
-        "Unit",
-        "UnLocodeExtended"
+        "GuaranteeTypeWithReference",
+        "GuaranteeTypeWithGRN",
+        "GuaranteeTypeEUNonTIR",
+        "GuaranteeTypeCTC",
+        "CountryAddressPostcodeOnly",
+        "PreviousDocumentUnionGoods",
+        "RequestedDocumentType",
+        "InvalidGuaranteeReason"
       ]
     }
   },
