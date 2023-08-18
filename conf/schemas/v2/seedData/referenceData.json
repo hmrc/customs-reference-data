@@ -233,8 +233,8 @@
         }
       ]
     },
-    "DocumentTypeExcise": {
-      "listName": "DocumentTypeExcise",
+    "PreviousDocumentTypeExcise": {
+      "listName": "PreviousDocumentTypeExcise",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",
@@ -911,6 +911,40 @@
           "code": "C620",
           "state": "valid",
           "description": "Proof of the customs status…"
+        }
+      ]
+    },
+    "RequestedDocumentType": {
+      "listName": "RequestedDocumentType",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "Y031",
+          "state": "valid",
+          "description": "This certificate code may be used to indicate that shipments are coming from or going to an Authorised Economic Operator…"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "C085",
+          "state": "valid",
+          "description": "Common Health Entry Document for Plants and Plant Products…"
+        }
+      ]
+    },
+    "InvalidGuaranteeReason": {
+      "listName": "InvalidGuaranteeReason",
+      "listEntries": [
+        {
+          "activeFrom": "2023-01-23",
+          "code": "G01",
+          "state": "valid",
+          "description": "Guarantee does not exist"
+        },
+        {
+          "activeFrom": "2023-01-23",
+          "code": "G02",
+          "state": "valid",
+          "description": "Guarantee exists, but not valid"
         }
       ]
     }
