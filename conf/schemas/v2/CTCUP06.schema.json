@@ -268,55 +268,6 @@
             "listEntries"
           ]
         },
-        "CountryCodesWithAddress": {
-          "type": "object",
-          "properties": {
-            "listName": {
-              "type": "string",
-              "minLength": 0,
-              "maxLength": 4000
-            },
-            "listEntries": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "activeFrom": {
-                    "type": "string",
-                    "pattern": "\\d{4}-[01]\\d-[0-3]\\d"
-                  },
-                  "code": {
-                    "type": "string",
-                    "minLength": 0,
-                    "maxLength": 4000
-                  },
-                  "state": {
-                    "type": "string",
-                    "enum": [
-                      "valid",
-                      "invalid"
-                    ]
-                  },
-                  "description": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 4000
-                  }
-                },
-                "required": [
-                  "activeFrom",
-                  "code",
-                  "state",
-                  "description"
-                ]
-              }
-            }
-          },
-          "required": [
-            "listName",
-            "listEntries"
-          ]
-        },
         "CountryWithoutZip": {
           "type": "object",
           "properties": {
@@ -2738,7 +2689,6 @@
         "CountryCodesCommunity",
         "CountryCodesCTC",
         "CountryCodesForAddress",
-        "CountryCodesWithAddress",
         "CountryWithoutZip",
         "CountryCustomsSecurityAgreementArea",
         "CountryAddressPostcodeBased",
