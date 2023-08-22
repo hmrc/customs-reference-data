@@ -1626,7 +1626,7 @@
             "listEntries"
           ]
         },
-        "TypeOfIdentificationOfMeansofTransportActive": {
+        "TypeOfIdentificationofMeansOfTransportActive": {
           "type": "object",
           "properties": {
             "listName": {
@@ -2766,7 +2766,7 @@
         "TypeOfLocation",
         "QualifierOfTheIdentification",
         "TypeOfIdentificationOfMeansOfTransport",
-        "TypeOfIdentificationOfMeansofTransportActive",
+        "TypeOfIdentificationofMeansOfTransportActive",
         "AdditionalSupplyChainActorRoleCode",
         "AuthorisationTypeDeparture",
         "TransportChargesMethodOfPayment",

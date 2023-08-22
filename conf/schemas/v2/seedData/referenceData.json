@@ -573,8 +573,8 @@
         }
       ]
     },
-    "TypeOfIdentificationOfMeansofTransportActive": {
-      "listName": "TypeOfIdentificationOfMeansofTransportActive",
+    "TypeOfIdentificationofMeansOfTransportActive": {
+      "listName": "TypeOfIdentificationofMeansOfTransportActive",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",

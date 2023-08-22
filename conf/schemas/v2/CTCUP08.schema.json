@@ -49,14 +49,14 @@
                   },
                   "id": {
                     "type": "string",
-                    "pattern": "[A-Z]{2}[0-9]{6}"
+                    "pattern": "[A-Z]{2}|[A-Z]{3}[0-9]{6}|[0-9]{5}"
                   },
                   "name": {
                     "type": "string",
                     "minLength": 0,
                     "maxLength": 4000
                   },
-                  "LanguageCode": {
+                  "languageCode": {
                     "type": "string",
                     "minLength": 0,
                     "maxLength": 4000
@@ -98,7 +98,7 @@
                   "activeFrom",
                   "id",
                   "name",
-                  "LanguageCode",
+                  "languageCode",
                   "countryId",
                   "roles"
                 ]
