@@ -86,6 +86,14 @@ case class OtherError(_message: String) extends ErrorDetails {
   override def errors: Option[Seq[SchemaErrorDetails]] = None
 }
 
+case class UnauthorisedError(_message: String) extends ErrorDetails {
+  override def code: String = "UNAUTHORIZED"
+
+  override def message: String = _message
+
+  override def errors: Option[Seq[SchemaErrorDetails]] = None
+}
+
 case class WriteError(_message: String) extends ErrorDetails {
   override def code: String = "OTHER_ERROR"
 

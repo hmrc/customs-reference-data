@@ -16,6 +16,7 @@
 
 package controllers.ingestion.v2
 
+import actions.AuthenticateEISToken
 import config.ReferenceDataControllerParserConfig
 import models.ApiDataSource.RefDataFeed
 import models.ApiDataSource
@@ -34,9 +35,10 @@ class ReferenceDataListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
-  cTCUP06Schema: CTCUP06Schema
+  cTCUP06Schema: CTCUP06Schema,
+  authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService) {
+    extends IngestionController(cc, referenceDataService, authenticateEISToken) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
 

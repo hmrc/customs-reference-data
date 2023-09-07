@@ -16,6 +16,7 @@
 
 package controllers.ingestion.v2
 
+import actions.AuthenticateEISToken
 import cats.data.EitherT
 import cats.implicits._
 import models._
@@ -35,7 +36,8 @@ import scala.concurrent.Future
 
 abstract class IngestionController @Inject() (
   cc: ControllerComponents,
-  referenceDataService: ReferenceDataService
+  referenceDataService: ReferenceDataService,
+  authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
     extends BackendController(cc)
     with Logging {
@@ -47,7 +49,7 @@ abstract class IngestionController @Inject() (
   val source: ApiDataSource
 
   def post(): Action[JsValue] =
-    Action(parseRequestBody(parse)).async {
+    authenticateEISToken(parseRequestBody(parse)).async {
       implicit request =>
         (
           for {
