@@ -17,8 +17,10 @@
 package models
 
 import org.leadpony.justify.api.Problem
+import play.api.http.Status.UNAUTHORIZED
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import play.api.mvc.Result
 
 final class SchemaErrorDetails(val message: String, val path: String) {
   val code: String = "SCHEMA_ERROR"
@@ -45,6 +47,22 @@ object ErrorDetails {
   implicit def writes[T <: ErrorDetails]: OWrites[T] =
     (
       (__ \ "code").write[String] and
+        (__ \ "message").write[String] and
+        (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
+    )(arg => (arg.code, arg.message, arg.errors))
+}
+
+sealed trait ApiErrorDetails {
+  def code: Int
+  def message: String
+  def errors: Option[Seq[SchemaErrorDetails]]
+}
+
+object ApiErrorDetails {
+
+  implicit def writes[T <: ApiErrorDetails]: OWrites[T] =
+    (
+      (__ \ "code").write[Int] and
         (__ \ "message").write[String] and
         (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
     )(arg => (arg.code, arg.message, arg.errors))
@@ -80,6 +98,14 @@ object SchemaValidationError {
 
 case class OtherError(_message: String) extends ErrorDetails {
   override def code: String = "OTHER_ERROR"
+
+  override def message: String = _message
+
+  override def errors: Option[Seq[SchemaErrorDetails]] = None
+}
+
+case class UnauthorisedError(_message: String) extends ApiErrorDetails {
+  override def code: Int = UNAUTHORIZED
 
   override def message: String = _message
 

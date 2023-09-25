@@ -43,11 +43,16 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
   private val testJson = Json.obj("foo" -> "bar")
 
+  private val headers = Seq(
+    "Accept"        -> "application/vnd.hmrc.2.0+gzip",
+    "Authorization" -> "Bearer ABC"
+  )
+
   "customsOfficeLists" - {
     def fakeRequest: FakeRequest[AnyContentAsJson] =
       FakeRequest(POST, "/customs-reference-data/customs-office-lists")
         .withJsonBody(testJson)
-        .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+gzip")
+        .withHeaders(headers: _*)
 
     "returns ACCEPTED when the data has been validated and processed" in {
 

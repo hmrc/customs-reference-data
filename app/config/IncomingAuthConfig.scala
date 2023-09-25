@@ -16,17 +16,19 @@
 
 package config
 
-import javax.inject.Inject
-import javax.inject.Singleton
-import play.api.Configuration
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import play.api.ConfigLoader
 
-@Singleton
-class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
+import scala.jdk.CollectionConverters._
 
-  lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
-  lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
-  lazy val isTtlEnabled: Boolean            = config.get[Boolean]("mongodb.isTtlEnabled")
-  lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
+object IncomingAuthConfig {
 
+  implicit lazy val configLoader: ConfigLoader[IncomingAuthConfig] = ConfigLoader {
+    rootConfig => rootPath =>
+      IncomingAuthConfig(
+        rootConfig.getConfig(rootPath).getBoolean("enabled"),
+        rootConfig.getConfig(rootPath).getStringList("acceptedTokens").asScala.toSeq
+      )
+  }
 }
+
+case class IncomingAuthConfig(enabled: Boolean, acceptedTokens: Seq[String])
