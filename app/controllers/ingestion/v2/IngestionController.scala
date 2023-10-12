@@ -58,12 +58,14 @@ abstract class IngestionController @Inject() (
             insert <- EitherT.fromOptionF(referenceDataService.insert(source, referenceDataPayload), ()).swap
           } yield insert
         ).value.map {
-          case Right(_) => Accepted
+          case Right(_) =>
+            logger.info("[controllers.ingestion.v2.IngestionController]: Success")
+            Accepted
           case Left(writeError: WriteError) =>
-            logger.warn(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
-            logger.info(errorDetails.message)
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed because of error: ${errorDetails.message}")
             BadRequest(Json.toJsObject(errorDetails))
         }
     }
