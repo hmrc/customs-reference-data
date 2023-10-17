@@ -20,7 +20,6 @@ import org.leadpony.justify.api.Problem
 import play.api.http.Status.UNAUTHORIZED
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.mvc.Result
 
 final class SchemaErrorDetails(val message: String, val path: String) {
   val code: String = "SCHEMA_ERROR"

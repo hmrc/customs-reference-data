@@ -4,8 +4,8 @@ import sbt._
 object AppDependencies {
 
   private val mongoVersion = "1.3.0"
-  private val bootstrapVersion = "7.19.0"
-  private val akkaVersion = "2.6.20"
+  private val bootstrapVersion = "7.22.0"
+  private val akkaVersion = "2.6.21"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-backend-play-28"       % bootstrapVersion,
@@ -28,6 +28,7 @@ object AppDependencies {
     "org.pegdown"             % "pegdown"                  % "1.6.0",
     "org.jsoup"               % "jsoup"                    % "1.15.3",
     "com.typesafe.akka"      %% "akka-stream-testkit"      % akkaVersion,
+    "com.typesafe.akka"      %% "akka-testkit"             % akkaVersion,
     "com.vladsch.flexmark"    % "flexmark-all"             % "0.62.2"
   ).map(_ % "test, it")
 
