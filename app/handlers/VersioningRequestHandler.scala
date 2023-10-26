@@ -41,10 +41,9 @@ class VersioningRequestHandler @Inject() (
   import requestHeaderUtils._
 
   override def routeRequest(request: RequestHeader): Option[Handler] =
-    if (isRequestUnversioned(request)) {
+    if (isRequestUnversioned(request))
       super.routeRequest(request)
-    } else {
+    else
       super.routeRequest(getVersionedRequest(request))
-    }
 
 }

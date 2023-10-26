@@ -24,8 +24,7 @@ import javax.inject.Inject
 
 class RequestHeaderUtils @Inject() (config: Configuration) {
 
-  private val writeAcceptHeaderRegex = "application/vnd\\.hmrc\\.(.*)\\+gzip".r
-  private val readAcceptHeaderRegex  = "application/vnd\\.hmrc\\.(.*)\\+json".r
+  private val headerRegex = "application/vnd\\.hmrc\\.(.*)\\+(gzip|json)".r
 
   private lazy val unversionedContexts = config
     .getOptional[Seq[String]]("versioning.unversionedContexts")
@@ -48,11 +47,7 @@ class RequestHeaderUtils @Inject() (config: Configuration) {
   private def getVersion(originalRequest: RequestHeader): String =
     originalRequest.headers
       .get(ACCEPT)
-      .flatMap {
-        acceptHeaderValue =>
-          writeAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) orElse
-            readAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue)
-      }
+      .flatMap(headerRegex.findFirstMatchIn(_))
       .map(_.group(1))
       .getOrElse("1.0")
 
