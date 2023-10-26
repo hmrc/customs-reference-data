@@ -16,19 +16,25 @@
 
 package play
 
+import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.mvc.RequestHeader
 
-object RequestHeaderUtils {
+import javax.inject.Inject
+
+class RequestHeaderUtils @Inject() (config: Configuration) {
 
   private val writeAcceptHeaderRegex = "application/vnd\\.hmrc\\.(.*)\\+gzip".r
   private val readAcceptHeaderRegex  = "application/vnd\\.hmrc\\.(.*)\\+json".r
-  private val uriRegex               = "(/[a-zA-Z0-9-_]*)/?.*$".r
 
-  def extractUriContext(requestHeader: RequestHeader) =
-    (uriRegex.findFirstMatchIn(requestHeader.uri) map (_.group(1))).get
+  private lazy val unversionedContexts = config
+    .getOptional[Seq[String]]("versioning.unversionedContexts")
+    .getOrElse(Seq.empty[String])
 
-  def getVersionedRequest(originalRequest: RequestHeader) = {
+  def isRequestUnversioned(request: RequestHeader): Boolean =
+    unversionedContexts.exists(request.uri.startsWith(_))
+
+  def getVersionedRequest(originalRequest: RequestHeader): RequestHeader = {
     val version = getVersion(originalRequest)
 
     originalRequest.withTarget(
@@ -39,20 +45,20 @@ object RequestHeaderUtils {
   }
 
   // If no version default to v1.0 (NCTS P4)
-  private def getVersion(originalRequest: RequestHeader) =
-    originalRequest.headers.get(ACCEPT) flatMap {
-      acceptHeaderValue =>
-        writeAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) map (_.group(1))
-    } getOrElse (
-      originalRequest.headers.get(ACCEPT) flatMap {
+  private def getVersion(originalRequest: RequestHeader): String =
+    originalRequest.headers
+      .get(ACCEPT)
+      .flatMap {
         acceptHeaderValue =>
-          readAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) map (_.group(1))
-      } getOrElse "1.0"
-    )
+          writeAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue) orElse
+            readAcceptHeaderRegex.findFirstMatchIn(acceptHeaderValue)
+      }
+      .map(_.group(1))
+      .getOrElse("1.0")
 
-  private def versionedUri(urlPath: String, version: String) =
+  private def versionedUri(urlPath: String, version: String): String =
     urlPath match {
       case "/" => s"/v$version"
-      case uri => s"/v$version$urlPath"
+      case _   => s"/v$version$urlPath"
     }
 }
