@@ -16,41 +16,34 @@
 
 package handlers
 
-import play.RequestHeaderUtils.extractUriContext
-import play.RequestHeaderUtils.getVersionedRequest
+import play.RequestHeaderUtils
+import play.api.OptionalDevContext
 import play.api.http.HttpConfiguration
 import play.api.http.HttpErrorHandler
 import play.api.http.HttpFilters
 import play.api.mvc.Handler
 import play.api.mvc.RequestHeader
 import play.api.routing.Router
-import play.api.Configuration
-import play.api.OptionalDevContext
 import play.core.WebCommands
 import uk.gov.hmrc.play.bootstrap.http.RequestHandler
 
 import javax.inject.Inject
 
 class VersioningRequestHandler @Inject() (
-  config: Configuration,
   webCommands: WebCommands,
   optDevContext: OptionalDevContext,
   router: Router,
   errorHandler: HttpErrorHandler,
   httpConfiguration: HttpConfiguration,
-  filters: HttpFilters
+  filters: HttpFilters,
+  requestHeaderUtils: RequestHeaderUtils
 ) extends RequestHandler(webCommands, optDevContext, router, errorHandler, httpConfiguration, filters) {
+  import requestHeaderUtils._
 
-  private lazy val unversionedContexts = config
-    .getOptional[Seq[String]]("versioning.unversionedContexts")
-    .getOrElse(Seq.empty[String])
-
-  override def routeRequest(request: RequestHeader): Option[Handler] = {
-    val requestContext = extractUriContext(request)
-    if (unversionedContexts.contains(requestContext))
+  override def routeRequest(request: RequestHeader): Option[Handler] =
+    if (isRequestUnversioned(request))
       super.routeRequest(request)
     else
       super.routeRequest(getVersionedRequest(request))
 
-  }
 }
