@@ -37,8 +37,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ingestion.v2.ReferenceDataService
 
-import java.io.File
-import java.nio.file.Files
 import scala.concurrent.Future
 
 class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
@@ -72,19 +70,19 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     }
 
     "returns Accepted when the data is gzipped" in {
-      val file       = new File(getClass.getResource("/test.data.json.gz").toURI)
-      val byteString = ByteString(Files.readAllBytes(file.toPath))
+      val bytes = getClass.getResourceAsStream("/v2/customs_offices.json.gz").readAllBytes()
 
       val headers = Seq(
         "Accept"           -> "application/vnd.hmrc.2.0+gzip",
         "Authorization"    -> "Bearer ABC",
         "Content-Encoding" -> "gzip",
+        "Accept-Encoding"  -> "gzip, deflate, br",
         "Content-Type"     -> "application/json"
       )
 
       def fakeRequest: FakeRequest[AnyContentAsRaw] =
         FakeRequest(POST, "/customs-reference-data/customs-office-lists")
-          .withRawBody(byteString)
+          .withRawBody(ByteString(bytes))
           .withHeaders(headers: _*)
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
