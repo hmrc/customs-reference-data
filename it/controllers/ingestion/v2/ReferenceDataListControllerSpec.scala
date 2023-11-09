@@ -39,7 +39,7 @@ class ReferenceDataListControllerSpec extends ItSpecBase with GuiceOneServerPerS
 
   private val url = s"$baseUrl/customs-reference-data/reference-data-lists"
 
-  "v2 customs offices ingestion endpoint" - {
+  "v2 reference data ingestion endpoint" - {
     "when gzipped json is schema valid" - {
       "must respond with 200 status" in {
         val file = new File(getClass.getResource("/reference/v2/reference_data.json.gz").toURI)
@@ -86,7 +86,7 @@ class ReferenceDataListControllerSpec extends ItSpecBase with GuiceOneServerPerS
 
     "when Authorization header is missing" - {
       "must respond with 401 status" in {
-        val file = new File(getClass.getResource("/reference/v2/customs_offices.json.gz").toURI)
+        val file = new File(getClass.getResource("/reference/v2/reference_data.json.gz").toURI)
 
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
