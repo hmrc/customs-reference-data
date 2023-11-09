@@ -9,5 +9,6 @@
     <logger name="application" level="OFF"/>
 
     <root level="ERROR">
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>
