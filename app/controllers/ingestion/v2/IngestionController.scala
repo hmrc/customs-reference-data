@@ -51,6 +51,7 @@ abstract class IngestionController @Inject() (
   def post(): Action[JsValue] =
     authenticateEISToken(parseRequestBody(parse)).async {
       implicit request =>
+        logger.debug(s"Headers: ${request.headers.headers.mkString}")
         (
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
