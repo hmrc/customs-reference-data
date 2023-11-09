@@ -48,17 +48,14 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "Authorization" -> "Bearer ABC"
   )
 
-  private def fakeRequest: FakeRequest[AnyContentAsJson] =
-    fakeRequest(headers)
-
-  private def fakeRequest(headers: Seq[(String, String)]): FakeRequest[AnyContentAsJson] =
-    FakeRequest(POST, "/customs-reference-data/customs-office-lists")
-      .withJsonBody(testJson)
-      .withHeaders(headers: _*)
-
   "customsOfficeLists" - {
+    def fakeRequest: FakeRequest[AnyContentAsJson] =
+      FakeRequest(POST, "/customs-reference-data/customs-office-lists")
+        .withJsonBody(testJson)
+        .withHeaders(headers: _*)
 
-    "returns Accepted when the data has been validated and processed" ignore {
+    "returns ACCEPTED when the data has been validated and processed" in {
+
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
 
@@ -67,23 +64,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
       status(result) mustBe Status.ACCEPTED
     }
 
-    "returns Bad Request when Accept header is missing" ignore {
-      val headers = Seq("Authorization" -> "Bearer ABC")
-
-      val result = route(app, fakeRequest(headers)).value
-
-      status(result) mustBe Status.BAD_REQUEST
-    }
-
-    "returns Unauthorized when Authorization header is missing" ignore {
-      val headers = Seq("Accept" -> "application/vnd.hmrc.2.0+gzip")
-
-      val result = route(app, fakeRequest(headers)).value
-
-      status(result) mustBe Status.UNAUTHORIZED
-    }
-
-    "returns Bad Request when a validation error occurs" ignore {
+    "returns Bad Request when a validation error occurs" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Left(OtherError("error")))
 
       val result = route(app, fakeRequest).value
@@ -92,7 +73,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
       contentAsJson(result) mustBe Json.toJsObject(OtherError("error"))
     }
 
-    "returns with an Internal Server Error when the has been validated but data was not processed successfully" ignore {
+    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Some(WriteError("error"))))
 
@@ -111,6 +92,9 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
   // Do not use directly use `app` instead
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
-      .overrides(bind[ReferenceDataService].toInstance(mockReferenceDataService))
+      .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
+      .overrides(
+        bind[ReferenceDataService].toInstance(mockReferenceDataService)
+      )
       .build()
 }
