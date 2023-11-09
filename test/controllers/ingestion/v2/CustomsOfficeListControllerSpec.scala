@@ -16,6 +16,7 @@
 
 package controllers.ingestion.v2
 
+import akka.util.ByteString
 import base.SpecBase
 import models.ApiDataSource.ColDataFeed
 import models.OtherError
@@ -31,10 +32,13 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
+import play.api.mvc.AnyContentAsRaw
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.ingestion.v2.ReferenceDataService
 
+import java.io.File
+import java.nio.file.Files
 import scala.concurrent.Future
 
 class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
@@ -48,20 +52,63 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "Authorization" -> "Bearer ABC"
   )
 
+  private def fakeRequest: FakeRequest[AnyContentAsJson] =
+    fakeRequest(headers)
+
+  private def fakeRequest(headers: Seq[(String, String)]): FakeRequest[AnyContentAsJson] =
+    FakeRequest(POST, "/customs-reference-data/customs-office-lists")
+      .withJsonBody(testJson)
+      .withHeaders(headers: _*)
+
   "customsOfficeLists" - {
-    def fakeRequest: FakeRequest[AnyContentAsJson] =
-      FakeRequest(POST, "/customs-reference-data/customs-office-lists")
-        .withJsonBody(testJson)
-        .withHeaders(headers: _*)
 
-    "returns ACCEPTED when the data has been validated and processed" in {
-
+    "returns Accepted when the data has been validated and processed" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
 
       val result = route(app, fakeRequest).value
 
       status(result) mustBe Status.ACCEPTED
+    }
+
+    "returns Accepted when the data is gzipped" in {
+      val file       = new File(getClass.getResource("/test.data.json.gz").toURI)
+      val byteString = ByteString(Files.readAllBytes(file.toPath))
+
+      val headers = Seq(
+        "Accept"           -> "application/vnd.hmrc.2.0+gzip",
+        "Authorization"    -> "Bearer ABC",
+        "Content-Encoding" -> "gzip",
+        "Content-Type"     -> "application/json"
+      )
+
+      def fakeRequest: FakeRequest[AnyContentAsRaw] =
+        FakeRequest(POST, "/customs-reference-data/customs-office-lists")
+          .withRawBody(byteString)
+          .withHeaders(headers: _*)
+
+      when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
+
+      val result = route(app, fakeRequest).value
+
+      status(result) mustBe Status.ACCEPTED // getting BAD_REQUEST
+    }
+
+    "returns Bad Request when Accept header is missing" in {
+      val headers = Seq("Authorization" -> "Bearer ABC")
+
+      val result = route(app, fakeRequest(headers)).value
+
+      status(result) mustBe Status.BAD_REQUEST
+    }
+
+    "returns Unauthorized when Authorization header is missing" in {
+      val headers = Seq("Accept" -> "application/vnd.hmrc.2.0+gzip")
+
+      val result = route(app, fakeRequest(headers)).value
+
+      status(result) mustBe Status.UNAUTHORIZED
     }
 
     "returns Bad Request when a validation error occurs" in {
