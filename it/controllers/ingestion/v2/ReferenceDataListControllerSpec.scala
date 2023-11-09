@@ -16,26 +16,11 @@
 
 package controllers.ingestion.v2
 
-import base.ItSpecBase
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.Application
 import play.api.http.Status._
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.ws.WSClient
 
 import java.io.File
 
-class ReferenceDataListControllerSpec extends ItSpecBase with GuiceOneServerPerSuite {
-
-  private val wsClient = app.injector.instanceOf[WSClient]
-  private val baseUrl  = s"http://localhost:$port"
-
-  override def fakeApplication(): Application =
-    GuiceApplicationBuilder()
-      .configure("metrics.enabled" -> false)
-      .build()
-
-  private val bearerToken = "ABC"
+class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
   private val url = s"$baseUrl/customs-reference-data/reference-data-lists"
 
@@ -49,6 +34,27 @@ class ReferenceDataListControllerSpec extends ItSpecBase with GuiceOneServerPerS
           "Authorization"    -> s"Bearer $bearerToken",
           "Content-Encoding" -> "gzip",
           "Content-Type"     -> "application/json"
+        )
+
+        val response =
+          wsClient
+            .url(url)
+            .withHttpHeaders(headers: _*)
+            .post(file)
+            .futureValue
+
+        response.status mustBe ACCEPTED
+      }
+    }
+
+    "when json is schema valid" - {
+      "must respond with 200 status" in {
+        val file = new File(getClass.getResource("/reference/v2/reference_data.json").toURI)
+
+        val headers = Seq(
+          "Accept"        -> "application/vnd.hmrc.2.0+gzip",
+          "Authorization" -> s"Bearer $bearerToken",
+          "Content-Type"  -> "application/json"
         )
 
         val response =
