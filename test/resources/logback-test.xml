@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="play.api.mvc.PlayBodyParsers" level="DEBUG"/>
+    <logger name="application" level="OFF"/>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
