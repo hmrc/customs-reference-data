@@ -27,7 +27,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
   "v2 reference data ingestion endpoint" - {
     "when gzipped json is schema valid" - {
-      "must respond with 200 status" in {
+      "must respond with 202 status" in {
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
           "Authorization"    -> s"Bearer $bearerToken",
@@ -49,7 +49,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
     }
 
     "when json is schema valid" - {
-      "must respond with 200 status" in {
+      "must respond with 202 status" in {
         val headers = Seq(
           "Accept"        -> "application/vnd.hmrc.2.0+gzip",
           "Authorization" -> s"Bearer $bearerToken",

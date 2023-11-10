@@ -17,6 +17,7 @@
 package controllers.ingestion.v2
 
 import base.ItSpecBase
+import org.mongodb.scala.MongoDatabase
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
@@ -39,13 +40,19 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
 
   def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 
-  private val testDatabase = "customs-reference-data-it"
+  protected def getDatabase: MongoDatabase =
+    mongoClient.getDatabase("customs-reference-data-it")
 
-  def countDocuments: Long =
-    mongoClient
-      .getDatabase(testDatabase)
+  protected def countDocuments: Long =
+    getDatabase
       .getCollection("v2-reference-data-lists-new")
       .countDocuments()
+      .toFuture()
+      .futureValue
+
+  protected def dropTestDatabase(): Unit =
+    getDatabase
+      .drop()
       .toFuture()
       .futureValue
 
@@ -56,7 +63,7 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    mongoClient.getDatabase(testDatabase).drop().toFuture().futureValue
+    dropTestDatabase()
     countDocuments mustBe 0
   }
 }
