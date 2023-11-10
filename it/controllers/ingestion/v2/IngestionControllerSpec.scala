@@ -40,18 +40,18 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
 
   def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 
-  protected def getDatabase: MongoDatabase =
+  protected def getTestDatabase: MongoDatabase =
     mongoClient.getDatabase("customs-reference-data-it")
 
   protected def countDocuments: Long =
-    getDatabase
+    getTestDatabase
       .getCollection("v2-reference-data-lists-new")
       .countDocuments()
       .toFuture()
       .futureValue
 
   protected def dropTestDatabase(): Unit =
-    getDatabase
+    getTestDatabase
       .drop()
       .toFuture()
       .futureValue
