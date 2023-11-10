@@ -16,34 +16,18 @@
 
 package controllers.ingestion.v2
 
-import base.ItSpecBase
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.Application
 import play.api.http.Status._
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.ws.WSClient
 
-import java.io.File
+class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
 
-class CustomsOfficeListControllerSpec extends ItSpecBase with GuiceOneServerPerSuite {
-
-  private val wsClient = app.injector.instanceOf[WSClient]
-  private val baseUrl  = s"http://localhost:$port"
-
-  override def fakeApplication(): Application =
-    GuiceApplicationBuilder()
-      .configure("metrics.enabled" -> false)
-      .build()
-
-  private val bearerToken = "ABC"
+  override val validGzipFile: String = "/reference/v2/customs_offices.json.gz"
+  override val validJsonFile: String = "/reference/v2/customs_offices.json"
 
   private val url = s"$baseUrl/customs-reference-data/customs-office-lists"
 
   "v2 customs offices ingestion endpoint" - {
     "when gzipped json is schema valid" - {
-      "must respond with 200 status" in {
-        val file = new File(getClass.getResource("/reference/v2/customs_offices.json.gz").toURI)
-
+      "must respond with 202 status" in {
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
           "Authorization"    -> s"Bearer $bearerToken",
@@ -55,17 +39,38 @@ class CustomsOfficeListControllerSpec extends ItSpecBase with GuiceOneServerPerS
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(validGzipFile))
             .futureValue
 
         response.status mustBe ACCEPTED
+
+        countDocuments mustBe 4791
+      }
+    }
+
+    "when json is schema valid" - {
+      "must respond with 202 status" in {
+        val headers = Seq(
+          "Accept"        -> "application/vnd.hmrc.2.0+gzip",
+          "Authorization" -> s"Bearer $bearerToken",
+          "Content-Type"  -> "application/json"
+        )
+
+        val response =
+          wsClient
+            .url(url)
+            .withHttpHeaders(headers: _*)
+            .post(file(validJsonFile))
+            .futureValue
+
+        response.status mustBe ACCEPTED
+
+        countDocuments mustBe 4791
       }
     }
 
     "when gzipped json is schema invalid" - {
       "must respond with 400 status" in {
-        val file = new File(getClass.getResource("/reference/invalid.json.gz").toURI)
-
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
           "Authorization"    -> s"Bearer $bearerToken",
@@ -77,17 +82,17 @@ class CustomsOfficeListControllerSpec extends ItSpecBase with GuiceOneServerPerS
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(invalidDataFile))
             .futureValue
 
         response.status mustBe BAD_REQUEST
+
+        countDocuments mustBe 0
       }
     }
 
     "when Authorization header is missing" - {
       "must respond with 401 status" in {
-        val file = new File(getClass.getResource("/reference/v2/customs_offices.json.gz").toURI)
-
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
           "Content-Encoding" -> "gzip",
@@ -98,12 +103,13 @@ class CustomsOfficeListControllerSpec extends ItSpecBase with GuiceOneServerPerS
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(validGzipFile))
             .futureValue
 
         response.status mustBe UNAUTHORIZED
+
+        countDocuments mustBe 0
       }
     }
   }
-
 }
