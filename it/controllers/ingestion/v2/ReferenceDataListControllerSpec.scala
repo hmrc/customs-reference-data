@@ -25,6 +25,8 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
   "v2 reference data ingestion endpoint" - {
     "when gzipped json is schema valid" - {
       "must respond with 200 status" in {
+        countDocuments mustBe 0
+
         val fileName = "/reference/v2/reference_data.json.gz"
 
         val headers = Seq(
@@ -42,11 +44,15 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
             .futureValue
 
         response.status mustBe ACCEPTED
+
+        countDocuments mustBe 167056
       }
     }
 
     "when json is schema valid" - {
       "must respond with 200 status" in {
+        countDocuments mustBe 0
+
         val fileName = "/reference/v2/reference_data.json"
 
         val headers = Seq(
@@ -63,6 +69,8 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
             .futureValue
 
         response.status mustBe ACCEPTED
+
+        countDocuments mustBe 167056
       }
     }
 
@@ -85,6 +93,8 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
             .futureValue
 
         response.status mustBe BAD_REQUEST
+
+        countDocuments mustBe 0
       }
     }
 
@@ -106,6 +116,8 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
             .futureValue
 
         response.status mustBe UNAUTHORIZED
+
+        countDocuments mustBe 0
       }
     }
   }

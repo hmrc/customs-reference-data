@@ -35,6 +35,16 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
 
   def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 
+  private val testDatabase = "customs-reference-data-it"
+
+  def countDocuments: Long =
+    mongoClient
+      .getDatabase(testDatabase)
+      .getCollection("v2-reference-data-lists-new")
+      .countDocuments()
+      .toFuture()
+      .futureValue
+
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()
       .configure("metrics.enabled" -> false)
@@ -42,6 +52,6 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    prepareDatabase()
+    mongoClient.getDatabase(testDatabase).drop().toFuture().futureValue
   }
 }
