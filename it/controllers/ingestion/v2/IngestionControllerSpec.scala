@@ -28,6 +28,10 @@ import java.io.File
 
 trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with BeforeAndAfterEach with MongoSupport {
 
+  val validGzipFile: String
+  val validJsonFile: String
+  val invalidDataFile: String = "/reference/invalid.json.gz"
+
   val wsClient: WSClient = app.injector.instanceOf[WSClient]
   val baseUrl: String    = s"http://localhost:$port"
 
