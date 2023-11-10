@@ -57,5 +57,6 @@ trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite wit
   override def beforeEach(): Unit = {
     super.beforeEach()
     mongoClient.getDatabase(testDatabase).drop().toFuture().futureValue
+    countDocuments mustBe 0
   }
 }
