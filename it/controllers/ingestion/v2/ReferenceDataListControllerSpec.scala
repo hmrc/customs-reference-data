@@ -18,8 +18,6 @@ package controllers.ingestion.v2
 
 import play.api.http.Status._
 
-import java.io.File
-
 class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
   private val url = s"$baseUrl/customs-reference-data/reference-data-lists"
@@ -27,7 +25,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
   "v2 reference data ingestion endpoint" - {
     "when gzipped json is schema valid" - {
       "must respond with 200 status" in {
-        val file = new File(getClass.getResource("/reference/v2/reference_data.json.gz").toURI)
+        val fileName = "/reference/v2/reference_data.json.gz"
 
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
@@ -40,7 +38,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(fileName))
             .futureValue
 
         response.status mustBe ACCEPTED
@@ -49,7 +47,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
     "when json is schema valid" - {
       "must respond with 200 status" in {
-        val file = new File(getClass.getResource("/reference/v2/reference_data.json").toURI)
+        val fileName = "/reference/v2/reference_data.json"
 
         val headers = Seq(
           "Accept"        -> "application/vnd.hmrc.2.0+gzip",
@@ -61,7 +59,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(fileName))
             .futureValue
 
         response.status mustBe ACCEPTED
@@ -70,7 +68,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
     "when gzipped json is schema invalid" - {
       "must respond with 400 status" in {
-        val file = new File(getClass.getResource("/reference/invalid.json.gz").toURI)
+        val fileName = "/reference/invalid.json.gz"
 
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
@@ -83,7 +81,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(fileName))
             .futureValue
 
         response.status mustBe BAD_REQUEST
@@ -92,7 +90,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
     "when Authorization header is missing" - {
       "must respond with 401 status" in {
-        val file = new File(getClass.getResource("/reference/v2/reference_data.json.gz").toURI)
+        val fileName = "/reference/v2/reference_data.json.gz"
 
         val headers = Seq(
           "Accept"           -> "application/vnd.hmrc.2.0+gzip",
@@ -104,7 +102,7 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
-            .post(file)
+            .post(file(fileName))
             .futureValue
 
         response.status mustBe UNAUTHORIZED

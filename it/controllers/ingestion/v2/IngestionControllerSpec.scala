@@ -24,12 +24,16 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.mongo.test.MongoSupport
 
+import java.io.File
+
 trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with BeforeAndAfterEach with MongoSupport {
 
   val wsClient: WSClient = app.injector.instanceOf[WSClient]
   val baseUrl: String    = s"http://localhost:$port"
 
   val bearerToken: String = "ABC"
+
+  def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()
