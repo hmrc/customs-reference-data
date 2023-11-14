@@ -47,7 +47,7 @@ class AuthenticateEISTokenImpl @Inject() (appConfig: AppConfig, parsers: BodyPar
         (for {
           bearerToken <- request.headers.get("Authorization")
           tokenMatch <- {
-            logger.debug(s"Bearer token $bearerToken")
+            logger.debug(s"Bearer token: $bearerToken")
             tokenPattern.findFirstMatchIn(bearerToken)
           }
           token = tokenMatch.group(1)
