@@ -39,6 +39,8 @@ import play.api.libs.json.Json
 import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ListRepositorySpec
@@ -119,4 +121,40 @@ class ListRepositorySpec
     }
   }
 
+  "deleteList" - {
+
+    "must delete a list" - {
+      "when date of saved list is before provided date" in {
+        val now = Instant.now()
+
+        val list = arbitrary[GenericListItem].sample.value
+          .copy(createdOn = now.minus(1, ChronoUnit.DAYS))
+
+        insert(list).futureValue
+
+        count().futureValue mustBe 1
+
+        repository.deleteList(list, now).value.futureValue mustBe Right(SuccessState)
+
+        count().futureValue mustBe 0
+      }
+    }
+
+    "must not delete a list" - {
+      "when date of saved list is not before provided date" in {
+        val now = Instant.now()
+
+        val list = arbitrary[GenericListItem].sample.value
+          .copy(createdOn = now.plus(1, ChronoUnit.DAYS))
+
+        insert(list).futureValue
+
+        count().futureValue mustBe 1
+
+        repository.deleteList(list, now).value.futureValue mustBe Right(SuccessState)
+
+        count().futureValue mustBe 1
+      }
+    }
+  }
 }
