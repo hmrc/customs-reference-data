@@ -58,7 +58,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
             None
           ),
           (
-            "ttl-index",
+            "created-on-index",
             BsonDocument("createdOn" -> 1),
             Some(ttl)
           )
@@ -81,7 +81,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
             None
           ),
           (
-            "ttl-index",
+            "created-on-index",
             BsonDocument("createdOn" -> 1),
             None
           )
