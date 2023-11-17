@@ -90,12 +90,12 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
 
-          service.insert(apiDataSource, payload).value.futureValue mustBe Right(List(SuccessState, SuccessState))
+          service.insert(apiDataSource, payload).value.futureValue mustBe Right(SuccessState)
 
-          verify(listRepository, times(numberOfLists)).insertList(any())
-          verify(listRepository, times(10)).deleteList(any(), any())
-          verify(versionRepository, times(numberOfLists)).deleteListVersion(any(), any())
-          verify(versionRepository, times(numberOfLists)).save(eqTo(versionId), any(), any(), any(), eqTo(now))
+          verify(listRepository, times(1)).insertList(any())
+          verify(listRepository, times(1)).deleteList(any(), any())
+          verify(versionRepository, times(1)).deleteListVersion(any(), any())
+          verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), any(), eqTo(now))
       }
     }
 

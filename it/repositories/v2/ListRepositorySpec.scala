@@ -22,15 +22,21 @@ import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import config.AppConfig
-import generators.{BaseGenerators, ModelArbitraryInstances}
-import models.{GenericListItem, ListName, VersionId}
+import generators.BaseGenerators
+import generators.ModelArbitraryInstances
+import models.GenericListItem
+import models.ListName
+import models.VersionId
 import org.mongodb.scala.result.InsertOneResult
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 

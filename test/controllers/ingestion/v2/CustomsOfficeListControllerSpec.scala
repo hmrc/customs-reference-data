@@ -61,7 +61,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "returns ACCEPTED when the data has been validated and processed" in {
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.rightT[Future, ErrorDetails](List(SuccessState)))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.rightT[Future, ErrorDetails](SuccessState))
 
       val result = route(app, fakeRequest).value
 
@@ -79,7 +79,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
     "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.leftT[Future, List[SuccessState.type]](OtherError("error")))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(EitherT.leftT[Future, SuccessState.type](OtherError("error")))
 
       val result = route(app, fakeRequest).value
 

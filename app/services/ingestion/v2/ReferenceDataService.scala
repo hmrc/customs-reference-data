@@ -35,7 +35,7 @@ import scala.concurrent.Future
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, SuccessState.type]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
 
@@ -49,13 +49,11 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     extends ReferenceDataService
     with Logging {
 
-  private def transactionalInsert(
-    list: Seq[GenericListItem],
-    now: Instant,
-    versionId: VersionId,
-    msgInfo: MessageInformation,
-    feed: ApiDataSource
-  ): EitherT[Future, ErrorDetails, SuccessState.type] = {
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, SuccessState.type] = {
+    val versionId: VersionId = versionIdProducer()
+    val now: Instant         = timeService.now()
+
+    val list = payload.toIterable(versionId, now).toSeq.flatten
 
     val listNames: Seq[ListName] = list.map(_.listName)
 
@@ -63,17 +61,8 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
       _ <- listRepository.insertList(list)
       _ <- listRepository.deleteList(listNames, now)
       _ <- versionRepository.deleteListVersion(listNames, now)
-      _ <- versionRepository.save(versionId, msgInfo, feed, listNames, now)
+      _ <- versionRepository.save(versionId, payload.messageInformation, feed, listNames, now)
     } yield SuccessState
-  }
-
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, List[SuccessState.type]] = {
-    val versionId: VersionId = versionIdProducer()
-    val now: Instant         = timeService.now()
-
-    import cats.syntax.all._
-
-    payload.toIterable(versionId, now).toList.traverse(transactionalInsert(_, now, versionId, payload.messageInformation, feed))
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

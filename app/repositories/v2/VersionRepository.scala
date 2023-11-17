@@ -83,12 +83,12 @@ class VersionRepository @Inject() (
   }
 
   // TODO - this logic is WRONG. We only want to remove the list names from the version dsocument
-  //  if the list names array is then empty after that, we can delete the document
+  // if the list names array is then empty after that, we can delete the document
   def deleteListVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
     val standardFilters =
       Filters.and(
-        Filters.in("listNames.listName", listNames: _*),
+        Filters.in("listNames.listName", listNames.map(_.listName): _*),
         Filters.lt("createdOn", createdOn)
       )
 

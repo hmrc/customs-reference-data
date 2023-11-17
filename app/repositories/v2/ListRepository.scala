@@ -103,7 +103,7 @@ class ListRepository @Inject() (
 
     val standardFilters =
       Filters.and(
-        Filters.in("listName", listNames: _*),
+        Filters.in("listName", listNames.map(_.listName): _*),
         Filters.lt("createdOn", createdOn)
       )
 
