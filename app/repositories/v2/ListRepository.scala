@@ -101,20 +101,19 @@ class ListRepository @Inject() (
 
   def deleteList(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
-    val standardFilters =
-      Filters.and(
-        Filters.in("listName", listNames.map(_.listName): _*),
-        Filters.lt("createdOn", createdOn)
-      )
+    val filter = Filters.and(
+      Filters.in("listName", listNames.map(_.listName): _*),
+      Filters.lt("createdOn", createdOn)
+    )
 
     EitherT(
       collection
-        .deleteMany(standardFilters)
+        .deleteMany(filter)
         .toFuture()
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: $listNames"))
+          case false => otherError(s"Failed to delete lists: $listNames")
         }
         .recover {
           x =>
@@ -132,7 +131,7 @@ class ListRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to insert lists: $list"))
+          case false => otherError(s"Failed to insert lists: $list")
         }
         .recover {
           x =>

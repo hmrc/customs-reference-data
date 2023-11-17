@@ -20,6 +20,7 @@ import cats.data.EitherT
 import com.google.inject.Inject
 import config.AppConfig
 import models._
+import org.mongodb.scala.bson.BsonArray
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
@@ -73,7 +74,7 @@ class VersionRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(versionId.versionId))
+          case false => otherError(versionId.versionId)
         }
         .recover {
           x =>
@@ -82,32 +83,43 @@ class VersionRepository @Inject() (
     )
   }
 
-  // TODO - this logic is WRONG. We only want to remove the list names from the version dsocument
-  // if the list names array is then empty after that, we can delete the document
-  def deleteListVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+  def deleteListVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
+    removeListNamesFromVersion(listNames, createdOn).flatMap(_ => deleteVersionsWithNoListNames())
 
-    val standardFilters =
-      Filters.and(
-        Filters.in("listNames.listName", listNames.map(_.listName): _*),
-        Filters.lt("createdOn", createdOn)
-      )
-
+  private def removeListNamesFromVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
     EitherT(
       collection
-        .deleteMany(standardFilters)
+        .updateMany(
+          Filters.lt("createdOn", createdOn),
+          Updates.pull("listNames", Filters.in("listName", listNames.map(_.listName): _*))
+        )
         .toFuture()
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: $listNames"))
+          case false => otherError(s"Failed to remove list names from array: $listNames")
         }
         .recover {
           x =>
-            otherError(s"Failed to delete lists: $listNames - ${x.getMessage}")
+            otherError(s"Failed to remove list names from array: $listNames - ${x.getMessage}")
         }
     )
 
-  }
+  private def deleteVersionsWithNoListNames(): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
+        .deleteMany(Filters.eq("listNames", BsonArray()))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => otherError("Failed to remove versions with no list names")
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to remove versions with no list names - ${x.getMessage}")
+        }
+    )
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     collection
@@ -145,15 +157,25 @@ object VersionRepository {
         indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
+    val listNamesIndex: IndexModel =
+      IndexModel(
+        keys = ascending("listNames"),
+        indexOptions = IndexOptions().name("list-names-index")
+      )
+
     lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
+      indexOptions = {
+        val baseOptions = IndexOptions().name("created-on-index")
+        if (requiresTtlIndex) baseOptions.expireAfter(config.ttl, TimeUnit.SECONDS) else baseOptions
+      }
     )
 
     Seq(
-      Some(listNameAndDateCompoundIndex),
-      Some(sourceAndDateCompoundIndex),
-      if (requiresTtlIndex) Some(createdOnIndex) else None
-    ).flatten
+      listNameAndDateCompoundIndex,
+      sourceAndDateCompoundIndex,
+      listNamesIndex,
+      createdOnIndex
+    )
   }
 }

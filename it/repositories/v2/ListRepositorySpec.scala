@@ -70,8 +70,8 @@ class ListRepositorySpec
     listWithMaxLength[GenericListItem](5)
   }
 
-  private def insertMany(list: Seq[GenericListItem]): Future[Seq[InsertOneResult]] =
-    Future.sequence(list.map(insert))
+  private def insertMany(list: GenericListItem*): Seq[InsertOneResult] =
+    Future.sequence(list.map(insert)).futureValue
 
   "getListByName" - {
 
@@ -139,7 +139,7 @@ class ListRepositorySpec
 
     "when deleting all list names" - {
       "must only delete the list items with an older createdOn date" in {
-        insertMany(listItems).futureValue
+        insertMany(listItems: _*)
 
         val listNames = Seq("foo", "bar", "baz").map(ListName(_))
 
@@ -151,13 +151,13 @@ class ListRepositorySpec
 
     "when deleting certain list names" - {
       "must only delete the list items with one of those list names and an older createdOn date" in {
-        insertMany(listItems).futureValue
+        insertMany(listItems: _*)
 
         val listNames = Seq("bar", "baz").map(ListName(_))
 
         repository.deleteList(listNames, Instant.now()).value.futureValue mustBe Right(SuccessState)
 
-        findAll().futureValue.map(_.listName).map(_.listName) mustBe Seq("foo", "baz")
+        findAll().futureValue.map(_.listName).map(_.listName).toSet mustBe Set("foo", "baz")
       }
     }
   }

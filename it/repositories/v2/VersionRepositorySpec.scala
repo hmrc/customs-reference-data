@@ -24,6 +24,9 @@ import generators.ModelArbitraryInstances
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource.RefDataFeed
 import models._
+import org.mongodb.scala.bson.conversions.Bson
+import org.mongodb.scala.model.Filters
+import org.mongodb.scala.result.InsertOneResult
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
@@ -50,6 +53,12 @@ class VersionRepositorySpec
   private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   override protected val repository = new VersionRepository(mongoComponent, appConfig)
+
+  private def insertMany(versions: VersionInformation*): Seq[InsertOneResult] =
+    Future.sequence(versions.map(insert)).futureValue
+
+  private def findOne(filter: Bson): VersionInformation =
+    find(filter).map(_.head).futureValue
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
@@ -195,6 +204,46 @@ class VersionRepositorySpec
       val expectedResult = listNames1 ++ listNames4
 
       result must contain theSameElementsAs expectedResult
+    }
+  }
+
+  "deleteListVersion" - {
+
+    def buildVersion(id: String, listNames: Seq[String], ageInDays: Int): VersionInformation =
+      arbitrary[VersionInformation].sample.value.copy(
+        versionId = VersionId(id),
+        listNames = listNames.map(ListName(_)),
+        createdOn = Instant.now().minus(ageInDays, ChronoUnit.DAYS)
+      )
+
+    val v1 = buildVersion("1", Seq("foo", "bar", "baz"), 1)
+    val v2 = buildVersion("2", Seq("foo", "bar", "baz"), 2)
+    val v3 = buildVersion("3", Seq("foo", "bar", "baz"), -1)
+
+    "must delete given list names from versions older than given date" in {
+      insertMany(v1, v2, v3)
+
+      count().futureValue mustBe 3
+
+      repository.deleteListVersion(Seq("bar", "baz").map(ListName(_)), Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+      val result = findAll().futureValue
+      result.size mustBe 3
+      result.find(_.versionId.versionId == "1").value.listNames.map(_.listName) mustBe Seq("foo")
+      result.find(_.versionId.versionId == "2").value.listNames.map(_.listName) mustBe Seq("foo")
+      result.find(_.versionId.versionId == "3").value.listNames.map(_.listName) mustBe Seq("foo", "bar", "baz")
+    }
+
+    "must delete document if all list names removed" in {
+      insertMany(v1, v2, v3)
+
+      count().futureValue mustBe 3
+
+      repository.deleteListVersion(Seq("foo", "bar", "baz").map(ListName(_)), Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+      val result = findAll().futureValue
+      result.size mustBe 1
+      result.find(_.versionId.versionId == "3").value.listNames.map(_.listName) mustBe Seq("foo", "bar", "baz")
     }
   }
 
