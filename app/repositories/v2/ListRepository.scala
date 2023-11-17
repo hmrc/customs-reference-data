@@ -152,12 +152,15 @@ object ListRepository {
 
     lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
+      indexOptions = {
+        val baseOptions = IndexOptions().name("created-on-index")
+        if (requiresTtlIndex) baseOptions.expireAfter(config.ttl, TimeUnit.SECONDS) else baseOptions
+      }
     )
 
     Seq(
-      Some(listNameAndVersionIdCompoundIndex),
-      if (requiresTtlIndex) Some(createdOnIndex) else None
-    ).flatten
+      listNameAndVersionIdCompoundIndex,
+      createdOnIndex
+    )
   }
 }

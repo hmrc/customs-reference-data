@@ -44,7 +44,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
 
   "indexes" - {
     "when TTL index is enabled" - {
-      "must return 2 indexes" in {
+      "must return 2 indexes, one with a TTL" in {
         when(mockConfig.isP5TtlEnabled).thenReturn(true)
 
         val repository = new ListRepository(mongoComponent, mockConfig)
@@ -67,7 +67,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
     }
 
     "when TTL index is disabled" - {
-      "must return 1 index" in {
+      "must return 2 indexes, none with a TTL" in {
         when(mockConfig.isP5TtlEnabled).thenReturn(false)
 
         val repository = new ListRepository(mongoComponent, mockConfig)
@@ -78,6 +78,11 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
           (
             "list-name-and-version-id-compound-index",
             BsonDocument("listName" -> 1, "versionId" -> 1),
+            None
+          ),
+          (
+            "ttl-index",
+            BsonDocument("createdOn" -> 1),
             None
           )
         )

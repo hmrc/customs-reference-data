@@ -44,7 +44,7 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
 
   "indexes" - {
     "when TTL index is enabled" - {
-      "must return 4 indexes" in {
+      "must return 4 indexes, one with a TTL" in {
         when(mockConfig.isP5TtlEnabled).thenReturn(true)
 
         val repository = new VersionRepository(mongoComponent, mockConfig)
@@ -77,7 +77,7 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
     }
 
     "when TTL index is disabled" - {
-      "must return 2 indexes" in {
+      "must return 4 indexes, none with a TTL" in {
         when(mockConfig.isP5TtlEnabled).thenReturn(false)
 
         val repository = new VersionRepository(mongoComponent, mockConfig)
