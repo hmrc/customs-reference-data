@@ -73,15 +73,12 @@ class ListRepository @Inject() (
     )
 
     val extraFilters: Seq[Bson] = filter
-      .map(
-        x =>
-          x.parameters.map(
-            f =>
-              Aggregates.filter(
-                Filters.eq(fieldName = f._1, value = f._2)
-              )
+      .map(_.parameters.map {
+        case (fieldName, value) =>
+          Aggregates.filter(
+            Filters.eq(fieldName, value)
           )
-      )
+      })
       .getOrElse(Seq.empty)
 
     val projection = Aggregates.project(
@@ -102,11 +99,11 @@ class ListRepository @Inject() (
   def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
     getListByName(listName, versionId, Some(filter))
 
-  def deleteList(list: GenericListItem, createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
+  def deleteList(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
     val standardFilters =
       Filters.and(
-        Filters.eq("listName", list.listName.listName),
+        Filters.in("listName", listNames: _*),
         Filters.lt("createdOn", createdOn)
       )
 
@@ -117,11 +114,11 @@ class ListRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete list: ${list.listName.listName}"))
+          case false => Left(OtherError(s"Failed to delete lists: $listNames"))
         }
         .recover {
           x =>
-            otherError(s"Failed to delete list: ${list.listName.listName} - ${x.getMessage}")
+            otherError(s"Failed to delete lists: $listNames - ${x.getMessage}")
         }
     )
 
@@ -159,6 +156,9 @@ object ListRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    listNameAndVersionIdCompoundIndex +: (if (requiresTtlIndex) Seq(createdOnIndex) else Nil)
+    Seq(
+      Some(listNameAndVersionIdCompoundIndex),
+      if (requiresTtlIndex) Some(createdOnIndex) else None
+    ).flatten
   }
 }

@@ -22,26 +22,22 @@ import akka.stream.scaladsl.Source
 import akka.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import config.AppConfig
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.GenericListItem
-import models.ListName
-import models.VersionId
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.{GenericListItem, ListName, VersionId}
+import org.mongodb.scala.result.InsertOneResult
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Arbitrary
-import org.scalacheck.Gen
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalacheck.{Arbitrary, Gen}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -67,6 +63,9 @@ class ListRepositorySpec
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength[GenericListItem](5)
   }
+
+  private def insertMany(list: Seq[GenericListItem]): Future[Seq[InsertOneResult]] =
+    Future.sequence(list.map(insert))
 
   "getListByName" - {
 
@@ -123,37 +122,36 @@ class ListRepositorySpec
 
   "deleteList" - {
 
-    "must delete a list" - {
-      "when date of saved list is before provided date" in {
-        val now = Instant.now()
+    def buildItem(name: String, ageInDays: Int): GenericListItem =
+      arbitrary[GenericListItem].sample.value.copy(listName = ListName(name), createdOn = Instant.now().minus(ageInDays, ChronoUnit.DAYS))
 
-        val list = arbitrary[GenericListItem].sample.value
-          .copy(createdOn = now.minus(1, ChronoUnit.DAYS))
+    val fooItem = buildItem("foo", 2)
+    val barItem = buildItem("bar", 1)
+    val bazItem = buildItem("baz", -1)
 
-        insert(list).futureValue
+    val listItems = Seq(fooItem, barItem, bazItem)
 
-        count().futureValue mustBe 1
+    "when deleting all list names" - {
+      "must only delete the list items with an older createdOn date" in {
+        insertMany(listItems).futureValue
 
-        repository.deleteList(list, now).value.futureValue mustBe Right(SuccessState)
+        val listNames = Seq("foo", "bar", "baz").map(ListName(_))
 
-        count().futureValue mustBe 0
+        repository.deleteList(listNames, Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+        findAll().futureValue.map(_.listName).map(_.listName) mustBe Seq("baz")
       }
     }
 
-    "must not delete a list" - {
-      "when date of saved list is not before provided date" in {
-        val now = Instant.now()
+    "when deleting certain list names" - {
+      "must only delete the list items with one of those list names and an older createdOn date" in {
+        insertMany(listItems).futureValue
 
-        val list = arbitrary[GenericListItem].sample.value
-          .copy(createdOn = now.plus(1, ChronoUnit.DAYS))
+        val listNames = Seq("bar", "baz").map(ListName(_))
 
-        insert(list).futureValue
+        repository.deleteList(listNames, Instant.now()).value.futureValue mustBe Right(SuccessState)
 
-        count().futureValue mustBe 1
-
-        repository.deleteList(list, now).value.futureValue mustBe Right(SuccessState)
-
-        count().futureValue mustBe 1
+        findAll().futureValue.map(_.listName).map(_.listName) mustBe Seq("foo", "baz")
       }
     }
   }

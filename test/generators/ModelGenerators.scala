@@ -28,12 +28,10 @@ import java.time.Instant
 trait ModelGenerators {
   self: BaseGenerators with JavaTimeGenerators =>
 
-  val genSimpleJsString: Gen[JsString] = extendedAsciiWithMaxLength(100).map(JsString)
-
   val genSimpleJsObject: Gen[JsObject] =
     for {
-      key   <- extendedAsciiWithMaxLength(100)
-      value <- genSimpleJsString
+      key   <- nonEmptyString
+      value <- nonEmptyString.map(JsString)
     } yield Json.obj(key -> value)
 
   def genReferenceList(numberOfLists: Int = 5, dataItemsGen: Option[Gen[JsObject]] = None, listNameGen: Option[Gen[String]] = None): Gen[JsObject] =

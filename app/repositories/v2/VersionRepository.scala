@@ -82,13 +82,13 @@ class VersionRepository @Inject() (
     )
   }
 
-  def deleteListVersion(list: Seq[GenericListItem], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
-
-    val x = list.map(x => x.listName).map(y => y.listName)
+  // TODO - this logic is WRONG. We only want to remove the list names from the version dsocument
+  //  if the list names array is then empty after that, we can delete the document
+  def deleteListVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
     val standardFilters =
       Filters.and(
-        Filters.in("listNames.listName", x),
+        Filters.in("listNames.listName", listNames: _*),
         Filters.lt("createdOn", createdOn)
       )
 
@@ -99,11 +99,11 @@ class VersionRepository @Inject() (
         .map(_.wasAcknowledged())
         .map {
           case true  => Right(SuccessState)
-          case false => Left(OtherError(s"Failed to delete lists: $list"))
+          case false => Left(OtherError(s"Failed to delete lists: $listNames"))
         }
         .recover {
           x =>
-            otherError(s"Failed to delete lists: $list - ${x.getMessage}")
+            otherError(s"Failed to delete lists: $listNames - ${x.getMessage}")
         }
     )
 
@@ -150,6 +150,10 @@ object VersionRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (requiresTtlIndex) Seq(createdOnIndex) else Nil)
+    Seq(
+      Some(listNameAndDateCompoundIndex),
+      Some(sourceAndDateCompoundIndex),
+      if (requiresTtlIndex) Some(createdOnIndex) else None
+    ).flatten
   }
 }

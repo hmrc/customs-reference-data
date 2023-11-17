@@ -82,7 +82,7 @@ trait BaseGenerators {
       .suchThat(_ != "false")
 
   def nonEmptyString: Gen[String] =
-    arbitrary[String] suchThat (_.nonEmpty)
+    stringsWithMaxLength(30)
 
   def stringsWithMaxLength(maxLength: Int): Gen[String] =
     for {

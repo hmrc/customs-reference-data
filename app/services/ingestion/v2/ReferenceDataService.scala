@@ -57,14 +57,12 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     feed: ApiDataSource
   ): EitherT[Future, ErrorDetails, SuccessState.type] = {
 
-    import cats.syntax.all._
-
-    val listNames: Seq[ListName] = list.map(x => x.listName)
+    val listNames: Seq[ListName] = list.map(_.listName)
 
     for {
       _ <- listRepository.insertList(list)
-      _ <- list.toList.traverse(x => listRepository.deleteList(x, now))
-      _ <- versionRepository.deleteListVersion(list, now)
+      _ <- listRepository.deleteList(listNames, now)
+      _ <- versionRepository.deleteListVersion(listNames, now)
       _ <- versionRepository.save(versionId, msgInfo, feed, listNames, now)
     } yield SuccessState
   }
