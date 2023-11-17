@@ -55,7 +55,7 @@ class ListRepository @Inject() (
     )
     with Logging {
 
-  override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
+  override lazy val requiresTtlIndex: Boolean = ListRepository.requiresTtlIndex(config)
 
   // TODO - Add more granular errors for the specific fails encountered
   private def otherError(error: String): Left[OtherError, Nothing] = {
@@ -146,7 +146,9 @@ class ListRepository @Inject() (
 
 object ListRepository {
 
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  def requiresTtlIndex(implicit config: AppConfig): Boolean = config.isP5TtlEnabled
+
+  def indexes(implicit config: AppConfig): Seq[IndexModel] = {
     val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(
       keys = compoundIndex(ascending("listName"), ascending("versionId")),
       indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
@@ -157,6 +159,6 @@ object ListRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    listNameAndVersionIdCompoundIndex +: (if (requiresTtlIndex) Seq(createdOnIndex) else Nil)
   }
 }

@@ -49,7 +49,7 @@ class VersionRepository @Inject() (
     )
     with Logging {
 
-  override lazy val requiresTtlIndex: Boolean = config.isP5TtlEnabled
+  override lazy val requiresTtlIndex: Boolean = VersionRepository.requiresTtlIndex(config)
 
   // TODO - Add more granular errors for the specific fails encountered
   private def otherError(error: String): Left[OtherError, Nothing] = {
@@ -130,7 +130,9 @@ class VersionRepository @Inject() (
 
 object VersionRepository {
 
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  def requiresTtlIndex(implicit config: AppConfig): Boolean = config.isP5TtlEnabled
+
+  def indexes(implicit config: AppConfig): Seq[IndexModel] = {
     val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
@@ -148,6 +150,6 @@ object VersionRepository {
       indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
     )
 
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (requiresTtlIndex) Seq(createdOnIndex) else Nil)
   }
 }

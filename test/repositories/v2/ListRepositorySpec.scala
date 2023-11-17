@@ -45,7 +45,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
   "indexes" - {
     "when TTL index is enabled" - {
       "must return 2 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(true)
+        when(mockConfig.isP5TtlEnabled).thenReturn(true)
 
         val repository = new ListRepository(mongoComponent, mockConfig)
 
@@ -68,7 +68,7 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
 
     "when TTL index is disabled" - {
       "must return 1 index" in {
-        when(mockConfig.isTtlEnabled).thenReturn(false)
+        when(mockConfig.isP5TtlEnabled).thenReturn(false)
 
         val repository = new ListRepository(mongoComponent, mockConfig)
 
