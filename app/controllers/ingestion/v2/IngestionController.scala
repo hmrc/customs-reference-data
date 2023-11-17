@@ -16,6 +16,7 @@
 
 package controllers.ingestion.v2
 
+import actions.AuthenticateEISToken
 import cats.data.EitherT
 import cats.implicits._
 import models._
@@ -35,7 +36,8 @@ import scala.concurrent.Future
 
 abstract class IngestionController @Inject() (
   cc: ControllerComponents,
-  referenceDataService: ReferenceDataService
+  referenceDataService: ReferenceDataService,
+  authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
     extends BackendController(cc)
     with Logging {
@@ -47,8 +49,9 @@ abstract class IngestionController @Inject() (
   val source: ApiDataSource
 
   def post(): Action[JsValue] =
-    Action(parseRequestBody(parse)).async {
+    authenticateEISToken(parseRequestBody(parse)).async {
       implicit request =>
+        logger.debug(s"Headers: ${request.headers.headers.mkString}")
         (
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
@@ -56,12 +59,14 @@ abstract class IngestionController @Inject() (
             insert <- referenceDataService.insert(source, referenceDataPayload)
           } yield insert
         ).value.map {
-          case Right(_) => Accepted
+          case Right(_) =>
+            logger.info("[controllers.ingestion.v2.IngestionController]: Success")
+            Accepted
           case Left(writeError: WriteError) =>
-            logger.warn(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
             InternalServerError(Json.toJsObject(writeError))
           case Left(errorDetails: ErrorDetails) =>
-            logger.info(errorDetails.message)
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed because of error: ${errorDetails.message}")
             BadRequest(Json.toJsObject(errorDetails))
         }
     }

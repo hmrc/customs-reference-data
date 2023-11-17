@@ -24,13 +24,9 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 @Singleton
 class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
 
-  lazy val authBaseUrl: String = servicesConfig.baseUrl("auth")
-
-  lazy val auditingEnabled: Boolean = config.get[Boolean]("auditing.enabled")
-  lazy val graphiteHost: String     = config.get[String]("microservice.metrics.graphite.host")
-
-  lazy val replaceIndexes: Boolean = config.get[Boolean]("mongodb.replaceIndexes")
-  lazy val ttl: Int                = config.get[Int]("mongodb.timeToLiveInSeconds")
-  lazy val isTtlEnabled: Boolean   = config.get[Boolean]("mongodb.isTtlEnabled")
-  lazy val isP5TtlEnabled: Boolean = config.get[Boolean]("mongodb.isP5TtlEnabled")
+  lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
+  lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
+  lazy val isTtlEnabled: Boolean            = config.get[Boolean]("mongodb.isTtlEnabled")
+  lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
+  lazy val isP5TtlEnabled: Boolean          = config.get[Boolean]("mongodb.isP5TtlEnabled")
 }

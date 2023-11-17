@@ -16,6 +16,7 @@
 
 package controllers.ingestion.v2
 
+import actions.AuthenticateEISToken
 import config.ReferenceDataControllerParserConfig
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource
@@ -34,9 +35,10 @@ class CustomsOfficeListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
-  cTCUP08Schema: CTCUP08Schema
+  cTCUP08Schema: CTCUP08Schema,
+  authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService) {
+    extends IngestionController(cc, referenceDataService, authenticateEISToken) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.customsOfficeParser(parse)
 

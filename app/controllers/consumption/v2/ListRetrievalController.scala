@@ -48,7 +48,7 @@ class ListRetrievalController @Inject() (
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-        case None         => NoContent
+        case None         => NotFound
       }
     }
 
@@ -61,9 +61,8 @@ class ListRetrievalController @Inject() (
           nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
         } yield streamedList.via(nestJson.nestInJson)
       ).value.map {
-        case Some(source) =>
-          Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-        case None => NoContent
+        case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+        case None         => NotFound
       }
     }
 }

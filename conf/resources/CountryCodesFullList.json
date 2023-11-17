@@ -48,5 +48,15 @@
     "code": "DE",
     "state": "valid",
     "description": "Germany"
+  },
+  {
+    "code": "RS",
+    "state": "valid",
+    "description": "Serbia"
+  },
+  {
+    "code": "XS",
+    "state": "valid",
+    "description": "Serbia"
   }
 ]
