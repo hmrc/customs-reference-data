@@ -51,7 +51,6 @@ abstract class IngestionController @Inject() (
   def post(): Action[JsValue] =
     authenticateEISToken(parseRequestBody(parse)).async {
       implicit request =>
-        logger.debug(s"Headers: ${request.headers.headers.mkString}")
         (
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
@@ -63,11 +62,13 @@ abstract class IngestionController @Inject() (
             logger.info("[controllers.ingestion.v2.IngestionController]: Success")
             Accepted
           case Left(writeError: WriteError) =>
-            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${writeError.message}")
-            InternalServerError(Json.toJsObject(writeError))
+            val response = Json.toJson(writeError)
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${Json.stringify(response)}")
+            InternalServerError(response)
           case Left(errorDetails: ErrorDetails) =>
-            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed because of error: ${errorDetails.message}")
-            BadRequest(Json.toJsObject(errorDetails))
+            val response = Json.toJson(errorDetails)
+            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed because of error: ${Json.stringify(response)}")
+            BadRequest(response)
         }
     }
 }
