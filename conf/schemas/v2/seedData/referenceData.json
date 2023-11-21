@@ -216,8 +216,8 @@
         }
       ]
     },
-    "PreviousDocumentTypeExcise": {
-      "listName": "PreviousDocumentTypeExcise",
+    "DocumentTypeExcise": {
+      "listName": "DocumentTypeExcise",
       "listEntries": [
         {
           "activeFrom": "2023-01-23",

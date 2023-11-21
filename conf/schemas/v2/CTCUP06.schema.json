@@ -601,7 +601,7 @@
             "listEntries"
           ]
         },
-        "PreviousDocumentTypeExcise": {
+        "DocumentTypeExcise": {
           "type": "object",
           "properties": {
             "listName": {
@@ -2696,7 +2696,7 @@
         "SupportingDocumentType",
         "TransportDocumentType",
         "PreviousDocumentType",
-        "PreviousDocumentTypeExcise",
+        "DocumentTypeExcise",
         "KindOfPackages",
         "KindOfPackagesBulk",
         "KindOfPackagesUnpacked",
