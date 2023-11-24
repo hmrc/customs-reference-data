@@ -25,7 +25,7 @@ import play.api.libs.json.JsObject
 import java.time.Instant
 import java.time.LocalDate
 
-trait ModelArbitraryInstances extends JavaTimeGenerators {
+trait ModelArbitraryInstances extends JavaTimeGenerators with BaseGenerators {
 
   val maxListSize = 10
 
@@ -43,7 +43,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit val arbitraryMetaData: Arbitrary[MetaData] =
     Arbitrary {
       for {
-        version  <- arbitrary[String]
+        version  <- nonEmptyString
         snapShot <- arbitrary[LocalDate]
       } yield MetaData(version, snapShot)
     }
@@ -59,7 +59,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
   implicit val arbitraryMessageInformation: Arbitrary[MessageInformation] =
     Arbitrary {
       for {
-        messageId    <- arbitrary[String]
+        messageId    <- nonEmptyString
         snapshotDate <- arbitrary[LocalDate]
       } yield MessageInformation(messageId, snapshotDate)
     }
@@ -81,7 +81,7 @@ trait ModelArbitraryInstances extends JavaTimeGenerators {
     }
 
   implicit val arbitraryVersionId: Arbitrary[VersionId] =
-    Arbitrary(arbitrary[String].map(VersionId(_)))
+    Arbitrary(nonEmptyString.map(VersionId(_)))
 
   implicit val arbitraryApiDataSource: Arbitrary[ApiDataSource] =
     Arbitrary(Gen.oneOf(ApiDataSource.RefDataFeed, ApiDataSource.ColDataFeed))

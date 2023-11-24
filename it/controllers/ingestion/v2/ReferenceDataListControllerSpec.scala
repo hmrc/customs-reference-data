@@ -18,6 +18,9 @@ package controllers.ingestion.v2
 
 import play.api.http.Status._
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 class ReferenceDataListControllerSpec extends IngestionControllerSpec {
 
   override val validGzipFile: String = "/reference/v2/reference_data.json.gz"
@@ -35,14 +38,15 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           "Content-Type"     -> "application/json"
         )
 
-        val response =
+        lazy val response =
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
             .post(file(validGzipFile))
-            .futureValue
 
-        response.status mustBe ACCEPTED
+        val result = Await.result(response, Duration.Inf)
+
+        result.status mustBe ACCEPTED
 
         countDocuments mustBe 167056
       }
@@ -56,14 +60,15 @@ class ReferenceDataListControllerSpec extends IngestionControllerSpec {
           "Content-Type"  -> "application/json"
         )
 
-        val response =
+        lazy val response =
           wsClient
             .url(url)
             .withHttpHeaders(headers: _*)
             .post(file(validJsonFile))
-            .futureValue
 
-        response.status mustBe ACCEPTED
+        val result = Await.result(response, Duration.Inf)
+
+        result.status mustBe ACCEPTED
 
         countDocuments mustBe 167056
       }

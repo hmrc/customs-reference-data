@@ -27,6 +27,7 @@ import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import org.mongodb.scala.result.InsertOneResult
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
@@ -36,10 +37,13 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import repositories.SuccessfulWrite
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ListRepositorySpec
     extends ItSpecBase
@@ -65,6 +69,9 @@ class ListRepositorySpec
     implicit val arbitraryVersionId: Arbitrary[VersionId] = Arbitrary(versionId)
     listWithMaxLength[GenericListItem](5)
   }
+
+  private def insertMany(list: GenericListItem*): Seq[InsertOneResult] =
+    Future.sequence(list.map(insert)).futureValue
 
   "getListByName" - {
 
@@ -111,7 +118,7 @@ class ListRepositorySpec
     "must save a list" in {
       val list = listWithMaxLength[GenericListItem](10).sample.value
 
-      repository.insertList(list).futureValue mustBe SuccessfulWrite
+      repository.insertList(list).value.futureValue mustBe Right(SuccessState)
 
       val result = findAll().futureValue
 
@@ -119,4 +126,39 @@ class ListRepositorySpec
     }
   }
 
+  "deleteList" - {
+
+    def buildItem(name: String, ageInDays: Int): GenericListItem =
+      arbitrary[GenericListItem].sample.value.copy(listName = ListName(name), createdOn = Instant.now().minus(ageInDays, ChronoUnit.DAYS))
+
+    val fooItem = buildItem("foo", 2)
+    val barItem = buildItem("bar", 1)
+    val bazItem = buildItem("baz", -1)
+
+    val listItems = Seq(fooItem, barItem, bazItem)
+
+    "when deleting all list names" - {
+      "must only delete the list items with an older createdOn date" in {
+        insertMany(listItems: _*)
+
+        val listNames = Seq("foo", "bar", "baz").map(ListName(_))
+
+        repository.deleteList(listNames, Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+        findAll().futureValue.map(_.listName).map(_.listName) mustBe Seq("baz")
+      }
+    }
+
+    "when deleting certain list names" - {
+      "must only delete the list items with one of those list names and an older createdOn date" in {
+        insertMany(listItems: _*)
+
+        val listNames = Seq("bar", "baz").map(ListName(_))
+
+        repository.deleteList(listNames, Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+        findAll().futureValue.map(_.listName).map(_.listName).toSet mustBe Set("foo", "baz")
+      }
+    }
+  }
 }

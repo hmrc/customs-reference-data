@@ -16,25 +16,26 @@
 
 package services.ingestion.v2
 
+import cats.data.EitherT
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
 import models._
+import play.api.Logging
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
+import repositories._
 import repositories.v2.ListRepository
 import repositories.v2.VersionRepository
-import repositories.FailedWrite
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
 import services.consumption.TimeService
 import services.ingestion.SchemaValidationService
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService {
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, SuccessState.type]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
 
@@ -45,21 +46,23 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionIdProducer: VersionIdProducer,
   timeService: TimeService
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService {
+    extends ReferenceDataService
+    with Logging {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
-    val versionId = versionIdProducer()
-    val now       = timeService.now()
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): EitherT[Future, ErrorDetails, SuccessState.type] = {
+    val versionId: VersionId = versionIdProducer()
+    val now: Instant         = timeService.now()
+
+    val list = payload.toIterable(versionId, now).toSeq.flatten
+
+    val listNames: Seq[ListName] = list.map(_.listName)
 
     for {
-      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
-      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-    } yield writeResult
-      .foldLeft[Option[Seq[ListName]]](None) {
-        case (errors, SuccessfulWrite)       => errors
-        case (errors, FailedWrite(listName)) => errors.orElse(Some(Seq())).map(_ :+ listName)
-      }
-      .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v2.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
+      _ <- listRepository.insertList(list)
+      _ <- listRepository.deleteList(listNames, now)
+      _ <- versionRepository.deleteListVersion(listNames, now)
+      _ <- versionRepository.save(versionId, payload.messageInformation, feed, listNames, now)
+    } yield SuccessState
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

@@ -17,26 +17,29 @@
 package repositories.v2
 
 import base.ItSpecBase
+import cats.data.EitherT
 import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
 import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource.RefDataFeed
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
-import org.scalacheck.Arbitrary
+import models._
+import org.mongodb.scala.bson.conversions.Bson
+import org.mongodb.scala.model.Filters
+import org.mongodb.scala.result.InsertOneResult
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.temporal.ChronoUnit
 import java.time.Instant
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class VersionRepositorySpec
     extends ItSpecBase
@@ -51,18 +54,25 @@ class VersionRepositorySpec
 
   override protected val repository = new VersionRepository(mongoComponent, appConfig)
 
+  private def insertMany(versions: VersionInformation*): Seq[InsertOneResult] =
+    Future.sequence(versions.map(insert)).futureValue
+
+  private def findOne(filter: Bson): VersionInformation =
+    find(filter).map(_.head).futureValue
+
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
-      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listName           = Arbitrary.arbitrary[ListName].sample.value
+      val messageInformation = arbitrary[MessageInformation].sample.value
+      val listName           = arbitrary[ListName].sample.value
 
       val expectedVersionId = VersionId("1")
 
-      val result = repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), Instant.now()).futureValue
+      val result: EitherT[Future, ErrorDetails, SuccessState.type] =
+        repository.save(expectedVersionId, messageInformation, RefDataFeed, Seq(listName), Instant.now())
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, Instant.now, RefDataFeed, Seq(listName))
 
-      result mustEqual true
+      result.value.futureValue mustBe Right(SuccessState)
 
       val savedVersionInformation = findAll().futureValue.head
 
@@ -75,8 +85,8 @@ class VersionRepositorySpec
       val nowDate = LocalDate.now()
       val nowTime = Instant.now()
 
-      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
-      val listName           = Arbitrary.arbitrary[ListName].sample.value
+      val messageInformation = arbitrary[MessageInformation].sample.value
+      val listName           = arbitrary[ListName].sample.value
 
       val v1 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("1"), nowTime, RefDataFeed, Seq(listName))
       val v2 = VersionInformation(messageInformation.copy(snapshotDate = nowDate), VersionId("2"), nowTime.plus(1, ChronoUnit.DAYS), RefDataFeed, Seq(listName))
@@ -99,7 +109,7 @@ class VersionRepositorySpec
       val nowDate = LocalDate.now()
       val nowTime = Instant.now()
 
-      val messageInformation = Arbitrary.arbitrary[MessageInformation].sample.value
+      val messageInformation = arbitrary[MessageInformation].sample.value
       val listName1          = ListName("1")
       val listName2          = ListName("2")
 
@@ -194,6 +204,46 @@ class VersionRepositorySpec
       val expectedResult = listNames1 ++ listNames4
 
       result must contain theSameElementsAs expectedResult
+    }
+  }
+
+  "deleteListVersion" - {
+
+    def buildVersion(id: String, listNames: Seq[String], ageInDays: Int): VersionInformation =
+      arbitrary[VersionInformation].sample.value.copy(
+        versionId = VersionId(id),
+        listNames = listNames.map(ListName(_)),
+        createdOn = Instant.now().minus(ageInDays, ChronoUnit.DAYS)
+      )
+
+    val v1 = buildVersion("1", Seq("foo", "bar", "baz"), 1)
+    val v2 = buildVersion("2", Seq("foo", "bar", "baz"), 2)
+    val v3 = buildVersion("3", Seq("foo", "bar", "baz"), -1)
+
+    "must delete given list names from versions older than given date" in {
+      insertMany(v1, v2, v3)
+
+      count().futureValue mustBe 3
+
+      repository.deleteListVersion(Seq("bar", "baz").map(ListName(_)), Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+      val result = findAll().futureValue
+      result.size mustBe 3
+      result.find(_.versionId.versionId == "1").value.listNames.map(_.listName) mustBe Seq("foo")
+      result.find(_.versionId.versionId == "2").value.listNames.map(_.listName) mustBe Seq("foo")
+      result.find(_.versionId.versionId == "3").value.listNames.map(_.listName) mustBe Seq("foo", "bar", "baz")
+    }
+
+    "must delete document if all list names removed" in {
+      insertMany(v1, v2, v3)
+
+      count().futureValue mustBe 3
+
+      repository.deleteListVersion(Seq("foo", "bar", "baz").map(ListName(_)), Instant.now()).value.futureValue mustBe Right(SuccessState)
+
+      val result = findAll().futureValue
+      result.size mustBe 1
+      result.find(_.versionId.versionId == "3").value.listNames.map(_.listName) mustBe Seq("foo", "bar", "baz")
     }
   }
 

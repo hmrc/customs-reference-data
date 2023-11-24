@@ -44,8 +44,8 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
 
   "indexes" - {
     "when TTL index is enabled" - {
-      "must return 3 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(true)
+      "must return 4 indexes, one with a TTL" in {
+        when(mockConfig.isP5TtlEnabled).thenReturn(true)
 
         val repository = new VersionRepository(mongoComponent, mockConfig)
 
@@ -63,7 +63,12 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
             None
           ),
           (
-            "ttl-index",
+            "list-names-index",
+            BsonDocument("listNames" -> 1),
+            None
+          ),
+          (
+            "created-on-index",
             BsonDocument("createdOn" -> 1),
             Some(ttl)
           )
@@ -72,8 +77,8 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
     }
 
     "when TTL index is disabled" - {
-      "must return 2 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(false)
+      "must return 4 indexes, none with a TTL" in {
+        when(mockConfig.isP5TtlEnabled).thenReturn(false)
 
         val repository = new VersionRepository(mongoComponent, mockConfig)
 
@@ -88,6 +93,16 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
           (
             "source-and-date-compound-index",
             BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+            None
+          ),
+          (
+            "list-names-index",
+            BsonDocument("listNames" -> 1),
+            None
+          ),
+          (
+            "created-on-index",
+            BsonDocument("createdOn" -> 1),
             None
           )
         )

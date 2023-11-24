@@ -16,12 +16,16 @@
 
 package repositories.v2
 
+import cats.data.EitherT
 import com.google.inject.Inject
 import config.AppConfig
 import models._
+import org.mongodb.scala.bson.BsonArray
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model._
+import play.api.Logging
+import repositories.SuccessState
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
@@ -43,9 +47,16 @@ class VersionRepository @Inject() (
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes(config),
       replaceIndexes = config.replaceIndexes
-    ) {
+    )
+    with Logging {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = VersionRepository.requiresTtlIndex(config)
+
+  // TODO - Add more granular errors for the specific fails encountered
+  private def otherError(error: String): Left[OtherError, Nothing] = {
+    logger.warn(error)
+    Left(OtherError(error))
+  }
 
   def save(
     versionId: VersionId,
@@ -53,16 +64,62 @@ class VersionRepository @Inject() (
     feed: ApiDataSource,
     listNames: Seq[ListName],
     createdOn: Instant
-  ): Future[Boolean] = {
+  ): EitherT[Future, ErrorDetails, SuccessState.type] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
-    collection
-      .insertOne(versionInformation)
-      .toFuture()
-      .map {
-        _.wasAcknowledged()
-      }
+    EitherT(
+      collection
+        .insertOne(versionInformation)
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => otherError(versionId.versionId)
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to save lists: $listNames - ${x.getMessage}")
+        }
+    )
   }
+
+  def deleteListVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
+    removeListNamesFromVersion(listNames, createdOn).flatMap(_ => deleteVersionsWithNoListNames())
+
+  private def removeListNamesFromVersion(listNames: Seq[ListName], createdOn: Instant): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
+        .updateMany(
+          Filters.lt("createdOn", createdOn),
+          Updates.pull("listNames", Filters.in("listName", listNames.map(_.listName): _*))
+        )
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => otherError(s"Failed to remove list names from array: $listNames")
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to remove list names from array: $listNames - ${x.getMessage}")
+        }
+    )
+
+  private def deleteVersionsWithNoListNames(): EitherT[Future, ErrorDetails, SuccessState.type] =
+    EitherT(
+      collection
+        .deleteMany(Filters.eq("listNames", BsonArray()))
+        .toFuture()
+        .map(_.wasAcknowledged())
+        .map {
+          case true  => Right(SuccessState)
+          case false => otherError("Failed to remove versions with no list names")
+        }
+        .recover {
+          x =>
+            otherError(s"Failed to remove versions with no list names - ${x.getMessage}")
+        }
+    )
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
     collection
@@ -85,7 +142,9 @@ class VersionRepository @Inject() (
 
 object VersionRepository {
 
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  def requiresTtlIndex(implicit config: AppConfig): Boolean = config.isP5TtlEnabled
+
+  def indexes(implicit config: AppConfig): Seq[IndexModel] = {
     val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
@@ -98,11 +157,25 @@ object VersionRepository {
         indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
+    val listNamesIndex: IndexModel =
+      IndexModel(
+        keys = ascending("listNames"),
+        indexOptions = IndexOptions().name("list-names-index")
+      )
+
     lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
+      indexOptions = {
+        val baseOptions = IndexOptions().name("created-on-index")
+        if (requiresTtlIndex) baseOptions.expireAfter(config.ttl, TimeUnit.SECONDS) else baseOptions
+      }
     )
 
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    Seq(
+      listNameAndDateCompoundIndex,
+      sourceAndDateCompoundIndex,
+      listNamesIndex,
+      createdOnIndex
+    )
   }
 }
