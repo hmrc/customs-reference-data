@@ -141,5 +141,49 @@
     "status": "AQ",
     "date": "0601",
     "coordinates": "5148N 00342W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "DEBER",
+    "name": "Abercraf",
+    "subdivision": "POW",
+    "function": "--3--6--",
+    "status": "AQ",
+    "date": "0601",
+    "coordinates": "5148N 00342W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "ESMAD",
+    "name": "Abercraf",
+    "subdivision": "POW",
+    "function": "--3--6--",
+    "status": "AQ",
+    "date": "0601",
+    "coordinates": "5148N 00342W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "GBBRS",
+    "name": "Abercraf",
+    "subdivision": "POW",
+    "function": "--3--6--",
+    "status": "AQ",
+    "date": "0601",
+    "coordinates": "5148N 00342W"
+  },
+  {
+    "state": "valid",
+    "activeFrom": "2021-02-15",
+    "unLocodeExtendedCode": "GBMNC",
+    "name": "Abercraf",
+    "subdivision": "POW",
+    "function": "--3--6--",
+    "status": "AQ",
+    "date": "0601",
+    "coordinates": "5148N 00342W"
   }
 ]
