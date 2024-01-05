@@ -16,8 +16,8 @@
 
 package services.consumption.v2
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import models._
 import play.api.libs.json.JsObject
 import repositories.v2.ListRepository

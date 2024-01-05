@@ -16,9 +16,9 @@
 
 package models.v2
 
-import akka.NotUsed
-import akka.stream.scaladsl.Flow
-import akka.util.ByteString
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Flow
+import org.apache.pekko.util.ByteString
 import models.ListName
 import models.MetaData
 import play.api.libs.json.Json
