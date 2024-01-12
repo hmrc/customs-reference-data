@@ -38,31 +38,21 @@ class ListRetrievalController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName): Action[AnyContent] =
+  def get(listName: ListName, filter: Option[FilterParams]): Action[AnyContent] =
     Action.async {
       (
         for {
           latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId)
+          streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId, filter)
           nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
-        } yield streamedList.via(nestJson.nestInJson)
+        } yield streamedList.via(nestJson.nestInJson(filter))
       ).value.map {
         case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
         case None         => NotFound
       }
     }
 
+  @deprecated("Use `get` instead", since = "0.110.0")
   def getFiltered(listName: ListName, filter: FilterParams): Action[AnyContent] =
-    Action.async {
-      (
-        for {
-          latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList = listRetrievalService.getFilteredList(listName, latestVersion.versionId, filter)
-          nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
-        } yield streamedList.via(nestJson.nestInJson)
-      ).value.map {
-        case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-        case None         => NotFound
-      }
-    }
+    get(listName, Some(filter))
 }
