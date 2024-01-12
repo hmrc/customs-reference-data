@@ -89,7 +89,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
   }
 
   "v2 list retrieval endpoint" - {
-    "when given no valued in query param" - {
+    "when given no values in query param" - {
       val url = s"$baseUrl/customs-reference-data/lists/$listName"
 
       "must respond with 200 status" in {
