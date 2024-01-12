@@ -32,11 +32,8 @@ class ListRetrievalService @Inject() (
   versionRepository: VersionRepository
 )(implicit ec: ExecutionContext) {
 
-  def getStreamedList(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
-    listRepository.getListByName(listName, versionId).via(ProjectEmbeddedJsonFlow(listName).project)
-
-  def getFilteredList(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
-    listRepository.getListByNameWithFilter(listName, versionId, filter).via(ProjectEmbeddedJsonFlow(listName).project)
+  def getStreamedList(listName: ListName, versionId: VersionId, filter: Option[FilterParams]): Source[JsObject, NotUsed] =
+    listRepository.getListByName(listName, versionId, filter).via(ProjectEmbeddedJsonFlow(listName).project)
 
   def getLatestVersion(listName: ListName): Future[Option[VersionInformation]] =
     versionRepository.getLatest(listName)

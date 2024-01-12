@@ -89,8 +89,8 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
   }
 
   "v2 list retrieval endpoint" - {
-    "when given single value in query param" - {
-      val url = s"$baseUrl/customs-reference-data/filtered-lists/$listName?data.id=GB000001"
+    "when given no valued in query param" - {
+      val url = s"$baseUrl/customs-reference-data/lists/$listName"
 
       "must respond with 200 status" in {
         val response =
@@ -118,6 +118,14 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |     {
             |       "id" : "GB000001",
             |       "name" : "Customs office 1"
+            |     },
+            |     {
+            |       "id" : "GB000002",
+            |       "name" : "Customs office 2"
+            |     },
+            |     {
+            |       "id" : "GB000003",
+            |       "name" : "Customs office 3"
             |     }
             |   ]
             |}
@@ -127,8 +135,8 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
       }
     }
 
-    "when given multiple values in query param" - {
-      val url = s"$baseUrl/customs-reference-data/filtered-lists/$listName?data.id=GB000001&data.id=GB000002"
+    "when given single value in query param" - {
+      val url = s"$baseUrl/customs-reference-data/lists/$listName?data.id=GB000001"
 
       "must respond with 200 status" in {
         val response =
@@ -144,7 +152,45 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |{
             |   "_links": {
             |     "self": {
-            |       "href": "/customs-reference-data/lists/CustomsOffices"
+            |       "href": "/customs-reference-data/lists/CustomsOffices?data.id=GB000001"
+            |     }
+            |   },
+            |   "meta": {
+            |     "version" : "1",
+            |     "snapshotDate" : "2024-01-12"
+            |   },
+            |   "id": "CustomsOffices",
+            |   "data": [
+            |     {
+            |       "id" : "GB000001",
+            |       "name" : "Customs office 1"
+            |     }
+            |   ]
+            |}
+            |""".stripMargin)
+
+        Json.parse(response.body) mustBe expectedJson
+      }
+    }
+
+    "when given multiple values in query param" - {
+      val url = s"$baseUrl/customs-reference-data/lists/$listName?data.id=GB000001&data.id=GB000002"
+
+      "must respond with 200 status" in {
+        val response =
+          wsClient
+            .url(url)
+            .withHttpHeaders(headers: _*)
+            .get()
+            .futureValue
+
+        response.status mustBe OK
+
+        val expectedJson = Json.parse("""
+            |{
+            |   "_links": {
+            |     "self": {
+            |       "href": "/customs-reference-data/lists/CustomsOffices?data.id=GB000001&data.id=GB000002"
             |     }
             |   },
             |   "meta": {

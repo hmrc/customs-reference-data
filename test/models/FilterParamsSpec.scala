@@ -24,6 +24,13 @@ class FilterParamsSpec extends SpecBase {
   private val queryStringBindable = implicitly[QueryStringBindable[FilterParams]]
 
   "must bind from query params" - {
+    "when no values" in {
+
+      val result = queryStringBindable.bind("filter", Map())
+
+      result mustBe None
+    }
+
     "when one value" in {
       val parameters = Seq(
         "foo" -> Seq("bar")
@@ -31,7 +38,7 @@ class FilterParamsSpec extends SpecBase {
 
       val expectedResult = new FilterParams(parameters)
 
-      val result = queryStringBindable.bind("", Map("foo" -> Seq("bar")))
+      val result = queryStringBindable.bind("filter", Map("foo" -> Seq("bar")))
 
       result.value.value mustEqual expectedResult
     }
@@ -43,7 +50,7 @@ class FilterParamsSpec extends SpecBase {
 
       val expectedResult = new FilterParams(parameters)
 
-      val result = queryStringBindable.bind("", Map("foo" -> Seq("bar", "baz")))
+      val result = queryStringBindable.bind("filter", Map("foo" -> Seq("bar", "baz")))
 
       result.value.value mustEqual expectedResult
     }
@@ -57,7 +64,7 @@ class FilterParamsSpec extends SpecBase {
 
       val filterParams = new FilterParams(parameters)
 
-      val result = queryStringBindable.unbind("foo", filterParams)
+      val result = queryStringBindable.unbind("filter", filterParams)
 
       result mustEqual "foo=bar"
     }
@@ -69,9 +76,22 @@ class FilterParamsSpec extends SpecBase {
 
       val filterParams = new FilterParams(parameters)
 
-      val result = queryStringBindable.unbind("foo", filterParams)
+      val result = queryStringBindable.unbind("filter", filterParams)
 
-      result mustEqual "foo=bar,baz"
+      result mustEqual "foo=bar&foo=baz"
+    }
+
+    "when multiple params" in {
+      val parameters = Seq(
+        "country"    -> Seq("GB", "XI"),
+        "roles.role" -> Seq("TRA", "DES")
+      )
+
+      val filterParams = new FilterParams(parameters)
+
+      val result = queryStringBindable.unbind("filter", filterParams)
+
+      result mustEqual "country=GB&country=XI&roles.role=TRA&roles.role=DES"
     }
   }
 }

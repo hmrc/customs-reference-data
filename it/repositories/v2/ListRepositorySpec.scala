@@ -81,7 +81,7 @@ class ListRepositorySpec
 
       seedData(targetList ++ otherList)
 
-      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId, None)
 
       val data = targetList
         .map(Json.toJsObject(_))
@@ -97,7 +97,7 @@ class ListRepositorySpec
       val versionId = VersionId("1")
       val listName  = arbitrary[ListName].sample.value
 
-      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId)
+      val result: Source[JsObject, NotUsed] = repository.getListByName(listName, versionId, None)
 
       result
         .runWith(TestSink.probe[JsObject])

@@ -26,14 +26,16 @@ object FilterParams {
     new QueryStringBindable[FilterParams] {
 
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, FilterParams]] =
-        if (params.isEmpty)
-          Some(Left("[FilterParams:queryStringBindable:bind] - no parameters found"))
-        else
-          Some(Right(FilterParams(params.toSeq)))
+        params.toSeq match {
+          case Nil => None
+          case x   => Some(Right(FilterParams(x)))
+        }
 
-      override def unbind(key: String, filters: FilterParams): String = {
-        val values = filters.parameters.find(_._1 == key).map(_._2).getOrElse(Nil)
-        s"$key=${values.mkString(",")}"
-      }
+      override def unbind(key: String, filters: FilterParams): String =
+        filters.parameters
+          .flatMap {
+            case (key, values) => values.map(value => s"$key=$value")
+          }
+          .mkString("&")
     }
 }

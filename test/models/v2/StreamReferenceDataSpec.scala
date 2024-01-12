@@ -43,7 +43,7 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       val name = arbitraryListName.arbitrary.sample.value
       val meta = arbitraryMetaData.arbitrary.sample.value
 
-      val testFlow = StreamReferenceData(name, meta).nestInJson[JsObject]
+      val testFlow = StreamReferenceData(name, meta).nestInJson[JsObject](None)
 
       val source = Source(1 to 5).map(_ => Json.obj("index" -> "value"))
 
@@ -54,7 +54,7 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
         .expectNextN(11)
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
-      val url    = controllers.consumption.v2.routes.ListRetrievalController.get(name).url
+      val url    = controllers.consumption.v2.routes.ListRetrievalController.get(name, None).url
 
       val href = (result \ "_links" \ "self" \ "href").as[String]
       url must include(href)

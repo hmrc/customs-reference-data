@@ -58,7 +58,7 @@ class ListRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
 
-  def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams] = None): Source[JsObject, NotUsed] = {
+  def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams]): Source[JsObject, NotUsed] = {
 
     val standardFilters = Aggregates.filter(
       Filters.and(
@@ -93,9 +93,6 @@ class ListRepository @Inject() (
         .map(Codecs.fromBson[JsObject](_))
     )
   }
-
-  def getListByNameWithFilter(listName: ListName, versionId: VersionId, filter: FilterParams): Source[JsObject, NotUsed] =
-    getListByName(listName, versionId, Some(filter))
 
   def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
