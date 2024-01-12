@@ -16,8 +16,8 @@
 
 package api
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import config.AppConfig
 import models.ListName
 import models.GenericListItem

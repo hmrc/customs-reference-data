@@ -16,8 +16,8 @@
 
 package controllers.consumption.v1
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.ReferenceDataList
