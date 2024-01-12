@@ -196,7 +196,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
     "must return filtered reference data as stream" in {
 
-      val filterParams: FilterParams = new FilterParams(Seq("data.filter" -> "me"))
+      val filterParams: FilterParams = new FilterParams(Seq("data.filter" -> Seq("me")))
       val referenceDataList          = arbitrary[ReferenceDataList].sample.value
       val version                    = arbitrary[VersionInformation].sample.value
 

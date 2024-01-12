@@ -68,15 +68,15 @@ class ListRepository @Inject() (
     )
 
     val extraFilters: Seq[Bson] = filter
-      .map(
-        x =>
-          x.parameters.map(
-            f =>
-              Aggregates.filter(
-                Filters.eq(fieldName = f._1, value = f._2)
-              )
-          )
-      )
+      .map {
+        _.parameters
+          .flatMap {
+            case (_, Nil)           => None
+            case (key, head :: Nil) => Some(Filters.eq(key, head))
+            case (key, values)      => Some(Filters.in(key, values: _*))
+          }
+          .map(Aggregates.filter)
+      }
       .getOrElse(Seq.empty)
 
     val projection = Aggregates.project(
