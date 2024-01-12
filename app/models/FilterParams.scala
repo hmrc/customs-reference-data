@@ -18,7 +18,7 @@ package models
 
 import play.api.mvc.QueryStringBindable
 
-case class FilterParams(parameters: Seq[(String, String)])
+case class FilterParams(parameters: Seq[(String, Seq[String])])
 
 object FilterParams {
 
@@ -26,13 +26,16 @@ object FilterParams {
     new QueryStringBindable[FilterParams] {
 
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, FilterParams]] =
-        if (params.isEmpty)
-          Some(Left("[FilterParams:queryStringBindable:bind] - no parameters found"))
-        else {
-          val queryParams: Seq[(String, String)] = params.toSeq.map(p => (p._1, p._2.head))
-          Some(Right(FilterParams(queryParams)))
+        params.toSeq match {
+          case Nil => None
+          case x   => Some(Right(FilterParams(x)))
         }
 
-      override def unbind(key: String, filters: FilterParams) = s"$key=$filters}"
+      override def unbind(key: String, filters: FilterParams): String =
+        filters.parameters
+          .flatMap {
+            case (key, values) => values.map(value => s"$key=$value")
+          }
+          .mkString("&")
     }
 }

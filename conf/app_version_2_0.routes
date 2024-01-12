@@ -1,7 +1,7 @@
 # microservice specific routes
 
 GET     /lists                                          controllers.consumption.v2.ResourceLinksController.get
-GET     /lists/:listName                                controllers.consumption.v2.ListRetrievalController.get(listName: ListName)
+GET     /lists/:listName                                controllers.consumption.v2.ListRetrievalController.get(listName: ListName, filter: Option[FilterParams])
 GET     /filtered-lists/:listName                       controllers.consumption.v2.ListRetrievalController.getFiltered(listName: ListName, filter: FilterParams)
 
 POST    /reference-data-lists                           controllers.ingestion.v2.ReferenceDataListController.post()

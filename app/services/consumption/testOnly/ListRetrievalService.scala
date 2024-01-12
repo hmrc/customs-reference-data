@@ -24,22 +24,25 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String): Try[JsArray] = resourceService.getJson(codeList)
-
-  def getWithFilter(codeList: String, filterParams: FilterParams): Try[JsArray] =
-    resourceService.getJson(codeList).map {
-      json =>
-        val filteredValues = json.value.filter {
-          value =>
-            filterParams.parameters.forall {
-              case (filterParamKey, filterParamValue) =>
-                val nodes = filterParamKey.split("\\.").tail // removes "data" from path nodes
-                val values = nodes.tail.foldLeft(value \\ nodes.head) {
-                  case (acc, node) => acc.flatMap(_ \\ node)
+  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsArray] =
+    filterParams match {
+      case None =>
+        resourceService.getJson(codeList)
+      case Some(filterParams) =>
+        resourceService.getJson(codeList).map {
+          json =>
+            val filteredValues = json.value.filter {
+              value =>
+                filterParams.parameters.forall {
+                  case (filterParamKey, filterParamValues) =>
+                    val nodes = filterParamKey.split("\\.").tail // removes "data" from path nodes
+                    val values = nodes.tail.foldLeft(value \\ nodes.head) {
+                      case (acc, node) => acc.flatMap(_ \\ node)
+                    }
+                    values.exists(filterParamValues.map(JsString).contains(_))
                 }
-                values.contains(JsString(filterParamValue))
             }
+            JsArray(filteredValues)
         }
-        JsArray(filteredValues)
     }
 }

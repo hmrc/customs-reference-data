@@ -16,54 +16,17 @@
 
 package controllers.ingestion.v2
 
-import base.ItSpecBase
-import org.mongodb.scala.MongoDatabase
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.Application
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.ws.WSClient
-import uk.gov.hmrc.mongo.test.MongoSupport
+import controllers.V2ControllerSpec
 
 import java.io.File
 
-trait IngestionControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with BeforeAndAfterEach with MongoSupport {
+trait IngestionControllerSpec extends V2ControllerSpec {
 
   val validGzipFile: String
   val validJsonFile: String
   val invalidDataFile: String = "/reference/invalid.json.gz"
 
-  val wsClient: WSClient = app.injector.instanceOf[WSClient]
-  val baseUrl: String    = s"http://localhost:$port"
-
   val bearerToken: String = "ABC"
 
   def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
-
-  protected def getTestDatabase: MongoDatabase =
-    mongoClient.getDatabase("customs-reference-data-it")
-
-  protected def countDocuments: Long =
-    getTestDatabase
-      .getCollection("v2-reference-data-lists-new")
-      .countDocuments()
-      .toFuture()
-      .futureValue
-
-  protected def dropTestDatabase(): Unit =
-    getTestDatabase
-      .drop()
-      .toFuture()
-      .futureValue
-
-  override def fakeApplication(): Application =
-    GuiceApplicationBuilder()
-      .configure("metrics.enabled" -> false)
-      .build()
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    dropTestDatabase()
-    countDocuments mustBe 0
-  }
 }

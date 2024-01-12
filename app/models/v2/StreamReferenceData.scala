@@ -19,6 +19,7 @@ package models.v2
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Flow
 import org.apache.pekko.util.ByteString
+import models.FilterParams
 import models.ListName
 import models.MetaData
 import play.api.libs.json.Json
@@ -26,12 +27,12 @@ import play.api.libs.json.Writes
 
 class StreamReferenceData(listName: ListName, metaData: MetaData) {
 
-  private lazy val jsonFormat: String =
+  private def jsonFormat(filterParams: Option[FilterParams]): String =
     s"""
        |{
        |   "_links": {
        |     "self": {
-       |       "href": "${removeVersionFromHref(controllers.consumption.v2.routes.ListRetrievalController.get(listName).url)}"
+       |       "href": "${removeVersionFromHref(controllers.consumption.v2.routes.ListRetrievalController.get(listName, filterParams).url)}"
        |     }
        |   },
        |   "meta": ${Json.toJsObject(metaData)},
@@ -39,11 +40,11 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
        |   "data": [
        |""".stripMargin
 
-  def nestInJson[A: Writes]: Flow[A, ByteString, NotUsed] =
+  def nestInJson[A: Writes](filterParams: Option[FilterParams]): Flow[A, ByteString, NotUsed] =
     Flow
       .apply[A]
       .map(a => ByteString(Json.stringify(Json.toJson(a))))
-      .intersperse(ByteString(jsonFormat), ByteString(","), ByteString("]}"))
+      .intersperse(ByteString(jsonFormat(filterParams)), ByteString(","), ByteString("]}"))
 
   private def removeVersionFromHref(href: String): String = {
     val regex = """v(\d+).(\d+)/""".r
