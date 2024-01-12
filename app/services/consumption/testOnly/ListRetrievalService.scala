@@ -32,12 +32,12 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
         val filteredValues = json.value.filter {
           value =>
             filterParams.parameters.forall {
-              case (filterParamKey, filterParamValue) =>
+              case (filterParamKey, filterParamValues) =>
                 val nodes = filterParamKey.split("\\.").tail // removes "data" from path nodes
                 val values = nodes.tail.foldLeft(value \\ nodes.head) {
                   case (acc, node) => acc.flatMap(_ \\ node)
                 }
-                values.contains(JsString(filterParamValue))
+                values.exists(filterParamValues.map(JsString).contains(_))
             }
         }
         JsArray(filteredValues)

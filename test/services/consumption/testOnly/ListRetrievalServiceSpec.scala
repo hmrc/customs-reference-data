@@ -166,7 +166,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
           running(app) {
             val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.countryId" -> "GB"))
+            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
             val result       = service.getWithFilter("CustomsOffices", filterParams)
             result.get mustBe Json.parse("""
                 |[
@@ -214,7 +214,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
           running(app) {
             val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.countryId" -> "GB", "data.roles.role" -> "AUT"))
+            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
             val result       = service.getWithFilter("CustomsOffices", filterParams)
             result.get mustBe Json.parse("""
                 |[
@@ -228,6 +228,19 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |      },
                 |      {
                 |        "role": "AUT"
+                |      }
+                |    ]
+                |  },
+                |  {
+                |    "name": "CO3",
+                |    "id": "GB2",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "DES"
                 |      }
                 |    ]
                 |  }
@@ -244,7 +257,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         running(baseApplicationBuilder) {
           app =>
             val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.code" -> "AD"))
+            val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
             val result       = service.getWithFilter("CountryCodesFullList", filterParams)
             result.get mustBe Json.parse("""
               |[

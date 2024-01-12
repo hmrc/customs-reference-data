@@ -105,7 +105,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
       "should return OK" in {
 
-        val filterParams: FilterParams = new FilterParams(Seq("countryId" -> "GB", "role" -> "DEP"))
+        val filterParams: FilterParams = new FilterParams(Seq("countryId" -> Seq("GB"), "role" -> Seq("DEP")))
 
         val referenceDataList = arbitrary[ReferenceDataList].sample.value
         val version           = arbitrary[VersionInformation].sample.value
