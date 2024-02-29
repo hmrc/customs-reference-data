@@ -15,13 +15,10 @@ lazy val microservice = Project(appName, file("."))
   .settings(RoutesKeys.routesImport += "models._")
   .settings(scoverageSettings: _*)
   .settings(
-    majorVersion := 0,
-    scalaVersion := "2.13.12",
     PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     ThisBuild / useSuperShell := false,
-    scalacOptions += "-Wconf:src=routes/.*:s",
-    ThisBuild / scalafmtOnCompile := true
+    scalacOptions += "-Wconf:src=routes/.*:s"
   )
 
 lazy val scoverageSettings =
