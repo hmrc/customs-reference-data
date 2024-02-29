@@ -37,8 +37,10 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
     "Accept" -> "application/vnd.hmrc.2.0+json"
   )
 
+  private val snapshotDate = LocalDate.of(2020, 1, 1)
+
   private val listName           = "CustomsOffices"
-  private val messageInformation = MessageInformation("", LocalDate.now())
+  private val messageInformation = MessageInformation("", snapshotDate)
   private val versionId          = VersionId("1")
 
   private val instant = Instant.ofEpochMilli(1705062384089L)
@@ -111,7 +113,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |   },
             |   "meta": {
             |     "version" : "1",
-            |     "snapshotDate" : "2024-01-12"
+            |     "snapshotDate" : "2020-01-01"
             |   },
             |   "id": "CustomsOffices",
             |   "data": [
@@ -157,7 +159,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |   },
             |   "meta": {
             |     "version" : "1",
-            |     "snapshotDate" : "2024-01-12"
+            |     "snapshotDate" : "2020-01-01"
             |   },
             |   "id": "CustomsOffices",
             |   "data": [
@@ -195,7 +197,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |   },
             |   "meta": {
             |     "version" : "1",
-            |     "snapshotDate" : "2024-01-12"
+            |     "snapshotDate" : "2020-01-01"
             |   },
             |   "id": "CustomsOffices",
             |   "data": [
