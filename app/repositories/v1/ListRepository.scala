@@ -16,14 +16,15 @@
 
 package repositories.v1
 
-import org.apache.pekko.NotUsed
-import org.apache.pekko.stream.scaladsl.Source
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
+import models.GenericList
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
@@ -79,14 +80,14 @@ class ListRepository @Inject() (
     )
   }
 
-  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
+  def insertList(list: GenericList): Future[ListRepositoryWriteResult] =
     collection
-      .insertMany(list, new InsertManyOptions().ordered(true))
+      .insertMany(list.entries, new InsertManyOptions().ordered(true))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulWrite
-        case false => FailedWrite(list.head.listName)
+        case true  => SuccessfulWrite(list.name, list.entries.length)
+        case false => FailedWrite(list.name)
       }
 }
 

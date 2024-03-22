@@ -16,15 +16,12 @@
 
 package api
 
-import models.ListName
-import models.MessageInformation
-import models.GenericListItem
-import models.VersionId
+import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 
 trait ConsumptionHelper {
 
@@ -49,9 +46,12 @@ trait ConsumptionHelper {
       Instant.now()
     )
 
-  def basicList(versionId: VersionId): Seq[GenericListItem] =
-    Seq(
-      getListItem(versionId, firstDefaultDataItem),
-      getListItem(versionId, secondDefaultDataItem)
+  def basicList(versionId: VersionId): GenericList =
+    GenericList(
+      name = defaultListName,
+      entries = Seq(
+        getListItem(versionId, firstDefaultDataItem),
+        getListItem(versionId, secondDefaultDataItem)
+      )
     )
 }

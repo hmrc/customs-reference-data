@@ -47,7 +47,12 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
               data =>
                 val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                val expectedResult = referenceDataPayload.toIterable(versionId, createdOn).flatMap(_.map(_.listName)).toSeq.distinct.toSet
+                val expectedResult = referenceDataPayload
+                  .toIterable(versionId, createdOn)
+                  .map(_.name)
+                  .toSeq
+                  .distinct
+                  .toSet
 
                 referenceDataPayload.listNames.toSet mustEqual expectedResult
             }
@@ -56,34 +61,53 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
     }
 
     "toIterable" - {
-      "returns an iterator of the lists with list entries" in {
+      "returns an iterator" - {
+        "when the lists have list entries" in {
 
-        val versionId = VersionId("1")
-        val createdOn = Instant.now()
+          val versionId = VersionId("1")
+          val createdOn = Instant.now()
 
-        forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
-          (numberOfLists, numberOfListItems) =>
-            forAll(genReferenceDataListsJson(numberOfLists, numberOfListItems)) {
-              data =>
-                val referenceDataPayload = ReferenceDataListsPayload(data)
+          forAll(Gen.choose(1, 10), Gen.choose(1, 10)) {
+            (numberOfLists, numberOfListItems) =>
+              forAll(genReferenceDataListsJson(numberOfLists, numberOfListItems)) {
+                data =>
+                  val referenceDataPayload = ReferenceDataListsPayload(data)
 
-                val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
+                  val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
 
-                referenceDataLists.foreach {
-                  x =>
-                    x.length mustEqual numberOfListItems
+                  referenceDataLists.map(_.entries).foreach {
+                    x =>
+                      x.length mustEqual numberOfListItems
 
-                    x.foreach {
-                      _ must haveVersionId(versionId)
-                    }
-                }
+                      x.foreach {
+                        _ must haveVersionId(versionId)
+                      }
+                  }
 
-                referenceDataLists.size mustEqual numberOfLists
-            }
+                  referenceDataLists.size mustEqual numberOfLists
+              }
+          }
+        }
+
+        "when the lists have no list entries" in {
+
+          val versionId = VersionId("1")
+          val createdOn = Instant.now()
+
+          forAll(Gen.choose(1, 10)) {
+            numberOfLists =>
+              forAll(genReferenceDataListsJson(numberOfLists, 0)) {
+                data =>
+                  val referenceDataPayload = ReferenceDataListsPayload(data)
+
+                  val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
+
+                  referenceDataLists.size mustEqual numberOfLists
+              }
+          }
         }
       }
     }
-
   }
 
   def haveVersionId(expectedVersionId: VersionId): Matcher[GenericListItem] =

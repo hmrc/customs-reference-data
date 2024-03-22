@@ -19,6 +19,7 @@ package services.ingestion.v1
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject
 import models._
+import play.api.Logging
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import repositories._
@@ -31,7 +32,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
-trait ReferenceDataService {
+trait ReferenceDataService extends Logging {
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
@@ -54,7 +55,9 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
       _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
       .foldLeft[Option[Seq[ListName]]](None) {
-        case (errors, SuccessfulWrite)       => errors
+        case (errors, SuccessfulWrite(listName, numberOfListEntries)) =>
+          logger.info(s"Successfully saved $numberOfListEntries entries to $listName")
+          errors
         case (errors, FailedWrite(listName)) => errors.orElse(Some(Seq())).map(_ :+ listName)
       }
       .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))

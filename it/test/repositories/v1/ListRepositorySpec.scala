@@ -16,23 +16,24 @@
 
 package repositories.v1
 
-import org.apache.pekko.NotUsed
-import org.apache.pekko.actor.ActorSystem
-import org.apache.pekko.stream.scaladsl.Source
-import org.apache.pekko.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import config.AppConfig
 import generators.BaseGenerators
 import generators.ModelArbitraryInstances
+import models.GenericList
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import org.apache.pekko.NotUsed
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.stream.testkit.scaladsl.TestSink
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -109,13 +110,16 @@ class ListRepositorySpec
   "insertList" - {
 
     "must save a list" in {
-      val list = listWithMaxLength[GenericListItem](10).sample.value
+      val listName = nonEmptyString.sample.value
+      val entries  = listWithMaxLength[GenericListItem](10).sample.value
 
-      repository.insertList(list).futureValue mustBe SuccessfulWrite
+      val list = GenericList(ListName(listName), entries)
 
-      val result = findAll().futureValue
+      val result = repository.insertList(list).futureValue
 
-      result must contain theSameElementsAs list
+      result mustBe SuccessfulWrite(ListName(listName), entries.length)
+
+      findAll().futureValue must contain theSameElementsAs entries
     }
   }
 

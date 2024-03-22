@@ -18,13 +18,13 @@ package models
 
 import play.api.libs.json._
 
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 
 sealed trait ReferenceDataPayload {
   def messageInformation: MessageInformation
   def listNames: Seq[ListName]
-  def toIterable(versionId: VersionId, createdOn: Instant): Iterable[Seq[GenericListItem]]
+  def toIterable(versionId: VersionId, createdOn: Instant): Iterable[GenericList]
 }
 
 class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
@@ -40,14 +40,16 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
 
   override lazy val listNames: Seq[ListName] = lists.keys.map(list => (lists \ list).as[ListName]).toSeq
 
-  override def toIterable(versionId: VersionId, createdOn: Instant): Iterable[Seq[GenericListItem]] =
-    lists.values.map {
+  override def toIterable(versionId: VersionId, createdOn: Instant): Iterable[GenericList] =
+    lists.values.flatMap {
       list =>
-        (for {
-          ln <- list.validate[ListName]
-          le <- (list \ "listEntries").validate[Vector[JsObject]]
-        } yield le.map(data => GenericListItem(ln, messageInformation, versionId, data, createdOn)))
-          .getOrElse(Seq.empty)
+        for {
+          listName    <- list.validate[ListName].asOpt
+          listEntries <- (list \ "listEntries").validate[Seq[JsObject]].asOpt
+        } yield GenericList(
+          listName,
+          listEntries.map(data => GenericListItem(listName, messageInformation, versionId, data, createdOn))
+        )
     }
 }
 

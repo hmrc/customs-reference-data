@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-package repositories
+package models
 
-import models.ListName
-
-sealed trait ListRepositoryWriteResult {
-  val listName: ListName
-}
-
-case class SuccessfulWrite(listName: ListName, numberOfListEntries: Int) extends ListRepositoryWriteResult
-case class FailedWrite(listName: ListName)                               extends ListRepositoryWriteResult
+case class GenericList(name: ListName, entries: Seq[GenericListItem])

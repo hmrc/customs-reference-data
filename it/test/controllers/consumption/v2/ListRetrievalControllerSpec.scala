@@ -85,7 +85,8 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
     super.beforeEach()
 
     versionRepository.save(versionId, messageInformation, ColDataFeed, Seq(ListName(listName)), instant).futureValue
-    listRepository.insertList(Seq(customsOffice1, customsOffice2, customsOffice3)).futureValue
+    val list = GenericList(ListName(listName), Seq(customsOffice1, customsOffice2, customsOffice3))
+    listRepository.insertList(list).futureValue
 
     countDocuments mustBe 3
   }
