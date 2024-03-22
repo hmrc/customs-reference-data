@@ -16,15 +16,16 @@
 
 package api
 
+import cats.data.NonEmptyList
+import models.GenericListItem
 import models.ListName
 import models.MessageInformation
-import models.GenericListItem
 import models.VersionId
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 
 trait ConsumptionHelper {
 
@@ -49,8 +50,8 @@ trait ConsumptionHelper {
       Instant.now()
     )
 
-  def basicList(versionId: VersionId): Seq[GenericListItem] =
-    Seq(
+  def basicList(versionId: VersionId): NonEmptyList[GenericListItem] =
+    NonEmptyList.of(
       getListItem(versionId, firstDefaultDataItem),
       getListItem(versionId, secondDefaultDataItem)
     )

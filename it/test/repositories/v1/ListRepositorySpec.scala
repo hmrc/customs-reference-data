@@ -16,10 +16,6 @@
 
 package repositories.v1
 
-import org.apache.pekko.NotUsed
-import org.apache.pekko.actor.ActorSystem
-import org.apache.pekko.stream.scaladsl.Source
-import org.apache.pekko.stream.testkit.scaladsl.TestSink
 import base.ItSpecBase
 import config.AppConfig
 import generators.BaseGenerators
@@ -27,6 +23,10 @@ import generators.ModelArbitraryInstances
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import org.apache.pekko.NotUsed
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.stream.testkit.scaladsl.TestSink
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
@@ -109,13 +109,13 @@ class ListRepositorySpec
   "insertList" - {
 
     "must save a list" in {
-      val list = listWithMaxLength[GenericListItem](10).sample.value
+      val list = nonEmptyListWithMaxLength[GenericListItem](10).sample.value
 
-      repository.insertList(list).futureValue mustBe SuccessfulWrite
+      val result = repository.insertList(list).futureValue
 
-      val result = findAll().futureValue
+      result mustBe SuccessfulWrite(list.head.listName, list.length)
 
-      result must contain theSameElementsAs list
+      findAll().futureValue must contain theSameElementsAs list.toList
     }
   }
 

@@ -16,12 +16,13 @@
 
 package api
 
+import cats.data.NonEmptyList
+import config.AppConfig
+import models.GenericListItem
+import models.ListName
+import models.VersionId
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
-import config.AppConfig
-import models.ListName
-import models.GenericListItem
-import models.VersionId
 import play.api.libs.json.JsObject
 import repositories.ListRepositoryWriteResult
 import repositories.v1.ListRepository
@@ -39,7 +40,7 @@ class TestListRepository @Inject() (
   override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)
 
-  override def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] = {
+  override def insertList(list: NonEmptyList[GenericListItem]): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
     super.insertList(list)
   }
