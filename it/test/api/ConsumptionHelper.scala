@@ -16,11 +16,7 @@
 
 package api
 
-import cats.data.NonEmptyList
-import models.GenericListItem
-import models.ListName
-import models.MessageInformation
-import models.VersionId
+import models._
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
@@ -50,9 +46,12 @@ trait ConsumptionHelper {
       Instant.now()
     )
 
-  def basicList(versionId: VersionId): NonEmptyList[GenericListItem] =
-    NonEmptyList.of(
-      getListItem(versionId, firstDefaultDataItem),
-      getListItem(versionId, secondDefaultDataItem)
+  def basicList(versionId: VersionId): GenericList =
+    GenericList(
+      name = defaultListName,
+      entries = Seq(
+        getListItem(versionId, firstDefaultDataItem),
+        getListItem(versionId, secondDefaultDataItem)
+      )
     )
 }

@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-import cats.data.NonEmptyList
-import play.api.libs.json.JsonValidationError
-import play.api.libs.json.Reads
+package models
 
-package object models {
-
-  implicit def nonEmptyVectorReads[A: Reads]: Reads[NonEmptyList[A]] =
-    Reads
-      .of[List[A]]
-      .collect(
-        JsonValidationError("expected a NonEmptyList but the list was empty")
-      ) {
-        case head :: tail => NonEmptyList(head, tail)
-      }
-}
+case class GenericList(name: ListName, entries: Seq[GenericListItem])

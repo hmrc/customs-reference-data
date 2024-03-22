@@ -19,11 +19,7 @@ package services.ingestion.v2
 import base.SpecBase
 import generators.ModelArbitraryInstances._
 import generators.ModelGenerators.genReferenceDataListsPayload
-import models.ApiDataSource
-import models.ListName
-import models.OtherError
-import models.VersionId
-import models.WriteError
+import models._
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito._
@@ -101,7 +97,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionIdProducer.apply()).thenReturn(versionId)
 
-          val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).head.listName
+          val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).entries.head.listName
 
           when(listRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
@@ -136,9 +132,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           when(versionIdProducer.apply()).thenReturn(versionId)
 
           val listOfListOfItems = payload.toIterable(versionId, mockTimeService.now()).toList
-          val failedListName1   = listOfListOfItems.head.head.listName
-          val failedListName2   = listOfListOfItems(1).head.listName
-          val failedListName3   = listOfListOfItems(2).head.listName
+          val failedListName1   = listOfListOfItems.head.entries.head.listName
+          val failedListName2   = listOfListOfItems(1).entries.head.listName
+          val failedListName3   = listOfListOfItems(2).entries.head.listName
 
           when(listRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1)))

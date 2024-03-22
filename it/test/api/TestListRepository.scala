@@ -16,9 +16,8 @@
 
 package api
 
-import cats.data.NonEmptyList
 import config.AppConfig
-import models.GenericListItem
+import models.GenericList
 import models.ListName
 import models.VersionId
 import org.apache.pekko.NotUsed
@@ -40,7 +39,7 @@ class TestListRepository @Inject() (
   override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
     super.getListByName(listName, versionId)
 
-  override def insertList(list: NonEmptyList[GenericListItem]): Future[ListRepositoryWriteResult] = {
+  override def insertList(list: GenericList): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
     super.insertList(list)
   }

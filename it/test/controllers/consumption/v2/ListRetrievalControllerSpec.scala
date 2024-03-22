@@ -16,7 +16,6 @@
 
 package controllers.consumption.v2
 
-import cats.data.NonEmptyList
 import controllers.V2ControllerSpec
 import models.ApiDataSource.ColDataFeed
 import models._
@@ -86,7 +85,8 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
     super.beforeEach()
 
     versionRepository.save(versionId, messageInformation, ColDataFeed, Seq(ListName(listName)), instant).futureValue
-    listRepository.insertList(NonEmptyList.of(customsOffice1, customsOffice2, customsOffice3)).futureValue
+    val list = GenericList(ListName(listName), Seq(customsOffice1, customsOffice2, customsOffice3))
+    listRepository.insertList(list).futureValue
 
     countDocuments mustBe 3
   }

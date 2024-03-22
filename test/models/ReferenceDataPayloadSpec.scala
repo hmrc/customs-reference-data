@@ -49,8 +49,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
                 val expectedResult = referenceDataPayload
                   .toIterable(versionId, createdOn)
-                  .map(_.toList)
-                  .flatMap(_.map(_.listName))
+                  .map(_.name)
                   .toSeq
                   .distinct
                   .toSet
@@ -76,7 +75,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
                   val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
 
-                  referenceDataLists.map(_.toList).foreach {
+                  referenceDataLists.map(_.entries).foreach {
                     x =>
                       x.length mustEqual numberOfListItems
 
@@ -103,7 +102,7 @@ class ReferenceDataPayloadSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
                   val referenceDataLists = referenceDataPayload.toIterable(versionId, createdOn)
 
-                  referenceDataLists.size mustEqual 0
+                  referenceDataLists.size mustEqual numberOfLists
               }
           }
         }

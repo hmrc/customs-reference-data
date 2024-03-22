@@ -16,14 +16,10 @@
 
 package repositories.v2
 
-import cats.data.NonEmptyList
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
-import models.FilterParams
-import models.GenericListItem
-import models.ListName
-import models.VersionId
+import models._
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import org.mongodb.scala.bson.BsonValue
@@ -95,14 +91,14 @@ class ListRepository @Inject() (
     )
   }
 
-  def insertList(list: NonEmptyList[GenericListItem]): Future[ListRepositoryWriteResult] =
+  def insertList(list: GenericList): Future[ListRepositoryWriteResult] =
     collection
-      .insertMany(list.toList, new InsertManyOptions().ordered(true))
+      .insertMany(list.entries, new InsertManyOptions().ordered(true))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulWrite(list.head.listName, list.length)
-        case false => FailedWrite(list.head.listName)
+        case true  => SuccessfulWrite(list.name, list.entries.length)
+        case false => FailedWrite(list.name)
       }
 }
 
