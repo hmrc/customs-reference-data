@@ -20,6 +20,7 @@ import base.SpecBase
 import generators.ModelArbitraryInstances._
 import generators.ModelGenerators.genReferenceDataListsPayload
 import models.ApiDataSource
+import models.ListName
 import models.OtherError
 import models.VersionId
 import models.WriteError
@@ -71,7 +72,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val versionId = VersionId("1")
 
           when(versionIdProducer.apply()).thenReturn(versionId)
-          when(listRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite))
+          when(listRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
@@ -101,7 +102,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).head.listName
 
           when(listRepository.insertList(any()))
-            .thenReturn(Future.successful(SuccessfulWrite))
+            .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName)))
 
           val versionRepository = mock[VersionRepository]

@@ -16,8 +16,7 @@
 
 package repositories.v2
 
-import org.apache.pekko.NotUsed
-import org.apache.pekko.stream.scaladsl.Source
+import cats.data.NonEmptyList
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
@@ -25,6 +24,8 @@ import models.FilterParams
 import models.GenericListItem
 import models.ListName
 import models.VersionId
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.Indexes.ascending
@@ -94,13 +95,13 @@ class ListRepository @Inject() (
     )
   }
 
-  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
+  def insertList(list: NonEmptyList[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
-      .insertMany(list, new InsertManyOptions().ordered(true))
+      .insertMany(list.toList, new InsertManyOptions().ordered(true))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulWrite
+        case true  => SuccessfulWrite(list.head.listName, list.length)
         case false => FailedWrite(list.head.listName)
       }
 }

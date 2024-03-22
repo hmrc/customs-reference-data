@@ -16,6 +16,7 @@
 
 package repositories.v1
 
+import cats.data.NonEmptyList
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import com.google.inject.Inject
@@ -79,13 +80,13 @@ class ListRepository @Inject() (
     )
   }
 
-  def insertList(list: Seq[GenericListItem]): Future[ListRepositoryWriteResult] =
+  def insertList(list: NonEmptyList[GenericListItem]): Future[ListRepositoryWriteResult] =
     collection
-      .insertMany(list, new InsertManyOptions().ordered(true))
+      .insertMany(list.toList, new InsertManyOptions().ordered(true))
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulWrite
+        case true  => SuccessfulWrite(list.head.listName, list.length)
         case false => FailedWrite(list.head.listName)
       }
 }

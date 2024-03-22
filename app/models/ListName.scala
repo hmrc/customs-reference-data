@@ -20,7 +20,10 @@ import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 import play.api.mvc._
 
-case class ListName(listName: String)
+case class ListName(listName: String) {
+
+  override def toString: String = listName
+}
 
 object ListName {
 

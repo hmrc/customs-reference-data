@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package repositories
+import cats.data.NonEmptyList
+import play.api.libs.json.JsonValidationError
+import play.api.libs.json.Reads
 
-import models.ListName
+package object models {
 
-sealed trait ListRepositoryWriteResult {
-  val listName: ListName
+  implicit def nonEmptyVectorReads[A: Reads]: Reads[NonEmptyList[A]] =
+    Reads
+      .of[List[A]]
+      .collect(
+        JsonValidationError("expected a NonEmptyList but the list was empty")
+      ) {
+        case head :: tail => NonEmptyList(head, tail)
+      }
 }
-
-case class SuccessfulWrite(listName: ListName, numberOfListEntries: Int) extends ListRepositoryWriteResult
-case class FailedWrite(listName: ListName)                               extends ListRepositoryWriteResult
