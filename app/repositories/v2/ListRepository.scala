@@ -97,8 +97,8 @@ class ListRepository @Inject() (
       .toFuture()
       .map(_.wasAcknowledged())
       .map {
-        case true  => SuccessfulWrite(list.name, list.entries.length)
-        case false => FailedWrite(list.name)
+        case true  => SuccessfulWrite(list)
+        case false => FailedWrite(list)
       }
 }
 
