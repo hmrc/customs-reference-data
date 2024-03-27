@@ -62,10 +62,10 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
           logger.info(write.toString)
           errors.orElse(Some(Seq())).map(_ :+ write)
       }
-      .map(
+      .map {
         x =>
           WriteError(x.map(_.listName.listName).mkString("[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
-      )
+      }
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
