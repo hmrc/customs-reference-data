@@ -101,7 +101,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(listRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-            .thenReturn(Future.successful(FailedWrite(failedListName)))
+            .thenReturn(Future.successful(FailedWrite(failedListName, 1)))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]
@@ -137,9 +137,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
           val failedListName3   = listOfListOfItems(2).entries.head.listName
 
           when(listRepository.insertList(any()))
-            .thenReturn(Future.successful(FailedWrite(failedListName1)))
-            .thenReturn(Future.successful(FailedWrite(failedListName2)))
-            .thenReturn(Future.successful(FailedWrite(failedListName3)))
+            .thenReturn(Future.successful(FailedWrite(failedListName1, 1)))
+            .thenReturn(Future.successful(FailedWrite(failedListName2, 1)))
+            .thenReturn(Future.successful(FailedWrite(failedListName3, 1)))
 
           val versionRepository = mock[VersionRepository]
           val validationService = mock[SchemaValidationService]

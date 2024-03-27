@@ -16,11 +16,32 @@
 
 package repositories
 
+import models.GenericList
 import models.ListName
 
 sealed trait ListRepositoryWriteResult {
   val listName: ListName
+  val numberOfListEntries: Int
 }
 
-case class SuccessfulWrite(listName: ListName, numberOfListEntries: Int) extends ListRepositoryWriteResult
-case class FailedWrite(listName: ListName)                               extends ListRepositoryWriteResult
+case class SuccessfulWrite(listName: ListName, numberOfListEntries: Int) extends ListRepositoryWriteResult {
+
+  override def toString: String = s"Successfully saved $numberOfListEntries entries to $listName"
+}
+
+object SuccessfulWrite {
+
+  def apply(list: GenericList): SuccessfulWrite =
+    new SuccessfulWrite(list.name, list.entries.length)
+}
+
+case class FailedWrite(listName: ListName, numberOfListEntries: Int) extends ListRepositoryWriteResult {
+
+  override def toString: String = s"Failed to save $numberOfListEntries entries to $listName"
+}
+
+object FailedWrite {
+
+  def apply(list: GenericList): FailedWrite =
+    new FailedWrite(list.name, list.entries.length)
+}

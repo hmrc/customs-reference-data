@@ -54,13 +54,18 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
       writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
       _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
-      .foldLeft[Option[Seq[ListName]]](None) {
-        case (errors, SuccessfulWrite(listName, numberOfListEntries)) =>
-          logger.info(s"Successfully saved $numberOfListEntries entries to $listName")
+      .foldLeft[Option[Seq[ListRepositoryWriteResult]]](None) {
+        case (errors, write: SuccessfulWrite) =>
+          logger.info(write.toString)
           errors
-        case (errors, FailedWrite(listName)) => errors.orElse(Some(Seq())).map(_ :+ listName)
+        case (errors, write: FailedWrite) =>
+          logger.info(write.toString)
+          errors.orElse(Some(Seq())).map(_ :+ write)
       }
-      .map(x => WriteError(x.map(_.listName).mkString("[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")))
+      .map(
+        x =>
+          WriteError(x.map(_.listName.listName).mkString("[services.ingestion.v1.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
+      )
   }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

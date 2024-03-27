@@ -61,6 +61,8 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="services.ingestion.v1.ReferenceDataServiceImpl" level="INFO"/>
+    <logger name="controllers.ingestion.v1.IngestionController" level="INFO"/>
+    <logger name="controllers.ingestion.v2.IngestionController" level="INFO"/>
+    <logger name="services.ingestion.v2.ReferenceDataServiceImpl" level="INFO"/>
     <logger name="services.ingestion.v2.ReferenceDataServiceImpl" level="INFO"/>
 </configuration>
