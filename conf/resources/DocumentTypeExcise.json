@@ -8,7 +8,7 @@
   {
     "activeFrom": "2024-01-01",
     "code": "C658",
-    "state": "invalid",
+    "state": "valid",
     "description": "FAD - Fallback e-AD (EMCS)"
   }
 ]
