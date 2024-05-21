@@ -1,8 +1,14 @@
 [
   {
-    "documentType": "C651"
+    "activeFrom": "2024-01-01",
+    "code": "C651",
+    "state": "valid",
+    "description": "AAD - Administrative Accompanying Document (EMCS)"
   },
   {
-    "documentType": "C658"
+    "activeFrom": "2024-01-01",
+    "code": "C658",
+    "state": "invalid",
+    "description": "FAD - Fallback e-AD (EMCS)"
   }
 ]
