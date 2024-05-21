@@ -1,10 +1,8 @@
 [
   {
-    "documentType": "C651",
-    "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+    "documentType": "C651"
   },
   {
-    "documentType": "C658",
-    "description": "Fallback Accompanying Document for movements of excise goods under suspension of excise duty (FAD), as referred to in Article 8(1) Reg. (EC) No 684/2009"
+    "documentType": "C658"
   }
 ]
