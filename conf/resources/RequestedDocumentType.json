@@ -1,0 +1,118 @@
+[
+  {
+    "code": "C085",
+    "description": "Common Health Entry Document for Plants and Plant Products (CHED-PP) (as set out in Part 2, Section C of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
+  },
+  {
+    "code": "C402",
+    "description": "CITES Export permit or Re-export certificate issued by a third country"
+  },
+  {
+    "code": "C605",
+    "description": "Information sheet INF3"
+  },
+  {
+    "code": "C612",
+    "description": "Internal Community transit declaration, T2F"
+  },
+  {
+    "code": "C620",
+    "description": "T2LF document"
+  },
+  {
+    "code": "C640",
+    "description": "Common Health Entry Document for Animals (CHED-A) (as set out in Part 2, Section A of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
+  },
+  {
+    "code": "C641",
+    "description": "Dissostichus - catch document import"
+  },
+  {
+    "code": "C651",
+    "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+  },
+  {
+    "code": "C656",
+    "description": "Dissostichus - Catch document export"
+  },
+  {
+    "code": "C658",
+    "description": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+  },
+  {
+    "code": "C673",
+    "description": "Catch certificate"
+  },
+  {
+    "code": "C678",
+    "description": "Common Health Entry Document for Feed and Food of Non-Animal Origin (CHED-D) (as set out in Part 2, Section D of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
+  },
+  {
+    "code": "C690",
+    "description": "FLEGT import licence for timber"
+  },
+  {
+    "code": "L001",
+    "description": "Import licence AGRIM"
+  },
+  {
+    "code": "L079",
+    "description": "Textile products: import licence"
+  },
+  {
+    "code": "Y920",
+    "description": "Goods not concerned by the Economic Partnership Agreement between the European Union and the SADC EPA States"
+  },
+  {
+    "code": "Y921",
+    "description": "Goods not concerned by Commission Regulation (EU) No 257/2010"
+  },
+  {
+    "code": "Y924",
+    "description": "Goods not concerned by Regulation (EU) 2017/852"
+  },
+  {
+    "code": "Y926",
+    "description": "Goods not concerned by import prohibition on fluorinated greenhouse gases"
+  },
+  {
+    "code": "Y927",
+    "description": "The declared goods are not concerned by Council Regulation (EC) No. 1005/2008"
+  },
+  {
+    "code": "Y929",
+    "description": "Goods not concerned by Regulation (EC) No 834/2007 (organic products)"
+  },
+  {
+    "code": "Y930",
+    "description": "The declared goods are not concerned by Commission Decision 2007/275/EC and Commission Implementing Regulation (EU) 2019/2007"
+  },
+  {
+    "code": "Y931",
+    "description": "Goods benefitting from derogation to veterinary controls according to Article 6.1b of Commission Decision (EC) No 275/2007"
+  },
+  {
+    "code": "Y932",
+    "description": "Goods benefitting from a derogation to CITES controls according to Article 7(3) of Council Regulation (EC) No 338/97"
+  },
+  {
+    "code": "Y934",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 258/2012 for export of firearms, their parts and components and ammunition"
+  },
+  {
+    "code": "Y937",
+    "description": "The declared goods are not concerned by Commission Implementing Regulation (EU) 2019/1793"
+  },
+  {
+    "code": "Y942",
+    "description": "The declared goods are not concerned by Commission Implementing Regulation (EU) 2016/1141"
+  },
+  {
+    "code": "Y950",
+    "description": "Goods other than pre-charged equipment with hydrofluorocarbons"
+  },
+  {
+    "code": "Y951",
+    "description": "Exemption from the reduction of the quantity of hydrofluorocarbons placed on the market by virtue of Article 16.2 (a), (b), (d), (e) of Regulation (EU) 2024/573"
+  }
+]
