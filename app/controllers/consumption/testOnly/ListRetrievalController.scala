@@ -47,7 +47,4 @@ class ListRetrievalController @Inject() (
       }
     }
 
-  @deprecated("Use `get` instead", since = "0.110.0")
-  def getFiltered(listName: ListName, filterParams: FilterParams): Action[AnyContent] =
-    get(listName, Some(filterParams))
 }

@@ -10,7 +10,5 @@
 # Failing to follow this rule may result in test routes deployed in production.
 
 GET     /v2.0/customs-reference-data/test-only/lists/:listName                                controllers.consumption.testOnly.ListRetrievalController.get(listName: ListName, filter: Option[FilterParams])
-GET     /v2.0/customs-reference-data/test-only/filtered-lists/:listName                       controllers.consumption.testOnly.ListRetrievalController.getFiltered(listName: ListName, filter: FilterParams)
-
 
 ->      /                                                                                     prod.Routes
