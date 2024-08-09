@@ -32,6 +32,21 @@ This [GitHub repo](https://github.com/hmrc/customs-reference-data-postman#workin
 ### Seeding service with data
 - Follow the [instructions in the test repo](https://github.com/hmrc/customs-reference-data-postman#working-with-the-collection-via-command-line-interface)
 
+## Testing
+
+Run unit tests:
+<pre>sbt test</pre>
+Run integration tests:
+<pre>sbt it/test</pre>
+
+## Running manually
+
+<pre>
+sm2 --start CTC_TRADERS_P5_ACCEPTANCE
+sm2 --stop CUSTOMS_REFERENCE_DATA
+sbt -Dapplication.router=testOnlyDoNotUseInAppConf.Routes run
+</pre>
+
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
