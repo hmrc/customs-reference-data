@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,27 @@
  * limitations under the License.
  */
 
-package controllers.ingestion.v2
+package controllers.ingestion.v2.testOnly
 
-import actions.AuthenticateEISToken
-import play.api.Logging
-import play.api.libs.json.JsValue
+import controllers.ingestion.v2.CommonIngestionController
 import play.api.mvc.Action
-import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
-import play.api.mvc.PlayBodyParsers
 import services.ingestion.v2.ReferenceDataService
 
 import scala.concurrent.ExecutionContext
+import scala.xml.NodeSeq
 
-abstract class IngestionController(
+abstract class IngestionController[T <: XmlToJsonConverter](
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
-  authenticateEISToken: AuthenticateEISToken
+  converter: T
 )(implicit ec: ExecutionContext)
-    extends CommonIngestionController(cc, referenceDataService)
-    with Logging {
+    extends CommonIngestionController(cc, referenceDataService) {
 
-  def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue]
-
-  def post(): Action[JsValue] =
-    authenticateEISToken(parseRequestBody(parse)).async {
-      implicit request =>
-        validateAndSave(request.body)
+  def post(): Action[NodeSeq] =
+    Action(parse.xml).async {
+      request =>
+        val json = converter.convert(request.body)
+        validateAndSave(json)
     }
 }
