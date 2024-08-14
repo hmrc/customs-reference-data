@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package controllers.ingestion.v2
+package controllers.ingestion.v2.testOnly
 
 import controllers.V2ControllerSpec
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 
-trait IngestionControllerSpec extends V2ControllerSpec {
+trait TestOnlyIngestionControllerSpec extends V2ControllerSpec {
 
   val validGzipFile: String
-  val validJsonFile: String
-  val invalidDataFile: String = "/reference/invalid.json.gz"
+  val validXmlFile: String
+  val invalidDataFile: String = "/reference/invalid.xml.gz"
 
-  val bearerToken: String = "ABC"
+  override def fakeApplication(): Application =
+    GuiceApplicationBuilder()
+      .configure(
+        "metrics.enabled"  -> false,
+        "play.http.router" -> "testOnlyDoNotUseInAppConf.Routes"
+      )
+      .build()
 }

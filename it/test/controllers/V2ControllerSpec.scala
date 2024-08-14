@@ -25,6 +25,8 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.mongo.test.MongoSupport
 
+import java.io.File
+
 trait V2ControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with BeforeAndAfterEach with MongoSupport {
 
   val wsClient: WSClient = app.injector.instanceOf[WSClient]
@@ -34,6 +36,8 @@ trait V2ControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with Befor
     GuiceApplicationBuilder()
       .configure("metrics.enabled" -> false)
       .build()
+
+  def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 
   protected def getTestDatabase: MongoDatabase =
     mongoClient.getDatabase("customs-reference-data-it")

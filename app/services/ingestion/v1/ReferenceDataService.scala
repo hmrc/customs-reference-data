@@ -25,7 +25,7 @@ import play.api.libs.json.JsValue
 import repositories._
 import repositories.v1.ListRepository
 import repositories.v1.VersionRepository
-import services.consumption.TimeService
+import services.TimeService
 import services.ingestion.SchemaValidationService
 
 import scala.concurrent.ExecutionContext
@@ -48,7 +48,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
     val versionId = versionIdProducer()
-    val now       = timeService.now()
+    val now       = timeService.currentInstant()
 
     for {
       writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))

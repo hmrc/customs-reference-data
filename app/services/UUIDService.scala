@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package controllers.ingestion.v2
+package services
 
-import controllers.V2ControllerSpec
+import java.util.UUID
 
-trait IngestionControllerSpec extends V2ControllerSpec {
-
-  val validGzipFile: String
-  val validJsonFile: String
-  val invalidDataFile: String = "/reference/invalid.json.gz"
-
-  val bearerToken: String = "ABC"
+class UUIDService {
+  def randomUUID(): UUID = UUID.randomUUID()
 }

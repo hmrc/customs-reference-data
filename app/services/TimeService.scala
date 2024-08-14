@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package services.consumption
+package services
 
 import java.time.Instant
+import java.time.LocalDate
 import javax.inject.Singleton
 
 @Singleton
 class TimeService {
-  def now(): Instant = Instant.now()
+  def currentInstant(): Instant = Instant.now()
+  def currentDate(): LocalDate  = LocalDate.now()
 }

@@ -16,57 +16,72 @@
 
 package utils
 
-import play.api.libs.json.Json.JsValueWrapper
-import play.api.libs.json.JsArray
-import play.api.libs.json.JsValue
-import play.api.libs.json.Json
+import models.ApiDataSource._
+import models.v2.CodeList
+import play.api.libs.json._
+import services.TimeService
+import services.UUIDService
 
-import java.io.File
-import java.io.FileOutputStream
-import java.nio.charset.StandardCharsets
-import scala.xml.Elem
-import scala.xml.XML
+import javax.inject.Inject
+import scala.xml.NodeSeq
+
+sealed trait XmlToJsonConverter {
+
+  val uuidService: UUIDService
+
+  val timeService: TimeService
+
+  def predicate(codeList: CodeList): Boolean
+
+  def convert(xml: NodeSeq): JsValue = {
+    val lists = (xml \\ "RDEntity").foldLeft[JsObject](Json.obj()) {
+      (acc, entry) =>
+        val listName = (entry \ "@name").text
+        val codeList = CodeList(listName)
+        codeList match {
+          case Some(codeList) if predicate(codeList) =>
+            val listEntries = (entry \\ "RDEntry").foldLeft(JsArray()) {
+              (acc, entry) =>
+                val values = codeList.json(entry)
+                JsArray(acc.value ++ values)
+            }
+
+            val list = Json.obj(
+              "listName"    -> listName,
+              "listEntries" -> listEntries
+            )
+
+            acc + (codeList.name -> list)
+          case _ =>
+            acc
+        }
+    }
+
+    val messageInformation = Json.obj(
+      "messageID"    -> uuidService.randomUUID(),
+      "snapshotDate" -> timeService.currentDate()
+    )
+
+    Json.obj(
+      "messageInformation" -> messageInformation,
+      "lists"              -> lists
+    )
+  }
+}
 
 object XmlToJsonConverter {
 
-  /**
-    *  Create a file in conf/resources called input.xml containing the XML from Europa to be converted to JSON then run:
-    *  sbt "runMain utils.XmlToJsonConverter"
-    */
-  def main(args: Array[String]): Unit = {
-    val xml  = readXml()
-    val json = convertXmlToJson(xml)
-    writeJson(json)
+  class ReferenceDataListXmlToJsonConverter @Inject() (
+    override val uuidService: UUIDService,
+    override val timeService: TimeService
+  ) extends XmlToJsonConverter {
+    override def predicate(codeList: CodeList): Boolean = codeList.source == RefDataFeed
   }
 
-  private def readXml(): Elem = {
-    val inputStream = getClass.getResourceAsStream("/resources/input.xml")
-    XML.load(inputStream)
+  class CustomsOfficeListXmlToJsonConverter @Inject() (
+    override val uuidService: UUIDService,
+    override val timeService: TimeService
+  ) extends XmlToJsonConverter {
+    override def predicate(codeList: CodeList): Boolean = codeList.source == ColDataFeed
   }
-
-  /**
-    * Amend XML paths or add fields as appropriate
-    */
-  private def convertXmlToJson(xml: Elem): JsValue =
-    (xml \\ "RDEntry").foldLeft(JsArray()) {
-      (acc, entry) =>
-        val code        = (entry \ "dataItem").text
-        val description = (entry \\ "description").find(_.attributes("lang").map(_.text).contains("en")).map(_.text)
-
-        val fields: Seq[(String, JsValueWrapper)] = Seq(
-          "code"        -> Some(code),
-          "description" -> description
-        ).flatMap {
-          case (key, Some(value)) => Some((key, value))
-          case _                  => None
-        }
-
-        JsArray(acc.value :+ Json.obj(fields: _*))
-    }
-
-  private def writeJson(json: JsValue): Unit = {
-    val fos = new FileOutputStream(new File("conf/resources/output.json"))
-    fos.write(Json.prettyPrint(json).getBytes(StandardCharsets.UTF_8))
-  }
-
 }

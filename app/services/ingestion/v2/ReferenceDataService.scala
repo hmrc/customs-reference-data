@@ -28,7 +28,7 @@ import repositories.FailedWrite
 import repositories.ListRepositoryWriteResult
 import repositories.SuccessfulWrite
 import repositories.VersionIdProducer
-import services.consumption.TimeService
+import services.TimeService
 import services.ingestion.SchemaValidationService
 
 import scala.concurrent.ExecutionContext
@@ -51,7 +51,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
     val versionId = versionIdProducer()
-    val now       = timeService.now()
+    val now       = timeService.currentInstant()
 
     for {
       writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))

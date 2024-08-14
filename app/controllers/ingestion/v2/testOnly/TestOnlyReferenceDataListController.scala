@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
-package controllers.ingestion.v2
+package controllers.ingestion.v2.testOnly
 
-import actions.AuthenticateEISToken
-import config.ReferenceDataControllerParserConfig
+import utils.XmlToJsonConverter.ReferenceDataListXmlToJsonConverter
 import models.ApiDataSource
 import models.ApiDataSource.RefDataFeed
 import models.v2.CTCUP06Schema
-import play.api.libs.json.JsValue
-import play.api.mvc.BodyParser
+import play.api.mvc.Action
 import play.api.mvc.ControllerComponents
-import play.api.mvc.PlayBodyParsers
 import services.ingestion.v2.ReferenceDataService
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
+import scala.xml.NodeSeq
 
-class ReferenceDataListController @Inject() (
+class TestOnlyReferenceDataListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
-  parseConfig: ReferenceDataControllerParserConfig,
   override val schema: CTCUP06Schema,
-  authenticateEISToken: AuthenticateEISToken
+  converter: ReferenceDataListXmlToJsonConverter
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService, authenticateEISToken) {
+    extends TestOnlyIngestionController[ReferenceDataListXmlToJsonConverter](cc, referenceDataService, converter) {
 
-  override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
+  /**
+    * Download all domains from https://ec.europa.eu/taxation_customs/dds2/rd/rd_download_home.jsp?Lang=en
+    * Unzip the download, cd into it and run `gzip RD_NCTS-P5.xml`
+    * Attach this to the request body as a binary
+    */
+  override def post(): Action[NodeSeq] = super.post()
 
   override val source: ApiDataSource = RefDataFeed
 }
