@@ -1,0 +1,26 @@
+[
+  {
+    "code": "013",
+    "description": "Amendment rejection"
+  },
+  {
+    "code": "014",
+    "description": "Invalidation rejection"
+  },
+  {
+    "code": "015",
+    "description": "Declaration rejection"
+  },
+  {
+    "code": "054",
+    "description": "Release request rejection"
+  },
+  {
+    "code": "141",
+    "description": "Rejection of Information about non-arrived movement"
+  },
+  {
+    "code": "170",
+    "description": "Presentation notification for the pre-lodged declaration rejection"
+  }
+]

@@ -60,6 +60,326 @@
     "description": "Textile products: import licence"
   },
   {
+    "code": "L100",
+    "description": "Import licence &quot;controlled substances&quot; (ozone), issued by the Commission"
+  },
+  {
+    "code": "L116",
+    "description": "Kimberley Process Certificate"
+  },
+  {
+    "code": "N002",
+    "description": "Certificate of conformity with the European Union marketing standards for fresh fruit and vegetables"
+  },
+  {
+    "code": "N003",
+    "description": "Certificate of quality"
+  },
+  {
+    "code": "N018",
+    "description": "ATR certificate"
+  },
+  {
+    "code": "N235",
+    "description": "Container list"
+  },
+  {
+    "code": "N271",
+    "description": "Packing list"
+  },
+  {
+    "code": "N325",
+    "description": "Proforma invoice"
+  },
+  {
+    "code": "N337",
+    "description": "Summary declaration for temporary storage"
+  },
+  {
+    "code": "N355",
+    "description": "Entry summary declaration"
+  },
+  {
+    "code": "N380",
+    "description": "Commercial invoice"
+  },
+  {
+    "code": "N703",
+    "description": "House waybill"
+  },
+  {
+    "code": "N704",
+    "description": "Master bill of lading"
+  },
+  {
+    "code": "N705",
+    "description": "Bill of lading"
+  },
+  {
+    "code": "N714",
+    "description": "House bill of lading"
+  },
+  {
+    "code": "N720",
+    "description": "Consignment note CIM"
+  },
+  {
+    "code": "N722",
+    "description": "Road list - SMGS"
+  },
+  {
+    "code": "N730",
+    "description": "Road consignment note"
+  },
+  {
+    "code": "N740",
+    "description": "Air waybill"
+  },
+  {
+    "code": "N741",
+    "description": "Master airwaybill"
+  },
+  {
+    "code": "N750",
+    "description": "movement by post including parcel post"
+  },
+  {
+    "code": "N760",
+    "description": "Multimodal/combined transport document"
+  },
+  {
+    "code": "N785",
+    "description": "Cargo manifest"
+  },
+  {
+    "code": "N787",
+    "description": "Bordereau (cargo load list)"
+  },
+  {
+    "code": "N820",
+    "description": "Transit declaration &quot;T&quot;"
+  },
+  {
+    "code": "N821",
+    "description": "External Community transit declaration / common transit, T1"
+  },
+  {
+    "code": "N822",
+    "description": "Internal Community transit declaration T2"
+  },
+  {
+    "code": "N825",
+    "description": "T2L document"
+  },
+  {
+    "code": "N830",
+    "description": "Goods declaration for exportation"
+  },
+  {
+    "code": "N851",
+    "description": "Phytosanitary certificate"
+  },
+  {
+    "code": "N852",
+    "description": "Analysis and health certificate"
+  },
+  {
+    "code": "N853",
+    "description": "Common Health Entry Document for Products (CHED-P) (as set out in Part 2, Section B of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
+  },
+  {
+    "code": "N864",
+    "description": "Invoice declaration or origin declaration made out by any exporter on invoice or any other commercial document"
+  },
+  {
+    "code": "N933",
+    "description": "Cargo declaration (arrival)"
+  },
+  {
+    "code": "N941",
+    "description": "Embargo permit"
+  },
+  {
+    "code": "N951",
+    "description": "TIF form"
+  },
+  {
+    "code": "N952",
+    "description": "TIR Carnet"
+  },
+  {
+    "code": "N954",
+    "description": "Movement certificate EUR.1"
+  },
+  {
+    "code": "N955",
+    "description": "ATA carnet"
+  },
+  {
+    "code": "X072",
+    "description": "Transit Licence for dual Use Items - referred to in Article 7 of the Regulation (EU) 2021/821 of the European Parliament and of the Council"
+  },
+  {
+    "code": "Y015",
+    "description": "The rough diamonds are contained in tamper-resistant containers, and the seals applied at export by the participant (Kimberley process) are not broken"
+  },
+  {
+    "code": "Y022",
+    "description": "Consignor / exporter (AEO certificate number)"
+  },
+  {
+    "code": "Y023",
+    "description": "Consignee (AEO certificate number)"
+  },
+  {
+    "code": "Y024",
+    "description": "Declarant (AEO certificate number)"
+  },
+  {
+    "code": "Y025",
+    "description": "Representative (AEO certificate number)"
+  },
+  {
+    "code": "Y026",
+    "description": "Principal (AEO certificate number)"
+  },
+  {
+    "code": "Y027",
+    "description": "Warehousekeeper (AEO certificate number)"
+  },
+  {
+    "code": "Y028",
+    "description": "Carrier (AEO certificate number)"
+  },
+  {
+    "code": "Y029",
+    "description": "Other authorised economic operator (AEO certificate number)"
+  },
+  {
+    "code": "Y031",
+    "description": "This certificate code may be used to indicate that shipments are coming from or going to an Authorised Economic Operator (AEO) in a third country with which the European Union (EU) has concluded a mutual recognition agreement regarding AEO programmes. In addition to the certificate code (Y031) the identification code of this third country AEO must"
+  },
+  {
+    "code": "Y032",
+    "description": "Other goods than those seal products mentioned in Regulation (EU) 2015/1850 (OJ L 271)"
+  },
+  {
+    "code": "Y053",
+    "description": "Goods not concerned by labelling requirements on fluorinated greenhouse gases as referred to Article 12, paragraph 1 of Regulation (EU) No 517/2014"
+  },
+  {
+    "code": "Y054",
+    "description": "Goods labelled according to the provisions of Article 12, paragraph 1 of Regulation (EU) No 517/2014"
+  },
+  {
+    "code": "Y057",
+    "description": "Goods not requiring the presentation of a FLEGT import licence for timber"
+  },
+  {
+    "code": "Y062",
+    "description": "Products which are not containing, consisting of or produced from rice (Commission Implementing Decision 2011/884/EU)"
+  },
+  {
+    "code": "Y066",
+    "description": "Products which are not containing or consisting of betel leaves (‘Piper betle’)"
+  },
+  {
+    "code": "Y070",
+    "description": "Exemption from the requirement of presenting FLEGT licence by virtue of Article 4.3 of Council Regulation (EC) No 2173/2005"
+  },
+  {
+    "code": "Y100",
+    "description": "Special entries on the import licence AGRIM"
+  },
+  {
+    "code": "Y117",
+    "description": "Dangerous product — release for free circulation not authorised — Regulation (EU) 2019/1020, Art. 28(1)"
+  },
+  {
+    "code": "Y118",
+    "description": "Product not in conformity — release for free circulation not authorised — Regulation (EU) 2019/1020, Art. 28(2)"
+  },
+  {
+    "code": "Y170",
+    "description": "Goods with third country origin coming from Andorra, according to the relevant EU legislation."
+  },
+  {
+    "code": "Y171",
+    "description": "Goods with third country origin coming from Switzerland, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y172",
+    "description": "Goods with third country origin coming from Faroe Islands, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y173",
+    "description": "Goods with third country origin coming from Greenland, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y174",
+    "description": "Goods with third country origin coming from Iceland, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y175",
+    "description": "Goods with third country origin coming from Liechtenstein, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y176",
+    "description": "Goods with third country origin coming from Norway, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y177",
+    "description": "Goods with third country origin coming from San Marino, according to the relevant EU legislation"
+  },
+  {
+    "code": "Y900",
+    "description": "Declared goods do not belong to the Washington Convention (CITES)"
+  },
+  {
+    "code": "Y901",
+    "description": "Product not included in the dual use list"
+  },
+  {
+    "code": "Y902",
+    "description": "Goods other than those described in the OZ footnotes linked to the measure"
+  },
+  {
+    "code": "Y903",
+    "description": "Declared goods are not included in the list of cultural goods"
+  },
+  {
+    "code": "Y907",
+    "description": "Goods that will be used by military or civil personnel of a Member State, if such personnel is taking part in an EU or UN peace keeping or crisis management operation in the third country of destination, or in an operation based on agreements between Member States and third countries in the field of defence"
+  },
+  {
+    "code": "Y909",
+    "description": "Goods not concerned by Regulation (EC) No. 1984/2003"
+  },
+  {
+    "code": "Y910",
+    "description": "Bigeye tuna taken by seiners or baitboats and intended mainly for the canning industry in the areas of application of the Agreement for the establishment of the Indian Ocean Tuna Commission (IOTC Agreement) and the ICCAT Convention."
+  },
+  {
+    "code": "Y916",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 649/2012 on the export and import of dangerous chemicals, Annex I"
+  },
+  {
+    "code": "Y917",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 649/2012 on the export and import of dangerous chemicals, Annex V"
+  },
+  {
+    "code": "Y919",
+    "description": "Reference Identification Number for chemicals subject to the provisions of Art. 2(3) of Regulation (EU) No 649/2012"
+  },
+  {
+    "code": "Y922",
+    "description": "Other than cats and dogs fur as mentioned by Regulation (EC) No 1523/2007 (OJ L 343)"
+  },
+  {
+    "code": "Y923",
+    "description": "Product not subjected to the provisions of Regulation (EC) No 1013/2006 (OJ L 190)"
+  },
+  {
     "code": "Y924",
     "description": "Goods not concerned by Regulation (EU) 2017/852"
   },

@@ -4,8 +4,20 @@
     "description": "Common Health Entry Document for Plants and Plant Products (CHED-PP) (as set out in Part 2, Section C of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
   },
   {
+    "code": "C400",
+    "description": "Presentation of the required &quot;CITES&quot; certificate"
+  },
+  {
+    "code": "C402",
+    "description": "CITES Export permit or Re-export certificate issued by a third country"
+  },
+  {
+    "code": "C638",
+    "description": "CITES Import permit"
+  },
+  {
     "code": "C640",
-    "description": "Common Veterinary Entry Document (CVED) in accordance with Commission Regulation (EC) No. 282/2004, used for veterinary checks on live animals"
+    "description": "Common Health Entry Document for Animals (CHED-A) (as set out in Part 2, Section A of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
   },
   {
     "code": "C641",
@@ -29,7 +41,7 @@
   },
   {
     "code": "C678",
-    "description": "Common entry document (CED) (model of which is set out in Annex II of the Regulation (EC) No 669/2009 (OJ L 194))"
+    "description": "Common Health Entry Document for Feed and Food of Non-Animal Origin (CHED-D) (as set out in Part 2, Section D of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
   },
   {
     "code": "C690",
@@ -97,27 +109,11 @@
   },
   {
     "code": "N853",
-    "description": "Common Veterinary Entry Document (CVED) in accordance with Regulation (EC) No. 136/2004, used for veterinary check on products"
-  },
-  {
-    "code": "N861",
-    "description": "Universal certificate of origin"
-  },
-  {
-    "code": "N862",
-    "description": "Declaration of origin"
+    "description": "Common Health Entry Document for Products (CHED-P) (as set out in Part 2, Section B of Annex II to Commission Implementing Regulation (EU) 2019/1715 (OJ L 261))"
   },
   {
     "code": "N864",
     "description": "Preference certificate of origin (declaration of preferential origin on the invoice; EUR.2)"
-  },
-  {
-    "code": "N865",
-    "description": "Certificate of origin Form A"
-  },
-  {
-    "code": "N911",
-    "description": "Import licence"
   },
   {
     "code": "N933",
@@ -138,5 +134,9 @@
   {
     "code": "NZZZ",
     "description": "Document equivalent to ‘ZZZ’ defined in Commission Delegated Regulation (EU) 2016/341 (Appendix D2: Additional codes for the computerised transit system)"
+  },
+  {
+    "code": "X072",
+    "description": "Transit Licence for dual Use Items - referred to in Article 7 of the Regulation (EU) 2021/821 of the European Parliament and of the Council"
   }
 ]

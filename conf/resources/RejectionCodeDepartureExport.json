@@ -1,0 +1,14 @@
+[
+  {
+    "code": "12",
+    "description": "Message with functional error(s) - Violation of Rules &amp; Conditions"
+  },
+  {
+    "code": "4",
+    "description": "Other reasons"
+  },
+  {
+    "code": "7",
+    "description": "Guarantee not valid for this customs territory"
+  }
+]

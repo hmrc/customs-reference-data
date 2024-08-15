@@ -5,7 +5,7 @@
   },
   {
     "documentType": "C658",
-    "description": "Fallback Accompanying Document for movements of excise goods under suspension of excise duty (FAD), as referred to in Article 8(1) Reg. (EC) No 684/2009"
+    "description": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
   },
   {
     "documentType": "Y015",
@@ -30,5 +30,197 @@
   {
     "documentType": "Y026",
     "description": "Principal (AEO certificate number)"
+  },
+  {
+    "documentType": "Y027",
+    "description": "Warehousekeeper (AEO certificate number)"
+  },
+  {
+    "documentType": "Y028",
+    "description": "Carrier (AEO certificate number)"
+  },
+  {
+    "documentType": "Y029",
+    "description": "Other authorised economic operator (AEO certificate number)"
+  },
+  {
+    "documentType": "Y031",
+    "description": "This certificate code may be used to indicate that shipments are coming from or going to an Authorised Economic Operator (AEO) in a third country with which the European Union (EU) has concluded a mutual recognition agreement regarding AEO programmes. In addition to the certificate code (Y031) the identification code of this third country AEO must"
+  },
+  {
+    "documentType": "Y032",
+    "description": "Other goods than those seal products mentioned in Regulation (EU) 2015/1850 (OJ L 271)"
+  },
+  {
+    "documentType": "Y053",
+    "description": "Goods not concerned by labelling requirements on fluorinated greenhouse gases as referred to Article 12, paragraph 1 of Regulation (EU) No 517/2014"
+  },
+  {
+    "documentType": "Y054",
+    "description": "Goods labelled according to the provisions of Article 12, paragraph 1 of Regulation (EU) No 517/2014"
+  },
+  {
+    "documentType": "Y057",
+    "description": "Goods not requiring the presentation of a FLEGT import licence for timber"
+  },
+  {
+    "documentType": "Y062",
+    "description": "Products which are not containing, consisting of or produced from rice (Commission Implementing Decision 2011/884/EU)"
+  },
+  {
+    "documentType": "Y066",
+    "description": "Products which are not containing or consisting of betel leaves (‘Piper betle’)"
+  },
+  {
+    "documentType": "Y070",
+    "description": "Exemption from the requirement of presenting FLEGT licence by virtue of Article 4.3 of Council Regulation (EC) No 2173/2005"
+  },
+  {
+    "documentType": "Y100",
+    "description": "Special entries on the import licence AGRIM"
+  },
+  {
+    "documentType": "Y117",
+    "description": "Dangerous product — release for free circulation not authorised — Regulation (EU) 2019/1020, Art. 28(1)"
+  },
+  {
+    "documentType": "Y118",
+    "description": "Product not in conformity — release for free circulation not authorised — Regulation (EU) 2019/1020, Art. 28(2)"
+  },
+  {
+    "documentType": "Y170",
+    "description": "Goods with third country origin coming from Andorra, according to the relevant EU legislation."
+  },
+  {
+    "documentType": "Y171",
+    "description": "Goods with third country origin coming from Switzerland, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y172",
+    "description": "Goods with third country origin coming from Faroe Islands, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y173",
+    "description": "Goods with third country origin coming from Greenland, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y174",
+    "description": "Goods with third country origin coming from Iceland, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y175",
+    "description": "Goods with third country origin coming from Liechtenstein, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y176",
+    "description": "Goods with third country origin coming from Norway, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y177",
+    "description": "Goods with third country origin coming from San Marino, according to the relevant EU legislation"
+  },
+  {
+    "documentType": "Y873",
+    "description": "Goods not transited via the territory of Russia"
+  },
+  {
+    "documentType": "Y900",
+    "description": "Declared goods do not belong to the Washington Convention (CITES)"
+  },
+  {
+    "documentType": "Y901",
+    "description": "Product not included in the dual use list"
+  },
+  {
+    "documentType": "Y902",
+    "description": "Goods other than those described in the OZ footnotes linked to the measure"
+  },
+  {
+    "documentType": "Y903",
+    "description": "Declared goods are not included in the list of cultural goods"
+  },
+  {
+    "documentType": "Y907",
+    "description": "Goods that will be used by military or civil personnel of a Member State, if such personnel is taking part in an EU or UN peace keeping or crisis management operation in the third country of destination, or in an operation based on agreements between Member States and third countries in the field of defence"
+  },
+  {
+    "documentType": "Y909",
+    "description": "Goods not concerned by Regulation (EC) No. 1984/2003"
+  },
+  {
+    "documentType": "Y910",
+    "description": "Bigeye tuna taken by seiners or baitboats and intended mainly for the canning industry in the areas of application of the Agreement for the establishment of the Indian Ocean Tuna Commission (IOTC Agreement) and the ICCAT Convention."
+  },
+  {
+    "documentType": "Y916",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 649/2012 on the export and import of dangerous chemicals, Annex I"
+  },
+  {
+    "documentType": "Y917",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 649/2012 on the export and import of dangerous chemicals, Annex V"
+  },
+  {
+    "documentType": "Y919",
+    "description": "Reference Identification Number for chemicals subject to the provisions of Art. 2(3) of Regulation (EU) No 649/2012"
+  },
+  {
+    "documentType": "Y922",
+    "description": "Other than cats and dogs fur as mentioned by Regulation (EC) No 1523/2007 (OJ L 343)"
+  },
+  {
+    "documentType": "Y923",
+    "description": "Product not subjected to the provisions of Regulation (EC) No 1013/2006 (OJ L 190)"
+  },
+  {
+    "documentType": "Y924",
+    "description": "Goods not concerned by Regulation (EU) 2017/852"
+  },
+  {
+    "documentType": "Y926",
+    "description": "Goods not concerned by import prohibition on fluorinated greenhouse gases"
+  },
+  {
+    "documentType": "Y927",
+    "description": "The declared goods are not concerned by Council Regulation (EC) No. 1005/2008"
+  },
+  {
+    "documentType": "Y929",
+    "description": "Goods not concerned by Regulation (EC) No 834/2007 (organic products)"
+  },
+  {
+    "documentType": "Y930",
+    "description": "The declared goods are not concerned by Commission Decision 2007/275/EC and Commission Implementing Regulation (EU) 2019/2007"
+  },
+  {
+    "documentType": "Y931",
+    "description": "Goods benefitting from derogation to veterinary controls according to Article 6.1b of Commission Decision (EC) No 275/2007"
+  },
+  {
+    "documentType": "Y932",
+    "description": "Goods benefitting from a derogation to CITES controls according to Article 7(3) of Council Regulation (EC) No 338/97"
+  },
+  {
+    "documentType": "Y934",
+    "description": "Product not subjected to the provisions of Regulation (EU) No 258/2012 for export of firearms, their parts and components and ammunition"
+  },
+  {
+    "documentType": "Y935",
+    "description": "Goods not covered by the provisions of Regulation (EU) 1332/2013 (OJ L 335)"
+  },
+  {
+    "documentType": "Y937",
+    "description": "The declared goods are not concerned by Commission Implementing Regulation (EU) 2019/1793"
+  },
+  {
+    "documentType": "Y942",
+    "description": "The declared goods are not concerned by Commission Implementing Regulation (EU) 2016/1141"
+  },
+  {
+    "documentType": "Y950",
+    "description": "Goods other than pre-charged equipment with hydrofluorocarbons"
+  },
+  {
+    "documentType": "Y951",
+    "description": "Exemption from the reduction of the quantity of hydrofluorocarbons placed on the market by virtue of Article 16.2 (a), (b), (d), (e) of Regulation (EU) 2024/573"
   }
 ]

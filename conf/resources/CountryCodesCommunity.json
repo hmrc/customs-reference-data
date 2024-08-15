@@ -1,22 +1,146 @@
 [
   {
-    "code": "FR",
-    "state": "valid",
-    "description": "France"
-  },
-  {
-    "code": "IT",
-    "state": "valid",
-    "description": "Italy"
-  },
-  {
     "code": "AT",
-    "state": "valid",
     "description": "Austria"
   },
   {
+    "code": "AX",
+    "description": "ÅLAND ISLANDS"
+  },
+  {
+    "code": "BE",
+    "description": "Belgium"
+  },
+  {
+    "code": "BG",
+    "description": "Bulgaria"
+  },
+  {
+    "code": "CY",
+    "description": "Cyprus"
+  },
+  {
+    "code": "CZ",
+    "description": "Czechia"
+  },
+  {
+    "code": "DE",
+    "description": "Germany"
+  },
+  {
+    "code": "DK",
+    "description": "Denmark"
+  },
+  {
+    "code": "EE",
+    "description": "Estonia"
+  },
+  {
+    "code": "ES",
+    "description": "Spain"
+  },
+  {
+    "code": "FI",
+    "description": "Finland"
+  },
+  {
+    "code": "FR",
+    "description": "France"
+  },
+  {
+    "code": "GF",
+    "description": "French Guyana"
+  },
+  {
+    "code": "GP",
+    "description": "Guadeloupe"
+  },
+  {
+    "code": "GR",
+    "description": "Greece"
+  },
+  {
+    "code": "HR",
+    "description": "Croatia"
+  },
+  {
+    "code": "HU",
+    "description": "Hungary"
+  },
+  {
+    "code": "IE",
+    "description": "Ireland"
+  },
+  {
+    "code": "IT",
+    "description": "Italy"
+  },
+  {
+    "code": "LT",
+    "description": "Lithuania"
+  },
+  {
+    "code": "LU",
+    "description": "Luxembourg"
+  },
+  {
+    "code": "LV",
+    "description": "Latvia"
+  },
+  {
+    "code": "MC",
+    "description": "Monaco"
+  },
+  {
+    "code": "MF",
+    "description": "Saint Martin (French part)"
+  },
+  {
+    "code": "MQ",
+    "description": "Martinique"
+  },
+  {
+    "code": "MT",
+    "description": "Malta"
+  },
+  {
+    "code": "NL",
+    "description": "Netherlands"
+  },
+  {
+    "code": "PL",
+    "description": "Poland"
+  },
+  {
+    "code": "PT",
+    "description": "Portugal"
+  },
+  {
+    "code": "RE",
+    "description": "Réunion"
+  },
+  {
+    "code": "RO",
+    "description": "Romania"
+  },
+  {
+    "code": "SE",
+    "description": "Sweden"
+  },
+  {
+    "code": "SI",
+    "description": "Slovenia"
+  },
+  {
+    "code": "SK",
+    "description": "Slovakia"
+  },
+  {
     "code": "XI",
-    "state": "valid",
     "description": "United Kingdom (Northern Ireland)"
+  },
+  {
+    "code": "YT",
+    "description": "Mayotte"
   }
 ]

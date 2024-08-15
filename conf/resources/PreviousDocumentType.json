@@ -4,6 +4,10 @@
     "description": "SDE - Authorisation to use simplified declaration (Column 7a, Annex A of Delegated Regulation (EU) 2015/2446)"
   },
   {
+    "code": "C552",
+    "description": "T2LSM - Proof establishing the status of goods destined for San Marino in application of Article 2 of Decision 4/92 of the EEC-San Marino Cooperation Committee of 22 December 1992"
+  },
+  {
     "code": "C605",
     "description": "Information sheet INF3"
   },
@@ -74,6 +78,10 @@
   {
     "code": "N740",
     "description": "Air waybill"
+  },
+  {
+    "code": "N741",
+    "description": "Master air waybill"
   },
   {
     "code": "N750",
