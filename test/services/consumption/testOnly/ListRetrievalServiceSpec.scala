@@ -263,7 +263,6 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |[
               |  {
               |    "code": "AD",
-              |    "state": "valid",
               |    "description": "Andorra"
               |  }
               |]

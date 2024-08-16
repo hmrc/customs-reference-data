@@ -1,12 +1,14 @@
 [
   {
     "code": "IE",
-    "state": "valid",
     "description": "Ireland"
   },
   {
+    "code": "LU",
+    "description": "Luxembourg"
+  },
+  {
     "code": "NL",
-    "state": "valid",
     "description": "Netherlands"
   }
 ]

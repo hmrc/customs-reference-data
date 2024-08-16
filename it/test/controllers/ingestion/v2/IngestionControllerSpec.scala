@@ -18,8 +18,6 @@ package controllers.ingestion.v2
 
 import controllers.V2ControllerSpec
 
-import java.io.File
-
 trait IngestionControllerSpec extends V2ControllerSpec {
 
   val validGzipFile: String
@@ -27,6 +25,4 @@ trait IngestionControllerSpec extends V2ControllerSpec {
   val invalidDataFile: String = "/reference/invalid.json.gz"
 
   val bearerToken: String = "ABC"
-
-  def file(fileName: String) = new File(getClass.getResource(fileName).toURI)
 }

@@ -12,6 +12,10 @@
     "description": "Payment by cheque"
   },
   {
+    "method": "D",
+    "description": "Other"
+  },
+  {
     "method": "H",
     "description": "Electronic credit transfer"
   },
@@ -22,9 +26,5 @@
   {
     "method": "Z",
     "description": "Not pre-paid"
-  },
-  {
-    "method": "D",
-    "description": "Other"
   }
 ]

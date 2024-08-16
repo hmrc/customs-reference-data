@@ -18,9 +18,8 @@ package controllers.ingestion.v2
 
 import actions.AuthenticateEISToken
 import config.ReferenceDataControllerParserConfig
-import models.ApiDataSource.ColDataFeed
 import models.ApiDataSource
-import models.SimpleJsonSchemaProvider
+import models.ApiDataSource.ColDataFeed
 import models.v2.CTCUP08Schema
 import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
@@ -35,14 +34,12 @@ class CustomsOfficeListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
-  cTCUP08Schema: CTCUP08Schema,
+  override val schema: CTCUP08Schema,
   authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
     extends IngestionController(cc, referenceDataService, authenticateEISToken) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.customsOfficeParser(parse)
-
-  override val schema: SimpleJsonSchemaProvider = cTCUP08Schema
 
   override val source: ApiDataSource = ColDataFeed
 }

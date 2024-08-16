@@ -1,5 +1,21 @@
 [
   {
+    "code": "00200",
+    "description": "Several occurrences of documents and parties"
+  },
+  {
+    "code": "00700",
+    "description": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number"
+  },
+  {
+    "code": "00800",
+    "description": "Discharge of inward processing (specific commercial policy measures)"
+  },
+  {
+    "code": "00900",
+    "description": "Discharge of temporary admission. ‘TA’ and the relevant authorisation number"
+  },
+  {
     "code": "20100",
     "description": "Export from one EFTA country subject to restriction or export from the Union subject to restriction"
   },

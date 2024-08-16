@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns6:RDEntityList xmlns:ns0="http://xmlns.ec.eu/BusinessObjects/CSRD2/RDEntityEntryListType/V2" xmlns:ns1="http://xmlns.ec.eu/BusinessObjects/CSRD2/RDEntityType/V2" xmlns:ns2="http://xmlns.ec.eu/BusinessObjects/CSRD2/RDEntryType/V2" xmlns:ns3="http://xmlns.ec.eu/BusinessObjects/CSRD2/RDStatusType/V2" xmlns:ns4="http://xmlns.ec.eu/BusinessObjects/CSRD2/RDValidityPeriodType/V2" xmlns:ns5="http://xmlns.ec.eu/BusinessObjects/CSRD2/LsdListType/V2" xmlns:ns6="http://xmlns.ec.eu/BusinessObjects/CSRD2/ReferenceDataSubscriptionReceiverCBSServiceType/V2">
+   <ns0:RDEntity name="CountryCodesFullList">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-02-21</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="CountryCode">AD</ns2:dataItem>
+         <ns2:dataItem name="TccEntryDate">19000101</ns2:dataItem>
+         <ns2:dataItem name="NctsEntryDate">19000101</ns2:dataItem>
+         <ns2:dataItem name="GeoNomenclatureCode">043</ns2:dataItem>
+         <ns2:dataItem name="CountryRegimeCode">TOC</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="bg">Андора</ns5:description>
+            <ns5:description lang="cs">Andorra</ns5:description>
+            <ns5:description lang="da">Andorra</ns5:description>
+            <ns5:description lang="de">Andorra</ns5:description>
+            <ns5:description lang="el">Ανδόρα</ns5:description>
+            <ns5:description lang="en">Andorra</ns5:description>
+            <ns5:description lang="es">Andorra</ns5:description>
+            <ns5:description lang="et">Andorra</ns5:description>
+            <ns5:description lang="fi">Andorra</ns5:description>
+            <ns5:description lang="fr">Andorre</ns5:description>
+            <ns5:description lang="hr">Andora</ns5:description>
+            <ns5:description lang="hu">Andorra</ns5:description>
+            <ns5:description lang="is">Andorra</ns5:description>
+            <ns5:description lang="it">Andorra</ns5:description>
+            <ns5:description lang="lt">Andora</ns5:description>
+            <ns5:description lang="lv">Andora</ns5:description>
+            <ns5:description lang="mk">Андора</ns5:description>
+            <ns5:description lang="mt">Andorra</ns5:description>
+            <ns5:description lang="nl">Andorra</ns5:description>
+            <ns5:description lang="no">Andorra</ns5:description>
+            <ns5:description lang="pl">Andora</ns5:description>
+            <ns5:description lang="pt">Andorra</ns5:description>
+            <ns5:description lang="ro">Andorra</ns5:description>
+            <ns5:description lang="sk">Andora</ns5:description>
+            <ns5:description lang="sl">Andora</ns5:description>
+            <ns5:description lang="sr">Kneževina Andora</ns5:description>
+            <ns5:description lang="sv">Andorra</ns5:description>
+            <ns5:description lang="tr">Andorra</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="CountryHolidays">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2017-01-01</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="CountryCode">AD</ns2:dataItem>
+         <ns2:dataGroup name="CountryHolidaysData">
+            <ns2:dataItem name="VariableHolidayDate">0</ns2:dataItem>
+            <ns2:dataItem name="Day">01</ns2:dataItem>
+            <ns2:dataItem name="Month">01</ns2:dataItem>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">NEW YEAR</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">AÑO NUEVO</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">PREMIER DE L' AN</ns2:dataItem>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryHolidaysData">
+            <ns2:dataItem name="VariableHolidayDate">0</ns2:dataItem>
+            <ns2:dataItem name="Day">01</ns2:dataItem>
+            <ns2:dataItem name="Month">05</ns2:dataItem>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">WORKING DAY</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">FIESTA DEL TRABAJO</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">FÊTE DU TRAVAIL</ns2:dataItem>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryHolidaysData">
+            <ns2:dataItem name="VariableHolidayDate">0</ns2:dataItem>
+            <ns2:dataItem name="Day">08</ns2:dataItem>
+            <ns2:dataItem name="Month">09</ns2:dataItem>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">NATIONAL DAY</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">FIESTA NACIONAL</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">FÊTE NATIONALE</ns2:dataItem>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryHolidaysData">
+            <ns2:dataItem name="VariableHolidayDate">0</ns2:dataItem>
+            <ns2:dataItem name="Day">14</ns2:dataItem>
+            <ns2:dataItem name="Month">03</ns2:dataItem>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">CONSTITUTION DAY</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">DIA DE LA CONSTITUCIÓN</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">JOUR DE LA CONSTITUTION</ns2:dataItem>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryHolidaysData">
+            <ns2:dataItem name="VariableHolidayDate">0</ns2:dataItem>
+            <ns2:dataItem name="Day">25</ns2:dataItem>
+            <ns2:dataItem name="Month">12</ns2:dataItem>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">CRISTMAS DAY</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">DIA DE NAVIDAD</ns2:dataItem>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CountryHolidaysDataLsd">
+               <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+               <ns2:dataItem name="PublicHolidayName">JOUR DE NOËL</ns2:dataItem>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="CountryRegion">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>1900-01-01</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="CountryCode">BE</ns2:dataItem>
+         <ns2:dataItem name="CountryRegionCode">BRU</ns2:dataItem>
+         <ns2:dataGroup name="CountryRegionLsd">
+            <ns2:dataItem name="LanguageCode">DE</ns2:dataItem>
+            <ns2:dataItem name="CountryRegionName">REGION BRUESSEL HAUPTSTADT</ns2:dataItem>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryRegionLsd">
+            <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+            <ns2:dataItem name="CountryRegionName">REGION DE BRUXELLES-CAPITALE</ns2:dataItem>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CountryRegionLsd">
+            <ns2:dataItem name="LanguageCode">NL</ns2:dataItem>
+            <ns2:dataItem name="CountryRegionName">BRUSSELS HOOFDSTEDELIJK GEWEST</ns2:dataItem>
+         </ns2:dataGroup>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="CustomsOffices">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2020-03-23</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="ReferenceNumber">AD000001</ns2:dataItem>
+         <ns2:dataItem name="ReferenceNumberMainOffice">AD000003</ns2:dataItem>
+         <ns2:dataItem name="ReferenceNumberHigherAuthority">AD000003</ns2:dataItem>
+         <ns2:dataItem name="ReferenceNumberCompetentAuthorityOfEnquiry">AD000003</ns2:dataItem>
+         <ns2:dataItem name="ReferenceNumberCompetentAuthorityOfRecovery">AD000003</ns2:dataItem>
+         <ns2:dataItem name="CountryCode">AD</ns2:dataItem>
+         <ns2:dataItem name="UnLocodeId">ALV</ns2:dataItem>
+         <ns2:dataItem name="NctsEntryDate">20070614</ns2:dataItem>
+         <ns2:dataItem name="NearestOffice">ES002541</ns2:dataItem>
+         <ns2:dataItem name="PostalCode">AD600</ns2:dataItem>
+         <ns2:dataItem name="PhoneNumber">+ (376) 84 1090</ns2:dataItem>
+         <ns2:dataItem name="FaxNumber">+ (376) 841 898</ns2:dataItem>
+         <ns2:dataItem name="GeoInfoCode">ES/AD</ns2:dataItem>
+         <ns2:dataItem name="TraderDedicated">0</ns2:dataItem>
+         <ns2:dataGroup name="CustomsOfficeLsd">
+            <ns2:dataItem name="LanguageCode">EN</ns2:dataItem>
+            <ns2:dataItem name="CustomsOfficeUsualName">CUSTOMS OFFICE SANT JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="StreetAndNumber">RIU RUNER BORDER</ns2:dataItem>
+            <ns2:dataItem name="City">SANT JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="PrefixSuffixFlag">0</ns2:dataItem>
+            <ns2:dataItem name="SpaceToAdd">0</ns2:dataItem>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CustomsOfficeTimetable">
+            <ns2:dataItem name="SeasonCode">1</ns2:dataItem>
+            <ns2:dataItem name="SeasonName">All Year</ns2:dataItem>
+            <ns2:dataItem name="SeasonStartDate">20180101</ns2:dataItem>
+            <ns2:dataItem name="SeasonEndDate">20991231</ns2:dataItem>
+            <ns2:dataGroup name="CustomsOfficeTimetableLine">
+               <ns2:dataItem name="DayInTheWeekBeginDay">1</ns2:dataItem>
+               <ns2:dataItem name="OpeningHoursTimeFirstPeriodFrom">0800</ns2:dataItem>
+               <ns2:dataItem name="OpeningHoursTimeFirstPeriodTo">2000</ns2:dataItem>
+               <ns2:dataItem name="DayInTheWeekEndDay">5</ns2:dataItem>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">AUT</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">N/A</ns2:dataItem>
+               </ns2:dataGroup>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">DEP</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">DES</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">TRA</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+            </ns2:dataGroup>
+            <ns2:dataGroup name="CustomsOfficeTimetableLine">
+               <ns2:dataItem name="DayInTheWeekBeginDay">6</ns2:dataItem>
+               <ns2:dataItem name="OpeningHoursTimeFirstPeriodFrom">0800</ns2:dataItem>
+               <ns2:dataItem name="OpeningHoursTimeFirstPeriodTo">1200</ns2:dataItem>
+               <ns2:dataItem name="DayInTheWeekEndDay">6</ns2:dataItem>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">DEP</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">DES</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+               <ns2:dataGroup name="CustomsOfficeRoleTrafficCompetence">
+                  <ns2:dataItem name="Role">TRA</ns2:dataItem>
+                  <ns2:dataItem name="TrafficType">R</ns2:dataItem>
+               </ns2:dataGroup>
+            </ns2:dataGroup>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CustomsOfficeLsd">
+            <ns2:dataItem name="LanguageCode">ES</ns2:dataItem>
+            <ns2:dataItem name="CustomsOfficeUsualName">ADUANA DE ST. JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="StreetAndNumber">FRONTERA RIU RUNER</ns2:dataItem>
+            <ns2:dataItem name="City">SANT JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="PrefixSuffixFlag">0</ns2:dataItem>
+            <ns2:dataItem name="SpaceToAdd">0</ns2:dataItem>
+         </ns2:dataGroup>
+         <ns2:dataGroup name="CustomsOfficeLsd">
+            <ns2:dataItem name="LanguageCode">FR</ns2:dataItem>
+            <ns2:dataItem name="CustomsOfficeUsualName">BUREAU DE SANT JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="StreetAndNumber">FRONTIÈRE RIU RUNER</ns2:dataItem>
+            <ns2:dataItem name="City">SANT JULIÀ DE LÒRIA</ns2:dataItem>
+            <ns2:dataItem name="PrefixSuffixFlag">0</ns2:dataItem>
+            <ns2:dataItem name="SpaceToAdd">0</ns2:dataItem>
+         </ns2:dataGroup>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="GeoInfoCodes">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-03-08</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="GeoInfoCode">AL/MK</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="de">albanisch-nordmazedonische Grenze</ns5:description>
+            <ns5:description lang="en">Albanian-Macedonian frontier</ns5:description>
+            <ns5:description lang="fr">Frontière albano-macédonienne</ns5:description>
+            <ns5:description lang="hu">Albán-Macedón határ</ns5:description>
+            <ns5:description lang="lv">Albānijas-Ziemeļmaķedonijas robeža</ns5:description>
+            <ns5:description lang="sk">Albánsko-Macedónska hranica</ns5:description>
+            <ns5:description lang="sl">Albansko-makedonska meja</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="LanguageCodes">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-02-21</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="LanguageCode">AA</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="bg">Афар</ns5:description>
+            <ns5:description lang="cs">Afarština</ns5:description>
+            <ns5:description lang="da">Afar</ns5:description>
+            <ns5:description lang="de">Afar</ns5:description>
+            <ns5:description lang="el">Αφάρ</ns5:description>
+            <ns5:description lang="en">Afar</ns5:description>
+            <ns5:description lang="es">Afar</ns5:description>
+            <ns5:description lang="et">Afaari keel</ns5:description>
+            <ns5:description lang="fi">afar</ns5:description>
+            <ns5:description lang="fr">Afar</ns5:description>
+            <ns5:description lang="hr">Afarski</ns5:description>
+            <ns5:description lang="hu">Afar</ns5:description>
+            <ns5:description lang="is">Afar .{en}.</ns5:description>
+            <ns5:description lang="it">Afar</ns5:description>
+            <ns5:description lang="lt">AFARŲ</ns5:description>
+            <ns5:description lang="lv">Afāru</ns5:description>
+            <ns5:description lang="mk">Афарски</ns5:description>
+            <ns5:description lang="mt">Afar .{en}.</ns5:description>
+            <ns5:description lang="nl">Afar</ns5:description>
+            <ns5:description lang="no">Afar .{en}.</ns5:description>
+            <ns5:description lang="pl">Afar</ns5:description>
+            <ns5:description lang="pt">Afar (Etiópia)</ns5:description>
+            <ns5:description lang="ro">Afar</ns5:description>
+            <ns5:description lang="sk">Afarština</ns5:description>
+            <ns5:description lang="sl">Afarščina</ns5:description>
+            <ns5:description lang="sr">Afarski</ns5:description>
+            <ns5:description lang="sv">afar</ns5:description>
+            <ns5:description lang="tr">Afar</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="Role">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-02-21</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="Role">ACE</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="bg">Митнически орган, отговорен за издаване на разрешение за статус на одобрен получател за режим съюзен транзит</ns5:description>
+            <ns5:description lang="cs">Povolení schváleného příjemce v tranzitním režimu Unie</ns5:description>
+            <ns5:description lang="da">Toldmyndighed ansvarlig for tildeling af autorisation til en autoriseret modtager vedr. transit inden for unionen</ns5:description>
+            <ns5:description lang="de">Zuständige Zollstelle für die Erteilung einer Bewilligung als Zugelassener Empfänger für das Unionsversandverfahren</ns5:description>
+            <ns5:description lang="el">Τελωνειακή αρχή υπεύθυνη για τη χορήγηση άδειας για εγκεκριμένο παραλήπτη για το καθεστώς ενωσιακής διαμετακόμισης</ns5:description>
+            <ns5:description lang="en">Customs authority responsible for granting the authorisation of authorised consignee for Union transit</ns5:description>
+            <ns5:description lang="es">Autoridad aduanera responsable de conceder la autorización de destinatario autorizado de tránsito</ns5:description>
+            <ns5:description lang="et">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="fi">Tulliviranomainen, joka vastaa unionin passitusmenettelyn valtuutetun vastaanottajan asemaa koskevan luvan myöntämisestä</ns5:description>
+            <ns5:description lang="fr">Autorité douanière de décision pour une autorisation de destinataire agréé sous le régime du transit de l’Union</ns5:description>
+            <ns5:description lang="hr">Carinsko tijelo odgovorno za izdavanje odobrenja statusa ovlaštenog primatelja za provoz Unije</ns5:description>
+            <ns5:description lang="hu">Uniós árutovábbítás engedélyezett címzetti engedély kiadásáért felelős vámhatóság</ns5:description>
+            <ns5:description lang="is">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="it">Autorità doganale responsabile della concessione dell'autorizzazione del destinatario autorizzato al transito unionale.</ns5:description>
+            <ns5:description lang="lt">Muitinė, atsakinga už leidimų naudotis įgaliotojo gavėjo statusu Sąjungos tranzito procedūrai išdavimą</ns5:description>
+            <ns5:description lang="lv">Muitas iestāde, kas atbild par atzītā saņēmēja atļauju izsniegšanu Savienības tranzītam</ns5:description>
+            <ns5:description lang="mk">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="mt">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="nl">Douaneautoriteit verantwoordelijk voor het toekennen van de vergunning of toegelaten geadresseerde voor Uniedouanevervoer</ns5:description>
+            <ns5:description lang="no">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="pl">Organ celny właściwy do udzielenia pozwolenia na korzystanie ze statusu upoważnionego odbiorcy w procedurze tranzytu unijnego</ns5:description>
+            <ns5:description lang="pt">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="ro">Autoritatea vamală responsabilă pentru acordarea autorizației pentru statutul de expeditor agreat pentru tranzit unional</ns5:description>
+            <ns5:description lang="sk">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="sl">Carinski organ pristojen za izdajo dovoljenja za status pooblaščenega prejemnika za postopek tranzita Unije</ns5:description>
+            <ns5:description lang="sr">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+            <ns5:description lang="sv">Tullmyndighet ansvarig för tillståndsgivning av godkända mottagare för unionstransitering</ns5:description>
+            <ns5:description lang="tr">Customs authority responsible for granting the authorisation of authorised consignee for Union transit .{en}.</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="SpecificNotesCode">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-02-21</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="SpecificNotesCode">SN0001</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="bg">Това митническо учреждение е отворено през почивните дни</ns5:description>
+            <ns5:description lang="cs">CÚ je otevřen o svátcích</ns5:description>
+            <ns5:description lang="de">Dieses Zollamt ist an gesetzlichen Feiertagen geöffnet.</ns5:description>
+            <ns5:description lang="en">This customs office is open on public holidays</ns5:description>
+            <ns5:description lang="et">Tolliasutus on avatud riiklikel pühadel.</ns5:description>
+            <ns5:description lang="fr">Ce bureau de douane est ouvert au public pendant les vacances</ns5:description>
+            <ns5:description lang="hr">Ova carinarnica je otvorena tijekom državnih praznika</ns5:description>
+            <ns5:description lang="mk">Оваа царинска испостава е отворена за време на државни празници</ns5:description>
+            <ns5:description lang="pt">Esta estância está aberta nos feriados</ns5:description>
+            <ns5:description lang="ro">Acest birou vamal este deschis in sarbatorile legale.</ns5:description>
+            <ns5:description lang="sk">Colný úrad je otvorený počas sviatkov</ns5:description>
+            <ns5:description lang="sl">Carinski urad je odprt tudi med državnimi prazniki.</ns5:description>
+            <ns5:description lang="sr">Ova carinarnica je otvorena za vreme državnih praznika</ns5:description>
+            <ns5:description lang="tr">Bu gümrük idaresi resmi tatil günlerinde açıktır.</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="TrafficType">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2024-06-20</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="TrafficType">5</ns2:dataItem>
+         <ns2:LsdList>
+            <ns5:description lang="en">Mail (Active mode of transport unknown)</ns5:description>
+            <ns5:description lang="sk">Pošta (aktívny spôsob dopravy neznámy)</ns5:description>
+         </ns2:LsdList>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+   <ns0:RDEntity name="UnLocode">
+      <ns1:RDEntry>
+         <ns2:RDEntryStatus>
+            <ns3:state>valid</ns3:state>
+            <ns3:activeFrom>2022-11-11</ns3:activeFrom>
+         </ns2:RDEntryStatus>
+         <ns2:dataItem name="CountryCode">AD</ns2:dataItem>
+         <ns2:dataItem name="UnLocodeId">ALV</ns2:dataItem>
+         <ns2:dataItem name="UnLocodeName">Andorra La Vella</ns2:dataItem>
+      </ns1:RDEntry>
+   </ns0:RDEntity>
+</ns6:RDEntityList>

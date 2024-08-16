@@ -1,39 +1,211 @@
 [
   {
+    "code": "ASV",
+    "description": "%vol"
+  },
+  {
+    "code": "ASVX",
+    "description": "%vol per hectolitre"
+  },
+  {
+    "code": "CCT",
+    "description": "Carrying capacity in metric tonnes"
+  },
+  {
+    "code": "CEN",
+    "description": "Hundred items"
+  },
+  {
+    "code": "CMQ",
+    "description": "Cubic centimeter"
+  },
+  {
     "code": "CTM",
     "description": "Carats (one metric carat = 2 x 10-4kg)"
+  },
+  {
+    "code": "DAP",
+    "description": "Decatonne, corrected according to polarisation"
+  },
+  {
+    "code": "DHS",
+    "description": "Kilogram of dihydrostreptomycin"
   },
   {
     "code": "DTN",
     "description": "Hectokilogram"
   },
   {
+    "code": "DTNE",
+    "description": "Hectokilogram of drained net weight"
+  },
+  {
+    "code": "DTNF",
+    "description": "Hectokilogram of common wheat"
+  },
+  {
+    "code": "DTNG",
+    "description": "Hectokilogram , gross"
+  },
+  {
+    "code": "DTNL",
+    "description": "Hectokilogram of live weight"
+  },
+  {
+    "code": "DTNM",
+    "description": "Hectokilogram net of dry matter"
+  },
+  {
+    "code": "DTNR",
+    "description": "Hectokilogram of the standard quality"
+  },
+  {
+    "code": "DTNS",
+    "description": "Hectokilogram of sugar with a yield in white sugar of 92%"
+  },
+  {
+    "code": "DTNZ",
+    "description": "Hectokilogram per 1% by weight of sucrose"
+  },
+  {
+    "code": "ENP",
+    "description": "For each Euro or Member State national currency of the net, free-at-Union-frontier price, before duty of the product concerned"
+  },
+  {
+    "code": "EUR",
+    "description": "Euro (used for statistical surveillance)"
+  },
+  {
+    "code": "GFI",
+    "description": "Gram of fissile isotopes"
+  },
+  {
     "code": "GRM",
     "description": "Gram"
+  },
+  {
+    "code": "GRT",
+    "description": "Gross tonnage"
   },
   {
     "code": "HLT",
     "description": "Hectolitre"
   },
   {
+    "code": "HMT",
+    "description": "Hectometre"
+  },
+  {
+    "code": "KAC",
+    "description": "Kilogram net of acesulfame potassium"
+  },
+  {
+    "code": "KCC",
+    "description": "Kilogram of choline chloride"
+  },
+  {
+    "code": "KCL",
+    "description": "Tonne of potassium chloride"
+  },
+  {
     "code": "KGM",
     "description": "Kilogram"
+  },
+  {
+    "code": "KGMA",
+    "description": "Kilogram total alcohol"
+  },
+  {
+    "code": "KGME",
+    "description": "Kilogram of drained net weight"
+  },
+  {
+    "code": "KGMG",
+    "description": "Kilogram , gross"
+  },
+  {
+    "code": "KGMP",
+    "description": "Kilogram of lactic matter"
+  },
+  {
+    "code": "KGMS",
+    "description": "Kilogram of sugar with a yield in white sugar of 92%"
+  },
+  {
+    "code": "KGMT",
+    "description": "Kilogram of dry lactic matter"
   },
   {
     "code": "KLT",
     "description": "1000 litres"
   },
   {
+    "code": "KMA",
+    "description": "Kilogram of methylamines"
+  },
+  {
+    "code": "KMT",
+    "description": "Kilometre"
+  },
+  {
+    "code": "KNI",
+    "description": "Kilogram of nitrogen"
+  },
+  {
+    "code": "KNS",
+    "description": "Kilogram of hydrogen peroxide"
+  },
+  {
+    "code": "KPH",
+    "description": "Kilogram of potassium hydroxide (caustic potash)"
+  },
+  {
+    "code": "KPO",
+    "description": "Kilogram of potassium oxide"
+  },
+  {
+    "code": "KPP",
+    "description": "Kilogram of diphosphorus pentaoxide"
+  },
+  {
+    "code": "KSD",
+    "description": "Kilogram of substance 90 % dry"
+  },
+  {
+    "code": "KSH",
+    "description": "Kilogram of sodium hydroxide (caustic soda)"
+  },
+  {
     "code": "KUR",
     "description": "Kilogram of uranium"
+  },
+  {
+    "code": "LEF",
+    "description": "Leaf"
+  },
+  {
+    "code": "LPA",
+    "description": "Litre pure (100%) alcohol"
   },
   {
     "code": "LTR",
     "description": "Litre"
   },
   {
+    "code": "LTRA",
+    "description": "Litre total alcohol"
+  },
+  {
     "code": "MIL",
     "description": "1000 items"
+  },
+  {
+    "code": "MLT",
+    "description": "Milliliter"
+  },
+  {
+    "code": "MPR",
+    "description": "1000 pairs (used for statistical surveillance)"
   },
   {
     "code": "MTK",
@@ -41,6 +213,10 @@
   },
   {
     "code": "MTQ",
+    "description": "Cubic metre (m³)"
+  },
+  {
+    "code": "MTQC",
     "description": "Cubic metre 1 000"
   },
   {
@@ -48,8 +224,16 @@
     "description": "Metre"
   },
   {
+    "code": "MWH",
+    "description": "1000 kilowatt hours"
+  },
+  {
     "code": "NAR",
     "description": "Number of items"
+  },
+  {
+    "code": "NARB",
+    "description": "Number of items per flask"
   },
   {
     "code": "NCL",
@@ -60,7 +244,51 @@
     "description": "Number of pairs"
   },
   {
+    "code": "STW",
+    "description": "Straw"
+  },
+  {
+    "code": "TCE",
+    "description": "Tonne of CO₂ equivalent of hydrofluorocarbons (HFCs)"
+  },
+  {
+    "code": "TJO",
+    "description": "Terajoule (gross calorific value)"
+  },
+  {
     "code": "TNE",
     "description": "Tonne"
+  },
+  {
+    "code": "TNEE",
+    "description": "Tonne of drained net weight"
+  },
+  {
+    "code": "TNEI",
+    "description": "Tonne of biodiesel content"
+  },
+  {
+    "code": "TNEJ",
+    "description": "Tonne of fuel content (usually in form of tallow, stearin, paraffin wax or other waxes, including the wick)"
+  },
+  {
+    "code": "TNEK",
+    "description": "Tonne of bioethanol content"
+  },
+  {
+    "code": "TNEM",
+    "description": "Tonne net of dry matter"
+  },
+  {
+    "code": "TNER",
+    "description": "Tonne of the standard quality"
+  },
+  {
+    "code": "TNEZ",
+    "description": "Tonne per 1% by weight of sucrose"
+  },
+  {
+    "code": "WAT",
+    "description": "Number of Watt"
   }
 ]

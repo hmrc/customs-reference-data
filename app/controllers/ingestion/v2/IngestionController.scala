@@ -17,58 +17,29 @@
 package controllers.ingestion.v2
 
 import actions.AuthenticateEISToken
-import cats.data.EitherT
-import cats.implicits._
-import models._
 import play.api.Logging
 import play.api.libs.json.JsValue
-import play.api.libs.json.Json
 import play.api.mvc.Action
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
 import play.api.mvc.PlayBodyParsers
 import services.ingestion.v2.ReferenceDataService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
-abstract class IngestionController @Inject() (
+abstract class IngestionController(
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
   authenticateEISToken: AuthenticateEISToken
 )(implicit ec: ExecutionContext)
-    extends BackendController(cc)
+    extends CommonIngestionController(cc, referenceDataService)
     with Logging {
 
   def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue]
 
-  val schema: SimpleJsonSchemaProvider
-
-  val source: ApiDataSource
-
   def post(): Action[JsValue] =
     authenticateEISToken(parseRequestBody(parse)).async {
       implicit request =>
-        (
-          for {
-            validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
-            referenceDataPayload = ReferenceDataListsPayload(validate)
-            insert <- EitherT.fromOptionF(referenceDataService.insert(source, referenceDataPayload), ()).swap
-          } yield insert
-        ).value.map {
-          case Right(_) =>
-            logger.info("[controllers.ingestion.v2.IngestionController]: Success")
-            Accepted
-          case Left(writeError: WriteError) =>
-            val response = Json.toJson(writeError)
-            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed to save the data list because of error: ${Json.stringify(response)}")
-            InternalServerError(response)
-          case Left(errorDetails: ErrorDetails) =>
-            val response = Json.toJson(errorDetails)
-            logger.error(s"[controllers.ingestion.v2.IngestionController]: Failed because of error: ${Json.stringify(response)}")
-            BadRequest(response)
-        }
+        validateAndSave(request.body)
     }
 }

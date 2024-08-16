@@ -35,7 +35,7 @@ import play.api.libs.json.Json
 import repositories._
 import repositories.v1.ListRepository
 import repositories.v1.VersionRepository
-import services.consumption.TimeService
+import services.TimeService
 import services.ingestion.SchemaValidationService
 import services.ingestion.TestJsonSchema
 
@@ -50,7 +50,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   private val now: Instant = Instant.now()
 
-  when(mockTimeService.now()).thenReturn(now)
+  when(mockTimeService.currentInstant()).thenReturn(now)
 
   override def newAppForTest(testData: TestData): Application =
     new GuiceApplicationBuilder()
@@ -95,7 +95,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionIdProducer.apply()).thenReturn(versionId)
 
-          val failedListName = payload.toIterable(versionId, mockTimeService.now()).toList(1).entries.head.listName
+          val failedListName = payload.toIterable(versionId, mockTimeService.currentInstant()).toList(1).entries.head.listName
 
           when(listRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
@@ -129,7 +129,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionIdProducer.apply()).thenReturn(versionId)
 
-          val listOfListOfItems = payload.toIterable(versionId, mockTimeService.now()).toList
+          val listOfListOfItems = payload.toIterable(versionId, mockTimeService.currentInstant()).toList
           val failedListName1   = listOfListOfItems.head.entries.head.listName
           val failedListName2   = listOfListOfItems(1).entries.head.listName
           val failedListName3   = listOfListOfItems(2).entries.head.listName

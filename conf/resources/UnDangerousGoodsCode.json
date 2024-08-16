@@ -9105,19 +9105,19 @@
   },
   {
     "code": "3488",
-    "description": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 200 ml/m3 & saturated vapour concentration >= 500 LC50"
+    "description": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 200 ml/m3 &amp; saturated vapour concentration >= 500 LC50"
   },
   {
     "code": "3489",
-    "description": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 1000 ml/m3 & saturated vapour concentration >= 10 LC50"
+    "description": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 1000 ml/m3 &amp; saturated vapour concentration >= 10 LC50"
   },
   {
     "code": "3490",
-    "description": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=200ml/m3 & saturated vapour concentration >=500 LC50"
+    "description": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=200ml/m3 &amp; saturated vapour concentration >=500 LC50"
   },
   {
     "code": "3491",
-    "description": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=1000ml/m3 & saturated vapour concentration >=10 LC50"
+    "description": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=1000ml/m3 &amp; saturated vapour concentration >=10 LC50"
   },
   {
     "code": "3494",

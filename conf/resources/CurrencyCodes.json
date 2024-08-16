@@ -1,5 +1,9 @@
 [
   {
+    "currency": "BGN",
+    "description": "Bulgarian lev"
+  },
+  {
     "currency": "CHF",
     "description": "Swiss Franc"
   },
@@ -9,7 +13,7 @@
   },
   {
     "currency": "DKK",
-    "description": "Danisk Krone"
+    "description": "Danish Krone"
   },
   {
     "currency": "EUR",
@@ -21,7 +25,7 @@
   },
   {
     "currency": "HUF",
-    "description": "Florint"
+    "description": "Forint"
   },
   {
     "currency": "ISK",
@@ -34,5 +38,29 @@
   {
     "currency": "NOK",
     "description": "Norwegian Krone"
+  },
+  {
+    "currency": "PLN",
+    "description": "Polish zloty"
+  },
+  {
+    "currency": "RON",
+    "description": "Romanian leu"
+  },
+  {
+    "currency": "RSD",
+    "description": "Serbian dinar"
+  },
+  {
+    "currency": "SEK",
+    "description": "Swedish Krona"
+  },
+  {
+    "currency": "TRY",
+    "description": "Turkish lira"
+  },
+  {
+    "currency": "UAH",
+    "description": "Ukrainian hryvnia"
   }
 ]
