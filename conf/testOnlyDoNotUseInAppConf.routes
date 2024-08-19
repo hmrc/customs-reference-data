@@ -11,7 +11,4 @@
 
 GET     /v2.0/customs-reference-data/test-only/lists/:listName                                controllers.consumption.testOnly.ListRetrievalController.get(listName: ListName, filter: Option[FilterParams])
 
-POST    /v2.0/customs-reference-data/test-only/reference-data-lists                           controllers.ingestion.v2.testOnly.TestOnlyReferenceDataListController.post()
-POST    /v2.0/customs-reference-data/test-only/customs-office-lists                           controllers.ingestion.v2.testOnly.TestOnlyCustomsOfficeListController.post()
-
 ->      /                                                                                     prod.Routes
