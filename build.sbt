@@ -5,7 +5,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "customs-reference-data"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "3.5.0"
 ThisBuild / scalafmtOnCompile := true
 
 lazy val microservice = Project(appName, file("."))
@@ -13,7 +13,7 @@ lazy val microservice = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(RoutesKeys.routesImport += "models._")
-  .settings(scoverageSettings: _*)
+  .settings(scoverageSettings *)
   .settings(
     PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
@@ -26,7 +26,7 @@ lazy val scoverageSettings =
     ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.testOnly;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
     ScoverageKeys.coverageMinimumStmtTotal := 85.00,
     ScoverageKeys.coverageExcludedFiles := "<empty>;.*javascript.*;.*json.*;.*Routes.*;",
-    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageFailOnMinimum := false, // TODO set coverageFailOnMinimum true after https://github.com/scoverage/sbt-scoverage/issues/550 is fixed
     ScoverageKeys.coverageHighlighting := true,
     Test / parallelExecution := false
   )
