@@ -42,7 +42,9 @@ object VersionInformation {
         (__ \ "createdOn").write(MongoJavatimeFormats.instantWrites) and
         (__ \ "source").write[ApiDataSource] and
         (__ \ "listNames").write[Seq[ListName]]
-    )(unlift(VersionInformation.unapply))
+    )(
+      v => Tuple.fromProductTyped(v)
+    )
 
   implicit val readers: Reads[VersionInformation] =
     (
@@ -51,7 +53,7 @@ object VersionInformation {
         (__ \ "createdOn").read(MongoJavatimeFormats.instantReads) and
         (__ \ "source").read[ApiDataSource] and
         (__ \ "listNames").read[Seq[ListName]]
-    )(VersionInformation.apply _)
+    )(VersionInformation.apply)
 
   implicit val format: Format[VersionInformation] = Format(readers, writes)
 }

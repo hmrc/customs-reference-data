@@ -32,7 +32,9 @@ object MessageInformation {
     (
       (__ \ "messageID").write[String] and
         (__ \ "snapshotDate").write(MongoJavatimeFormats.localDateWrites)
-    )(unlift(MessageInformation.unapply))
+    )(
+      m => Tuple.fromProductTyped(m)
+    )
 
   implicit val reads: Reads[MessageInformation] =
     ((__ \ "messageID").read[String] and

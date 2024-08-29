@@ -16,13 +16,13 @@
 
 package config
 
+import play.api.Configuration
+
 import javax.inject.Inject
 import javax.inject.Singleton
-import play.api.Configuration
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
-class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
+class AppConfig @Inject() (config: Configuration) {
 
   lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
   lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")

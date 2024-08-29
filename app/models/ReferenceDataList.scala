@@ -46,5 +46,5 @@ object ReferenceDataList {
       (__ \ "id").read[String].map(ListName.apply) and
         (__ \ "metaData").read[MetaData] and
         (__ \ "data").read[List[JsObject]]
-    )(ReferenceDataList.apply _)
+    )(ReferenceDataList.apply)
 }

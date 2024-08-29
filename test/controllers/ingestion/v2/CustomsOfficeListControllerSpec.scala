@@ -52,7 +52,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     def fakeRequest: FakeRequest[AnyContentAsJson] =
       FakeRequest(POST, "/customs-reference-data/customs-office-lists")
         .withJsonBody(testJson)
-        .withHeaders(headers: _*)
+        .withHeaders(headers *)
 
     "returns ACCEPTED when the data has been validated and processed" in {
 

@@ -26,9 +26,9 @@ import play.api.libs.json.Json
 import java.time.Instant
 
 trait ModelGenerators {
-  self: BaseGenerators with JavaTimeGenerators =>
+  self: BaseGenerators & JavaTimeGenerators =>
 
-  val genSimpleJsString: Gen[JsString] = extendedAsciiWithMaxLength(100).map(JsString)
+  val genSimpleJsString: Gen[JsString] = extendedAsciiWithMaxLength(100).map(JsString.apply)
 
   val genSimpleJsObject: Gen[JsObject] =
     for {

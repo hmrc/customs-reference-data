@@ -36,6 +36,7 @@ import repositories.SuccessfulWrite
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+import org.mongodb.scala._
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -101,7 +102,7 @@ object ListRepository {
 
     lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl, TimeUnit.SECONDS)
+      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl.asInstanceOf[Number].longValue, TimeUnit.SECONDS)
     )
 
     listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
