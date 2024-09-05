@@ -24,6 +24,7 @@ import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.mongo.test.MongoSupport
+import org.mongodb.scala._
 
 import java.io.File
 

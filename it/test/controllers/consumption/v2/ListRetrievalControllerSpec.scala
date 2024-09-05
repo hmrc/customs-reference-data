@@ -99,7 +99,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers: _*)
+            .withHttpHeaders(headers *)
             .get()
             .futureValue
 
@@ -145,7 +145,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers: _*)
+            .withHttpHeaders(headers *)
             .get()
             .futureValue
 
@@ -183,7 +183,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers: _*)
+            .withHttpHeaders(headers *)
             .get()
             .futureValue
 

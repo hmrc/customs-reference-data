@@ -49,7 +49,7 @@ class VersionRepositorySpec
 
   private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  override protected val repository = new VersionRepository(mongoComponent, appConfig)
+  override protected val repository: VersionRepository = new VersionRepository(mongoComponent, appConfig)
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
@@ -62,7 +62,7 @@ class VersionRepositorySpec
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, Instant.now, RefDataFeed, Seq(listName))
 
-      result mustEqual true
+      result `mustEqual` true
 
       val savedVersionInformation = findAll().futureValue.head
 
@@ -134,7 +134,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
 
-      result must contain theSameElementsAs expectedResult
+      result `must` contain `theSameElementsAs` expectedResult
     }
 
     "returns listnames for the latest COL by snapshotDate" in {
@@ -149,7 +149,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
 
-      result must contain theSameElementsAs expectedResult
+      result `must` contain `theSameElementsAs` expectedResult
     }
 
     "returns listnames for the latest REF and COL by snapshotDate" in {
@@ -170,7 +170,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames3
 
-      result must contain theSameElementsAs expectedResult
+      result `must` contain `theSameElementsAs` expectedResult
     }
 
     "ensure sort happens before group" in {
@@ -193,7 +193,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames4
 
-      result must contain theSameElementsAs expectedResult
+      result `must` contain `theSameElementsAs` expectedResult
     }
   }
 

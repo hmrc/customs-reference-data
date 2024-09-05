@@ -32,6 +32,8 @@ import play.api.libs.ws.WSResponse
 import repositories.v1.ListRepository
 import repositories.v1.VersionRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
+import org.mongodb.scala._
+import play.api.libs.ws.JsonBodyWritables._
 
 import java.io.InputStream
 import java.time.Instant
