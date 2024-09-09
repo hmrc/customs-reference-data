@@ -24,7 +24,7 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsValue] =
+  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsArray] =
     (filterParams match {
       case None =>
         resourceService.getJson(codeList)

@@ -24,7 +24,6 @@ import org.apache.pekko.stream.scaladsl.Flow
 import play.api.Logging
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsResultException
-import play.api.libs.json.JsValue
 
 class ProjectEmbeddedJsonFlow(listName: ListName) extends Logging {
 
@@ -39,13 +38,12 @@ class ProjectEmbeddedJsonFlow(listName: ListName) extends Logging {
   }
 
   def project: Flow[JsObject, JsObject, NotUsed] =
-    Flow[JsValue]
+    Flow[JsObject]
       .map {
         jsObject =>
           (jsObject \ "data")
             .as[JsObject]
             .unescapeXml
-            .as[JsObject]
       }
       .withAttributes(supervisionStrategy)
 

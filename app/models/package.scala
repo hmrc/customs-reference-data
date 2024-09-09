@@ -19,9 +19,9 @@ import play.api.libs.json._
 
 package object models {
 
-  implicit class RichJsValue(value: JsValue) {
+  implicit class RichJsValue[T <: JsValue](value: T) {
 
-    def unescapeXml: JsValue = {
+    def unescapeXml(implicit rds: Reads[T]): T = {
       def rec(value: JsValue): JsValue =
         value match {
           case JsString(value) =>
@@ -36,7 +36,7 @@ package object models {
             value
         }
 
-      rec(value)
+      rec(value).as[T]
     }
   }
 }
