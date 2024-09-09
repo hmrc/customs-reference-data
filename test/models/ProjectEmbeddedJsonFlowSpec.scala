@@ -16,10 +16,10 @@
 
 package models
 
+import base.SpecBase
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.stream.testkit.scaladsl.TestSink
-import base.SpecBase
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 
@@ -30,19 +30,57 @@ class ProjectEmbeddedJsonFlowSpec extends SpecBase {
   implicit lazy val actorSystem: ActorSystem = ActorSystem()
 
   "ProjectEmbeddedJson" - {
-    "returns the embedded json object in the data field" in {
-      val listName = ListName("asdf")
+    "returns the embedded json object in the data field" - {
+      "when ordinary data" in {
+        val listName = ListName("asdf")
 
-      val source =
-        Source.repeat(Json.obj("field1" -> "value1", "data" -> Json.obj("a" -> "A")))
+        val source = Source.repeat(
+          Json.obj(
+            "field1" -> "value1",
+            "data" -> Json.obj(
+              "a" -> "A"
+            )
+          )
+        )
 
-      val expectedValues: ImmSeq[JsObject] = ImmSeq.fill(11)(Json.obj("a" -> "A"))
+        val expectedValues: ImmSeq[JsObject] = ImmSeq.fill(11) {
+          Json.obj(
+            "a" -> "A"
+          )
+        }
 
-      source
-        .via(ProjectEmbeddedJsonFlow(listName).project)
-        .runWith(TestSink.probe[JsObject])
-        .request(11)
-        .expectNextN(expectedValues)
+        source
+          .via(ProjectEmbeddedJsonFlow(listName).project)
+          .runWith(TestSink.probe[JsObject])
+          .request(11)
+          .expectNextN(expectedValues)
+      }
+
+      "when data contains raw HTML" in {
+        val listName = ListName("asdf")
+
+        val source = Source.repeat(
+          Json.obj(
+            "data" -> Json.obj(
+              "code"        -> "3",
+              "description" -> "ENS &amp; EXS"
+            )
+          )
+        )
+
+        val expectedValues: ImmSeq[JsObject] = ImmSeq.fill(11) {
+          Json.obj(
+            "code"        -> "3",
+            "description" -> "ENS & EXS"
+          )
+        }
+
+        source
+          .via(ProjectEmbeddedJsonFlow(listName).project)
+          .runWith(TestSink.probe[JsObject])
+          .request(11)
+          .expectNextN(expectedValues)
+      }
     }
 
     "terminates the stream the element from the if it is missing a data field with embedded object" in {
@@ -80,7 +118,5 @@ class ProjectEmbeddedJsonFlowSpec extends SpecBase {
         .request(1)
         .expectError()
     }
-
   }
-
 }

@@ -24,8 +24,8 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsArray] =
-    filterParams match {
+  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsValue] =
+    (filterParams match {
       case None =>
         resourceService.getJson(codeList)
       case Some(filterParams) =>
@@ -44,5 +44,5 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
             }
             JsArray(filteredValues)
         }
-    }
+    }).map(_.unescapeXml)
 }

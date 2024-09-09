@@ -270,5 +270,54 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         }
       }
     }
+
+    "when security types" - {
+      "must return values (with unescaped XML)" - {
+        "when no filtering" in {
+          running(baseApplicationBuilder) {
+            app =>
+              val service = app.injector.instanceOf[ListRetrievalService]
+              val result  = service.get("DeclarationTypeSecurity", None)
+              result.get mustBe Json.parse("""
+                  |[
+                  |  {
+                  |    "code": "0",
+                  |    "description": "Not used for safety and security purposes"
+                  |  },
+                  |  {
+                  |    "code": "1",
+                  |    "description": "ENS"
+                  |  },
+                  |  {
+                  |    "code": "2",
+                  |    "description": "EXS"
+                  |  },
+                  |  {
+                  |    "code": "3",
+                  |    "description": "ENS & EXS"
+                  |  }
+                  |]
+                  |""".stripMargin)
+          }
+        }
+
+        "when filtering" in {
+          running(baseApplicationBuilder) {
+            app =>
+              val service      = app.injector.instanceOf[ListRetrievalService]
+              val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
+              val result       = service.get("DeclarationTypeSecurity", Some(filterParams))
+              result.get mustBe Json.parse("""
+                  |[
+                  |  {
+                  |    "code": "3",
+                  |    "description": "ENS & EXS"
+                  |  }
+                  |]
+                  |""".stripMargin)
+          }
+        }
+      }
+    }
   }
 }

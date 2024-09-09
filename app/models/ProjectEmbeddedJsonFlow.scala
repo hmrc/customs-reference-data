@@ -17,17 +17,18 @@
 package models
 
 import org.apache.pekko.NotUsed
-import org.apache.pekko.stream.scaladsl.Flow
 import org.apache.pekko.stream.ActorAttributes
 import org.apache.pekko.stream.Attributes
 import org.apache.pekko.stream.Supervision
+import org.apache.pekko.stream.scaladsl.Flow
 import play.api.Logging
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsResultException
+import play.api.libs.json.JsValue
 
 class ProjectEmbeddedJsonFlow(listName: ListName) extends Logging {
 
-  val supervisionStrategy: Attributes = ActorAttributes.supervisionStrategy {
+  private val supervisionStrategy: Attributes = ActorAttributes.supervisionStrategy {
     case x: JsResultException if x.errors.map(_._2).exists(_.exists(_.message.contains("""'data' is undefined on object"""))) =>
       logger.error(s"""Error when transforming ${listName.listName}. Expected data item to have "data" field""")
       Supervision.Stop
@@ -38,12 +39,14 @@ class ProjectEmbeddedJsonFlow(listName: ListName) extends Logging {
   }
 
   def project: Flow[JsObject, JsObject, NotUsed] =
-    Flow[JsObject]
-      .map(
+    Flow[JsValue]
+      .map {
         jsObject =>
           (jsObject \ "data")
             .as[JsObject]
-      )
+            .unescapeXml
+            .as[JsObject]
+      }
       .withAttributes(supervisionStrategy)
 
 }
