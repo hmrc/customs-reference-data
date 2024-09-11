@@ -62,43 +62,21 @@ class RequestHeaderUtilsSpec extends SpecBase with GuiceOneAppPerSuite with Base
 
   "getVersionedRequest" - {
     "when request has no version header" - {
-      "must add version 1 routing" - {
+      "must add version 2 routing" - {
         "when receiving gzip from EIS" in {
           val requestHeader = FakeRequest(POST, "/")
 
           val result = util.getVersionedRequest(requestHeader)
-          result.uri mustBe "/v1.0"
-          result.path mustBe "/v1.0"
+          result.uri mustBe "/v2.0"
+          result.path mustBe "/v2.0"
         }
 
         "when JSON requested from frontend" in {
           val requestHeader = FakeRequest(POST, "/")
 
           val result = util.getVersionedRequest(requestHeader)
-          result.uri mustBe "/v1.0"
-          result.path mustBe "/v1.0"
-        }
-      }
-    }
-
-    "when request has version 1 header" - {
-      "must add version 1 routing" - {
-        "when receiving gzip from EIS" in {
-          val requestHeader = FakeRequest(POST, "/foo/bar")
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+gzip")
-
-          val result = util.getVersionedRequest(requestHeader)
-          result.uri mustBe "/v1.0/foo/bar"
-          result.path mustBe "/v1.0/foo/bar"
-        }
-
-        "when JSON requested from frontend" in {
-          val requestHeader = FakeRequest(POST, "/foo/bar")
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
-
-          val result = util.getVersionedRequest(requestHeader)
-          result.uri mustBe "/v1.0/foo/bar"
-          result.path mustBe "/v1.0/foo/bar"
+          result.uri mustBe "/v2.0"
+          result.path mustBe "/v2.0"
         }
       }
     }

@@ -43,13 +43,13 @@ class RequestHeaderUtils @Inject() (config: Configuration) {
     )
   }
 
-  // If no version default to v1.0 (NCTS P4)
+  // If no version default to v2.0 (NCTS P5)
   private def getVersion(originalRequest: RequestHeader): String =
     originalRequest.headers
       .get(ACCEPT)
       .flatMap(headerRegex.findFirstMatchIn(_))
       .map(_.group(1))
-      .getOrElse("1.0")
+      .getOrElse("2.0")
 
   private def versionedUri(urlPath: String, version: String): String =
     urlPath match {

@@ -1,4 +1,3 @@
 # Add all the application routes to the app.routes file
-->         /v1.0/customs-reference-data              app_version_1_0.Routes
 ->         /v2.0/customs-reference-data              app_version_2_0.Routes
 ->         /                                         health.Routes
