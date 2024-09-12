@@ -11,14 +11,14 @@ There must be at least one snapshot of the reference data present at all times f
 
 # Versioning
 
-- v1.0 Header: application/vnd.hmrc.1.0+gzip (NCTS4)
+- v1.0 Header: application/vnd.hmrc.1.0+gzip (NCTS4) - this has been deprecated and decommissioned
 - v2.0 Header: application/vnd.hmrc.2.0+gzip (NCTS5)
 
 # v1.0
 
 Version 1 stores reference data from EIS in a verbose state. This reference data is specific to transit and is intended for multiple consumers with a range of data requirements.
 
-NOTE: Version 1 of this API will soon be deprecated and should NOT be used!
+NOTE: Version 1 of this API has been deprecated and should NOT be used!
 
 # v2.0
 

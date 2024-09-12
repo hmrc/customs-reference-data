@@ -54,5 +54,5 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
 }
 
 object ReferenceDataListsPayload {
-  def apply(v1: JsObject): ReferenceDataListsPayload = new ReferenceDataListsPayload(v1)
+  def apply(data: JsObject): ReferenceDataListsPayload = new ReferenceDataListsPayload(data)
 }

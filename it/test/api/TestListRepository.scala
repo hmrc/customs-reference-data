@@ -17,6 +17,7 @@
 package api
 
 import config.AppConfig
+import models.FilterParams
 import models.GenericList
 import models.ListName
 import models.VersionId
@@ -24,7 +25,7 @@ import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import play.api.libs.json.JsObject
 import repositories.ListRepositoryWriteResult
-import repositories.v1.ListRepository
+import repositories.ListRepository
 import uk.gov.hmrc.mongo.MongoComponent
 
 import javax.inject.Inject
@@ -36,8 +37,8 @@ class TestListRepository @Inject() (
   config: AppConfig
 ) extends ListRepository(mongoComponent, config) {
 
-  override def getListByName(listName: ListName, versionId: VersionId): Source[JsObject, NotUsed] =
-    super.getListByName(listName, versionId)
+  override def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams]): Source[JsObject, NotUsed] =
+    super.getListByName(listName, versionId, filter)
 
   override def insertList(list: GenericList): Future[ListRepositoryWriteResult] = {
     Thread.sleep(1500) // simulate a delay in inserting data
