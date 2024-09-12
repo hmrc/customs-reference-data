@@ -25,7 +25,7 @@ import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import play.api.libs.json.JsObject
 import repositories.ListRepositoryWriteResult
-import repositories.v2.ListRepository
+import repositories.ListRepository
 import uk.gov.hmrc.mongo.MongoComponent
 
 import javax.inject.Inject
