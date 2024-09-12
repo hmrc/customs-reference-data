@@ -32,7 +32,7 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
        |{
        |   "_links": {
        |     "self": {
-       |       "href": "${removeVersionFromHref(controllers.consumption.routes.ListRetrievalController.get(listName, filterParams).url)}"
+       |       "href": "${controllers.consumption.routes.ListRetrievalController.get(listName, filterParams).url}"
        |     }
        |   },
        |   "meta": ${Json.toJsObject(metaData)},
@@ -46,10 +46,6 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
       .map(a => ByteString(Json.stringify(Json.toJson(a))))
       .intersperse(ByteString(jsonFormat(filterParams)), ByteString(","), ByteString("]}"))
 
-  private def removeVersionFromHref(href: String): String = {
-    val regex = """v(\d+).(\d+)/""".r
-    regex.replaceAllIn(href, "")
-  }
 }
 
 object StreamReferenceData {
