@@ -26,7 +26,7 @@ lazy val scoverageSettings =
     ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo*;.*\.Routes;.*\.testOnly;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly;config.*""",
     ScoverageKeys.coverageMinimumStmtTotal := 85.00,
     ScoverageKeys.coverageExcludedFiles := "<empty>;.*javascript.*;.*json.*;.*Routes.*;",
-    ScoverageKeys.coverageFailOnMinimum := false, // TODO set coverageFailOnMinimum true after https://github.com/scoverage/sbt-scoverage/issues/550 is fixed
+    ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     Test / parallelExecution := false
   )
