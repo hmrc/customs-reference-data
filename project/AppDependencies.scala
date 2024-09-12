@@ -13,7 +13,8 @@ object AppDependencies {
     "org.leadpony.joy"     % "joy-classic"                     % "2.1.0",
     "org.typelevel"       %% "cats-core"                       % "2.10.0",
     "org.apache.pekko"    %% "pekko-actor"                     % pekkoVersion,
-    "org.apache.pekko"    %% "pekko-stream"                    % pekkoVersion
+    "org.apache.pekko"    %% "pekko-stream"                    % pekkoVersion,
+    "org.apache.commons"   % "commons-text"                    % "1.12.0"
   )
 
   val test: Seq[ModuleID] = Seq(
