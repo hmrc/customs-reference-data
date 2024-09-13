@@ -29,8 +29,8 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.libs.ws.WSResponse
-import repositories.v1.ListRepository
-import repositories.v1.VersionRepository
+import repositories.ListRepository
+import repositories.VersionRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
 import org.mongodb.scala._
 import play.api.libs.ws.JsonBodyWritables._
