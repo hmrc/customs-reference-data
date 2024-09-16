@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package actions
+package controllers.actions
 
 import com.google.inject.ImplementedBy
 import com.google.inject.Inject

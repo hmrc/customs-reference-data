@@ -16,10 +16,11 @@
 
 package controllers.ingestion
 
-import actions.AuthenticateEISToken
 import config.ReferenceDataControllerParserConfig
-import models.ApiDataSource
+import controllers.actions.AuthenticateEISToken
+import controllers.actions.ValidateAcceptHeader
 import models.ApiDataSource.RefDataFeed
+import models.ApiDataSource
 import models.CTCUP06Schema
 import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
@@ -35,9 +36,10 @@ class ReferenceDataListController @Inject() (
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
   override val schema: CTCUP06Schema,
-  authenticateEISToken: AuthenticateEISToken
+  authenticateEISToken: AuthenticateEISToken,
+  validateAcceptHeader: ValidateAcceptHeader
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService, authenticateEISToken) {
+    extends IngestionController(cc, referenceDataService, authenticateEISToken, validateAcceptHeader) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.referenceDataParser(parse)
 
