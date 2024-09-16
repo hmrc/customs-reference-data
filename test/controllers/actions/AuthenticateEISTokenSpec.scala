@@ -16,7 +16,6 @@
 
 package controllers.actions
 
-import actions.AuthenticateEISTokenImpl
 import config.AppConfig
 import config.IncomingAuthConfig
 import org.mockito.Mockito.when

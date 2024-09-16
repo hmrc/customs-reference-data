@@ -111,5 +111,25 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         countDocuments mustBe 0
       }
     }
+
+    "when Accept header is invalid" - {
+      "must respond with 400 status" in {
+        val headers = Seq(
+          "Accept"           -> "application/vnd.hmrc.1.0+gzip",
+          "Authorization"    -> s"Bearer $bearerToken",
+          "Content-Encoding" -> "gzip",
+          "Content-Type"     -> "application/json"
+        )
+
+        val response =
+          wsClient
+            .url(url)
+            .withHttpHeaders(headers *)
+            .post(file(validGzipFile))
+            .futureValue
+
+        response.status mustBe BAD_REQUEST
+      }
+    }
   }
 }

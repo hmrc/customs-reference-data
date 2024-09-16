@@ -16,8 +16,9 @@
 
 package controllers.ingestion
 
-import actions.AuthenticateEISToken
 import config.ReferenceDataControllerParserConfig
+import controllers.actions.AuthenticateEISToken
+import controllers.actions.ValidateAcceptHeader
 import models.ApiDataSource
 import models.ApiDataSource.ColDataFeed
 import models.CTCUP08Schema
@@ -35,9 +36,10 @@ class CustomsOfficeListController @Inject() (
   referenceDataService: ReferenceDataService,
   parseConfig: ReferenceDataControllerParserConfig,
   override val schema: CTCUP08Schema,
-  authenticateEISToken: AuthenticateEISToken
+  authenticateEISToken: AuthenticateEISToken,
+  validateAcceptHeader: ValidateAcceptHeader
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService, authenticateEISToken) {
+    extends IngestionController(cc, referenceDataService, authenticateEISToken, validateAcceptHeader) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.customsOfficeParser(parse)
 
