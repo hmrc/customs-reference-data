@@ -16,12 +16,12 @@
 
 package controllers.consumption
 
-import org.apache.pekko.NotUsed
-import org.apache.pekko.stream.scaladsl.Source
 import base.SpecBase
 import generators.ModelArbitraryInstances
 import models.ReferenceDataList
 import models.VersionInformation
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import org.mockito.Mockito.never
@@ -37,9 +37,6 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.GET
-import play.api.test.Helpers.route
-import play.api.test.Helpers.status
 import play.api.test.Helpers._
 import services.consumption.ListRetrievalService
 

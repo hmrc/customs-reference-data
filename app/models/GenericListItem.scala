@@ -38,7 +38,9 @@ object GenericListItem {
       __.write[VersionId] and
       (__ \ "data").write[JsObject] and
       (__ \ "createdOn").write[Instant](MongoJavatimeFormats.instantWrites)
-  )(unlift(GenericListItem.unapply))
+  )(
+    gl => Tuple.fromProductTyped(gl)
+  )
 
   implicit val reads: Reads[GenericListItem] = (
     __.read[ListName] and
@@ -46,7 +48,7 @@ object GenericListItem {
       __.read[VersionId] and
       (__ \ "data").read[JsObject] and
       (__ \ "createdOn").read[Instant](MongoJavatimeFormats.instantReads)
-  )(GenericListItem.apply _)
+  )(GenericListItem.apply)
 
   implicit val format: Format[GenericListItem] = Format(reads, writes)
 }

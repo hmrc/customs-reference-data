@@ -39,7 +39,7 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)
                     }
-                    values.exists(filterParamValues.map(JsString).contains(_))
+                    values.exists(filterParamValues.map(JsString.apply).contains(_))
                 }
             }
             JsArray(filteredValues)

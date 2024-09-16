@@ -39,6 +39,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import repositories.SuccessfulWrite
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
+import org.mongodb.scala._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -54,7 +55,7 @@ class ListRepositorySpec
 
   private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  override protected val repository = new ListRepository(mongoComponent, appConfig)
+  override protected val repository: ListRepository = new ListRepository(mongoComponent, appConfig)
 
   private def seedData(documents: Seq[GenericListItem]): Unit =
     repository.collection
@@ -117,7 +118,7 @@ class ListRepositorySpec
 
       val result = repository.insertList(list).futureValue
 
-      result mustBe SuccessfulWrite(ListName(listName), entries.length)
+      result `mustBe` SuccessfulWrite(ListName(listName), entries.length)
 
       findAll().futureValue must contain theSameElementsAs entries
     }
