@@ -159,7 +159,9 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
       val referenceDataList          = arbitrary[ReferenceDataList].sample.value
       val version                    = arbitrary[VersionInformation].sample.value
 
-      val source: Source[JsObject, NotUsed] = Source(1 to 4).map(_ => Json.obj("index" -> "value", "data" -> Json.obj("filter" -> "me")))
+      val source: Source[JsObject, NotUsed] = Source(1 to 4).map(
+        _ => Json.obj("index" -> "value", "data" -> Json.obj("filter" -> "me"))
+      )
 
       val mockVersionRepository = mock[VersionRepository]
       val mockListRepository    = mock[ListRepository]

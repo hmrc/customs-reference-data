@@ -19,9 +19,6 @@ package models
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Flow
 import org.apache.pekko.util.ByteString
-import models.FilterParams
-import models.ListName
-import models.MetaData
 import play.api.libs.json.Json
 import play.api.libs.json.Writes
 
@@ -43,7 +40,9 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
   def nestInJson[A: Writes](filterParams: Option[FilterParams]): Flow[A, ByteString, NotUsed] =
     Flow
       .apply[A]
-      .map(a => ByteString(Json.stringify(Json.toJson(a))))
+      .map(
+        a => ByteString(Json.stringify(Json.toJson(a)))
+      )
       .intersperse(ByteString(jsonFormat(filterParams)), ByteString(","), ByteString("]}"))
 
 }

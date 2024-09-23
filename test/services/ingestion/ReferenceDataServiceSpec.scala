@@ -38,8 +38,6 @@ import repositories.VersionIdProducer
 import repositories.ListRepository
 import repositories.VersionRepository
 import services.TimeService
-import services.ingestion.SchemaValidationService
-import services.ingestion.TestJsonSchema
 
 import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global

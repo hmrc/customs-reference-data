@@ -18,7 +18,6 @@ package models
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
-import models.StreamReferenceData
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.stream.testkit.scaladsl.TestSink
@@ -45,7 +44,9 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
 
       val testFlow = StreamReferenceData(name, meta).nestInJson[JsObject](None)
 
-      val source = Source(1 to 5).map(_ => Json.obj("index" -> "value"))
+      val source = Source(1 to 5).map(
+        _ => Json.obj("index" -> "value")
+      )
 
       val streamOutput: Seq[ByteString] = source
         .via(testFlow)

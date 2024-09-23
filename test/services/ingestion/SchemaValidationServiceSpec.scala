@@ -30,7 +30,10 @@ import play.api.libs.json.Json
 
 class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
 
-class TestModule extends SimpleModule((_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly()))
+class TestModule
+    extends SimpleModule(
+      (_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly())
+    )
 
 class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with EitherValues {
 

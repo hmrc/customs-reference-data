@@ -17,7 +17,6 @@
 package controllers
 
 import base.ItSpecBase
-import org.mongodb.scala.MongoDatabase
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application

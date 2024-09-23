@@ -35,7 +35,7 @@ object ResourceLinks {
         name => s"/customs-reference-data/lists/$name"
       }
 
-    //TODO fix ordering here
+    // TODO fix ordering here
     val resourceLinks: Seq[(String, JsObject)] = listNames.map {
       listName => listName.listName -> JsObject(Seq("href" -> JsString(buildUri(Some(listName.listName)))))
     }

@@ -16,7 +16,6 @@
 
 package models
 
-import models.SimpleJsonSchemaProvider
 import org.leadpony.justify.api.JsonValidationService
 import play.api.Environment
 

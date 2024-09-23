@@ -28,9 +28,6 @@ import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Indexes.compoundIndex
 import org.mongodb.scala.model._
 import play.api.libs.json.JsObject
-import repositories.FailedWrite
-import repositories.ListRepositoryWriteResult
-import repositories.SuccessfulWrite
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
@@ -71,7 +68,7 @@ class ListRepository @Inject() (
           .flatMap {
             case (_, Nil)           => None
             case (key, head :: Nil) => Some(Filters.eq(key, head))
-            case (key, values)      => Some(Filters.in(key, values *))
+            case (key, values)      => Some(Filters.in(key, values*))
           }
           .map(Aggregates.filter)
       }

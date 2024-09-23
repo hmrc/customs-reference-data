@@ -37,7 +37,6 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import repositories.SuccessfulWrite
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import org.mongodb.scala._
 
