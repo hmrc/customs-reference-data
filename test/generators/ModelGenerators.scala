@@ -47,13 +47,16 @@ trait ModelGenerators {
       )
     )
 
-  /**
-    * Generator that sample full reference data push as JSON
+  /** Generator that sample full reference data push as JSON
     *
-    * @param numberOfLists The number of lists for the sample reference data json
-    * @param numberOfListItems The number of list items to populate the list's listEntries with
-    * @param messageInformation The metadata for the reference data. This allows the caller to override the default random values and specify their own
-    * @return A [[play.api.libs.json.JsObject]] that represents a full reference data push
+    * @param numberOfLists
+    *   The number of lists for the sample reference data json
+    * @param numberOfListItems
+    *   The number of list items to populate the list's listEntries with
+    * @param messageInformation
+    *   The metadata for the reference data. This allows the caller to override the default random values and specify their own
+    * @return
+    *   A [[play.api.libs.json.JsObject]] that represents a full reference data push
     */
   def genReferenceDataListsJson(
     numberOfLists: Int = 5,

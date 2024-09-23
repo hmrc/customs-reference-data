@@ -29,7 +29,6 @@ import repositories.ListRepositoryWriteResult
 import repositories.SuccessfulWrite
 import repositories.VersionIdProducer
 import services.TimeService
-import services.ingestion.SchemaValidationService
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future

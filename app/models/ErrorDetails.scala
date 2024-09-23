@@ -32,7 +32,9 @@ object SchemaErrorDetails {
     (__ \ "code").write[String] and
       (__ \ "message").write[String] and
       (__ \ "path").write[String]
-  )(arg => (arg.code, arg.message, arg.path))
+  )(
+    arg => (arg.code, arg.message, arg.path)
+  )
 }
 
 sealed trait ErrorDetails {
@@ -48,7 +50,9 @@ object ErrorDetails {
       (__ \ "code").write[String] and
         (__ \ "message").write[String] and
         (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
-    )(arg => (arg.code, arg.message, arg.errors))
+    )(
+      arg => (arg.code, arg.message, arg.errors)
+    )
 }
 
 sealed trait ApiErrorDetails {
@@ -64,7 +68,9 @@ object ApiErrorDetails {
       (__ \ "code").write[Int] and
         (__ \ "message").write[String] and
         (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
-    )(arg => (arg.code, arg.message, arg.errors))
+    )(
+      arg => (arg.code, arg.message, arg.errors)
+    )
 }
 
 case class InvalidJsonError(_message: String) extends ErrorDetails {

@@ -30,12 +30,16 @@ class ReferenceDataControllerParserConfig @Inject() (config: Configuration)() {
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.referenceDataLists.maxLength")
 
   def referenceDataParser(parse: PlayBodyParsers): BodyParser[JsValue] =
-    referenceDataLists.fold(parse.json)(maxLength => parse.json(maxLength = maxLength))
+    referenceDataLists.fold(parse.json)(
+      maxLength => parse.json(maxLength = maxLength)
+    )
 
   private val customsOfficeLists =
     config.getOptional[Long]("controllers.controllers.ingestion.ReferenceDataController.customsOfficeLists.maxLength")
 
   def customsOfficeParser(parse: PlayBodyParsers): BodyParser[JsValue] =
-    customsOfficeLists.fold(parse.json)(maxLength => parse.json(maxLength = maxLength))
+    customsOfficeLists.fold(parse.json)(
+      maxLength => parse.json(maxLength = maxLength)
+    )
 
 }

@@ -38,7 +38,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers *)
+            .withHttpHeaders(headers*)
             .post(file(validGzipFile))
             .futureValue
 
@@ -59,7 +59,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers *)
+            .withHttpHeaders(headers*)
             .post(file(validJsonFile))
             .futureValue
 
@@ -81,7 +81,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers *)
+            .withHttpHeaders(headers*)
             .post(file(invalidDataFile))
             .futureValue
 
@@ -102,7 +102,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers *)
+            .withHttpHeaders(headers*)
             .post(file(validGzipFile))
             .futureValue
 
@@ -124,7 +124,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
         val response =
           wsClient
             .url(url)
-            .withHttpHeaders(headers *)
+            .withHttpHeaders(headers*)
             .post(file(validGzipFile))
             .futureValue
 

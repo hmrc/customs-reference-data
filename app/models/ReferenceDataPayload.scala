@@ -38,7 +38,11 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
 
   private lazy val lists: JsObject = (data \ "lists").get.as[JsObject]
 
-  override lazy val listNames: Seq[ListName] = lists.keys.map(list => (lists \ list).as[ListName]).toSeq
+  override lazy val listNames: Seq[ListName] = lists.keys
+    .map(
+      list => (lists \ list).as[ListName]
+    )
+    .toSeq
 
   override def toIterable(versionId: VersionId, createdOn: Instant): Iterable[GenericList] =
     lists.values.flatMap {
@@ -48,7 +52,9 @@ class ReferenceDataListsPayload(data: JsObject) extends ReferenceDataPayload {
           listEntries <- (list \ "listEntries").validate[Seq[JsObject]].asOpt
         } yield GenericList(
           listName,
-          listEntries.map(data => GenericListItem(listName, messageInformation, versionId, data, createdOn))
+          listEntries.map(
+            data => GenericListItem(listName, messageInformation, versionId, data, createdOn)
+          )
         )
     }
 }

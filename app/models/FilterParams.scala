@@ -34,7 +34,10 @@ object FilterParams {
       override def unbind(key: String, filters: FilterParams): String =
         filters.parameters
           .flatMap {
-            case (key, values) => values.map(value => s"$key=$value")
+            case (key, values) =>
+              values.map(
+                value => s"$key=$value"
+              )
           }
           .mkString("&")
     }
