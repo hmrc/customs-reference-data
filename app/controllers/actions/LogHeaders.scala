@@ -20,25 +20,37 @@ import com.google.inject.{ImplementedBy, Inject, Singleton}
 import play.api.Logging
 import play.api.http.HeaderNames.*
 import play.api.mvc.*
-import play.api.mvc.Results.BadRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@ImplementedBy(classOf[ValidateAcceptHeaderImpl])
-trait ValidateAcceptHeader extends ActionFilter[Request] with ActionBuilder[Request, AnyContent]
+@ImplementedBy(classOf[LogHeadersImpl])
+trait LogHeaders extends ActionFilter[Request] with ActionBuilder[Request, AnyContent]
 
 @Singleton
-class ValidateAcceptHeaderImpl @Inject() (override val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext)
-    extends ValidateAcceptHeader
+class LogHeadersImpl @Inject() (
+  parsers: BodyParsers.Default
+)(implicit val executionContext: ExecutionContext)
+    extends LogHeaders
     with Logging {
 
-  private val pattern = "application/vnd\\.hmrc\\.2\\.0\\+(gzip|json)".r
+  override def filter[A](request: Request[A]): Future[Option[Result]] = {
+    val headersToLog = Seq(
+      ACCEPT,
+      ACCEPT_ENCODING,
+      CONTENT_ENCODING,
+      CONTENT_TYPE,
+      CONTENT_LENGTH,
+      TRANSFER_ENCODING
+    )
 
-  override def filter[A](request: Request[A]): Future[Option[Result]] =
-    Future.successful {
-      request.headers.get(ACCEPT) match {
-        case Some(value) if pattern.matches(value) => None
-        case _                                     => Some(BadRequest)
+    val headers = request.headers.headers
+      .filter {
+        case (header, _) => headersToLog.contains(header)
       }
-    }
+      .mkString(", ")
+    logger.info(s"Headers: $headers")
+    Future.successful(None)
+  }
+
+  override def parser: BodyParser[AnyContent] = parsers
 }
