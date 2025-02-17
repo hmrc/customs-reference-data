@@ -17,8 +17,7 @@
 package controllers.ingestion
 
 import cats.data.EitherT
-import controllers.actions.AuthenticateEISToken
-import controllers.actions.ValidateAcceptHeader
+import controllers.actions.{AuthenticateEISToken, LogHeaders, ValidateAcceptHeader}
 import models.*
 import play.api.Logging
 import play.api.libs.json.JsValue
@@ -36,6 +35,7 @@ import scala.concurrent.Future
 abstract class IngestionController(
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
+  logHeaders: LogHeaders,
   authenticateEISToken: AuthenticateEISToken,
   validateAcceptHeader: ValidateAcceptHeader
 )(implicit ec: ExecutionContext)
@@ -49,7 +49,7 @@ abstract class IngestionController(
   val source: ApiDataSource
 
   def post(): Action[JsValue] =
-    (authenticateEISToken andThen validateAcceptHeader).async(parseRequestBody(parse)) {
+    (logHeaders andThen authenticateEISToken andThen validateAcceptHeader).async(parseRequestBody(parse)) {
       implicit request =>
         (
           for {

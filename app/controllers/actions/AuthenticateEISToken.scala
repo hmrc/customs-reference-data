@@ -16,19 +16,17 @@
 
 package controllers.actions
 
-import com.google.inject.ImplementedBy
-import com.google.inject.Inject
-import com.google.inject.Singleton
+import com.google.inject.{ImplementedBy, Inject, Singleton}
 import config.AppConfig
 import models.UnauthorisedError
 import play.api.Logging
-import play.api.http.Status.UNAUTHORIZED
+import play.api.http.HeaderNames.*
+import play.api.http.Status.*
 import play.api.libs.json.Json
+import play.api.mvc.*
 import play.api.mvc.Results.Status
-import play.api.mvc._
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[AuthenticateEISTokenImpl])
 trait AuthenticateEISToken extends ActionFilter[Request] with ActionBuilder[Request, AnyContent]
@@ -45,7 +43,7 @@ class AuthenticateEISTokenImpl @Inject() (appConfig: AppConfig, parsers: BodyPar
     val result =
       if (incomingAuthConfig.enabled)
         (for {
-          bearerToken <- request.headers.get("Authorization")
+          bearerToken <- request.headers.get(AUTHORIZATION)
           tokenMatch  <- tokenPattern.findFirstMatchIn(bearerToken)
           token = tokenMatch.group(1)
           if incomingAuthConfig.acceptedTokens.contains(token)
