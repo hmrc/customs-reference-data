@@ -76,7 +76,7 @@ Although Publish/Subscribe is based on earlier design patterns like message queu
   * Accept - `application/vnd.hmrc.2.0+gzip`
   * Authorization - `Bearer <token>` (see `incomingRequestAuth.acceptedTokens` in the relevant environment)
 * Body
-  * JSON data in `json.gz` (GZIP) format, conformant with [CTCUP08](/conf/schemas/CTCUP08.schema.json) schema. A sample payload can be found [here](/conf/resources/csrd2-payloads/COL-Generic-20250212.json.gz).
+  * JSON data in `.json.gz` (GZIP) format, conformant with [CTCUP08](/conf/schemas/CTCUP08.schema.json) schema. A sample payload can be found [here](/conf/resources/csrd2-payloads/COL-Generic-20250212.json.gz).
 
 #### Successful response
 
@@ -159,8 +159,23 @@ Although Publish/Subscribe is based on earlier design patterns like message queu
 * [customs-reference-data-test-frontend](https://github.com/hmrc/customs-reference-data-test-frontend)
   * endpoints for ingesting data in localhost and the environments
   * endpoint for retrieving data in localhost and the environments
+
 ### Seeding service with data
-- Follow the [instructions in the test repo](https://github.com/hmrc/customs-reference-data-test-frontend)
+#### Postman
+Follow the [instructions in the test repo](https://github.com/hmrc/customs-reference-data-test-frontend).
+
+#### Curl
+Ingestion can also be achieved through curl. DPS and EIS colleagues may use curl to test the ingestion of the data.
+The request will look something like the following.
+The `<url>`, `<token>` and `<filename>` values can be populated as appropriate.
+```
+curl -kv -X POST <url>
+-H 'Accept: application/vnd.hmrc.2.0+gzip'
+-H 'Content-Encoding: gzip'
+-H 'Content-Type: application/json'
+-H 'Authorization: Bearer <token>'
+--data-binary '@<filename>.json.gz'
+```
 
 ## Testing
 
