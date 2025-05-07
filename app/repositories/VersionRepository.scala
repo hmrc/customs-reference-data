@@ -81,7 +81,9 @@ class VersionRepository @Inject() (
       .toFuture()
       .map(_.flatMap(_.listNames))
   }
-
+  
+  // TODO - define some method to return the n most recent version IDs
+  def getLatestVersions(): Future[Seq[VersionId]] = ???
 }
 
 object VersionRepository {

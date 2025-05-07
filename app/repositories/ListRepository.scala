@@ -98,10 +98,17 @@ class ListRepository @Inject() (
         case true  => SuccessfulWrite(list)
         case false => FailedWrite(list)
       }
+    
+  // TODO - define some method to delete any document with a version ID not in the list of version IDs
+  def remove(versionIds: Seq[VersionId]) = {
+    val filter = Filters.nin("versionId", versionIds)
+    ???
+  }
 }
 
 object ListRepository {
 
+  // TODO - remove TTL index
   def indexes(config: AppConfig): Seq[IndexModel] = {
     val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(
       keys = compoundIndex(ascending("listName"), ascending("versionId")),
