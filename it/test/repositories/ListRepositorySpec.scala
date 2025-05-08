@@ -18,28 +18,23 @@ package repositories
 
 import base.ItSpecBase
 import config.AppConfig
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.GenericList
-import models.GenericListItem
-import models.ListName
-import models.VersionId
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.{GenericList, GenericListItem, ListName, MessageInformation, VersionId}
 import org.apache.pekko.NotUsed
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.stream.testkit.scaladsl.TestSink
+import org.mongodb.scala.*
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Arbitrary
-import org.scalacheck.Gen
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalacheck.{Arbitrary, Gen}
+import org.scalactic.Equality
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
-import org.mongodb.scala._
 
+import java.time.{Instant, LocalDate}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ListRepositorySpec
@@ -123,4 +118,27 @@ class ListRepositorySpec
     }
   }
 
+  "remove" - {
+    "must remove documents" - {
+      "when document has an expired version ID" in {
+        val v1 = VersionId("1")
+        val v2 = VersionId("2")
+        val v3 = VersionId("3")
+
+        val expiredVersionIds = Seq(v1, v2)
+
+        val gli1 = GenericListItem(ListName("a"), MessageInformation("messageId1", LocalDate.now()), v1, Json.obj(), Instant.now())
+        val gli2 = GenericListItem(ListName("b"), MessageInformation("messageId2", LocalDate.now()), v2, Json.obj(), Instant.now())
+        val gli3 = GenericListItem(ListName("c"), MessageInformation("messageId3", LocalDate.now()), v3, Json.obj(), Instant.now())
+
+        seedData(Seq(gli1, gli2, gli3))
+
+        repository.remove(expiredVersionIds).futureValue
+
+        val result = findAll().futureValue.map(_.versionId)
+
+        result mustEqual Seq(v3)
+      }
+    }
+  }
 }

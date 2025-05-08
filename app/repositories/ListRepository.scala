@@ -27,6 +27,7 @@ import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Indexes.{ascending, compoundIndex}
+import org.mongodb.scala.result.DeleteResult
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
@@ -43,7 +44,7 @@ class ListRepository @Inject() (
       mongoComponent = mongoComponent,
       collectionName = "v2-reference-data-lists-new",
       domainFormat = GenericListItem.format,
-      indexes = ListRepository.indexes(config),
+      indexes = ListRepository.indexes,
       replaceIndexes = config.replaceIndexes
     ) {
 
@@ -95,22 +96,27 @@ class ListRepository @Inject() (
         case false => FailedWrite(list)
       }
 
-  // TODO - define some method to delete any document with a version ID not in the list of version IDs
-  def remove(versionIds: Seq[VersionId]) = {
-    val filter = Filters.nin("versionId", versionIds)
-    ???
+  def remove(versionIds: Seq[VersionId]): Future[DeleteResult] = {
+    val filter = Filters.in("versionId", versionIds.map(_.versionId)*)
+    collection
+      .deleteMany(filter)
+      .toFuture()
   }
 }
 
 object ListRepository {
 
-  // TODO - remove TTL index
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  val indexes: Seq[IndexModel] = {
     val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(
       keys = compoundIndex(ascending("listName"), ascending("versionId")),
       indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
     )
 
-    Seq(listNameAndVersionIdCompoundIndex)
+    val versionIdIndex: IndexModel = IndexModel(
+      keys = Indexes.ascending("versionId"),
+      indexOptions = IndexOptions().name("versionId-index")
+    )
+
+    Seq(listNameAndVersionIdCompoundIndex, versionIdIndex)
   }
 }

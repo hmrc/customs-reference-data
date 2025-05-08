@@ -18,27 +18,19 @@ package repositories
 
 import base.ItSpecBase
 import config.AppConfig
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.ApiDataSource.ColDataFeed
-import models.ApiDataSource.RefDataFeed
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.ApiDataSource.{ColDataFeed, RefDataFeed}
+import models.{ListName, MessageInformation, VersionId, VersionInformation}
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.inject.guice.GuiceApplicationBuilder
 import services.TimeService
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
-import java.time.temporal.ChronoUnit.DAYS
 
-import java.time.Instant
-import java.time.LocalDate
+import java.time.{Instant, LocalDate}
 import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.DAYS
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec
@@ -201,9 +193,9 @@ class VersionRepositorySpec
     }
   }
 
-  "getLatestVersions" - {
-    "must retrieve the latest version_ids " - {
-      "when there is 1 days worth of data" in {
+  "getExpiredVersions" - {
+    "must retrieve the expired version IDs " - {
+      "when there are no expired versions" in {
         val messageInformation = MessageInformation("messageId", LocalDate.now())
         val versionId          = VersionId("1")
 
@@ -211,10 +203,10 @@ class VersionRepositorySpec
         val v1         = VersionInformation(messageInformation, versionId, Instant.now(), ColDataFeed, listNames1)
         insert(v1).futureValue
 
-        val result = repository.getLatestVersions().futureValue
-        result mustEqual Seq[VersionId](versionId)
+        val result = repository.getExpiredVersions().futureValue
+        result mustEqual Seq[VersionId]()
       }
-      "when there are more days worth of data than we need" in {
+      "when there are expired versions" in {
         val now                 = LocalDate.now()
         val messageInformation1 = MessageInformation("messageId1", now.minusDays(15))
         val messageInformation2 = MessageInformation("messageId2", now.minusDays(2))
@@ -234,8 +226,8 @@ class VersionRepositorySpec
 
         Seq(v1, v2, v3, v4).map(insert(_).futureValue)
 
-        val result = repository.getLatestVersions().futureValue
-        result mustEqual Seq[VersionId](versionId2, versionId3, versionId4)
+        val result = repository.getExpiredVersions().futureValue
+        result mustEqual Seq[VersionId](versionId1)
       }
 
     }

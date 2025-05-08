@@ -42,7 +42,7 @@ class VersionRepository @Inject() (
       mongoComponent = mongoComponent,
       collectionName = "v2-versions",
       domainFormat = VersionInformation.format,
-      indexes = VersionRepository.indexes(config),
+      indexes = VersionRepository.indexes,
       replaceIndexes = config.replaceIndexes
     ) {
 
@@ -82,8 +82,8 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def getLatestVersions(): Future[Seq[VersionId]] =
-    val filter = Filters.gte("createdOn", timeService.currentInstant().minus(config.ttl, SECONDS))
+  def getExpiredVersions(): Future[Seq[VersionId]] =
+    val filter = Filters.lt("createdOn", timeService.currentInstant().minus(config.ttl, SECONDS))
     collection
       .find(filter)
       .toFuture()
@@ -92,7 +92,7 @@ class VersionRepository @Inject() (
 
 object VersionRepository {
 
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  val indexes: Seq[IndexModel] = {
     val listNameAndDateCompoundIndex: IndexModel =
       IndexModel(
         keys = compoundIndex(ascending("listNames.listName"), descending("snapshotDate", "createdOn")),
