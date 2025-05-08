@@ -73,9 +73,8 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)
 
-  def remove() = {
+  def remove() =
     // TODO - get the (14?) most recent versions from getLatestVersions in VersionRepository (N.B. there should be 2 versions per day, one for each POST we receive)
     //  pass these version IDs into remove method in ListRepository
     ???
-  }
 }

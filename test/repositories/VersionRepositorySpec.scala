@@ -24,14 +24,16 @@ import org.mongodb.scala.bson.BsonDocument
 import org.scalacheck.Gen
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import services.TimeService
 import uk.gov.hmrc.mongo.test.MongoSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
-  private val mockConfig = mock[AppConfig]
-  private val ttl        = Gen.choose(1, 1209600).sample.value
+  private val mockConfig  = mock[AppConfig]
+  private val ttl         = Gen.choose(1, 1209600).sample.value
+  private val timeService = app.injector.instanceOf[TimeService]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -47,7 +49,7 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
       "must return 3 indexes" in {
         when(mockConfig.isTtlEnabled).thenReturn(true)
 
-        val repository = new VersionRepository(mongoComponent, mockConfig)
+        val repository = new VersionRepository(mongoComponent, timeService, mockConfig)
 
         val indexes = repository.indexes.map(_.tupled()).toSet
 
@@ -75,7 +77,7 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
       "must return 2 indexes" in {
         when(mockConfig.isTtlEnabled).thenReturn(false)
 
-        val repository = new VersionRepository(mongoComponent, mockConfig)
+        val repository = new VersionRepository(mongoComponent, timeService, mockConfig)
 
         val indexes = repository.indexes.map(_.tupled()).toSet
 

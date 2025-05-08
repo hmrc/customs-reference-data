@@ -31,7 +31,10 @@ import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.inject.guice.GuiceApplicationBuilder
+import services.TimeService
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
+import java.time.temporal.ChronoUnit.DAYS
 
 import java.time.Instant
 import java.time.LocalDate
@@ -47,9 +50,10 @@ class VersionRepositorySpec
     with GuiceOneAppPerSuite
     with DefaultPlayMongoRepositorySupport[VersionInformation] {
 
-  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  private lazy val appConfig: AppConfig     = app.injector.instanceOf[AppConfig]
+  private lazy val timeService: TimeService = app.injector.instanceOf[TimeService]
 
-  override protected val repository: VersionRepository = new VersionRepository(mongoComponent, appConfig)
+  override protected val repository: VersionRepository = new VersionRepository(mongoComponent, timeService, appConfig)
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
@@ -194,6 +198,46 @@ class VersionRepositorySpec
       val expectedResult = listNames1 ++ listNames4
 
       result `must` contain `theSameElementsAs` expectedResult
+    }
+  }
+
+  "getLatestVersions" - {
+    "must retrieve the latest version_ids " - {
+      "when there is 1 days worth of data" in {
+        val messageInformation = MessageInformation("messageId", LocalDate.now())
+        val versionId          = VersionId("1")
+
+        val listNames1 = Seq(ListName("a"), ListName("b"))
+        val v1         = VersionInformation(messageInformation, versionId, Instant.now(), ColDataFeed, listNames1)
+        insert(v1).futureValue
+
+        val result = repository.getLatestVersions().futureValue
+        result mustEqual Seq[VersionId](versionId)
+      }
+      "when there are more days worth of data than we need" in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(15))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(2))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(1))
+        val messageInformation4 = MessageInformation("messageId4", now)
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(15, DAYS), ColDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(2, DAYS), ColDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(1, DAYS), ColDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now(), ColDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        val result = repository.getLatestVersions().futureValue
+        result mustEqual Seq[VersionId](versionId2, versionId3, versionId4)
+      }
+
     }
   }
 

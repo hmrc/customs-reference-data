@@ -26,8 +26,6 @@ import play.api.inject.guice.GuiceApplicationBuilder
 
 trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience with MockitoSugar {
 
-  type AppFunction = GuiceApplicationBuilder => GuiceApplicationBuilder
-
-  val baseApplicationBuilder: AppFunction = identity
+  def guiceApplicationBuilder = new GuiceApplicationBuilder()
 
 }

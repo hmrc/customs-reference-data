@@ -98,7 +98,7 @@ class ListRepository @Inject() (
         case true  => SuccessfulWrite(list)
         case false => FailedWrite(list)
       }
-    
+
   // TODO - define some method to delete any document with a version ID not in the list of version IDs
   def remove(versionIds: Seq[VersionId]) = {
     val filter = Filters.nin("versionId", versionIds)

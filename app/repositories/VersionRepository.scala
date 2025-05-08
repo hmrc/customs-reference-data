@@ -18,15 +18,17 @@ package repositories
 
 import com.google.inject.Inject
 import config.AppConfig
-import models._
+import models.*
 import org.mongodb.scala.bson.BsonValue
-import org.mongodb.scala.model.Indexes._
-import org.mongodb.scala.model._
+import org.mongodb.scala.model.Indexes.*
+import org.mongodb.scala.model.*
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import org.mongodb.scala._
+import org.mongodb.scala.*
 
+import java.time.temporal.ChronoUnit.SECONDS
+import services.TimeService
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -36,6 +38,7 @@ import scala.concurrent.Future
 @Singleton
 class VersionRepository @Inject() (
   mongoComponent: MongoComponent,
+  timeService: TimeService,
   config: AppConfig
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[VersionInformation](
@@ -81,9 +84,17 @@ class VersionRepository @Inject() (
       .toFuture()
       .map(_.flatMap(_.listNames))
   }
-  
+
   // TODO - define some method to return the n most recent version IDs
-  def getLatestVersions(): Future[Seq[VersionId]] = ???
+  /*
+   We want to return the versions that have created on date >= (now - TTL)
+   */
+  def getLatestVersions(): Future[Seq[VersionId]] =
+    val filter = Filters.gte("createdOn", timeService.currentInstant().minus(config.ttl, SECONDS))
+    collection
+      .find(filter)
+      .toFuture()
+      .map(_.map(_.versionId))
 }
 
 object VersionRepository {
