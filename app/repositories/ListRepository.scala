@@ -19,24 +19,20 @@ package repositories
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
-import models._
+import models.*
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
+import org.mongodb.scala.*
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
-import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model.Indexes.compoundIndex
-import org.mongodb.scala.model._
+import org.mongodb.scala.model.*
+import org.mongodb.scala.model.Indexes.{ascending, compoundIndex}
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import org.mongodb.scala._
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListRepository @Inject() (
@@ -51,7 +47,7 @@ class ListRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = false
 
   def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams]): Source[JsObject, NotUsed] = {
 
@@ -115,11 +111,6 @@ object ListRepository {
       indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
     )
 
-    lazy val createdOnIndex: IndexModel = IndexModel(
-      keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl.asInstanceOf[Number].longValue, TimeUnit.SECONDS)
-    )
-
-    listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    Seq(listNameAndVersionIdCompoundIndex)
   }
 }

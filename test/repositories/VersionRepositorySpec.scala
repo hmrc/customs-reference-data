@@ -18,10 +18,7 @@ package repositories
 
 import base.SpecBase
 import config.AppConfig
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
-import org.scalacheck.Gen
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import services.TimeService
@@ -31,69 +28,37 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
-  private val mockConfig  = mock[AppConfig]
-  private val ttl         = Gen.choose(1, 1209600).sample.value
+  private val appConfig   = app.injector.instanceOf[AppConfig]
   private val timeService = app.injector.instanceOf[TimeService]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-
-    reset(mockConfig)
-    when(mockConfig.ttl).thenReturn(ttl)
-
     dropDatabase()
   }
 
   "indexes" - {
-    "when TTL index is enabled" - {
-      "must return 3 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(true)
+    "must return indexes" in {
+      val repository = new VersionRepository(mongoComponent, timeService, appConfig)
 
-        val repository = new VersionRepository(mongoComponent, timeService, mockConfig)
+      val indexes = repository.indexes.map(_.tupled()).toSet
 
-        val indexes = repository.indexes.map(_.tupled()).toSet
-
-        indexes mustEqual Set(
-          (
-            "list-name-and-date-compound-index",
-            BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-            None
-          ),
-          (
-            "source-and-date-compound-index",
-            BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-            None
-          ),
-          (
-            "ttl-index",
-            BsonDocument("createdOn" -> 1),
-            Some(ttl)
-          )
+      indexes mustEqual Set(
+        (
+          "list-name-and-date-compound-index",
+          BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        ),
+        (
+          "source-and-date-compound-index",
+          BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
+          None
+        ),
+        (
+          "createdOn-index",
+          BsonDocument("createdOn" -> 1),
+          None
         )
-      }
-    }
-
-    "when TTL index is disabled" - {
-      "must return 2 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(false)
-
-        val repository = new VersionRepository(mongoComponent, timeService, mockConfig)
-
-        val indexes = repository.indexes.map(_.tupled()).toSet
-
-        indexes mustEqual Set(
-          (
-            "list-name-and-date-compound-index",
-            BsonDocument("listNames.listName" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-            None
-          ),
-          (
-            "source-and-date-compound-index",
-            BsonDocument("source" -> 1, "snapshotDate" -> -1, "createdOn" -> -1),
-            None
-          )
-        )
-      }
+      )
     }
   }
 }

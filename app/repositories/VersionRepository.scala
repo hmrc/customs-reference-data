@@ -19,21 +19,18 @@ package repositories
 import com.google.inject.Inject
 import config.AppConfig
 import models.*
-import org.mongodb.scala.bson.BsonValue
-import org.mongodb.scala.model.Indexes.*
-import org.mongodb.scala.model.*
-import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import org.mongodb.scala.*
-
-import java.time.temporal.ChronoUnit.SECONDS
+import org.mongodb.scala.bson.BsonValue
+import org.mongodb.scala.model.*
+import org.mongodb.scala.model.Indexes.*
 import services.TimeService
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+
 import java.time.Instant
-import java.util.concurrent.TimeUnit
+import java.time.temporal.ChronoUnit.SECONDS
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class VersionRepository @Inject() (
@@ -49,7 +46,7 @@ class VersionRepository @Inject() (
       replaceIndexes = config.replaceIndexes
     ) {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = false
 
   def save(
     versionId: VersionId,
@@ -85,10 +82,6 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  // TODO - define some method to return the n most recent version IDs
-  /*
-   We want to return the versions that have created on date >= (now - TTL)
-   */
   def getLatestVersions(): Future[Seq[VersionId]] =
     val filter = Filters.gte("createdOn", timeService.currentInstant().minus(config.ttl, SECONDS))
     collection
@@ -114,9 +107,9 @@ object VersionRepository {
 
     lazy val createdOnIndex: IndexModel = IndexModel(
       keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl.asInstanceOf[Number].longValue, TimeUnit.SECONDS)
+      indexOptions = IndexOptions().name("createdOn-index")
     )
 
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex) ++ (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex, createdOnIndex)
   }
 }

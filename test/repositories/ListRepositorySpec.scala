@@ -18,10 +18,7 @@ package repositories
 
 import base.SpecBase
 import config.AppConfig
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
-import org.scalacheck.Gen
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.mongo.test.MongoSupport
@@ -30,58 +27,26 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
-  private val mockConfig = mock[AppConfig]
-  private val ttl        = Gen.choose(1, 1209600).sample.value
+  private val appConfig = app.injector.instanceOf[AppConfig]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-
-    reset(mockConfig)
-    when(mockConfig.ttl).thenReturn(ttl)
-
     dropDatabase()
   }
 
   "indexes" - {
-    "when TTL index is enabled" - {
-      "must return 2 indexes" in {
-        when(mockConfig.isTtlEnabled).thenReturn(true)
+    "must return indexes" in {
+      val repository = new ListRepository(mongoComponent, appConfig)
 
-        val repository = new ListRepository(mongoComponent, mockConfig)
+      val indexes = repository.indexes.map(_.tupled()).toSet
 
-        val indexes = repository.indexes.map(_.tupled()).toSet
-
-        indexes mustEqual Set(
-          (
-            "list-name-and-version-id-compound-index",
-            BsonDocument("listName" -> 1, "versionId" -> 1),
-            None
-          ),
-          (
-            "ttl-index",
-            BsonDocument("createdOn" -> 1),
-            Some(ttl)
-          )
+      indexes mustEqual Set(
+        (
+          "list-name-and-version-id-compound-index",
+          BsonDocument("listName" -> 1, "versionId" -> 1),
+          None
         )
-      }
-    }
-
-    "when TTL index is disabled" - {
-      "must return 1 index" in {
-        when(mockConfig.isTtlEnabled).thenReturn(false)
-
-        val repository = new ListRepository(mongoComponent, mockConfig)
-
-        val indexes = repository.indexes.map(_.tupled()).toSet
-
-        indexes mustEqual Set(
-          (
-            "list-name-and-version-id-compound-index",
-            BsonDocument("listName" -> 1, "versionId" -> 1),
-            None
-          )
-        )
-      }
+      )
     }
   }
 }
