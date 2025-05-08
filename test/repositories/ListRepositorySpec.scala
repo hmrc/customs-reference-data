@@ -45,6 +45,11 @@ class ListRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAn
           "list-name-and-version-id-compound-index",
           BsonDocument("listName" -> 1, "versionId" -> 1),
           None
+        ),
+        (
+          "versionId-index",
+          BsonDocument("versionId" -> 1),
+          None
         )
       )
     }

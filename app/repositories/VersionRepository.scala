@@ -23,6 +23,7 @@ import org.mongodb.scala.*
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Indexes.*
+import org.mongodb.scala.result.DeleteResult
 import services.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
@@ -88,6 +89,9 @@ class VersionRepository @Inject() (
       .find(filter)
       .toFuture()
       .map(_.map(_.versionId))
+
+  // TODO - implement
+  def remove(versionIds: Seq[VersionId]): Future[DeleteResult] = ???
 }
 
 object VersionRepository {

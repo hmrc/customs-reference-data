@@ -74,7 +74,10 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     schemaValidationService.validate(jsonSchemaProvider, body)
 
   def remove() =
-    // TODO - get the (14?) most recent versions from getLatestVersions in VersionRepository (N.B. there should be 2 versions per day, one for each POST we receive)
-    //  pass these version IDs into remove method in ListRepository
+    // TODO:
+    //  call VersionRepository.getExpiredVersions
+    //  pass these version IDs into ListRepository.remove
+    //  also pass the versionIDs into VersionRepository.remove
+    //  should we wrap this all in a transaction? See https://github.com/hmrc/manage-transit-movements-departure-cache/blob/ca924d3b35d203aa15f7eb09a6bc7a1054cfa781/app/services/SessionService.scala#L37
     ???
 }
