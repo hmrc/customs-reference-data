@@ -17,12 +17,13 @@
 package services.ingestion
 
 import base.SpecBase
-import generators.ModelArbitraryInstances._
+import com.mongodb.client.result.DeleteResult
+import generators.ModelArbitraryInstances.*
 import generators.ModelGenerators.genReferenceDataListsPayload
-import models._
+import models.*
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.{eq => eqTo}
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.eq as eqTo
+import org.mockito.Mockito.*
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.TestData
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
@@ -47,6 +48,9 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   private val mockValidationService: SchemaValidationService = mock[SchemaValidationService]
   private val mockTimeService: TimeService                   = mock[TimeService]
+  private val mockVersionRepository                          = mock[VersionRepository]
+  private val mockListRepository                             = mock[ListRepository]
+  private val mockVersionIdProducer                          = mock[VersionIdProducer]
 
   private val now: Instant = Instant.now()
 
@@ -54,7 +58,13 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
   override def newAppForTest(testData: TestData): Application =
     new GuiceApplicationBuilder()
-      .overrides(bind[SchemaValidationService].toInstance(mockValidationService))
+      .overrides(
+        bind[SchemaValidationService].toInstance(mockValidationService),
+        bind[TimeService].toInstance(mockTimeService),
+        bind[VersionRepository].toInstance(mockVersionRepository),
+        bind[ListRepository].toInstance(mockListRepository),
+        bind[VersionIdProducer].toInstance(mockVersionIdProducer)
+      )
       .build()
 
   "insert" - {
@@ -62,25 +72,20 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[ListRepository]
-          val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
-          when(versionIdProducer.apply()).thenReturn(versionId)
-          when(listRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
 
-          val versionRepository = mock[VersionRepository]
-          val validationService = mock[SchemaValidationService]
+          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
-
-          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = app.injector.instanceOf[ReferenceDataService]
 
           service.insert(apiDataSource, payload).futureValue mustBe None
 
-          verify(listRepository, times(numberOfLists)).insertList(any())
-          verify(versionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
+          verify(mockListRepository, times(numberOfLists)).insertList(any())
+          verify(mockVersionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
       }
     }
 
@@ -88,16 +93,14 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[ListRepository]
-          val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
-          when(versionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
 
           val failedListName = payload.toIterable(versionId, mockTimeService.currentInstant()).toList(1).entries.head.listName
 
-          when(listRepository.insertList(any()))
+          when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName, 1)))
 
@@ -106,7 +109,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = app.injector.instanceOf[ReferenceDataService]
 
           val expectedError = WriteError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName.listName}"
@@ -114,7 +117,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
-          verify(listRepository, times(numberOfLists)).insertList(any())
+          verify(mockListRepository, times(numberOfLists)).insertList(any())
       }
     }
 
@@ -122,19 +125,17 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val numberOfLists = 3
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
-          val listRepository    = mock[ListRepository]
-          val versionIdProducer = mock[VersionIdProducer]
 
           val versionId = VersionId("1")
 
-          when(versionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
 
           val listOfListOfItems = payload.toIterable(versionId, mockTimeService.currentInstant()).toList
           val failedListName1   = listOfListOfItems.head.entries.head.listName
           val failedListName2   = listOfListOfItems(1).entries.head.listName
           val failedListName3   = listOfListOfItems(2).entries.head.listName
 
-          when(listRepository.insertList(any()))
+          when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName2, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName3, 1)))
@@ -144,7 +145,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           when(versionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(true))
 
-          val service = new ReferenceDataServiceImpl(listRepository, versionRepository, validationService, versionIdProducer, mockTimeService)
+          val service = app.injector.instanceOf[ReferenceDataService]
 
           val expectedError = WriteError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
@@ -152,7 +153,7 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
 
           service.insert(apiDataSource, payload).futureValue.value mustBe expectedError
 
-          verify(listRepository, times(numberOfLists)).insertList(any())
+          verify(mockListRepository, times(numberOfLists)).insertList(any())
       }
     }
   }
@@ -183,6 +184,33 @@ class ReferenceDataServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChe
       val result = service.validate(testJsonSchema, testJson).left.value
 
       result mustBe OtherError("Json failed")
+    }
+  }
+
+  "remove" - {
+    "must return true " - {
+      "when data successfully removed for the expired versions" in {
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+
+        val versionIds = Seq(versionId1, versionId2)
+
+        when(mockVersionRepository.getExpiredVersions()).thenReturn(Future.successful(versionIds))
+
+        when(mockListRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
+
+        when(mockVersionRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
+
+        val service = app.injector.instanceOf[ReferenceDataService]
+
+        val result = service.remove().futureValue
+
+        result mustEqual true
+      }
+    }
+    "must return false" - {
+      "when we fail to retrieve the expired versions" in {}
     }
   }
 }

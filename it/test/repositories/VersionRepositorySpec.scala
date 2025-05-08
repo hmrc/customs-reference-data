@@ -28,9 +28,9 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import services.TimeService
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-import java.time.{Instant, LocalDate}
 import java.time.temporal.ChronoUnit
 import java.time.temporal.ChronoUnit.DAYS
+import java.time.{Instant, LocalDate}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec
@@ -228,6 +228,39 @@ class VersionRepositorySpec
 
         val result = repository.getExpiredVersions().futureValue
         result mustEqual Seq[VersionId](versionId1)
+      }
+
+    }
+  }
+
+  "remove" - {
+    "must remove documents " - {
+      "when document has an expired version Id " in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(15))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(2))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(1))
+        val messageInformation4 = MessageInformation("messageId4", now)
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(15, DAYS), ColDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(2, DAYS), ColDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(1, DAYS), ColDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now(), ColDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        repository.remove(Seq(versionId1, versionId2)).futureValue
+
+        val result = findAll().futureValue.map(_.versionId)
+
+        result mustEqual Seq(versionId3, versionId4)
+
       }
 
     }

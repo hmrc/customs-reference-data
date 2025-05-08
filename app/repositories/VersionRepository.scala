@@ -90,8 +90,13 @@ class VersionRepository @Inject() (
       .toFuture()
       .map(_.map(_.versionId))
 
-  // TODO - implement
-  def remove(versionIds: Seq[VersionId]): Future[DeleteResult] = ???
+  def remove(versionIds: Seq[VersionId]): Future[Boolean] = {
+    val filter = Filters.in("versionId", versionIds.map(_.versionId)*)
+    collection
+      .deleteMany(filter)
+      .toFuture()
+      .map(_.wasAcknowledged())
+  }
 }
 
 object VersionRepository {
@@ -114,6 +119,11 @@ object VersionRepository {
       indexOptions = IndexOptions().name("createdOn-index")
     )
 
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex, createdOnIndex)
+    lazy val versionIdIndex: IndexModel = IndexModel(
+      keys = Indexes.ascending("versionId"),
+      indexOptions = IndexOptions().name("versionId-index")
+    )
+
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex, createdOnIndex, versionIdIndex)
   }
 }

@@ -37,6 +37,7 @@ import scala.concurrent.Future
 trait ReferenceDataService extends Logging {
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
+  def remove(): Future[Boolean]
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
@@ -73,11 +74,15 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)
 
-  def remove() =
+  def remove(): Future[Boolean] =
     // TODO:
     //  call VersionRepository.getExpiredVersions
     //  pass these version IDs into ListRepository.remove
     //  also pass the versionIDs into VersionRepository.remove
     //  should we wrap this all in a transaction? See https://github.com/hmrc/manage-transit-movements-departure-cache/blob/ca924d3b35d203aa15f7eb09a6bc7a1054cfa781/app/services/SessionService.scala#L37
-    ???
+    for {
+      versionIds           <- versionRepository.getExpiredVersions()
+      referenceDataRemoval <- listRepository.remove(versionIds)
+      versionRemoval       <- versionRepository.remove(versionIds)
+    } yield referenceDataRemoval && versionRemoval
 }

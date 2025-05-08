@@ -96,11 +96,12 @@ class ListRepository @Inject() (
         case false => FailedWrite(list)
       }
 
-  def remove(versionIds: Seq[VersionId]): Future[DeleteResult] = {
+  def remove(versionIds: Seq[VersionId]): Future[Boolean] = {
     val filter = Filters.in("versionId", versionIds.map(_.versionId)*)
     collection
       .deleteMany(filter)
       .toFuture()
+      .map(_.wasAcknowledged())
   }
 }
 
