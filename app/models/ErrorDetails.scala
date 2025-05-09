@@ -37,11 +37,13 @@ object ErrorDetails {
     )
 }
 
-case class InvalidJsonError(message: String) extends ErrorDetails {
+sealed trait BadRequestError extends ErrorDetails
+
+case class InvalidJsonError(message: String) extends BadRequestError {
   override val code: String = "INVALID_JSON"
 }
 
-case class SchemaValidationError(errors: Seq[SchemaErrorDetails]) extends ErrorDetails {
+case class SchemaValidationError(errors: Seq[SchemaErrorDetails]) extends BadRequestError {
   override val code: String = "SCHEMA_ERROR"
 
   override val message: String = "The JSON request was not conformant with the schema. Schematic errors are detailed in the errors property below."
