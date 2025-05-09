@@ -23,6 +23,8 @@ import play.api.Logging
 import play.api.libs.json.{JsObject, JsValue}
 import repositories.*
 import services.TimeService
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.transaction.{TransactionConfiguration, Transactions}
 
 import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,23 +40,37 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
-  timeService: TimeService
+  timeService: TimeService,
+  val mongoComponent: MongoComponent
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService {
+    extends ReferenceDataService
+    with Transactions {
+
+  implicit private val tc: TransactionConfiguration = TransactionConfiguration.strict
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] = {
     val versionId = versionIdProducer()
     val now       = timeService.currentInstant()
 
-    (
-      for {
-        _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
-        writeResult <- EitherT(insert(payload, versionId, now))
-        versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now))
-        _           <- EitherT(listRepository.remove(versionIds))
-        _           <- EitherT(versionRepository.remove(versionIds))
-      } yield writeResult
-    ).value
+    withSessionAndTransaction(
+      _ =>
+        (
+          for {
+            _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
+            writeResult <- EitherT(insert(payload, versionId, now))
+            versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now))
+            _           <- EitherT(listRepository.remove(versionIds))
+            _           <- EitherT(versionRepository.remove(versionIds))
+          } yield writeResult
+        ).value.map {
+          case Left(value) =>
+            throw ErrorDetailsException(value)
+          case Right(value) =>
+            Right(value)
+        }
+    ).recover {
+      case e: ErrorDetailsException => Left(e.errorDetails)
+    }
   }
 
   private def insert(payload: ReferenceDataPayload, versionId: VersionId, now: Instant): Future[Either[ErrorDetails, Unit]] =

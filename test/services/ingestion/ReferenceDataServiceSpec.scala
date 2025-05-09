@@ -121,10 +121,6 @@ class ReferenceDataServiceSpec
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName, 1)))
 
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
-          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
-          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
-
           val service = app.injector.instanceOf[ReferenceDataService]
 
           val expectedError = WriteError(
@@ -160,10 +156,6 @@ class ReferenceDataServiceSpec
             .thenReturn(Future.successful(FailedWrite(failedListName1, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName2, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName3, 1)))
-
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
-          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
-          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
           val service = app.injector.instanceOf[ReferenceDataService]
 

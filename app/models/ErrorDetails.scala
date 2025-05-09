@@ -101,3 +101,5 @@ object SchemaErrorDetails {
     arg => (arg.code, arg.message, arg.path)
   )
 }
+
+case class ErrorDetailsException(errorDetails: ErrorDetails) extends Exception

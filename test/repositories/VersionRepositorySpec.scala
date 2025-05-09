@@ -18,12 +18,21 @@ package repositories
 
 import base.SpecBase
 import config.AppConfig
+import models.ApiDataSource.ColDataFeed
+import models.{ListName, MessageInformation, VersionId, VersionInformation, WriteError}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
+import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.result.InsertOneResult
+import org.mongodb.scala.{MongoCollection, MongoDatabase, SingleObservable}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.test.MongoSupport
 
+import java.time.{Instant, LocalDate}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
@@ -62,6 +71,32 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
           None
         )
       )
+    }
+  }
+
+  "save" - {
+    "must return Left" - {
+      "when write fails" in {
+        val versionId          = "1"
+        val messageInformation = MessageInformation("messageId", LocalDate.now())
+        val listNames          = Seq(ListName("foo"))
+
+        val mockMongoComponent: MongoComponent                       = mock[MongoComponent]
+        val mockMongoDatabase: MongoDatabase                         = mock[MongoDatabase]
+        val mockMongoCollection: MongoCollection[VersionInformation] = mock[MongoCollection[VersionInformation]]
+        val mockSingleObservable: SingleObservable[InsertOneResult]  = mock[SingleObservable[InsertOneResult]]
+
+        val repository = new VersionRepository(mockMongoComponent, appConfig)
+
+        when(mockMongoComponent.database).thenReturn(mockMongoDatabase)
+        when(mockMongoDatabase.getCollection[VersionInformation](eqTo(VersionRepository.collectionName))(any(), any())).thenReturn(mockMongoCollection)
+        when(mockMongoCollection.insertOne(any())).thenReturn(mockSingleObservable)
+        when(mockSingleObservable.toFuture()).thenReturn(Future.failed(new Throwable("something went wrong")))
+
+        val result = repository.save(VersionId(versionId), messageInformation, ColDataFeed, listNames, Instant.now()).futureValue
+
+        result.left.value mustEqual WriteError(s"Failed to save version $versionId")
+      }
     }
   }
 }

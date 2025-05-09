@@ -38,7 +38,7 @@ class VersionRepository @Inject() (
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[VersionInformation](
       mongoComponent = mongoComponent,
-      collectionName = "v2-versions",
+      collectionName = VersionRepository.collectionName,
       domainFormat = VersionInformation.format,
       indexes = VersionRepository.indexes,
       replaceIndexes = config.replaceIndexes
@@ -61,8 +61,11 @@ class VersionRepository @Inject() (
       .map(_.wasAcknowledged())
       .map {
         case true  => Right(())
-        case false => Left(WriteError(s"Failed to save version $versionId"))
+        case false => Left(WriteError(s"Write was not acknowledge when saving version $versionId"))
       }
+    /*.recover {
+        case e: Throwable => Left(WriteError(s"Failed to save version $versionId"))
+      }*/
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
@@ -103,6 +106,8 @@ class VersionRepository @Inject() (
 }
 
 object VersionRepository {
+
+  val collectionName: String = "v2-versions"
 
   val indexes: Seq[IndexModel] = {
     val listNameAndDateCompoundIndex: IndexModel =
