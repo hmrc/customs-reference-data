@@ -61,7 +61,7 @@ class VersionRepository @Inject() (
       .map(_.wasAcknowledged())
       .map {
         case true  => Right(())
-        case false => Left(WriteError(s"Write was not acknowledge when saving version $versionId"))
+        case false => Left(MongoError(s"Write was not acknowledge when saving version $versionId"))
       }
   }
 
@@ -97,7 +97,7 @@ class VersionRepository @Inject() (
       .map(_.wasAcknowledged())
       .map {
         case true  => Right(())
-        case false => Left(DeleteError(s"Failed to remove versions with version ID ${versionIds.mkString(", ")}"))
+        case false => Left(MongoError(s"Failed to remove versions with version ID ${versionIds.mkString(", ")}"))
       }
   }
 }

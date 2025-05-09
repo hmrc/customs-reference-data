@@ -70,7 +70,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
         }
     ).recover {
       case e: ErrorDetailsException => Left(e.errorDetails)
-      case e                        => Left(WriteError(e.getMessage))
+      case e                        => Left(MongoError(e.getMessage))
     }
   }
 
@@ -95,7 +95,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
             .map(_.listName.listName)
             .mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")
 
-          Left(WriteError(message))
+          Left(MongoError(message))
       }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =

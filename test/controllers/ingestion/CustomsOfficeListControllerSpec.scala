@@ -18,7 +18,7 @@ package controllers.ingestion
 
 import base.SpecBase
 import models.ApiDataSource.ColDataFeed
-import models.{OtherError, WriteError}
+import models.{MongoError, OtherError}
 import org.mockito.ArgumentMatchers.{eq as eqTo, *}
 import org.mockito.Mockito
 import org.mockito.Mockito.*
@@ -74,12 +74,12 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
     "returns with an Internal Server Error when the data has been validated but was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Left(WriteError("error"))))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Left(MongoError("error"))))
 
       val result = route(app, fakeRequest).value
 
       status(result) mustEqual Status.INTERNAL_SERVER_ERROR
-      contentAsJson(result) mustEqual Json.toJsObject(WriteError("error"))
+      contentAsJson(result) mustEqual Json.toJsObject(MongoError("error"))
     }
   }
 

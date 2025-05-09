@@ -61,7 +61,7 @@ abstract class IngestionController(
           case Right(_) =>
             logger.info("[controllers.ingestion.IngestionController]: Success")
             Accepted
-          case Left(writeError: WriteError) =>
+          case Left(writeError: MongoError) =>
             val response = Json.toJson(writeError)
             logger.error(s"[controllers.ingestion.IngestionController]: Failed to save the data list because of error: ${Json.stringify(response)}")
             InternalServerError(response)

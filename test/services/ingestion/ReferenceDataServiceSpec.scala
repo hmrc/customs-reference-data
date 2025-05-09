@@ -120,7 +120,7 @@ class ReferenceDataServiceSpec
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
-          val expectedError = WriteError(
+          val expectedError = MongoError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName.listName}"
           )
 
@@ -153,7 +153,7 @@ class ReferenceDataServiceSpec
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
-          val expectedError = WriteError(
+          val expectedError = MongoError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
           )
 
@@ -171,7 +171,7 @@ class ReferenceDataServiceSpec
 
           val versionId = VersionId("1")
 
-          val error = WriteError("foo")
+          val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId)
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Left(error)))
@@ -197,7 +197,7 @@ class ReferenceDataServiceSpec
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
-          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
     }
 
@@ -212,7 +212,7 @@ class ReferenceDataServiceSpec
           val versionId3        = VersionId("3")
           val expiredVersionIds = Seq(versionId1, versionId2)
 
-          val error = DeleteError("foo")
+          val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
@@ -247,7 +247,7 @@ class ReferenceDataServiceSpec
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
-          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
     }
 
@@ -262,7 +262,7 @@ class ReferenceDataServiceSpec
           val versionId3        = VersionId("3")
           val expiredVersionIds = Seq(versionId1, versionId2)
 
-          val error = DeleteError("foo")
+          val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
@@ -299,7 +299,7 @@ class ReferenceDataServiceSpec
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
-          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
     }
   }

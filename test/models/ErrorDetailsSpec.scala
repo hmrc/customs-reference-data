@@ -58,25 +58,13 @@ class ErrorDetailsSpec extends SpecBase {
       }
     }
 
-    "WriteError" - {
+    "MongoError" - {
       "serialization to json" in {
         val message       = "some write error"
-        val errorResponse = WriteError(message)
+        val errorResponse = MongoError(message)
 
         Json.toJsObject(errorResponse) mustEqual Json.obj(
-          "code"    -> "WRITE_ERROR",
-          "message" -> message
-        )
-      }
-    }
-
-    "DeleteError" - {
-      "serialization to json" in {
-        val message       = "some write error"
-        val errorResponse = DeleteError(message)
-
-        Json.toJsObject(errorResponse) mustEqual Json.obj(
-          "code"    -> "DELETE_ERROR",
+          "code"    -> "MONGO_ERROR",
           "message" -> message
         )
       }

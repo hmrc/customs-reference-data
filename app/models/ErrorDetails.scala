@@ -76,12 +76,8 @@ case class UnauthorisedError(message: String) extends ErrorDetails {
   override val code: String = UNAUTHORIZED.toString
 }
 
-case class WriteError(message: String) extends ErrorDetails {
-  override val code: String = "WRITE_ERROR"
-}
-
-case class DeleteError(message: String) extends ErrorDetails {
-  override val code: String = "DELETE_ERROR"
+case class MongoError(message: String) extends ErrorDetails {
+  override val code: String = "MONGO_ERROR"
 }
 
 case class SchemaErrorDetails(message: String, path: String) {
