@@ -21,15 +21,13 @@ import config.AppConfig
 import org.mongodb.scala.bson.BsonDocument
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import services.TimeService
 import uk.gov.hmrc.mongo.test.MongoSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach with MongoSupport {
 
-  private val appConfig   = app.injector.instanceOf[AppConfig]
-  private val timeService = app.injector.instanceOf[TimeService]
+  private val appConfig = app.injector.instanceOf[AppConfig]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -38,7 +36,7 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
 
   "indexes" - {
     "must return indexes" in {
-      val repository = new VersionRepository(mongoComponent, timeService, appConfig)
+      val repository = new VersionRepository(mongoComponent, appConfig)
 
       val indexes = repository.indexes.map(_.tupled()).toSet
 

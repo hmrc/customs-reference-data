@@ -25,7 +25,6 @@ import org.scalacheck.Arbitrary
 import org.scalactic.Equality
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import services.TimeService
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import java.time.temporal.ChronoUnit
@@ -42,10 +41,9 @@ class VersionRepositorySpec
     with GuiceOneAppPerSuite
     with DefaultPlayMongoRepositorySupport[VersionInformation] {
 
-  private lazy val appConfig: AppConfig     = app.injector.instanceOf[AppConfig]
-  private lazy val timeService: TimeService = app.injector.instanceOf[TimeService]
+  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  override protected val repository: VersionRepository = new VersionRepository(mongoComponent, timeService, appConfig)
+  override protected val repository: VersionRepository = new VersionRepository(mongoComponent, appConfig)
 
   "save" - {
     "saves and a version number when the version information is successfully saved" in {
@@ -203,7 +201,7 @@ class VersionRepositorySpec
         val v1         = VersionInformation(messageInformation, versionId, Instant.now(), ColDataFeed, listNames1)
         insert(v1).futureValue
 
-        val result = repository.getExpiredVersions().futureValue
+        val result = repository.getExpiredVersions(Instant.now()).futureValue
         result mustEqual Seq[VersionId]()
       }
       "when there are expired versions" in {
@@ -226,7 +224,7 @@ class VersionRepositorySpec
 
         Seq(v1, v2, v3, v4).map(insert(_).futureValue)
 
-        val result = repository.getExpiredVersions().futureValue
+        val result = repository.getExpiredVersions(Instant.now()).futureValue
         result mustEqual Seq[VersionId](versionId1)
       }
 

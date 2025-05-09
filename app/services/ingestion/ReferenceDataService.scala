@@ -16,14 +16,13 @@
 
 package services.ingestion
 
+import cats.data.EitherT
 import com.google.inject.{ImplementedBy, Inject}
 import models.*
 import play.api.Logging
 import play.api.libs.json.{JsObject, JsValue}
 import repositories.*
 import services.TimeService
-import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.transaction.{TransactionConfiguration, Transactions}
 
 import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,7 +31,6 @@ import scala.concurrent.{ExecutionContext, Future}
 trait ReferenceDataService extends Logging {
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
-  def remove(): Future[Unit]
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
@@ -40,22 +38,23 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
-  timeService: TimeService,
-  val mongoComponent: MongoComponent
+  timeService: TimeService
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService
-    with Transactions {
-
-  implicit private val tc: TransactionConfiguration = TransactionConfiguration.strict
+    extends ReferenceDataService {
 
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] = {
     val versionId = versionIdProducer()
     val now       = timeService.currentInstant()
 
-    for {
-      writeResult <- insert(payload, versionId, now)
-      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-    } yield writeResult
+    (
+      for {
+        _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
+        writeResult <- EitherT(insert(payload, versionId, now))
+        versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now))
+        _           <- EitherT(listRepository.remove(versionIds))
+        _           <- EitherT(versionRepository.remove(versionIds))
+      } yield writeResult
+    ).value
   }
 
   private def insert(payload: ReferenceDataPayload, versionId: VersionId, now: Instant): Future[Either[ErrorDetails, Unit]] =
@@ -67,30 +66,21 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
             logger.info(write.toString)
             errors
           case (errors, write: FailedWrite) =>
-            logger.info(write.toString)
+            logger.warn(write.toString)
             errors :+ write
         }
       }
       .map {
         case Nil =>
           Right(())
-        case x =>
-          Left(
-            WriteError(x.map(_.listName.listName).mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
-          )
+        case writeResults =>
+          val message = writeResults
+            .map(_.listName.listName)
+            .mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")
+
+          Left(WriteError(message))
       }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)
-
-  def remove(): Future[Unit] =
-    withSessionAndTransaction(
-      _ =>
-        for {
-          versionIds           <- versionRepository.getExpiredVersions()
-          referenceDataRemoval <- listRepository.remove(versionIds)
-          versionRemoval       <- versionRepository.remove(versionIds)
-          if referenceDataRemoval && versionRemoval
-        } yield ()
-    )
 }

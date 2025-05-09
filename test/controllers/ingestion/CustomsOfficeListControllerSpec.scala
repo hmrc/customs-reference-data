@@ -18,11 +18,10 @@ package controllers.ingestion
 
 import base.SpecBase
 import models.ApiDataSource.ColDataFeed
-import models.OtherError
-import models.WriteError
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import models.{OtherError, WriteError}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
 import org.mockito.Mockito
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
@@ -32,7 +31,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.ingestion.ReferenceDataService
 
 import scala.concurrent.Future
@@ -58,7 +57,6 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Right(())))
-      when(mockReferenceDataService.remove()).thenReturn(Future.successful(()))
 
       val result = route(app, fakeRequest).value
 

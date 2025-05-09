@@ -80,6 +80,10 @@ case class WriteError(message: String) extends ErrorDetails {
   override val code: String = "WRITE_ERROR"
 }
 
+case class DeleteError(message: String) extends ErrorDetails {
+  override val code: String = "DELETE_ERROR"
+}
+
 case class SchemaErrorDetails(message: String, path: String) {
   val code: String = "SCHEMA_ERROR"
 }

@@ -112,7 +112,7 @@ class ListRepositorySpec
 
       val result = repository.insertList(list).futureValue
 
-      result `mustBe` SuccessfulWrite(ListName(listName), entries.length)
+      result mustEqual SuccessfulWrite(ListName(listName), entries.length)
 
       findAll().futureValue must contain theSameElementsAs entries
     }

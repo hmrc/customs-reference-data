@@ -70,6 +70,18 @@ class ErrorDetailsSpec extends SpecBase {
       }
     }
 
+    "DeleteError" - {
+      "serialization to json" in {
+        val message       = "some write error"
+        val errorResponse = DeleteError(message)
+
+        Json.toJsObject(errorResponse) mustEqual Json.obj(
+          "code"    -> "DELETE_ERROR",
+          "message" -> message
+        )
+      }
+    }
+
     "SchemaValidationError" - {
       "serialization to json" in {
         val errorDetails  = SchemaErrorDetails("testMessage", "path")

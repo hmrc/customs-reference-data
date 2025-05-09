@@ -23,7 +23,6 @@ import org.mongodb.scala.*
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Indexes.*
-import services.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
@@ -35,7 +34,6 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class VersionRepository @Inject() (
   mongoComponent: MongoComponent,
-  timeService: TimeService,
   config: AppConfig
 )(implicit ec: ExecutionContext)
     extends PlayMongoRepository[VersionInformation](
@@ -84,19 +82,23 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def getExpiredVersions(): Future[Seq[VersionId]] =
-    val filter = Filters.lt("createdOn", timeService.currentInstant().minus(config.ttl, SECONDS))
+  def getExpiredVersions(now: Instant): Future[Seq[VersionId]] =
+    val filter = Filters.lt("createdOn", now.minus(config.ttl, SECONDS))
     collection
       .find(filter)
       .toFuture()
       .map(_.map(_.versionId))
 
-  def remove(versionIds: Seq[VersionId]): Future[Boolean] = {
+  def remove(versionIds: Seq[VersionId]): Future[Either[ErrorDetails, Unit]] = {
     val filter = Filters.in("versionId", versionIds.map(_.versionId)*)
     collection
       .deleteMany(filter)
       .toFuture()
       .map(_.wasAcknowledged())
+      .map {
+        case true  => Right(())
+        case false => Left(DeleteError(s"Failed to remove versions with version ID ${versionIds.mkString(", ")}"))
+      }
   }
 }
 

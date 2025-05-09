@@ -80,19 +80,24 @@ class ReferenceDataServiceSpec
         (payload, apiDataSource) =>
           beforeEach()
 
-          val versionId = VersionId("1")
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
 
-          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-
-          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
           service.insert(apiDataSource, payload).futureValue.value mustEqual ()
 
           verify(mockListRepository, times(numberOfLists)).insertList(any())
-          verify(mockVersionRepository, times(1)).save(eqTo(versionId), any(), any(), eqTo(payload.listNames), eqTo(now))
+          verify(mockVersionRepository, times(1)).save(eqTo(versionId3), any(), any(), eqTo(payload.listNames), eqTo(now))
       }
     }
 
@@ -102,17 +107,23 @@ class ReferenceDataServiceSpec
         (payload, apiDataSource) =>
           beforeEach()
 
-          val versionId = VersionId("1")
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
 
-          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          val failedListName = payload.toIterable(versionId3, mockTimeService.currentInstant()).toList(1).entries.head.listName
 
-          val failedListName = payload.toIterable(versionId, mockTimeService.currentInstant()).toList(1).entries.head.listName
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName, 1)))
 
-          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
@@ -132,21 +143,27 @@ class ReferenceDataServiceSpec
         (payload, apiDataSource) =>
           beforeEach()
 
-          val versionId = VersionId("1")
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
 
-          when(mockVersionIdProducer.apply()).thenReturn(versionId)
-
-          val listOfListOfItems = payload.toIterable(versionId, mockTimeService.currentInstant()).toList
+          val listOfListOfItems = payload.toIterable(versionId3, mockTimeService.currentInstant()).toList
           val failedListName1   = listOfListOfItems.head.entries.head.listName
           val failedListName2   = listOfListOfItems(1).entries.head.listName
           val failedListName3   = listOfListOfItems(2).entries.head.listName
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName2, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName3, 1)))
 
-          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
           val service = app.injector.instanceOf[ReferenceDataService]
 
@@ -157,6 +174,76 @@ class ReferenceDataServiceSpec
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual expectedError
 
           verify(mockListRepository, times(numberOfLists)).insertList(any())
+      }
+    }
+
+    "reports the processing as a having failures when failure to save to version repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId = VersionId("1")
+
+          val error = WriteError("foo")
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Left(error)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
+      }
+    }
+
+    "reports the processing as a having failures when failure to remove from list repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
+
+          val error = DeleteError("foo")
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
+      }
+    }
+
+    "reports the processing as a having failures when failure to remove from version repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
+
+          val error = DeleteError("foo")
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
       }
     }
   }
@@ -187,84 +274,6 @@ class ReferenceDataServiceSpec
       val result = service.validate(testJsonSchema, testJson).left.value
 
       result mustEqual OtherError("Json failed")
-    }
-  }
-
-  "remove" - {
-    "must return unit" - {
-      "when data successfully removed for the expired versions" in {
-        val versionId1 = VersionId("1")
-        val versionId2 = VersionId("2")
-
-        val versionIds = Seq(versionId1, versionId2)
-
-        when(mockVersionRepository.getExpiredVersions()).thenReturn(Future.successful(versionIds))
-
-        when(mockListRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
-
-        when(mockVersionRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
-
-        val service = app.injector.instanceOf[ReferenceDataService]
-
-        val result = service.remove().futureValue
-
-        result mustEqual ()
-      }
-    }
-
-    "must throw exception" - {
-      "when removal from list repository is not acknowledged" in {
-        val versionId1 = VersionId("1")
-        val versionId2 = VersionId("2")
-
-        val versionIds = Seq(versionId1, versionId2)
-
-        when(mockVersionRepository.getExpiredVersions()).thenReturn(Future.successful(versionIds))
-
-        when(mockListRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(false))
-
-        when(mockVersionRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
-
-        val service = app.injector.instanceOf[ReferenceDataService]
-
-        whenReady(service.remove().failed) {
-          result =>
-            result.getMessage mustEqual "Future.filter predicate is not satisfied"
-        }
-      }
-
-      "when removal from version repository is not acknowledged" in {
-        val versionId1 = VersionId("1")
-        val versionId2 = VersionId("2")
-
-        val versionIds = Seq(versionId1, versionId2)
-
-        when(mockVersionRepository.getExpiredVersions()).thenReturn(Future.successful(versionIds))
-
-        when(mockListRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(true))
-
-        when(mockVersionRepository.remove(eqTo(versionIds))).thenReturn(Future.successful(false))
-
-        val service = app.injector.instanceOf[ReferenceDataService]
-
-        whenReady(service.remove().failed) {
-          result =>
-            result.getMessage mustEqual "Future.filter predicate is not satisfied"
-        }
-      }
-
-      "when a future fails" in {
-        val message = "something went wrong"
-
-        when(mockVersionRepository.getExpiredVersions()).thenReturn(Future.failed(new Throwable(message)))
-
-        val service = app.injector.instanceOf[ReferenceDataService]
-
-        whenReady(service.remove().failed) {
-          result =>
-            result.getMessage mustEqual message
-        }
-      }
     }
   }
 }
