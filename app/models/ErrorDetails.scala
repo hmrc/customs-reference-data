@@ -18,15 +18,76 @@ package models
 
 import org.leadpony.justify.api.Problem
 import play.api.http.Status.UNAUTHORIZED
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
-final class SchemaErrorDetails(val message: String, val path: String) {
+sealed trait ErrorDetails {
+  val code: String
+  val message: String
+}
+
+object ErrorDetails {
+
+  implicit def writes[T <: ErrorDetails]: OWrites[T] =
+    (
+      (__ \ "code").write[String] and
+        (__ \ "message").write[String]
+    )(
+      arg => (arg.code, arg.message)
+    )
+}
+
+case class InvalidJsonError(message: String) extends ErrorDetails {
+  override val code: String = "INVALID_JSON"
+}
+
+case class SchemaValidationError(errors: Seq[SchemaErrorDetails]) extends ErrorDetails {
+  override val code: String = "SCHEMA_ERROR"
+
+  override val message: String = "The JSON request was not conformant with the schema. Schematic errors are detailed in the errors property below."
+}
+
+object SchemaValidationError {
+
+  def fromJsonSchemaProblems(problems: Seq[Problem]): SchemaValidationError = {
+    val errors: Seq[SchemaErrorDetails] = problems.map {
+      problem =>
+        SchemaErrorDetails(problem.getMessage(), problem.getPointer())
+    }
+
+    new SchemaValidationError(errors)
+  }
+
+  implicit val writes: OWrites[SchemaValidationError] =
+    (
+      (__ \ "code").write[String] and
+        (__ \ "message").write[String] and
+        (__ \ "errors").write[Seq[SchemaErrorDetails]]
+    )(
+      arg => (arg.code, arg.message, arg.errors)
+    )
+}
+
+case class OtherError(message: String) extends ErrorDetails {
+  override val code: String = "OTHER_ERROR"
+}
+
+case class UnauthorisedError(message: String) extends ErrorDetails {
+  override val code: String = UNAUTHORIZED.toString
+}
+
+case class WriteError(message: String) extends ErrorDetails {
+  override val code: String = "WRITE_ERROR"
+}
+
+case class SchemaErrorDetails(message: String, path: String) {
   val code: String = "SCHEMA_ERROR"
 }
 
 object SchemaErrorDetails {
-  def apply(message: String, path: String): SchemaErrorDetails = new SchemaErrorDetails(message, path)
+
+  def apply(message: String, path: String): SchemaErrorDetails =
+    new SchemaErrorDetails(message, path)
 
   implicit val writes: OWrites[SchemaErrorDetails] = (
     (__ \ "code").write[String] and
@@ -35,92 +96,4 @@ object SchemaErrorDetails {
   )(
     arg => (arg.code, arg.message, arg.path)
   )
-}
-
-sealed trait ErrorDetails {
-  def code: String
-  def message: String
-  def errors: Option[Seq[SchemaErrorDetails]]
-}
-
-object ErrorDetails {
-
-  implicit def writes[T <: ErrorDetails]: OWrites[T] =
-    (
-      (__ \ "code").write[String] and
-        (__ \ "message").write[String] and
-        (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
-    )(
-      arg => (arg.code, arg.message, arg.errors)
-    )
-}
-
-sealed trait ApiErrorDetails {
-  def code: Int
-  def message: String
-  def errors: Option[Seq[SchemaErrorDetails]]
-}
-
-object ApiErrorDetails {
-
-  implicit def writes[T <: ApiErrorDetails]: OWrites[T] =
-    (
-      (__ \ "code").write[Int] and
-        (__ \ "message").write[String] and
-        (__ \ "errors").writeNullable[Seq[SchemaErrorDetails]]
-    )(
-      arg => (arg.code, arg.message, arg.errors)
-    )
-}
-
-case class InvalidJsonError(_message: String) extends ErrorDetails {
-  override def code: String = "INVALID_JSON"
-
-  override def message: String = _message
-
-  override def errors: Option[Seq[SchemaErrorDetails]] = None
-}
-
-case class SchemaValidationError(_errors: Seq[SchemaErrorDetails]) extends ErrorDetails {
-  override def code: String = "SCHEMA_ERROR"
-
-  override def message: String = "The JSON request was not conformant with the schema. Schematic errors are detailed in the errors property below."
-
-  override def errors: Option[Seq[SchemaErrorDetails]] = Some(_errors)
-}
-
-object SchemaValidationError {
-
-  def fromJsonSchemaProblems(problems: Seq[Problem]): SchemaValidationError = {
-    val _errors: Seq[SchemaErrorDetails] = problems.map {
-      problem =>
-        SchemaErrorDetails(problem.getMessage(), problem.getPointer())
-    }
-
-    SchemaValidationError(_errors)
-  }
-}
-
-case class OtherError(_message: String) extends ErrorDetails {
-  override def code: String = "OTHER_ERROR"
-
-  override def message: String = _message
-
-  override def errors: Option[Seq[SchemaErrorDetails]] = None
-}
-
-case class UnauthorisedError(_message: String) extends ApiErrorDetails {
-  override def code: Int = UNAUTHORIZED
-
-  override def message: String = _message
-
-  override def errors: Option[Seq[SchemaErrorDetails]] = None
-}
-
-case class WriteError(_message: String) extends ErrorDetails {
-  override def code: String = "OTHER_ERROR"
-
-  override def message: String = _message
-
-  override def errors: Option[Seq[SchemaErrorDetails]] = None
 }

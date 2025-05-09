@@ -23,7 +23,6 @@ import org.mongodb.scala.*
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Indexes.*
-import org.mongodb.scala.result.DeleteResult
 import services.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
@@ -55,14 +54,16 @@ class VersionRepository @Inject() (
     feed: ApiDataSource,
     listNames: Seq[ListName],
     createdOn: Instant
-  ): Future[Boolean] = {
+  ): Future[Either[ErrorDetails, Unit]] = {
     val versionInformation = VersionInformation(messageInformation, versionId, createdOn, feed, listNames)
 
     collection
       .insertOne(versionInformation)
       .toFuture()
+      .map(_.wasAcknowledged())
       .map {
-        _.wasAcknowledged()
+        case true  => Right(())
+        case false => Left(WriteError(s"Failed to save version $versionId"))
       }
   }
 

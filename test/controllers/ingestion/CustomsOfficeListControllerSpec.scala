@@ -57,11 +57,12 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "returns ACCEPTED when the data has been validated and processed" in {
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Right(())))
+      when(mockReferenceDataService.remove()).thenReturn(Future.successful(()))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.ACCEPTED
+      status(result) mustEqual Status.ACCEPTED
     }
 
     "returns Bad Request when a validation error occurs" in {
@@ -69,18 +70,18 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.BAD_REQUEST
-      contentAsJson(result) mustBe Json.toJsObject(OtherError("error"))
+      status(result) mustEqual Status.BAD_REQUEST
+      contentAsJson(result) mustEqual Json.toJsObject(OtherError("error"))
     }
 
-    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
+    "returns with an Internal Server Error when the data has been validated but was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Some(WriteError("error"))))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Left(WriteError("error"))))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.INTERNAL_SERVER_ERROR
-      contentAsJson(result) mustBe Json.toJsObject(WriteError("error"))
+      status(result) mustEqual Status.INTERNAL_SERVER_ERROR
+      contentAsJson(result) mustEqual Json.toJsObject(WriteError("error"))
     }
   }
 

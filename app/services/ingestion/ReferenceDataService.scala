@@ -16,28 +16,23 @@
 
 package services.ingestion
 
-import com.google.inject.ImplementedBy
-import com.google.inject.Inject
-import models._
+import com.google.inject.{ImplementedBy, Inject}
+import models.*
 import play.api.Logging
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsValue
-import repositories.ListRepository
-import repositories.VersionRepository
-import repositories.FailedWrite
-import repositories.ListRepositoryWriteResult
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
+import play.api.libs.json.{JsObject, JsValue}
+import repositories.*
 import services.TimeService
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.transaction.{TransactionConfiguration, Transactions}
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import java.time.Instant
+import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService extends Logging {
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
-  def remove(): Future[Boolean]
+  def remove(): Future[Unit]
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
@@ -45,44 +40,57 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
-  timeService: TimeService
+  timeService: TimeService,
+  val mongoComponent: MongoComponent
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService {
+    extends ReferenceDataService
+    with Transactions {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
+  implicit private val tc: TransactionConfiguration = TransactionConfiguration.strict
+
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] = {
     val versionId = versionIdProducer()
     val now       = timeService.currentInstant()
 
     for {
-      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
+      writeResult <- insert(payload, versionId, now)
       _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
     } yield writeResult
-      .foldLeft[Option[Seq[ListRepositoryWriteResult]]](None) {
-        case (errors, write: SuccessfulWrite) =>
-          logger.info(write.toString)
-          errors
-        case (errors, write: FailedWrite) =>
-          logger.info(write.toString)
-          errors.orElse(Some(Seq())).map(_ :+ write)
+  }
+
+  private def insert(payload: ReferenceDataPayload, versionId: VersionId, now: Instant): Future[Either[ErrorDetails, Unit]] =
+    Future
+      .sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
+      .map {
+        _.foldLeft(Seq.empty[ListRepositoryWriteResult]) {
+          case (errors, write: SuccessfulWrite) =>
+            logger.info(write.toString)
+            errors
+          case (errors, write: FailedWrite) =>
+            logger.info(write.toString)
+            errors :+ write
+        }
       }
       .map {
-        x =>
-          WriteError(x.map(_.listName.listName).mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
+        case Nil =>
+          Right(())
+        case x =>
+          Left(
+            WriteError(x.map(_.listName.listName).mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
+          )
       }
-  }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)
 
-  def remove(): Future[Boolean] =
-    // TODO:
-    //  call VersionRepository.getExpiredVersions
-    //  pass these version IDs into ListRepository.remove
-    //  also pass the versionIDs into VersionRepository.remove
-    //  should we wrap this all in a transaction? See https://github.com/hmrc/manage-transit-movements-departure-cache/blob/ca924d3b35d203aa15f7eb09a6bc7a1054cfa781/app/services/SessionService.scala#L37
-    for {
-      versionIds           <- versionRepository.getExpiredVersions()
-      referenceDataRemoval <- listRepository.remove(versionIds)
-      versionRemoval       <- versionRepository.remove(versionIds)
-    } yield referenceDataRemoval && versionRemoval
+  def remove(): Future[Unit] =
+    withSessionAndTransaction(
+      _ =>
+        for {
+          versionIds           <- versionRepository.getExpiredVersions()
+          referenceDataRemoval <- listRepository.remove(versionIds)
+          versionRemoval       <- versionRepository.remove(versionIds)
+          if referenceDataRemoval && versionRemoval
+        } yield ()
+    )
 }

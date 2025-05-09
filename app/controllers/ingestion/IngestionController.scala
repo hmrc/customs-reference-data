@@ -55,8 +55,7 @@ abstract class IngestionController(
           for {
             validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
             referenceDataPayload = ReferenceDataListsPayload(validate)
-            insert <- EitherT.fromOptionF(referenceDataService.insert(source, referenceDataPayload), ()).swap
-            // TODO - execute referenceDataService.remove here
+            insert <- EitherT(referenceDataService.insert(source, referenceDataPayload))
           } yield insert
         ).value.map {
           case Right(_) =>
