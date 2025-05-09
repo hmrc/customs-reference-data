@@ -70,6 +70,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
         }
     ).recover {
       case e: ErrorDetailsException => Left(e.errorDetails)
+      case e                        => Left(WriteError(e.getMessage))
     }
   }
 

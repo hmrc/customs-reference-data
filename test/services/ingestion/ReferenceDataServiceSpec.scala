@@ -101,21 +101,18 @@ class ReferenceDataServiceSpec
       }
     }
 
-    "reports the processing as a having failures when there is a FailedWrite" in {
+    "reports the processing as having failures when there is a failure" in {
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
           beforeEach()
 
-          val versionId1        = VersionId("1")
-          val versionId2        = VersionId("2")
-          val versionId3        = VersionId("3")
-          val expiredVersionIds = Seq(versionId1, versionId2)
+          val versionId = VersionId("1")
 
-          val failedListName = payload.toIterable(versionId3, mockTimeService.currentInstant()).toList(1).entries.head.listName
+          val failedListName = payload.toIterable(versionId, mockTimeService.currentInstant()).toList(1).entries.head.listName
 
-          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
-          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
@@ -133,24 +130,21 @@ class ReferenceDataServiceSpec
       }
     }
 
-    "reports the processing as a having failures when there all failure" in {
+    "reports the processing as having failures when they all fail" in {
       val numberOfLists = 3
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
           beforeEach()
 
-          val versionId1        = VersionId("1")
-          val versionId2        = VersionId("2")
-          val versionId3        = VersionId("3")
-          val expiredVersionIds = Seq(versionId1, versionId2)
+          val versionId = VersionId("1")
 
-          val listOfListOfItems = payload.toIterable(versionId3, mockTimeService.currentInstant()).toList
+          val listOfListOfItems = payload.toIterable(versionId, mockTimeService.currentInstant()).toList
           val failedListName1   = listOfListOfItems.head.entries.head.listName
           val failedListName2   = listOfListOfItems(1).entries.head.listName
           val failedListName3   = listOfListOfItems(2).entries.head.listName
 
-          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
-          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
             .thenReturn(Future.successful(FailedWrite(failedListName1, 1)))
@@ -169,7 +163,7 @@ class ReferenceDataServiceSpec
       }
     }
 
-    "reports the processing as a having failures when failure to save to version repository" in {
+    "reports the processing as having failures when failure to save to version repository" in {
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
         (payload, apiDataSource) =>
@@ -185,6 +179,25 @@ class ReferenceDataServiceSpec
           val service = app.injector.instanceOf[ReferenceDataService]
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
+      }
+    }
+
+    "reports the processing as having failures when exception thrown saving to version repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId = VersionId("1")
+
+          val message = "foo"
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.failed(new Throwable(message)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
       }
     }
 
@@ -213,6 +226,31 @@ class ReferenceDataServiceSpec
       }
     }
 
+    "reports the processing as a having failures when exception thrown removing from list repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
+
+          val message = "foo"
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
+      }
+    }
+
     "reports the processing as a having failures when failure to remove from version repository" in {
       val numberOfLists = 2
       forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
@@ -236,6 +274,32 @@ class ReferenceDataServiceSpec
           val service = app.injector.instanceOf[ReferenceDataService]
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
+      }
+    }
+
+    "reports the processing as a having failures when exception thrown removing from version repository" in {
+      val numberOfLists = 2
+      forAll(genReferenceDataListsPayload(numberOfLists), arbitrary[ApiDataSource]) {
+        (payload, apiDataSource) =>
+          beforeEach()
+
+          val versionId1        = VersionId("1")
+          val versionId2        = VersionId("2")
+          val versionId3        = VersionId("3")
+          val expiredVersionIds = Seq(versionId1, versionId2)
+
+          val message = "foo"
+
+          when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
+          when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
+          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
+          when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
+
+          val service = app.injector.instanceOf[ReferenceDataService]
+
+          service.insert(apiDataSource, payload).futureValue.left.value mustEqual WriteError(message)
       }
     }
   }

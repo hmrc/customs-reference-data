@@ -63,9 +63,6 @@ class VersionRepository @Inject() (
         case true  => Right(())
         case false => Left(WriteError(s"Write was not acknowledge when saving version $versionId"))
       }
-    /*.recover {
-        case e: Throwable => Left(WriteError(s"Failed to save version $versionId"))
-      }*/
   }
 
   def getLatest(listName: ListName): Future[Option[VersionInformation]] =
