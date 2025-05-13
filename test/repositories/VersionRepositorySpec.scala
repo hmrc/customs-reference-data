@@ -52,11 +52,6 @@ class VersionRepositorySpec extends SpecBase with GuiceOneAppPerSuite with Befor
           None
         ),
         (
-          "createdOn-index",
-          BsonDocument("createdOn" -> 1),
-          None
-        ),
-        (
           "versionId-index",
           BsonDocument("versionId" -> 1),
           None
