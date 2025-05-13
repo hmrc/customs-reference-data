@@ -88,7 +88,7 @@ class ReferenceDataServiceSpec
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
@@ -217,7 +217,7 @@ class ReferenceDataServiceSpec
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -242,7 +242,7 @@ class ReferenceDataServiceSpec
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -267,7 +267,7 @@ class ReferenceDataServiceSpec
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
@@ -293,7 +293,7 @@ class ReferenceDataServiceSpec
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any())).thenReturn(Future.successful(expiredVersionIds))
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 

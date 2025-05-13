@@ -58,7 +58,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
           for {
             _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
             writeResult <- EitherT(insert(payload, versionId, now))
-            versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now))
+            versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now, feed))
             _           <- EitherT(listRepository.remove(versionIds))
             _           <- EitherT(versionRepository.remove(versionIds))
           } yield writeResult

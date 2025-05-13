@@ -23,9 +23,13 @@ sealed trait ApiDataSource
 
 object ApiDataSource {
 
-  case object RefDataFeed extends ApiDataSource
+  case object RefDataFeed extends ApiDataSource {
+    override def toString: String = "RefDataFeed"
+  }
 
-  case object ColDataFeed extends ApiDataSource
+  case object ColDataFeed extends ApiDataSource {
+    override def toString: String = "ColDataFeed"
+  }
 
   val fromString: PartialFunction[String, ApiDataSource] = {
     case "RefDataFeed" => RefDataFeed

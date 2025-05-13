@@ -82,8 +82,11 @@ class VersionRepository @Inject() (
       .map(_.flatMap(_.listNames))
   }
 
-  def getExpiredVersions(now: Instant): Future[Seq[VersionId]] =
-    val filter = Filters.lt("createdOn", now.minus(config.ttl, SECONDS))
+  def getExpiredVersions(now: Instant, feed: ApiDataSource): Future[Seq[VersionId]] =
+    val filter = Filters.and(
+      Filters.eq("source", feed.toString),
+      Filters.lt("createdOn", now.minus(config.ttl, SECONDS))
+    )
     collection
       .find(filter)
       .toFuture()
@@ -119,16 +122,12 @@ object VersionRepository {
         indexOptions = IndexOptions().name("source-and-date-compound-index")
       )
 
-    lazy val createdOnIndex: IndexModel = IndexModel(
-      keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("createdOn-index")
-    )
+    val versionIdIndex: IndexModel =
+      IndexModel(
+        keys = Indexes.ascending("versionId"),
+        indexOptions = IndexOptions().name("versionId-index")
+      )
 
-    lazy val versionIdIndex: IndexModel = IndexModel(
-      keys = Indexes.ascending("versionId"),
-      indexOptions = IndexOptions().name("versionId-index")
-    )
-
-    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex, createdOnIndex, versionIdIndex)
+    Seq(listNameAndDateCompoundIndex, sourceAndDateCompoundIndex, versionIdIndex)
   }
 }
