@@ -18,11 +18,10 @@ package controllers.ingestion
 
 import base.SpecBase
 import models.ApiDataSource.ColDataFeed
-import models.OtherError
-import models.WriteError
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import models.{InvalidJsonError, MongoError}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
 import org.mockito.Mockito
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
@@ -32,7 +31,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.ingestion.ReferenceDataService
 
 import scala.concurrent.Future
@@ -57,30 +56,31 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     "returns ACCEPTED when the data has been validated and processed" in {
 
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(None))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Right(())))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.ACCEPTED
+      status(result) mustEqual Status.ACCEPTED
     }
 
     "returns Bad Request when a validation error occurs" in {
-      when(mockReferenceDataService.validate(any(), any())).thenReturn(Left(OtherError("error")))
+      val error = InvalidJsonError("error")
+      when(mockReferenceDataService.validate(any(), any())).thenReturn(Left(error))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.BAD_REQUEST
-      contentAsJson(result) mustBe Json.toJsObject(OtherError("error"))
+      status(result) mustEqual Status.BAD_REQUEST
+      contentAsJson(result) mustEqual Json.toJsObject(error)
     }
 
-    "returns with an Internal Server Error when the has been validated but data was not processed successfully" in {
+    "returns with an Internal Server Error when the data has been validated but was not processed successfully" in {
       when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
-      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Some(WriteError("error"))))
+      when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Left(MongoError("error"))))
 
       val result = route(app, fakeRequest).value
 
-      status(result) mustBe Status.INTERNAL_SERVER_ERROR
-      contentAsJson(result) mustBe Json.toJsObject(WriteError("error"))
+      status(result) mustEqual Status.INTERNAL_SERVER_ERROR
+      contentAsJson(result) mustEqual Json.toJsObject(MongoError("error"))
     }
   }
 

@@ -18,24 +18,18 @@ package repositories
 
 import base.ItSpecBase
 import config.AppConfig
-import generators.BaseGenerators
-import generators.ModelArbitraryInstances
-import models.ApiDataSource.ColDataFeed
-import models.ApiDataSource.RefDataFeed
-import models.ListName
-import models.MessageInformation
-import models.VersionId
-import models.VersionInformation
+import generators.{BaseGenerators, ModelArbitraryInstances}
+import models.ApiDataSource.{ColDataFeed, RefDataFeed}
+import models.{ListName, MessageInformation, VersionId, VersionInformation}
 import org.scalacheck.Arbitrary
 import org.scalactic.Equality
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-import java.time.Instant
-import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.DAYS
+import java.time.{Instant, LocalDate}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRepositorySpec
@@ -62,7 +56,7 @@ class VersionRepositorySpec
 
       val expectedVersionInformation = VersionInformation(messageInformation, expectedVersionId, Instant.now, RefDataFeed, Seq(listName))
 
-      result `mustEqual` true
+      result.value mustEqual ()
 
       val savedVersionInformation = findAll().futureValue.head
 
@@ -134,7 +128,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
 
-      result `must` contain `theSameElementsAs` expectedResult
+      result must contain theSameElementsAs expectedResult
     }
 
     "returns listnames for the latest COL by snapshotDate" in {
@@ -149,7 +143,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames
 
-      result `must` contain `theSameElementsAs` expectedResult
+      result must contain theSameElementsAs expectedResult
     }
 
     "returns listnames for the latest REF and COL by snapshotDate" in {
@@ -170,7 +164,7 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames3
 
-      result `must` contain `theSameElementsAs` expectedResult
+      result must contain theSameElementsAs expectedResult
     }
 
     "ensure sort happens before group" in {
@@ -193,7 +187,128 @@ class VersionRepositorySpec
       val result         = repository.getLatestListNames.futureValue
       val expectedResult = listNames1 ++ listNames4
 
-      result `must` contain `theSameElementsAs` expectedResult
+      result must contain theSameElementsAs expectedResult
+    }
+  }
+
+  "getExpiredVersions" - {
+    "must retrieve the expired version IDs " - {
+      "when there are no expired versions" in {
+        val messageInformation = MessageInformation("messageId", LocalDate.now())
+        val versionId          = VersionId("1")
+
+        val listNames1 = Seq(ListName("a"), ListName("b"))
+        val v1         = VersionInformation(messageInformation, versionId, Instant.now(), ColDataFeed, listNames1)
+        insert(v1).futureValue
+
+        val result = repository.getExpiredVersions(Instant.now(), ColDataFeed).futureValue
+        result mustEqual Seq[VersionId]()
+      }
+
+      "when there are expired versions" in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(15))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(2))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(1))
+        val messageInformation4 = MessageInformation("messageId4", now)
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(15, DAYS), ColDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(2, DAYS), ColDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(1, DAYS), ColDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now(), ColDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        val result = repository.getExpiredVersions(Instant.now(), ColDataFeed).futureValue
+        result mustEqual Seq[VersionId](versionId1)
+      }
+
+      "when checking for expired RefDataFeed versions but there aren't any" in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(18))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(17))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(16))
+        val messageInformation4 = MessageInformation("messageId4", now.minusDays(15))
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(18, DAYS), ColDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(17, DAYS), ColDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(16, DAYS), ColDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now().minus(15, DAYS), ColDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        val result = repository.getExpiredVersions(Instant.now(), RefDataFeed).futureValue
+        result mustEqual Seq[VersionId]()
+      }
+
+      "when checking for expired ColDataFeed versions but there aren't any" in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(18))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(17))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(16))
+        val messageInformation4 = MessageInformation("messageId4", now.minusDays(15))
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(18, DAYS), RefDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(17, DAYS), RefDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(16, DAYS), RefDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now().minus(15, DAYS), RefDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        val result = repository.getExpiredVersions(Instant.now(), ColDataFeed).futureValue
+        result mustEqual Seq[VersionId]()
+      }
+    }
+  }
+
+  "remove" - {
+    "must remove documents " - {
+      "when document has an expired version Id " in {
+        val now                 = LocalDate.now()
+        val messageInformation1 = MessageInformation("messageId1", now.minusDays(15))
+        val messageInformation2 = MessageInformation("messageId2", now.minusDays(2))
+        val messageInformation3 = MessageInformation("messageId3", now.minusDays(1))
+        val messageInformation4 = MessageInformation("messageId4", now)
+
+        val versionId1 = VersionId("1")
+        val versionId2 = VersionId("2")
+        val versionId3 = VersionId("3")
+        val versionId4 = VersionId("4")
+
+        val listNames = Seq(ListName("a"), ListName("b"))
+        val v1        = VersionInformation(messageInformation1, versionId1, Instant.now().minus(15, DAYS), ColDataFeed, listNames)
+        val v2        = VersionInformation(messageInformation2, versionId2, Instant.now().minus(2, DAYS), ColDataFeed, listNames)
+        val v3        = VersionInformation(messageInformation3, versionId3, Instant.now().minus(1, DAYS), ColDataFeed, listNames)
+        val v4        = VersionInformation(messageInformation4, versionId4, Instant.now(), ColDataFeed, listNames)
+
+        Seq(v1, v2, v3, v4).map(insert(_).futureValue)
+
+        repository.remove(Seq(versionId1, versionId2)).futureValue
+
+        val result = findAll().futureValue.map(_.versionId)
+
+        result mustEqual Seq(versionId3, versionId4)
+
+      }
+
     }
   }
 

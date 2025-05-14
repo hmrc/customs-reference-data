@@ -21,34 +21,56 @@ import play.api.libs.json.Json
 
 class ErrorDetailsSpec extends SpecBase {
 
-  "SchemaErrorDetails" - {
-    "serialization to json" in {
-      val errorDetails = SchemaErrorDetails("testMessage", "path")
-
-      Json.toJsObject(errorDetails) mustEqual Json.obj(
-        "code"    -> errorDetails.code,
-        "message" -> errorDetails.message,
-        "path"    -> errorDetails.path
-      )
-
-    }
-  }
-
   "ErrorDetails" - {
-    "InvaildJsonError" - {
+    "InvalidJsonError" - {
       "serialization to json" in {
         val message       = "invalid json"
-        val errorResponse = InvalidJsonError(_message = message)
+        val errorResponse = InvalidJsonError(message)
 
         Json.toJsObject(errorResponse) mustEqual Json.obj(
           "code"    -> "INVALID_JSON",
           "message" -> message
         )
-
       }
     }
 
-    "SchemaError" - {
+    "OtherError" - {
+      "serialization to json" in {
+        val message       = "some other error"
+        val errorResponse = OtherError(message)
+
+        Json.toJsObject(errorResponse) mustEqual Json.obj(
+          "code"    -> "OTHER_ERROR",
+          "message" -> message
+        )
+      }
+    }
+
+    "UnauthorisedError" - {
+      "serialization to json" in {
+        val message       = "some unauthorised error"
+        val errorResponse = UnauthorisedError(message)
+
+        Json.toJsObject(errorResponse) mustEqual Json.obj(
+          "code"    -> "401",
+          "message" -> message
+        )
+      }
+    }
+
+    "MongoError" - {
+      "serialization to json" in {
+        val message       = "some write error"
+        val errorResponse = MongoError(message)
+
+        Json.toJsObject(errorResponse) mustEqual Json.obj(
+          "code"    -> "MONGO_ERROR",
+          "message" -> message
+        )
+      }
+    }
+
+    "SchemaValidationError" - {
       "serialization to json" in {
         val errorDetails  = SchemaErrorDetails("testMessage", "path")
         val errorResponse = SchemaValidationError(Seq(errorDetails))
@@ -64,22 +86,19 @@ class ErrorDetailsSpec extends SpecBase {
             )
           )
         )
-
-      }
-    }
-
-    "OtherError" - {
-      "serialization to json" in {
-        val message       = "some other error"
-        val errorResponse = OtherError(_message = message)
-
-        Json.toJsObject(errorResponse) mustEqual Json.obj(
-          "code"    -> "OTHER_ERROR",
-          "message" -> message
-        )
-
       }
     }
   }
 
+  "SchemaErrorDetails" - {
+    "serialization to json" in {
+      val errorDetails = SchemaErrorDetails("testMessage", "path")
+
+      Json.toJsObject(errorDetails) mustEqual Json.obj(
+        "code"    -> errorDetails.code,
+        "message" -> errorDetails.message,
+        "path"    -> errorDetails.path
+      )
+    }
+  }
 }

@@ -3,11 +3,9 @@
 
 This service stores data from the EIS Reference Data Library in Mongo, for use in the NCTS frontend applications.
 
-The data has a 14 day TTL (Time to Live), however the TTL can be disabled if needed (`mongodb.isTtlEnabled` in config) in the event of a prolonged issue with the ingestion process.
+For any given feed (`RefDataFeed` or `ColDataFeed`), data older than 14 days is deleted upon the successful ingestion of a new snapshot of data.
 
-Note that for this change to take effect, the service will need to be redeployed with `mongodb.replaceIndexes` set to true.
-
-There must be at least one snapshot of the reference data present at all times for the frontends to function. No data will result in an inability to populate dropdowns, radio buttons etc.
+There must be at least one snapshot of reference data present at all times (for both data feeds) for the frontends to function. No data will result in an inability to populate dropdowns, radio buttons, etc.
 
 ## Versioning
 

@@ -19,7 +19,10 @@ package models
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
-case class VersionId(versionId: String)
+case class VersionId(versionId: String) {
+
+  override def toString: String = versionId
+}
 
 object VersionId {
 

@@ -16,26 +16,22 @@
 
 package services.ingestion
 
-import com.google.inject.ImplementedBy
-import com.google.inject.Inject
-import models._
+import cats.data.EitherT
+import com.google.inject.{ImplementedBy, Inject}
+import models.*
 import play.api.Logging
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsValue
-import repositories.ListRepository
-import repositories.VersionRepository
-import repositories.FailedWrite
-import repositories.ListRepositoryWriteResult
-import repositories.SuccessfulWrite
-import repositories.VersionIdProducer
+import play.api.libs.json.{JsObject, JsValue}
+import repositories.*
 import services.TimeService
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.transaction.{TransactionConfiguration, Transactions}
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import java.time.Instant
+import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService extends Logging {
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]]
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
 
@@ -44,31 +40,63 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
   versionRepository: VersionRepository,
   schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
-  timeService: TimeService
+  timeService: TimeService,
+  val mongoComponent: MongoComponent
 )(implicit ec: ExecutionContext)
-    extends ReferenceDataService {
+    extends ReferenceDataService
+    with Transactions {
 
-  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Option[ErrorDetails]] = {
+  implicit private val tc: TransactionConfiguration = TransactionConfiguration.strict
+
+  def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]] = {
     val versionId = versionIdProducer()
     val now       = timeService.currentInstant()
 
-    for {
-      writeResult <- Future.sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
-      _           <- versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now)
-    } yield writeResult
-      .foldLeft[Option[Seq[ListRepositoryWriteResult]]](None) {
-        case (errors, write: SuccessfulWrite) =>
-          logger.info(write.toString)
-          errors
-        case (errors, write: FailedWrite) =>
-          logger.info(write.toString)
-          errors.orElse(Some(Seq())).map(_ :+ write)
+    withSessionAndTransaction(
+      _ =>
+        (
+          for {
+            _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
+            writeResult <- EitherT(insert(payload, versionId, now))
+            versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now, feed))
+            _           <- EitherT(listRepository.remove(versionIds))
+            _           <- EitherT(versionRepository.remove(versionIds))
+          } yield writeResult
+        ).value.map {
+          case Left(value) =>
+            throw ErrorDetailsException(value)
+          case Right(value) =>
+            Right(value)
+        }
+    ).recover {
+      case e: ErrorDetailsException => Left(e.errorDetails)
+      case e                        => Left(MongoError(e.getMessage))
+    }
+  }
+
+  private def insert(payload: ReferenceDataPayload, versionId: VersionId, now: Instant): Future[Either[ErrorDetails, Unit]] =
+    Future
+      .sequence(payload.toIterable(versionId, now).map(listRepository.insertList))
+      .map {
+        _.foldLeft(Seq.empty[ListRepositoryWriteResult]) {
+          case (errors, write: SuccessfulWrite) =>
+            logger.info(write.toString)
+            errors
+          case (errors, write: FailedWrite) =>
+            logger.warn(write.toString)
+            errors :+ write
+        }
       }
       .map {
-        x =>
-          WriteError(x.map(_.listName.listName).mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", ""))
+        case Nil =>
+          Right(())
+        case writeResults =>
+          val message = writeResults
+            .map(_.listName.listName)
+            .mkString("[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ", ", ", "")
+
+          Left(MongoError(message))
       }
-  }
 
   def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
     schemaValidationService.validate(jsonSchemaProvider, body)

@@ -26,7 +26,6 @@ class AppConfig @Inject() (config: Configuration) {
 
   lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
   lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
-  lazy val isTtlEnabled: Boolean            = config.get[Boolean]("mongodb.isTtlEnabled")
   lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
 
 }

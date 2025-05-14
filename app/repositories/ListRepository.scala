@@ -19,24 +19,20 @@ package repositories
 import com.google.inject.Inject
 import com.mongodb.client.model.InsertManyOptions
 import config.AppConfig
-import models._
+import models.*
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
+import org.mongodb.scala.*
 import org.mongodb.scala.bson.BsonValue
 import org.mongodb.scala.bson.conversions.Bson
-import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model.Indexes.compoundIndex
-import org.mongodb.scala.model._
+import org.mongodb.scala.model.*
+import org.mongodb.scala.model.Indexes.{ascending, compoundIndex}
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import org.mongodb.scala._
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListRepository @Inject() (
@@ -47,11 +43,11 @@ class ListRepository @Inject() (
       mongoComponent = mongoComponent,
       collectionName = "v2-reference-data-lists-new",
       domainFormat = GenericListItem.format,
-      indexes = ListRepository.indexes(config),
+      indexes = ListRepository.indexes,
       replaceIndexes = config.replaceIndexes
     ) {
 
-  override lazy val requiresTtlIndex: Boolean = config.isTtlEnabled
+  override lazy val requiresTtlIndex: Boolean = false
 
   def getListByName(listName: ListName, versionId: VersionId, filter: Option[FilterParams]): Source[JsObject, NotUsed] = {
 
@@ -98,21 +94,33 @@ class ListRepository @Inject() (
         case true  => SuccessfulWrite(list)
         case false => FailedWrite(list)
       }
+
+  def remove(versionIds: Seq[VersionId]): Future[Either[ErrorDetails, Unit]] = {
+    val filter = Filters.in("versionId", versionIds.map(_.versionId)*)
+    collection
+      .deleteMany(filter)
+      .toFuture()
+      .map(_.wasAcknowledged())
+      .map {
+        case true  => Right(())
+        case false => Left(MongoError(s"Failed to remove list items with version ID ${versionIds.mkString(", ")}"))
+      }
+  }
 }
 
 object ListRepository {
 
-  def indexes(config: AppConfig): Seq[IndexModel] = {
+  val indexes: Seq[IndexModel] = {
     val listNameAndVersionIdCompoundIndex: IndexModel = IndexModel(
       keys = compoundIndex(ascending("listName"), ascending("versionId")),
       indexOptions = IndexOptions().name("list-name-and-version-id-compound-index")
     )
 
-    lazy val createdOnIndex: IndexModel = IndexModel(
-      keys = Indexes.ascending("createdOn"),
-      indexOptions = IndexOptions().name("ttl-index").expireAfter(config.ttl.asInstanceOf[Number].longValue, TimeUnit.SECONDS)
+    val versionIdIndex: IndexModel = IndexModel(
+      keys = Indexes.ascending("versionId"),
+      indexOptions = IndexOptions().name("versionId-index")
     )
 
-    listNameAndVersionIdCompoundIndex +: (if (config.isTtlEnabled) Seq(createdOnIndex) else Nil)
+    Seq(listNameAndVersionIdCompoundIndex, versionIdIndex)
   }
 }
