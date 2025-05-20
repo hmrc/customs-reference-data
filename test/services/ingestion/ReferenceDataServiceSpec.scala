@@ -86,9 +86,9 @@ class ReferenceDataServiceSpec
           val expiredVersionIds = Seq(versionId1, versionId2)
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
@@ -112,6 +112,7 @@ class ReferenceDataServiceSpec
           val failedListName = payload.toIterable(versionId, mockTimeService.currentInstant()).toList(1).entries.head.listName
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
@@ -144,6 +145,7 @@ class ReferenceDataServiceSpec
           val failedListName3   = listOfListOfItems(2).entries.head.listName
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
 
           when(mockListRepository.insertList(any()))
@@ -174,6 +176,7 @@ class ReferenceDataServiceSpec
           val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Left(error)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -193,6 +196,7 @@ class ReferenceDataServiceSpec
           val message = "foo"
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.failed(new Throwable(message)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -215,9 +219,9 @@ class ReferenceDataServiceSpec
           val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -240,9 +244,9 @@ class ReferenceDataServiceSpec
           val message = "foo"
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 
           val service = app.injector.instanceOf[ReferenceDataService]
@@ -265,9 +269,9 @@ class ReferenceDataServiceSpec
           val error = MongoError("foo")
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
@@ -291,9 +295,9 @@ class ReferenceDataServiceSpec
           val message = "foo"
 
           when(mockVersionIdProducer.apply()).thenReturn(versionId3)
+          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockVersionRepository.save(eqTo(versionId3), any(), any(), any(), any())).thenReturn(Future.successful(Right(())))
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
-          when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(expiredVersionIds))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 
