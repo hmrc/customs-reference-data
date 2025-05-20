@@ -52,25 +52,27 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
     val versionId = versionIdProducer()
     val now       = timeService.currentInstant()
 
-    withSessionAndTransaction(
-      _ =>
-        (
-          for {
-            _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
-            writeResult <- EitherT(insert(payload, versionId, now))
-            versionIds  <- EitherT.liftF(versionRepository.getExpiredVersions(now, feed))
-            _           <- EitherT(listRepository.remove(versionIds))
-            _           <- EitherT(versionRepository.remove(versionIds))
-          } yield writeResult
-        ).value.map {
-          case Left(value) =>
-            throw ErrorDetailsException(value)
-          case Right(value) =>
-            Right(value)
+    versionRepository.getExpiredVersions(now, feed).flatMap {
+      versionIds =>
+        withSessionAndTransaction(
+          _ =>
+            (
+              for {
+                _           <- EitherT(versionRepository.save(versionId, payload.messageInformation, feed, payload.listNames, now))
+                writeResult <- EitherT(insert(payload, versionId, now))
+                _           <- EitherT(listRepository.remove(versionIds))
+                _           <- EitherT(versionRepository.remove(versionIds))
+              } yield writeResult
+            ).value.map {
+              case Left(value) =>
+                throw ErrorDetailsException(value)
+              case Right(value) =>
+                Right(value)
+            }
+        ).recover {
+          case e: ErrorDetailsException => Left(e.errorDetails)
+          case e                        => Left(MongoError(e.getMessage))
         }
-    ).recover {
-      case e: ErrorDetailsException => Left(e.errorDetails)
-      case e                        => Left(MongoError(e.getMessage))
     }
   }
 
