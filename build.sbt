@@ -11,7 +11,6 @@ ThisBuild / scalafmtOnCompile := true
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(RoutesKeys.routesImport += "models._")
   .settings(scoverageSettings *)
   .settings(
