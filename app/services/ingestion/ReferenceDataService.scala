@@ -28,6 +28,7 @@ import uk.gov.hmrc.mongo.transaction.{TransactionConfiguration, Transactions}
 
 import java.time.Instant
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService extends Logging {
@@ -71,7 +72,7 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
             }
         ).recover {
           case e: ErrorDetailsException => Left(e.errorDetails)
-          case e                        => Left(MongoError(e.getMessage))
+          case NonFatal(e)              => Left(MongoError(e.getMessage))
         }
     }
   }
