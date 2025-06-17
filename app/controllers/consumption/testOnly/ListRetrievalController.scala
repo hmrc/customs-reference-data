@@ -17,6 +17,7 @@
 package controllers.consumption.testOnly
 
 import controllers.actions.VersionedAction
+import models.Phase.{Phase5, Phase6}
 import models.{FilterParams, ListName}
 import play.api.Logging
 import play.api.libs.json.Json
@@ -39,7 +40,12 @@ class ListRetrievalController @Inject() (
       implicit request =>
         listRetrievalService.get(listName.listName, request.phase, filterParams) match {
           case Success(json) =>
-            Ok(Json.obj("data" -> json))
+            Ok {
+              request.phase match {
+                case Phase5 => Json.obj("data" -> json)
+                case Phase6 => json
+              }
+            }
           case Failure(exception) =>
             logger.error(exception.getMessage)
             NotFound
