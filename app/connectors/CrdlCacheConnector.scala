@@ -17,17 +17,19 @@
 package connectors
 
 import config.AppConfig
+import models.FilterParams
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
+import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(implicit ec: ExecutionContext) {
 
-  def get(codeList: String)(implicit hc: HeaderCarrier): Future[JsValue] = {
-    val url = url"${config.crdlCacheUrl}/lists/$codeList"
+  def get(codeList: String, filterParams: FilterParams)(implicit hc: HeaderCarrier): Future[JsValue] = {
+    val url = url"${config.crdlCacheUrl}/lists/$codeList?${filterParams.toList}"
     http.get(url).execute[JsValue]
   }
 

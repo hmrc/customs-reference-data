@@ -18,6 +18,7 @@ package connectors
 
 import base.{ItSpecBase, WireMockServerHandler}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, okJson, urlEqualTo}
+import models.FilterParams
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -32,9 +33,12 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
   private lazy val connector = app.injector.instanceOf[CrdlCacheConnector]
 
-  "GET" - {
-    "when no query parameter" - {
-      "must return OK" in {
+  "get" - {
+
+    "must return response JSON" - {
+      "when no query parameters" in {
+        val filterParams = FilterParams(Nil)
+
         val url = "/crdl-cache/lists/CL239"
 
         val json = Json.parse("""
@@ -68,7 +72,68 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
             .willReturn(okJson(Json.stringify(json)))
         )
 
-        val result = connector.get("CL239").futureValue
+        val result = connector.get("CL239", filterParams).futureValue
+
+        result mustEqual json
+      }
+
+      "when one query parameter" in {
+        val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+
+        val url = "/crdl-cache/lists/CL239?keys=00200"
+
+        val json = Json.parse("""
+            |[
+            |  {
+            |    "key": "00200",
+            |    "value": "Several occurrences of documents and parties",
+            |    "properties": {
+            |      "state": "valid"
+            |    }
+            |  }
+            |]
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(okJson(Json.stringify(json)))
+        )
+
+        val result = connector.get("CL239", filterParams).futureValue
+
+        result mustEqual json
+      }
+
+      "when multiple query parameters" in {
+        val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
+
+        val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700"
+
+        val json = Json.parse("""
+            |[
+            |  {
+            |    "key": "00200",
+            |    "value": "Several occurrences of documents and parties",
+            |    "properties": {
+            |      "state": "valid"
+            |    }
+            |  },
+            |  {
+            |    "key": "00700",
+            |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
+            |    "properties": {
+            |      "state": "valid"
+            |    }
+            |  }
+            |]
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(okJson(Json.stringify(json)))
+        )
+
+        val result = connector.get("CL239", filterParams).futureValue
 
         result mustEqual json
       }

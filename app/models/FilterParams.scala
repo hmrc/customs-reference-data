@@ -18,7 +18,16 @@ package models
 
 import play.api.mvc.QueryStringBindable
 
-case class FilterParams(parameters: Seq[(String, Seq[String])])
+case class FilterParams(parameters: Seq[(String, Seq[String])]) {
+
+  def toList: Seq[(String, String)] =
+    parameters.flatMap {
+      case (key, values) =>
+        values.map {
+          value => key -> value
+        }
+    }
+}
 
 object FilterParams {
 
