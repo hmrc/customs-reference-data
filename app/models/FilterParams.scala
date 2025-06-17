@@ -31,6 +31,8 @@ case class FilterParams(parameters: Seq[(String, Seq[String])]) {
 
 object FilterParams {
 
+  def apply(): FilterParams = new FilterParams(Nil)
+
   implicit def queryStringBindable: QueryStringBindable[FilterParams] =
     new QueryStringBindable[FilterParams] {
 

@@ -16,13 +16,15 @@
 
 package models
 
-import play.api.libs.json.Json
-import play.api.libs.json.OFormat
-import play.api.mvc._
+import models.ListName.*
+import play.api.libs.json.{Json, OFormat}
+import play.api.mvc.*
 
 case class ListName(listName: String) {
 
   override def toString: String = listName
+
+  val code: Option[String] = listNames.get(listName)
 }
 
 object ListName {
@@ -38,4 +40,8 @@ object ListName {
       value.listName
   }
 
+  val listNames: Map[String, String] = Map(
+    "AdditionalInformation" -> "CL239",
+    "AdditionalReference"   -> "CL380"
+  )
 }

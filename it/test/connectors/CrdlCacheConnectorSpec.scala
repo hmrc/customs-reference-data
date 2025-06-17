@@ -19,6 +19,9 @@ package connectors
 import base.{ItSpecBase, WireMockServerHandler}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, okJson, urlEqualTo}
 import models.FilterParams
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.scaladsl.Sink
+import org.apache.pekko.util.ByteString
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -32,6 +35,8 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
   override def fakeApplication(): Application = guiceApplicationBuilder.build()
 
   private lazy val connector = app.injector.instanceOf[CrdlCacheConnector]
+
+  implicit private lazy val mat: Materializer = app.injector.instanceOf[Materializer]
 
   "get" - {
 
@@ -72,9 +77,9 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
             .willReturn(okJson(Json.stringify(json)))
         )
 
-        val result = connector.get("CL239", filterParams).futureValue
+        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
 
-        result mustEqual json
+        Json.parse(result.toArray) mustEqual json
       }
 
       "when one query parameter" in {
@@ -99,9 +104,9 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
             .willReturn(okJson(Json.stringify(json)))
         )
 
-        val result = connector.get("CL239", filterParams).futureValue
+        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
 
-        result mustEqual json
+        Json.parse(result.toArray) mustEqual json
       }
 
       "when multiple query parameters" in {
@@ -133,9 +138,9 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
             .willReturn(okJson(Json.stringify(json)))
         )
 
-        val result = connector.get("CL239", filterParams).futureValue
+        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
 
-        result mustEqual json
+        Json.parse(result.toArray) mustEqual json
       }
     }
   }

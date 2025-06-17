@@ -34,7 +34,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
   private val listRepository    = app.injector.instanceOf[ListRepository]
 
   private val headers = Seq(
-    "Accept" -> "application/vnd.hmrc.2.0+json"
+    "Accept" -> "application/vnd.hmrc.1.0+json"
   )
 
   private val snapshotDate = LocalDate.of(2020, 1, 1)
