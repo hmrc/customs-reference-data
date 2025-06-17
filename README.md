@@ -9,11 +9,13 @@ There must be at least one snapshot of reference data present at all times (for 
 
 ## Versioning
 
-### v1.0
+### Requests from DPS
+
+#### v1.0
 
 This has been deprecated and decommissioned
 
-### v2.0
+#### v2.0
 
 Version 2 stores reference data from DPS/EIS and is specific to NCTS5. This reference data has been crafted specifically to meet the NCTS5 requirements as laid out in the DDNTA. 
 
@@ -21,6 +23,20 @@ NOTE: Version 2 of this API is a tactical solution and will be replaced by a str
 
 Pub/Sub (or Publish/Subscribe) is an architectural design pattern used in distributed systems for asynchronous communication between different components or services. 
 Although Publish/Subscribe is based on earlier design patterns like message queuing and event brokers, it is more flexible and scalable.
+
+### Requests from NCTS frontends
+
+#### v1.0
+
+This corresponds to P5 code lists:
+* Requests will retrieve data from MongoDB
+* Test-only requests will retrieve data from [here](conf/resources/phase-5)
+
+#### v2.0
+
+This corresponds to P6 code lists:
+* Requests will retrieve data from [crdl-cache](https://github.com/hmrc/crdl-cache)
+* Test-only requests will retrieve data from [here](conf/resources/phase-6)
 
 ## Endpoints
 
