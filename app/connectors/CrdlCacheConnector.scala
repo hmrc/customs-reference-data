@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package config
+package connectors
 
-import play.api.Configuration
+import config.AppConfig
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
+import uk.gov.hmrc.http.client.HttpClientV2
 
 import javax.inject.Inject
-import javax.inject.Singleton
+import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class AppConfig @Inject() (config: Configuration, servicesConfig: MyServicesConfig) {
+class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(implicit ec: ExecutionContext) {
 
-  lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
-  lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
-  lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
+  def get(codeList: String)(implicit hc: HeaderCarrier): Future[JsValue] = {
+    val url = url"${config.crdlCacheUrl}/lists/$codeList"
+    http.get(url).execute[JsValue]
+  }
 
-  lazy val crdlCacheUrl: String = servicesConfig.fullServiceUrl("crdl-cache")
 }
