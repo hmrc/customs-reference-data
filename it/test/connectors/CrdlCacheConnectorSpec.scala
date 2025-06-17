@@ -19,19 +19,23 @@ package connectors
 import base.{ItSpecBase, WireMockServerHandler}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, okJson, urlEqualTo}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
-class CrdlCacheConnectorSpec extends ItSpecBase with WireMockServerHandler with GuiceOneServerPerSuite {
+class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with WireMockServerHandler {
 
   override def guiceApplicationBuilder: GuiceApplicationBuilder =
     super.guiceApplicationBuilder.configure("microservice.services.crdl-cache.port" -> server.port())
-  private val connector = app.injector.instanceOf[CrdlCacheConnector]
+
+  override def fakeApplication(): Application = guiceApplicationBuilder.build()
+
+  private lazy val connector = app.injector.instanceOf[CrdlCacheConnector]
 
   "GET" - {
     "when no query parameter" - {
       "must return OK" in {
-        val url = "crdl-cache/lists/CL239"
+        val url = "/crdl-cache/lists/CL239"
 
         val json = Json.parse("""
             |[
