@@ -18,304 +18,511 @@ package services.consumption.testOnly
 
 import base.SpecBase
 import models.FilterParams
+import models.Phase.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.JsArray
-import play.api.libs.json.Json
-import play.api.test.Helpers._
+import play.api.libs.json.{JsArray, Json}
+import play.api.test.Helpers.*
 
 import scala.util.Success
 
 class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
-  private val codeListGen = Gen.oneOf(
-    "AdditionalInformation",
-    "AdditionalReference",
-    "AdditionalSupplyChainActorRoleCode",
-    "AuthorisationTypeDeparture",
-    "ControlType",
-    "CountryAddressPostcodeBased",
-    "CountryCodesCommonTransit",
-    "CountryCodesCommunity",
-    "CountryCodesCTC",
-    "CountryCodesForAddress",
-    "CountryCodesFullList",
-    "CountryCustomsSecurityAgreementArea",
-    "CountryWithoutZip",
-    "CurrencyCodes",
-    "CUSCode",
-    "CustomsOffices",
-    "DeclarationType",
-    "DeclarationTypeAdditional",
-    "DeclarationTypeItemLevel",
-    "DeclarationTypeSecurity",
-    "FunctionalErrorCodesIeCA",
-    "GuaranteeType",
-    "HScode",
-    "KindOfPackages",
-    "KindOfPackagesBulk",
-    "KindOfPackagesUnpacked",
-    "Nationality",
-    "PreviousDocumentExportType",
-    "PreviousDocumentType",
-    "QualifierOfTheIdentification",
-    "SpecificCircumstanceIndicatorCode",
-    "SupportingDocumentType",
-    "TransportChargesMethodOfPayment",
-    "TransportDocumentType",
-    "TransportModeCode",
-    "TypeOfIdentificationOfMeansOfTransport",
-    "TypeOfIdentificationofMeansOfTransportActive",
-    "TypeOfLocation",
-    "UnDangerousGoodsCode",
-    "Unit",
-    "UnLocodeExtended"
-  )
+  "when phase 5" - {
 
-  "get (without filter)" - {
-    "should succeed" - {
-      "when code list found" in {
-        running(baseApplicationBuilder) {
-          application =>
-            val service = application.injector.instanceOf[ListRetrievalService]
-            forAll(codeListGen) {
-              codeList =>
-                val result = service.get(codeList, None)
-                result.isSuccess mustBe true
-            }
+    val codeListGen = Gen.oneOf(
+      "AdditionalInformation",
+      "AdditionalReference",
+      "AdditionalSupplyChainActorRoleCode",
+      "AuthorisationTypeDeparture",
+      "ControlType",
+      "CountryAddressPostcodeBased",
+      "CountryCodesCommonTransit",
+      "CountryCodesCommunity",
+      "CountryCodesCTC",
+      "CountryCodesForAddress",
+      "CountryCodesFullList",
+      "CountryCustomsSecurityAgreementArea",
+      "CountryWithoutZip",
+      "CurrencyCodes",
+      "CUSCode",
+      "CustomsOffices",
+      "DeclarationType",
+      "DeclarationTypeAdditional",
+      "DeclarationTypeItemLevel",
+      "DeclarationTypeSecurity",
+      "FunctionalErrorCodesIeCA",
+      "GuaranteeType",
+      "HScode",
+      "KindOfPackages",
+      "KindOfPackagesBulk",
+      "KindOfPackagesUnpacked",
+      "Nationality",
+      "PreviousDocumentExportType",
+      "PreviousDocumentType",
+      "QualifierOfTheIdentification",
+      "SpecificCircumstanceIndicatorCode",
+      "SupportingDocumentType",
+      "TransportChargesMethodOfPayment",
+      "TransportDocumentType",
+      "TransportModeCode",
+      "TypeOfIdentificationOfMeansOfTransport",
+      "TypeOfIdentificationofMeansOfTransportActive",
+      "TypeOfLocation",
+      "UnDangerousGoodsCode",
+      "Unit",
+      "UnLocodeExtended"
+    )
+
+    "get (without filter)" - {
+      "should succeed" - {
+        "when code list found" in {
+          running(baseApplicationBuilder) {
+            application =>
+              val service = application.injector.instanceOf[ListRetrievalService]
+              forAll(codeListGen) {
+                codeList =>
+                  val result = service.get(codeList, Phase5, None)
+                  result.isSuccess mustBe true
+              }
+          }
+        }
+      }
+
+      "should fail" - {
+        "when code list not found" in {
+          running(baseApplicationBuilder) {
+            application =>
+              val service = application.injector.instanceOf[ListRetrievalService]
+              val result  = service.get("foo", Phase5, None)
+              result.isSuccess mustBe false
+          }
         }
       }
     }
 
-    "should fail" - {
-      "when code list not found" in {
-        running(baseApplicationBuilder) {
-          application =>
-            val service = application.injector.instanceOf[ListRetrievalService]
-            val result  = service.get("foo", None)
-            result.isSuccess mustBe false
+    "get (with filter)" - {
+      "when customs offices" - {
+
+        val customsOffices = Json
+          .parse("""
+              |[
+              |  {
+              |    "name": "CO1",
+              |    "id": "XI1",
+              |    "countryId": "XI",
+              |    "roles": [
+              |      {
+              |        "role": "DEP"
+              |      },
+              |      {
+              |        "role": "TRA"
+              |      }
+              |    ]
+              |  },
+              |  {
+              |    "name": "CO2",
+              |    "id": "GB1",
+              |    "countryId": "GB",
+              |    "roles": [
+              |      {
+              |        "role": "TRA"
+              |      },
+              |      {
+              |        "role": "AUT"
+              |      }
+              |    ]
+              |  },
+              |  {
+              |    "name": "CO3",
+              |    "id": "GB2",
+              |    "countryId": "GB",
+              |    "roles": [
+              |      {
+              |        "role": "TRA"
+              |      },
+              |      {
+              |        "role": "DES"
+              |      }
+              |    ]
+              |  }
+              |]
+              |""".stripMargin)
+          .as[JsArray]
+
+        "must return values that match the filter" - {
+          "when one filter" in {
+            val mockResourceService = mock[ResourceService]
+            when(mockResourceService.getJson(any(), any())).thenReturn(Success(customsOffices))
+
+            val app = baseApplicationBuilder
+              .apply {
+                new GuiceApplicationBuilder()
+                  .overrides(bind[ResourceService].toInstance(mockResourceService))
+              }
+              .build()
+
+            running(app) {
+              val service      = app.injector.instanceOf[ListRetrievalService]
+              val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
+              val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
+              result.get mustBe Json.parse("""
+                  |[
+                  |  {
+                  |    "name": "CO2",
+                  |    "id": "GB1",
+                  |    "countryId": "GB",
+                  |    "roles": [
+                  |      {
+                  |        "role": "TRA"
+                  |      },
+                  |      {
+                  |        "role": "AUT"
+                  |      }
+                  |    ]
+                  |  },
+                  |  {
+                  |    "name": "CO3",
+                  |    "id": "GB2",
+                  |    "countryId": "GB",
+                  |    "roles": [
+                  |      {
+                  |        "role": "TRA"
+                  |      },
+                  |      {
+                  |        "role": "DES"
+                  |      }
+                  |    ]
+                  |  }
+                  |]
+                  |""".stripMargin)
+            }
+          }
+
+          "when multiple filters" in {
+            val mockResourceService = mock[ResourceService]
+            when(mockResourceService.getJson(any(), any())).thenReturn(Success(customsOffices))
+
+            val app = baseApplicationBuilder
+              .apply {
+                new GuiceApplicationBuilder()
+                  .overrides(bind[ResourceService].toInstance(mockResourceService))
+              }
+              .build()
+
+            running(app) {
+              val service      = app.injector.instanceOf[ListRetrievalService]
+              val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
+              val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
+              result.get mustBe Json.parse("""
+                  |[
+                  |  {
+                  |    "name": "CO2",
+                  |    "id": "GB1",
+                  |    "countryId": "GB",
+                  |    "roles": [
+                  |      {
+                  |        "role": "TRA"
+                  |      },
+                  |      {
+                  |        "role": "AUT"
+                  |      }
+                  |    ]
+                  |  },
+                  |  {
+                  |    "name": "CO3",
+                  |    "id": "GB2",
+                  |    "countryId": "GB",
+                  |    "roles": [
+                  |      {
+                  |        "role": "TRA"
+                  |      },
+                  |      {
+                  |        "role": "DES"
+                  |      }
+                  |    ]
+                  |  }
+                  |]
+                  |""".stripMargin)
+            }
+          }
+        }
+      }
+
+      "when countries" - {
+
+        "must return values that match the filter" in {
+          running(baseApplicationBuilder) {
+            app =>
+              val service      = app.injector.instanceOf[ListRetrievalService]
+              val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
+              val result       = service.get("CountryCodesFullList", Phase5, Some(filterParams))
+              result.get mustBe Json.parse("""
+                  |[
+                  |  {
+                  |    "code": "AD",
+                  |    "description": "Andorra"
+                  |  }
+                  |]
+                  |""".stripMargin)
+          }
+        }
+      }
+
+      "when security types" - {
+        "must return values (with unescaped XML)" - {
+          "when no filtering" in {
+            running(baseApplicationBuilder) {
+              app =>
+                val service = app.injector.instanceOf[ListRetrievalService]
+                val result  = service.get("DeclarationTypeSecurity", Phase5, None)
+                result.get mustBe Json.parse("""
+                    |[
+                    |  {
+                    |    "code": "0",
+                    |    "description": "Not used for safety and security purposes"
+                    |  },
+                    |  {
+                    |    "code": "1",
+                    |    "description": "ENS"
+                    |  },
+                    |  {
+                    |    "code": "2",
+                    |    "description": "EXS"
+                    |  },
+                    |  {
+                    |    "code": "3",
+                    |    "description": "ENS & EXS"
+                    |  }
+                    |]
+                    |""".stripMargin)
+            }
+          }
+
+          "when filtering" in {
+            running(baseApplicationBuilder) {
+              app =>
+                val service      = app.injector.instanceOf[ListRetrievalService]
+                val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
+                val result       = service.get("DeclarationTypeSecurity", Phase5, Some(filterParams))
+                result.get mustBe Json.parse("""
+                    |[
+                    |  {
+                    |    "code": "3",
+                    |    "description": "ENS & EXS"
+                    |  }
+                    |]
+                    |""".stripMargin)
+            }
+          }
         }
       }
     }
   }
 
-  "get (with filter)" - {
-    "when customs offices" - {
+  "when phase 6" - {
 
-      val customsOffices = Json
-        .parse("""
-          |[
-          |  {
-          |    "name": "CO1",
-          |    "id": "XI1",
-          |    "countryId": "XI",
-          |    "roles": [
-          |      {
-          |        "role": "DEP"
-          |      },
-          |      {
-          |        "role": "TRA"
-          |      }
-          |    ]
-          |  },
-          |  {
-          |    "name": "CO2",
-          |    "id": "GB1",
-          |    "countryId": "GB",
-          |    "roles": [
-          |      {
-          |        "role": "TRA"
-          |      },
-          |      {
-          |        "role": "AUT"
-          |      }
-          |    ]
-          |  },
-          |  {
-          |    "name": "CO3",
-          |    "id": "GB2",
-          |    "countryId": "GB",
-          |    "roles": [
-          |      {
-          |        "role": "TRA"
-          |      },
-          |      {
-          |        "role": "DES"
-          |      }
-          |    ]
-          |  }
-          |]
-          |""".stripMargin)
-        .as[JsArray]
+    val codeListGen = Gen.oneOf(
+      "AdditionalInformation",
+      "AdditionalReference"
+    )
 
-      "must return values that match the filter" - {
-        "when one filter" in {
-          val mockResourceService = mock[ResourceService]
-          when(mockResourceService.getJson(any())).thenReturn(Success(customsOffices))
-
-          val app = baseApplicationBuilder
-            .apply {
-              new GuiceApplicationBuilder()
-                .overrides(bind[ResourceService].toInstance(mockResourceService))
-            }
-            .build()
-
-          running(app) {
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
-            val result       = service.get("CustomsOffices", Some(filterParams))
-            result.get mustBe Json.parse("""
-                |[
-                |  {
-                |    "name": "CO2",
-                |    "id": "GB1",
-                |    "countryId": "GB",
-                |    "roles": [
-                |      {
-                |        "role": "TRA"
-                |      },
-                |      {
-                |        "role": "AUT"
-                |      }
-                |    ]
-                |  },
-                |  {
-                |    "name": "CO3",
-                |    "id": "GB2",
-                |    "countryId": "GB",
-                |    "roles": [
-                |      {
-                |        "role": "TRA"
-                |      },
-                |      {
-                |        "role": "DES"
-                |      }
-                |    ]
-                |  }
-                |]
-                |""".stripMargin)
+    "get (without filter)" - {
+      "should succeed" - {
+        "when code list found" in {
+          running(baseApplicationBuilder) {
+            application =>
+              val service = application.injector.instanceOf[ListRetrievalService]
+              forAll(codeListGen) {
+                codeList =>
+                  val result = service.get(codeList, Phase6, None)
+                  result.isSuccess mustBe true
+              }
           }
         }
+      }
 
-        "when multiple filters" in {
-          val mockResourceService = mock[ResourceService]
-          when(mockResourceService.getJson(any())).thenReturn(Success(customsOffices))
-
-          val app = baseApplicationBuilder
-            .apply {
-              new GuiceApplicationBuilder()
-                .overrides(bind[ResourceService].toInstance(mockResourceService))
-            }
-            .build()
-
-          running(app) {
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
-            val result       = service.get("CustomsOffices", Some(filterParams))
-            result.get mustBe Json.parse("""
-                |[
-                |  {
-                |    "name": "CO2",
-                |    "id": "GB1",
-                |    "countryId": "GB",
-                |    "roles": [
-                |      {
-                |        "role": "TRA"
-                |      },
-                |      {
-                |        "role": "AUT"
-                |      }
-                |    ]
-                |  },
-                |  {
-                |    "name": "CO3",
-                |    "id": "GB2",
-                |    "countryId": "GB",
-                |    "roles": [
-                |      {
-                |        "role": "TRA"
-                |      },
-                |      {
-                |        "role": "DES"
-                |      }
-                |    ]
-                |  }
-                |]
-                |""".stripMargin)
+      "should fail" - {
+        "when code list not found" in {
+          running(baseApplicationBuilder) {
+            application =>
+              val service = application.injector.instanceOf[ListRetrievalService]
+              val result  = service.get("foo", Phase6, None)
+              result.isSuccess mustBe false
           }
         }
       }
     }
 
-    "when countries" - {
-
-      "must return values that match the filter" in {
-        running(baseApplicationBuilder) {
-          app =>
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
-            val result       = service.get("CountryCodesFullList", Some(filterParams))
-            result.get mustBe Json.parse("""
+    "get (with filter)" - {
+      "when one filter with one value" in {
+        val data = Json
+          .parse("""
               |[
               |  {
-              |    "code": "AD",
-              |    "description": "Andorra"
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties"
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number"
+              |  }
+              |]
+              |""".stripMargin)
+          .as[JsArray]
+
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          }
+          .build()
+
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          result.get mustBe Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties"
               |  }
               |]
               |""".stripMargin)
         }
       }
-    }
 
-    "when security types" - {
-      "must return values (with unescaped XML)" - {
-        "when no filtering" in {
-          running(baseApplicationBuilder) {
-            app =>
-              val service = app.injector.instanceOf[ListRetrievalService]
-              val result  = service.get("DeclarationTypeSecurity", None)
-              result.get mustBe Json.parse("""
-                  |[
-                  |  {
-                  |    "code": "0",
-                  |    "description": "Not used for safety and security purposes"
-                  |  },
-                  |  {
-                  |    "code": "1",
-                  |    "description": "ENS"
-                  |  },
-                  |  {
-                  |    "code": "2",
-                  |    "description": "EXS"
-                  |  },
-                  |  {
-                  |    "code": "3",
-                  |    "description": "ENS & EXS"
-                  |  }
-                  |]
-                  |""".stripMargin)
+      "when one filter with multiple values" in {
+        val data = Json
+          .parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties"
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number"
+              |  },
+              |  {
+              |    "key": "00800",
+              |    "value": "Discharge of inward processing (specific commercial policy measures)"
+              |  }
+              |]
+              |""".stripMargin)
+          .as[JsArray]
+
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
           }
+          .build()
+
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
+          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          result.get mustBe Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties"
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number"
+              |  }
+              |]
+              |""".stripMargin)
         }
+      }
 
-        "when filtering" in {
-          running(baseApplicationBuilder) {
-            app =>
-              val service      = app.injector.instanceOf[ListRetrievalService]
-              val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
-              val result       = service.get("DeclarationTypeSecurity", Some(filterParams))
-              result.get mustBe Json.parse("""
-                  |[
-                  |  {
-                  |    "code": "3",
-                  |    "description": "ENS & EXS"
-                  |  }
-                  |]
-                  |""".stripMargin)
+      "when multiple filters" in {
+        val data = Json
+          .parse("""
+              |[
+              |  {
+              |    "key": "AD000001",
+              |    "value": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
+              |    "properties": {
+              |      "countryId": "AD",
+              |      "roles": [
+              |        {
+              |          "role": "TRA"
+              |        },
+              |        {
+              |          "role": "AUT"
+              |        }
+              |      ]
+              |    }
+              |  },
+              |  {
+              |    "key": "AD000002",
+              |    "value": "DCNJ PORTA",
+              |    "properties": {
+              |      "countryId": "AD",
+              |      "roles": [
+              |        {
+              |          "role": "DEP"
+              |        },
+              |        {
+              |          "role": "DES"
+              |        },
+              |        {
+              |          "role": "TRA"
+              |        }
+              |      ]
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
+          .as[JsArray]
+
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
           }
+          .build()
+
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("countryId" -> Seq("AD"), "roles.role" -> Seq("AUT")))
+          val result       = service.get("CustomsOffices", Phase6, Some(filterParams))
+          result.get mustBe Json.parse("""
+              |[
+              |  {
+              |    "key": "AD000001",
+              |    "value": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
+              |    "properties": {
+              |      "countryId": "AD",
+              |      "roles": [
+              |        {
+              |          "role": "TRA"
+              |        },
+              |        {
+              |          "role": "AUT"
+              |        }
+              |      ]
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
         }
       }
     }
