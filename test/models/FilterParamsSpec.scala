@@ -94,4 +94,53 @@ class FilterParamsSpec extends SpecBase {
       result mustEqual "country=GB&country=XI&roles.role=TRA&roles.role=DES"
     }
   }
+
+  "must convert to Seq[(String, String)]" - {
+    "when one query with one value" in {
+      val parameters = Seq(
+        "country" -> Seq("GB")
+      )
+
+      val filterParams = FilterParams(parameters)
+
+      val result = filterParams.toList
+
+      result mustEqual Seq(
+        "country" -> "GB"
+      )
+    }
+
+    "when one query with multiple values" in {
+      val parameters = Seq(
+        "country" -> Seq("GB", "XI")
+      )
+
+      val filterParams = FilterParams(parameters)
+
+      val result = filterParams.toList
+
+      result mustEqual Seq(
+        "country" -> "GB",
+        "country" -> "XI"
+      )
+    }
+
+    "when two queries with multiple values" in {
+      val parameters = Seq(
+        "country"    -> Seq("GB", "XI"),
+        "roles.role" -> Seq("TRA", "DES")
+      )
+
+      val filterParams = FilterParams(parameters)
+
+      val result = filterParams.toList
+
+      result mustEqual Seq(
+        "country"    -> "GB",
+        "country"    -> "XI",
+        "roles.role" -> "TRA",
+        "roles.role" -> "DES"
+      )
+    }
+  }
 }

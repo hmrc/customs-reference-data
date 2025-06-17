@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@
 package config
 
 import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AppConfig @Inject() (config: Configuration, servicesConfig: MyServicesConfig) {
+class MyServicesConfig @Inject() (configuration: Configuration) extends ServicesConfig(configuration) {
 
-  lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
-  lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
-  lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
+  def fullServiceUrl(serviceName: String): String = {
+    val startUrl = getConfString(s"$serviceName.startUrl", "")
+    s"${baseUrl(serviceName)}/$startUrl"
+  }
 
-  lazy val crdlCacheUrl: String = servicesConfig.fullServiceUrl("crdl-cache")
 }
