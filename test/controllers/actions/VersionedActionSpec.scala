@@ -19,6 +19,7 @@ package controllers.actions
 import base.SpecBase
 import models.Phase.*
 import models.request.VersionedRequest
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.*
 import play.api.mvc.Results.BadRequest
 import play.api.test.FakeRequest
@@ -28,9 +29,9 @@ import sttp.model.HeaderNames.Accept
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class VersionedActionSpec extends SpecBase {
+class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
-  private class Harness extends VersionedAction {
+  private class Harness(override val parser: BodyParsers.Default) extends VersionedActionImpl(parser) {
 
     def callRefine[A](request: Request[A]): Future[Either[Result, VersionedRequest[A]]] =
       refine(request)
@@ -42,7 +43,8 @@ class VersionedActionSpec extends SpecBase {
 
     "when 1.0 header" - {
       "must return request with version 1.0" in {
-        val action = new Harness()
+        val parser = app.injector.instanceOf[BodyParsers.Default]
+        val action = new Harness(parser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.1.0+json")
         val result  = action.callRefine(request).futureValue
@@ -53,7 +55,8 @@ class VersionedActionSpec extends SpecBase {
 
     "when 2.0 header" - {
       "must return request with version 2.0" in {
-        val action = new Harness()
+        val parser = app.injector.instanceOf[BodyParsers.Default]
+        val action = new Harness(parser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.2.0+json")
         val result  = action.callRefine(request).futureValue
@@ -64,7 +67,8 @@ class VersionedActionSpec extends SpecBase {
 
     "when undefined header" - {
       "must return request with version 1.0" in {
-        val action = new Harness()
+        val parser = app.injector.instanceOf[BodyParsers.Default]
+        val action = new Harness(parser)
 
         val request = fakeRequest
         val result  = action.callRefine(request).futureValue
@@ -75,7 +79,8 @@ class VersionedActionSpec extends SpecBase {
 
     "when invalid version" - {
       "must return bad request" in {
-        val action = new Harness()
+        val parser = app.injector.instanceOf[BodyParsers.Default]
+        val action = new Harness(parser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.foo+json")
         val result  = action.callRefine(request).futureValue
@@ -84,14 +89,15 @@ class VersionedActionSpec extends SpecBase {
       }
     }
 
-    "when invalid header" - {
-      "must return bad request" in {
-        val action = new Harness()
+    "when random header" - {
+      "must return request with version 1.0" in {
+        val parser = app.injector.instanceOf[BodyParsers.Default]
+        val action = new Harness(parser)
 
         val request = fakeRequest.withHeaders(Accept -> "foo")
         val result  = action.callRefine(request).futureValue
 
-        result.left.value mustEqual BadRequest("Accept header value 'foo' is invalid")
+        result.value mustEqual VersionedRequest(request, Phase5)
       }
     }
   }

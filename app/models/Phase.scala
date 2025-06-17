@@ -16,7 +16,9 @@
 
 package models
 
-trait Phase
+trait Phase {
+  val directory: String
+}
 
 object Phase {
 
@@ -27,7 +29,12 @@ object Phase {
       case _     => None
     }
 
-  case object Phase5 extends Phase
-  case object Phase6 extends Phase
+  case object Phase5 extends Phase {
+    override val directory: String = "phase-5"
+  }
+
+  case object Phase6 extends Phase {
+    override val directory: String = "phase-6"
+  }
 
 }

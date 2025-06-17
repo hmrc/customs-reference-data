@@ -16,34 +16,34 @@
 
 package controllers.actions
 
+import com.google.inject.ImplementedBy
 import models.Phase
 import models.Phase.*
 import models.request.VersionedRequest
+import play.api.mvc.*
 import play.api.mvc.Results.BadRequest
-import play.api.mvc.{ActionRefiner, Request, Result}
 import sttp.model.HeaderNames.Accept
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class VersionedAction @Inject() (implicit val executionContext: ExecutionContext) extends ActionRefiner[Request, VersionedRequest] {
+@ImplementedBy(classOf[VersionedActionImpl])
+trait VersionedAction extends ActionRefiner[Request, VersionedRequest] with ActionBuilder[VersionedRequest, AnyContent]
+
+class VersionedActionImpl @Inject() (override val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext) extends VersionedAction {
 
   override protected def refine[A](request: Request[A]): Future[Either[Result, VersionedRequest[A]]] = {
     val pattern = """application/vnd.hmrc.(.*)\+json""".r
 
     Future.successful {
       request.headers.get(Accept) match {
-        case None =>
-          Right(VersionedRequest(request, Phase5))
-        case Some(value) =>
-          value match {
-            case pattern(version) =>
-              Phase(version) match {
-                case Some(phase) => Right(VersionedRequest(request, phase))
-                case None        => Left(BadRequest(s"Accept header contains an invalid version '$version'"))
-              }
-            case _ => Left(BadRequest(s"Accept header value '$value' is invalid"))
+        case Some(pattern(version)) =>
+          Phase(version) match {
+            case Some(phase) => Right(VersionedRequest(request, phase))
+            case None        => Left(BadRequest(s"Accept header contains an invalid version '$version'"))
           }
+        case _ =>
+          Right(VersionedRequest(request, Phase5))
       }
     }
   }

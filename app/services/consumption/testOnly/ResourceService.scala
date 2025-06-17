@@ -16,6 +16,7 @@
 
 package services.consumption.testOnly
 
+import models.Phase
 import play.api.Environment
 import play.api.libs.json.JsArray
 import play.api.libs.json.Json
@@ -27,9 +28,9 @@ import scala.util.Try
 
 class ResourceService @Inject() (env: Environment) {
 
-  def getJson(codeList: String): Try[JsArray] =
+  def getJson(codeList: String, phase: Phase): Try[JsArray] =
     env
-      .resourceAsStream(s"resources/$codeList.json")
+      .resourceAsStream(s"resources/${phase.directory}/$codeList.json")
       .map {
         inputStream =>
           val rawData = Source.fromInputStream(inputStream).mkString
