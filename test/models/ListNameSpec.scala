@@ -44,6 +44,12 @@ class ListNameSpec extends SpecBase {
       result.value mustEqual "CL239"
     }
 
+    "when AdditionalInformationCodeSubset" in {
+      val listName = ListName("AdditionalInformationCodeSubset")
+      val result   = listName.code
+      result.value mustEqual "CL752"
+    }
+
     "when AdditionalReference" in {
       val listName = ListName("AdditionalReference")
       val result   = listName.code

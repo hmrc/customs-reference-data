@@ -41,7 +41,8 @@ object ListName {
   }
 
   val listNames: Map[String, String] = Map(
-    "AdditionalInformation" -> "CL239",
-    "AdditionalReference"   -> "CL380"
+    "AdditionalInformation"           -> "CL239",
+    "AdditionalInformationCodeSubset" -> "CL752",
+    "AdditionalReference"             -> "CL380"
   )
 }
