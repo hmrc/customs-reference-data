@@ -119,18 +119,20 @@ This corresponds to P6 code lists:
 
 ### `GET /lists/:listName`
 
-#### Params
+#### Phase 5
+
+##### Params
 
 * Headers
-  * Accept - `application/vnd.hmrc.2.0+json`
+  * Accept - `application/vnd.hmrc.1.0+json`
 * Endpoint
   * For a valid `listName` see the code lists in the schemas
 * Query
   * To filter the response based on a certain field (e.g. `/lists/CountryCodesFullList?data.code=GB`)
 
-#### Successful response
+##### Successful response
 
-##### 200 OK
+###### 200 OK
 
 * The response JSON contains the desired data
 
@@ -157,13 +159,50 @@ This corresponds to P6 code lists:
 }
 ```
 
-#### Unsuccessful responses (with possible causes)
+##### Unsuccessful responses (with possible causes)
 
-##### 404 NOT FOUND
+###### 404 NOT FOUND
 * The `listName` was not found
 
-##### 500 INTERNAL SERVER ERROR
+###### 500 INTERNAL SERVER ERROR
 * An error occurred in the mongo client
+
+#### Phase 6
+
+##### Params
+
+* Headers
+  * Accept - `application/vnd.hmrc.2.0+json`
+* Endpoint
+  * For a valid `listName` see the code lists in the schemas
+* Query
+  * To filter the response based on a certain field (e.g. `/lists/CountryCodesFullList?keys=GB`)
+
+##### Successful response
+
+###### 200 OK
+
+* The response JSON contains the desired data
+
+```
+[
+    {
+      "key": "GB",
+      "value": "United Kingdom",
+      "properties": {
+        "state": "valid"
+      }
+    }
+]
+```
+
+##### Unsuccessful responses (with possible causes)
+
+###### 400 NOT FOUND
+* The `listName` was not valid
+
+###### 500 INTERNAL SERVER ERROR
+* An error occurred retrieving the data from crdl-cache
 
 ## Development
 ### Related test repositories
