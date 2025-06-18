@@ -187,11 +187,11 @@ This corresponds to P6 code lists:
 ```
 [
     {
-      "key": "GB",
-      "value": "United Kingdom",
-      "properties": {
-        "state": "valid"
-      }
+        "key": "GB",
+        "value": "United Kingdom",
+        "properties": {
+            "state": "valid"
+        }
     }
 ]
 ```
