@@ -1,0 +1,14 @@
+[
+  {
+    "key": "NE",
+    "value": "Unpacked or unpackaged"
+  },
+  {
+    "key": "NF",
+    "value": "Unpacked or unpackaged, single unit"
+  },
+  {
+    "key": "NG",
+    "value": "Unpacked or unpackaged, multiple units"
+  }
+]

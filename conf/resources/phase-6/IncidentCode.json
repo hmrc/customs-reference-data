@@ -1,0 +1,26 @@
+[
+  {
+    "key": "1",
+    "value": "The carrier is obliged to deviate from the itinerary prescribed in accordance with Article 298 of UCC/IA Regulation due to circumstances beyond his control."
+  },
+  {
+    "key": "2",
+    "value": "Seals are broken or tampered with in the course of a transport operation for reasons beyond the carrier's control."
+  },
+  {
+    "key": "3",
+    "value": "Under the supervision of the customs authority, goods are transferred from one means of transport to another means of transport."
+  },
+  {
+    "key": "4",
+    "value": "Imminent danger necessitates immediate partial or total unloading of the sealed means of transport."
+  },
+  {
+    "key": "5",
+    "value": "There is an incident which may affect the ability of the Holder of the procedure or the carrier to comply with his obligations."
+  },
+  {
+    "key": "6",
+    "value": "Any of the elements constituting a single means of transport as referred to in Article 296(2) UCC/IA is changed."
+  }
+]

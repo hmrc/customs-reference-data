@@ -1,0 +1,46 @@
+[
+  {
+    "key": "10",
+    "value": "IMO Ship Identification Number"
+  },
+  {
+    "key": "11",
+    "value": "Name of the sea-going vessel"
+  },
+  {
+    "key": "20",
+    "value": "Wagon Number"
+  },
+  {
+    "key": "21",
+    "value": "Train Number"
+  },
+  {
+    "key": "30",
+    "value": "Registration Number of the Road Vehicle"
+  },
+  {
+    "key": "31",
+    "value": "Registration Number of the Road Trailer"
+  },
+  {
+    "key": "40",
+    "value": "IATA flight number"
+  },
+  {
+    "key": "41",
+    "value": "Registration Number of the Aircraft"
+  },
+  {
+    "key": "80",
+    "value": "European Vessel Identification Number (ENI Code)"
+  },
+  {
+    "key": "81",
+    "value": "Name of the inland waterways vessel"
+  },
+  {
+    "key": "99",
+    "value": "Unknown – Valid only during the Transitional Period"
+  }
+]

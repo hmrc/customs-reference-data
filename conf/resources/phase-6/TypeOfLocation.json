@@ -1,0 +1,18 @@
+[
+  {
+    "key": "A",
+    "value": "Designated location"
+  },
+  {
+    "key": "B",
+    "value": "Authorised place"
+  },
+  {
+    "key": "C",
+    "value": "Approved place"
+  },
+  {
+    "key": "D",
+    "value": "Other"
+  }
+]
