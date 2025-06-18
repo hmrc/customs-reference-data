@@ -1,0 +1,294 @@
+[
+  {
+    "key": "ASV",
+    "value": "%vol"
+  },
+  {
+    "key": "ASVX",
+    "value": "%vol per hectolitre"
+  },
+  {
+    "key": "CCT",
+    "value": "Carrying capacity in metric tonnes"
+  },
+  {
+    "key": "CEN",
+    "value": "Hundred items"
+  },
+  {
+    "key": "CMQ",
+    "value": "Cubic centimeter"
+  },
+  {
+    "key": "CTM",
+    "value": "Carats (one metric carat = 2 x 10-4kg)"
+  },
+  {
+    "key": "DAP",
+    "value": "Decatonne, corrected according to polarisation"
+  },
+  {
+    "key": "DHS",
+    "value": "Kilogram of dihydrostreptomycin"
+  },
+  {
+    "key": "DTN",
+    "value": "Hectokilogram"
+  },
+  {
+    "key": "DTNE",
+    "value": "Hectokilogram of drained net weight"
+  },
+  {
+    "key": "DTNF",
+    "value": "Hectokilogram of common wheat"
+  },
+  {
+    "key": "DTNG",
+    "value": "Hectokilogram , gross"
+  },
+  {
+    "key": "DTNL",
+    "value": "Hectokilogram of live weight"
+  },
+  {
+    "key": "DTNM",
+    "value": "Hectokilogram net of dry matter"
+  },
+  {
+    "key": "DTNR",
+    "value": "Hectokilogram of the standard quality"
+  },
+  {
+    "key": "DTNS",
+    "value": "Hectokilogram of sugar with a yield in white sugar of 92%"
+  },
+  {
+    "key": "DTNZ",
+    "value": "Hectokilogram per 1% by weight of sucrose"
+  },
+  {
+    "key": "ENP",
+    "value": "For each Euro or Member State national currency of the net, free-at-Union-frontier price, before duty of the product concerned"
+  },
+  {
+    "key": "EUR",
+    "value": "Euro (used for statistical surveillance)"
+  },
+  {
+    "key": "GFI",
+    "value": "Gram of fissile isotopes"
+  },
+  {
+    "key": "GRM",
+    "value": "Gram"
+  },
+  {
+    "key": "GRT",
+    "value": "Gross tonnage"
+  },
+  {
+    "key": "HLT",
+    "value": "Hectolitre"
+  },
+  {
+    "key": "HMT",
+    "value": "Hectometre"
+  },
+  {
+    "key": "KAC",
+    "value": "Kilogram net of acesulfame potassium"
+  },
+  {
+    "key": "KCC",
+    "value": "Kilogram of choline chloride"
+  },
+  {
+    "key": "KCL",
+    "value": "Tonne of potassium chloride"
+  },
+  {
+    "key": "KGM",
+    "value": "Kilogram"
+  },
+  {
+    "key": "KGMA",
+    "value": "Kilogram total alcohol"
+  },
+  {
+    "key": "KGME",
+    "value": "Kilogram of drained net weight"
+  },
+  {
+    "key": "KGMG",
+    "value": "Kilogram , gross"
+  },
+  {
+    "key": "KGMP",
+    "value": "Kilogram of lactic matter"
+  },
+  {
+    "key": "KGMS",
+    "value": "Kilogram of sugar with a yield in white sugar of 92%"
+  },
+  {
+    "key": "KGMT",
+    "value": "Kilogram of dry lactic matter"
+  },
+  {
+    "key": "KLT",
+    "value": "1000 litres"
+  },
+  {
+    "key": "KMA",
+    "value": "Kilogram of methylamines"
+  },
+  {
+    "key": "KMT",
+    "value": "Kilometre"
+  },
+  {
+    "key": "KNI",
+    "value": "Kilogram of nitrogen"
+  },
+  {
+    "key": "KNS",
+    "value": "Kilogram of hydrogen peroxide"
+  },
+  {
+    "key": "KPH",
+    "value": "Kilogram of potassium hydroxide (caustic potash)"
+  },
+  {
+    "key": "KPO",
+    "value": "Kilogram of potassium oxide"
+  },
+  {
+    "key": "KPP",
+    "value": "Kilogram of diphosphorus pentaoxide"
+  },
+  {
+    "key": "KSD",
+    "value": "Kilogram of substance 90 % dry"
+  },
+  {
+    "key": "KSH",
+    "value": "Kilogram of sodium hydroxide (caustic soda)"
+  },
+  {
+    "key": "KUR",
+    "value": "Kilogram of uranium"
+  },
+  {
+    "key": "LEF",
+    "value": "Leaf"
+  },
+  {
+    "key": "LPA",
+    "value": "Litre pure (100%) alcohol"
+  },
+  {
+    "key": "LTR",
+    "value": "Litre"
+  },
+  {
+    "key": "LTRA",
+    "value": "Litre total alcohol"
+  },
+  {
+    "key": "MIL",
+    "value": "1000 items"
+  },
+  {
+    "key": "MLT",
+    "value": "Milliliter"
+  },
+  {
+    "key": "MPR",
+    "value": "1000 pairs (used for statistical surveillance)"
+  },
+  {
+    "key": "MTK",
+    "value": "Square metre"
+  },
+  {
+    "key": "MTQ",
+    "value": "Cubic metre (m³)"
+  },
+  {
+    "key": "MTQC",
+    "value": "Cubic metre 1 000"
+  },
+  {
+    "key": "MTR",
+    "value": "Metre"
+  },
+  {
+    "key": "MWH",
+    "value": "1000 kilowatt hours"
+  },
+  {
+    "key": "NAR",
+    "value": "Number of items"
+  },
+  {
+    "key": "NARB",
+    "value": "Number of items per flask"
+  },
+  {
+    "key": "NCL",
+    "value": "Number of cells"
+  },
+  {
+    "key": "NPR",
+    "value": "Number of pairs"
+  },
+  {
+    "key": "STW",
+    "value": "Straw"
+  },
+  {
+    "key": "TCE",
+    "value": "Tonne of CO₂ equivalent of hydrofluorocarbons (HFCs)"
+  },
+  {
+    "key": "TJO",
+    "value": "Terajoule (gross calorific value)"
+  },
+  {
+    "key": "TNE",
+    "value": "Tonne"
+  },
+  {
+    "key": "TNEE",
+    "value": "Tonne of drained net weight"
+  },
+  {
+    "key": "TNEI",
+    "value": "Tonne of biodiesel content"
+  },
+  {
+    "key": "TNEJ",
+    "value": "Tonne of fuel content (usually in form of tallow, stearin, paraffin wax or other waxes, including the wick)"
+  },
+  {
+    "key": "TNEK",
+    "value": "Tonne of bioethanol content"
+  },
+  {
+    "key": "TNEM",
+    "value": "Tonne net of dry matter"
+  },
+  {
+    "key": "TNER",
+    "value": "Tonne of the standard quality"
+  },
+  {
+    "key": "TNEZ",
+    "value": "Tonne per 1% by weight of sucrose"
+  },
+  {
+    "key": "WAT",
+    "value": "Number of Watt"
+  }
+]

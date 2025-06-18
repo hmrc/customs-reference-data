@@ -1,0 +1,34 @@
+[
+  {
+    "key":"CH",
+    "value": "Switzerland"
+  },
+  {
+    "key":"GB",
+    "value": "United Kingdom"
+  },
+  {
+    "key":"IS",
+    "value": "Iceland"
+  },
+  {
+    "key":"MK",
+    "value": "North Macedonia"
+  },
+  {
+    "key":"NO",
+    "value": "Norway"
+  },
+  {
+    "key":"RS",
+    "value": "Serbia"
+  },
+  {
+    "key":"TR",
+    "value": "Türkiye"
+  },
+  {
+    "key":"UA",
+    "value": "Ukraine"
+  }
+]

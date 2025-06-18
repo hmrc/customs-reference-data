@@ -1,0 +1,30 @@
+[
+  {
+    "key": "A",
+    "value": "Payment in cash"
+  },
+  {
+    "key": "B",
+    "value": "Payment by credit card"
+  },
+  {
+    "key": "C",
+    "value": "Payment by cheque"
+  },
+  {
+    "key": "D",
+    "value": "Other"
+  },
+  {
+    "key": "H",
+    "value": "Electronic credit transfer"
+  },
+  {
+    "key": "Y",
+    "value": "Account holder with carrier"
+  },
+  {
+    "key": "Z",
+    "value": "Not pre-paid"
+  }
+]
