@@ -1,0 +1,42 @@
+[
+  {
+    "key": "10",
+    "value": "Documentary controls"
+  },
+  {
+    "key": "20",
+    "value": "Nuclear/radioactive material check"
+  },
+  {
+    "key": "30",
+    "value": "Non-intrusive inspection"
+  },
+  {
+    "key": "40",
+    "value": "Physical controls"
+  },
+  {
+    "key": "41",
+    "value": "Identification of consignment and seals"
+  },
+  {
+    "key": "42",
+    "value": "Intrusive inspection"
+  },
+  {
+    "key": "43",
+    "value": "Quantity control / Partial or total"
+  },
+  {
+    "key": "44",
+    "value": "Nature and characteristics of the goods"
+  },
+  {
+    "key": "45",
+    "value": "Sampling"
+  },
+  {
+    "key": "50",
+    "value": "Other"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "key": "CS",
+    "value": "Consolidator"
+  },
+  {
+    "key": "FW",
+    "value": "Freight Forwarder"
+  },
+  {
+    "key": "MF",
+    "value": "Manufacturer"
+  },
+  {
+    "key": "WH",
+    "value": "Warehouse Keeper"
+  }
+]
