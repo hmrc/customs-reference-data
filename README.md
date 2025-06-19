@@ -9,11 +9,13 @@ There must be at least one snapshot of reference data present at all times (for 
 
 ## Versioning
 
-### v1.0
+### Requests from DPS
+
+#### v1.0
 
 This has been deprecated and decommissioned
 
-### v2.0
+#### v2.0
 
 Version 2 stores reference data from DPS/EIS and is specific to NCTS5. This reference data has been crafted specifically to meet the NCTS5 requirements as laid out in the DDNTA. 
 
@@ -21,6 +23,20 @@ NOTE: Version 2 of this API is a tactical solution and will be replaced by a str
 
 Pub/Sub (or Publish/Subscribe) is an architectural design pattern used in distributed systems for asynchronous communication between different components or services. 
 Although Publish/Subscribe is based on earlier design patterns like message queuing and event brokers, it is more flexible and scalable.
+
+### Requests from NCTS frontends
+
+#### v1.0
+
+This corresponds to P5 code lists:
+* Requests will retrieve data from MongoDB
+* Test-only requests will retrieve data from [here](conf/resources/phase-5)
+
+#### v2.0
+
+This corresponds to P6 code lists:
+* Requests will retrieve data from [crdl-cache](https://github.com/hmrc/crdl-cache)
+* Test-only requests will retrieve data from [here](conf/resources/phase-6)
 
 ## Endpoints
 
@@ -103,18 +119,20 @@ Although Publish/Subscribe is based on earlier design patterns like message queu
 
 ### `GET /lists/:listName`
 
-#### Params
+#### Phase 5
+
+##### Params
 
 * Headers
-  * Accept - `application/vnd.hmrc.2.0+json`
+  * Accept - `application/vnd.hmrc.1.0+json`
 * Endpoint
   * For a valid `listName` see the code lists in the schemas
 * Query
   * To filter the response based on a certain field (e.g. `/lists/CountryCodesFullList?data.code=GB`)
 
-#### Successful response
+##### Successful response
 
-##### 200 OK
+###### 200 OK
 
 * The response JSON contains the desired data
 
@@ -141,13 +159,50 @@ Although Publish/Subscribe is based on earlier design patterns like message queu
 }
 ```
 
-#### Unsuccessful responses (with possible causes)
+##### Unsuccessful responses (with possible causes)
 
-##### 404 NOT FOUND
+###### 404 NOT FOUND
 * The `listName` was not found
 
-##### 500 INTERNAL SERVER ERROR
+###### 500 INTERNAL SERVER ERROR
 * An error occurred in the mongo client
+
+#### Phase 6
+
+##### Params
+
+* Headers
+  * Accept - `application/vnd.hmrc.2.0+json`
+* Endpoint
+  * For a valid `listName` see the code lists in the schemas
+* Query
+  * To filter the response based on a certain field (e.g. `/lists/CountryCodesFullList?keys=GB`)
+
+##### Successful response
+
+###### 200 OK
+
+* The response JSON contains the desired data
+
+```
+[
+    {
+        "key": "GB",
+        "value": "United Kingdom",
+        "properties": {
+            "state": "valid"
+        }
+    }
+]
+```
+
+##### Unsuccessful responses (with possible causes)
+
+###### 400 NOT FOUND
+* The `listName` was not valid
+
+###### 500 INTERNAL SERVER ERROR
+* An error occurred retrieving the data from crdl-cache
 
 ## Development
 ### Related test repositories

@@ -22,9 +22,11 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.{EitherValues, OptionValues}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.guice.GuiceApplicationBuilder
+import uk.gov.hmrc.http.HeaderCarrier
 
-trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with IntegrationPatience with MockitoSugar with EitherValues {
+trait ItSpecBase extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with MockitoSugar with EitherValues with IntegrationPatience {
 
   def guiceApplicationBuilder = new GuiceApplicationBuilder()
 
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 }

@@ -17,39 +17,52 @@
 package controllers.consumption
 
 import cats.data.OptionT
-import cats.implicits._
-import models.FilterParams
-import models.ListName
-import models.MetaData
-import models.StreamReferenceData
+import cats.implicits.*
+import connectors.CrdlCacheConnector
+import controllers.actions.VersionedAction
+import models.Phase.*
+import models.{FilterParams, ListName, MetaData, StreamReferenceData}
 import play.api.http.HttpEntity
-import play.api.mvc.Action
-import play.api.mvc.AnyContent
-import play.api.mvc.ControllerComponents
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.consumption.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
-  listRetrievalService: ListRetrievalService
+  versionedAction: VersionedAction,
+  listRetrievalService: ListRetrievalService,
+  crdlConnector: CrdlCacheConnector
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
   def get(listName: ListName, filter: Option[FilterParams]): Action[AnyContent] =
-    Action.async {
-      (
-        for {
-          latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-          streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId, filter)
-          nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
-        } yield streamedList.via(nestJson.nestInJson(filter))
-      ).value.map {
-        case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-        case None         => NotFound
-      }
+    versionedAction.async {
+      implicit request =>
+        request.phase match {
+          case Phase5 =>
+            (
+              for {
+                latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
+                streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId, filter)
+                nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
+              } yield streamedList.via(nestJson.nestInJson(filter))
+            ).value.map {
+              case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+              case None         => NotFound
+            }
+          case Phase6 =>
+            listName.code match {
+              case Some(value) =>
+                crdlConnector.get(value, filter.getOrElse(FilterParams())).map {
+                  source => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+                }
+              case None =>
+                Future.successful(BadRequest(s"$listName is not a valid code list name"))
+            }
+        }
     }
 
 }

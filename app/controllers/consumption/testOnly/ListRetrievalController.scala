@@ -16,35 +16,40 @@
 
 package controllers.consumption.testOnly
 
-import models.FilterParams
-import models.ListName
+import controllers.actions.VersionedAction
+import models.Phase.{Phase5, Phase6}
+import models.{FilterParams, ListName}
 import play.api.Logging
 import play.api.libs.json.Json
-import play.api.mvc.Action
-import play.api.mvc.AnyContent
-import play.api.mvc.ControllerComponents
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.consumption.testOnly.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.util.Failure
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
-  listRetrievalService: ListRetrievalService
+  listRetrievalService: ListRetrievalService,
+  versionedAction: VersionedAction
 ) extends BackendController(cc)
     with Logging {
 
   def get(listName: ListName, filterParams: Option[FilterParams]): Action[AnyContent] =
-    Action {
-      listRetrievalService.get(listName.listName, filterParams) match {
-        case Success(json) =>
-          Ok(Json.obj("data" -> json))
-        case Failure(exception) =>
-          logger.error(exception.getMessage)
-          NotFound
-      }
+    versionedAction {
+      implicit request =>
+        listRetrievalService.get(listName.listName, request.phase, filterParams) match {
+          case Success(json) =>
+            Ok {
+              request.phase match {
+                case Phase5 => Json.obj("data" -> json)
+                case Phase6 => json
+              }
+            }
+          case Failure(exception) =>
+            logger.error(exception.getMessage)
+            NotFound
+        }
     }
 
 }

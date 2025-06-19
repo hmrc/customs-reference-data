@@ -1,0 +1,794 @@
+[
+  {
+    "key": "AD"
+  },
+  {
+    "key": "AE"
+  },
+  {
+    "key": "AF"
+  },
+  {
+    "key": "AG"
+  },
+  {
+    "key": "AI"
+  },
+  {
+    "key": "AL"
+  },
+  {
+    "key": "AM"
+  },
+  {
+    "key": "AO"
+  },
+  {
+    "key": "AQ"
+  },
+  {
+    "key": "AR"
+  },
+  {
+    "key": "AS"
+  },
+  {
+    "key": "AT"
+  },
+  {
+    "key": "AU"
+  },
+  {
+    "key": "AW"
+  },
+  {
+    "key": "AX"
+  },
+  {
+    "key": "AZ"
+  },
+  {
+    "key": "BA"
+  },
+  {
+    "key": "BB"
+  },
+  {
+    "key": "BD"
+  },
+  {
+    "key": "BE"
+  },
+  {
+    "key": "BF"
+  },
+  {
+    "key": "BG"
+  },
+  {
+    "key": "BH"
+  },
+  {
+    "key": "BI"
+  },
+  {
+    "key": "BJ"
+  },
+  {
+    "key": "BL"
+  },
+  {
+    "key": "BM"
+  },
+  {
+    "key": "BN"
+  },
+  {
+    "key": "BO"
+  },
+  {
+    "key": "BQ"
+  },
+  {
+    "key": "BR"
+  },
+  {
+    "key": "BS"
+  },
+  {
+    "key": "BT"
+  },
+  {
+    "key": "BV"
+  },
+  {
+    "key": "BW"
+  },
+  {
+    "key": "BY"
+  },
+  {
+    "key": "BZ"
+  },
+  {
+    "key": "CA"
+  },
+  {
+    "key": "CC"
+  },
+  {
+    "key": "CD"
+  },
+  {
+    "key": "CF"
+  },
+  {
+    "key": "CG"
+  },
+  {
+    "key": "CH"
+  },
+  {
+    "key": "CI"
+  },
+  {
+    "key": "CK"
+  },
+  {
+    "key": "CL"
+  },
+  {
+    "key": "CM"
+  },
+  {
+    "key": "CN"
+  },
+  {
+    "key": "CO"
+  },
+  {
+    "key": "CR"
+  },
+  {
+    "key": "CU"
+  },
+  {
+    "key": "CV"
+  },
+  {
+    "key": "CW"
+  },
+  {
+    "key": "CX"
+  },
+  {
+    "key": "CY"
+  },
+  {
+    "key": "CZ"
+  },
+  {
+    "key": "DE"
+  },
+  {
+    "key": "DJ"
+  },
+  {
+    "key": "DK"
+  },
+  {
+    "key": "DM"
+  },
+  {
+    "key": "DO"
+  },
+  {
+    "key": "DZ"
+  },
+  {
+    "key": "EC"
+  },
+  {
+    "key": "EE"
+  },
+  {
+    "key": "EG"
+  },
+  {
+    "key": "EH"
+  },
+  {
+    "key": "ER"
+  },
+  {
+    "key": "ES"
+  },
+  {
+    "key": "ET"
+  },
+  {
+    "key": "EU"
+  },
+  {
+    "key": "FI"
+  },
+  {
+    "key": "FJ"
+  },
+  {
+    "key": "FK"
+  },
+  {
+    "key": "FM"
+  },
+  {
+    "key": "FO"
+  },
+  {
+    "key": "FR"
+  },
+  {
+    "key": "GA"
+  },
+  {
+    "key": "GB"
+  },
+  {
+    "key": "GD"
+  },
+  {
+    "key": "GE"
+  },
+  {
+    "key": "GF"
+  },
+  {
+    "key": "GG"
+  },
+  {
+    "key": "GH"
+  },
+  {
+    "key": "GI"
+  },
+  {
+    "key": "GL"
+  },
+  {
+    "key": "GM"
+  },
+  {
+    "key": "GN"
+  },
+  {
+    "key": "GP"
+  },
+  {
+    "key": "GQ"
+  },
+  {
+    "key": "GR"
+  },
+  {
+    "key": "GS"
+  },
+  {
+    "key": "GT"
+  },
+  {
+    "key": "GU"
+  },
+  {
+    "key": "GW"
+  },
+  {
+    "key": "GY"
+  },
+  {
+    "key": "HK"
+  },
+  {
+    "key": "HM"
+  },
+  {
+    "key": "HN"
+  },
+  {
+    "key": "HR"
+  },
+  {
+    "key": "HT"
+  },
+  {
+    "key": "HU"
+  },
+  {
+    "key": "ID"
+  },
+  {
+    "key": "IE"
+  },
+  {
+    "key": "IL"
+  },
+  {
+    "key": "IM"
+  },
+  {
+    "key": "IN"
+  },
+  {
+    "key": "IO"
+  },
+  {
+    "key": "IQ"
+  },
+  {
+    "key": "IR"
+  },
+  {
+    "key": "IS"
+  },
+  {
+    "key": "IT"
+  },
+  {
+    "key": "JE"
+  },
+  {
+    "key": "JM"
+  },
+  {
+    "key": "JO"
+  },
+  {
+    "key": "JP"
+  },
+  {
+    "key": "KE"
+  },
+  {
+    "key": "KG"
+  },
+  {
+    "key": "KH"
+  },
+  {
+    "key": "KI"
+  },
+  {
+    "key": "KM"
+  },
+  {
+    "key": "KN"
+  },
+  {
+    "key": "KP"
+  },
+  {
+    "key": "KR"
+  },
+  {
+    "key": "KW"
+  },
+  {
+    "key": "KY"
+  },
+  {
+    "key": "KZ"
+  },
+  {
+    "key": "LA"
+  },
+  {
+    "key": "LB"
+  },
+  {
+    "key": "LC"
+  },
+  {
+    "key": "LI"
+  },
+  {
+    "key": "LK"
+  },
+  {
+    "key": "LR"
+  },
+  {
+    "key": "LS"
+  },
+  {
+    "key": "LT"
+  },
+  {
+    "key": "LU"
+  },
+  {
+    "key": "LV"
+  },
+  {
+    "key": "LY"
+  },
+  {
+    "key": "MA"
+  },
+  {
+    "key": "MC"
+  },
+  {
+    "key": "MD"
+  },
+  {
+    "key": "ME"
+  },
+  {
+    "key": "MF"
+  },
+  {
+    "key": "MG"
+  },
+  {
+    "key": "MH"
+  },
+  {
+    "key": "MK"
+  },
+  {
+    "key": "ML"
+  },
+  {
+    "key": "MM"
+  },
+  {
+    "key": "MN"
+  },
+  {
+    "key": "MO"
+  },
+  {
+    "key": "MP"
+  },
+  {
+    "key": "MQ"
+  },
+  {
+    "key": "MR"
+  },
+  {
+    "key": "MS"
+  },
+  {
+    "key": "MT"
+  },
+  {
+    "key": "MU"
+  },
+  {
+    "key": "MV"
+  },
+  {
+    "key": "MW"
+  },
+  {
+    "key": "MX"
+  },
+  {
+    "key": "MY"
+  },
+  {
+    "key": "MZ"
+  },
+  {
+    "key": "NA"
+  },
+  {
+    "key": "NC"
+  },
+  {
+    "key": "NE"
+  },
+  {
+    "key": "NF"
+  },
+  {
+    "key": "NG"
+  },
+  {
+    "key": "NI"
+  },
+  {
+    "key": "NL"
+  },
+  {
+    "key": "NO"
+  },
+  {
+    "key": "NP"
+  },
+  {
+    "key": "NR"
+  },
+  {
+    "key": "NU"
+  },
+  {
+    "key": "NZ"
+  },
+  {
+    "key": "OM"
+  },
+  {
+    "key": "PA"
+  },
+  {
+    "key": "PE"
+  },
+  {
+    "key": "PF"
+  },
+  {
+    "key": "PG"
+  },
+  {
+    "key": "PH"
+  },
+  {
+    "key": "PK"
+  },
+  {
+    "key": "PL"
+  },
+  {
+    "key": "PM"
+  },
+  {
+    "key": "PN"
+  },
+  {
+    "key": "PR"
+  },
+  {
+    "key": "PS"
+  },
+  {
+    "key": "PT"
+  },
+  {
+    "key": "PW"
+  },
+  {
+    "key": "PY"
+  },
+  {
+    "key": "QA"
+  },
+  {
+    "key": "QP"
+  },
+  {
+    "key": "QQ"
+  },
+  {
+    "key": "QR"
+  },
+  {
+    "key": "QS"
+  },
+  {
+    "key": "QU"
+  },
+  {
+    "key": "QV"
+  },
+  {
+    "key": "QW"
+  },
+  {
+    "key": "QX"
+  },
+  {
+    "key": "QY"
+  },
+  {
+    "key": "QZ"
+  },
+  {
+    "key": "RE"
+  },
+  {
+    "key": "RO"
+  },
+  {
+    "key": "RS"
+  },
+  {
+    "key": "RU"
+  },
+  {
+    "key": "RW"
+  },
+  {
+    "key": "SA"
+  },
+  {
+    "key": "SB"
+  },
+  {
+    "key": "SC"
+  },
+  {
+    "key": "SD"
+  },
+  {
+    "key": "SE"
+  },
+  {
+    "key": "SG"
+  },
+  {
+    "key": "SH"
+  },
+  {
+    "key": "SI"
+  },
+  {
+    "key": "SJ"
+  },
+  {
+    "key": "SK"
+  },
+  {
+    "key": "SL"
+  },
+  {
+    "key": "SM"
+  },
+  {
+    "key": "SN"
+  },
+  {
+    "key": "SO"
+  },
+  {
+    "key": "SR"
+  },
+  {
+    "key": "SS"
+  },
+  {
+    "key": "ST"
+  },
+  {
+    "key": "SV"
+  },
+  {
+    "key": "SX"
+  },
+  {
+    "key": "SY"
+  },
+  {
+    "key": "SZ"
+  },
+  {
+    "key": "TC"
+  },
+  {
+    "key": "TD"
+  },
+  {
+    "key": "TF"
+  },
+  {
+    "key": "TG"
+  },
+  {
+    "key": "TH"
+  },
+  {
+    "key": "TJ"
+  },
+  {
+    "key": "TK"
+  },
+  {
+    "key": "TL"
+  },
+  {
+    "key": "TM"
+  },
+  {
+    "key": "TN"
+  },
+  {
+    "key": "TO"
+  },
+  {
+    "key": "TR"
+  },
+  {
+    "key": "TT"
+  },
+  {
+    "key": "TV"
+  },
+  {
+    "key": "TW"
+  },
+  {
+    "key": "TZ"
+  },
+  {
+    "key": "UA"
+  },
+  {
+    "key": "UG"
+  },
+  {
+    "key": "US"
+  },
+  {
+    "key": "UY"
+  },
+  {
+    "key": "UZ"
+  },
+  {
+    "key": "VA"
+  },
+  {
+    "key": "VC"
+  },
+  {
+    "key": "VE"
+  },
+  {
+    "key": "VG"
+  },
+  {
+    "key": "VI"
+  },
+  {
+    "key": "VN"
+  },
+  {
+    "key": "VU"
+  },
+  {
+    "key": "WF"
+  },
+  {
+    "key": "WS"
+  },
+  {
+    "key": "XC"
+  },
+  {
+    "key": "XI"
+  },
+  {
+    "key": "XK"
+  },
+  {
+    "key": "XL"
+  },
+  {
+    "key": "XS"
+  },
+  {
+    "key": "YE"
+  },
+  {
+    "key": "YT"
+  },
+  {
+    "key": "ZA"
+  },
+  {
+    "key": "ZM"
+  },
+  {
+    "key": "ZW"
+  }
+]

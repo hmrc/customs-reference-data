@@ -22,10 +22,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class AppConfig @Inject() (config: Configuration, servicesConfig: MyServicesConfig) {
 
   lazy val replaceIndexes: Boolean          = config.get[Boolean]("mongodb.replaceIndexes")
   lazy val ttl: Int                         = config.get[Int]("mongodb.timeToLiveInSeconds")
   lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
 
+  lazy val crdlCacheUrl: String = servicesConfig.fullServiceUrl("crdl-cache")
 }

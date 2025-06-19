@@ -1,0 +1,18 @@
+[
+  {
+    "key": "T1",
+    "value": "Goods not having the customs status of Union goods, which are placed under the common transit procedure."
+  },
+  {
+    "key": "T2",
+    "value": "Goods having the customs status of Union goods, which are placed under the common transit procedure"
+  },
+  {
+    "key": "T2F",
+    "value": "Goods required to move under the internal Union transit procedure, in accordance with Article 188 of Delegated Regulation (EU) 2015/2446"
+  },
+  {
+    "key": "T2SM",
+    "value": "Goods placed under the internal Union transit procedure, in application of Article 2 of Decision 4/92/EC of the EEC-San Marino Cooperation Committee of 22 December 1992"
+  }
+]

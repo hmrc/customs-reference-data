@@ -1,0 +1,542 @@
+[
+  {
+    "key": "A00",
+    "value": "Amendment is not possible"
+  },
+  {
+    "key": "A10",
+    "value": "Amend Consignor name"
+  },
+  {
+    "key": "A100",
+    "value": "Amend phone number and e-mail address(es) of consignor"
+  },
+  {
+    "key": "A101",
+    "value": "Amend consignor name"
+  },
+  {
+    "key": "A102",
+    "value": "Amend consignor identification number"
+  },
+  {
+    "key": "A103",
+    "value": "Amend consignor type of person (legal or natural person)"
+  },
+  {
+    "key": "A104",
+    "value": "Amend consignor address"
+  },
+  {
+    "key": "A110",
+    "value": "Amend phone number and e-mail address(es) of seller"
+  },
+  {
+    "key": "A111",
+    "value": "Amend seller name"
+  },
+  {
+    "key": "A112",
+    "value": "Amend seller identification number"
+  },
+  {
+    "key": "A113",
+    "value": "Amend seller type of person (legal or natural person)"
+  },
+  {
+    "key": "A114",
+    "value": "Amend seller address"
+  },
+  {
+    "key": "A20",
+    "value": "Amend Consignor address"
+  },
+  {
+    "key": "A200",
+    "value": "Amend phone number and e-mail address(es) of consignee"
+  },
+  {
+    "key": "A201",
+    "value": "Amend consignee name"
+  },
+  {
+    "key": "A202",
+    "value": "Amend consignee identification number"
+  },
+  {
+    "key": "A203",
+    "value": "Amend consignee type of person (legal or natural person)"
+  },
+  {
+    "key": "A204",
+    "value": "Amend consignee address"
+  },
+  {
+    "key": "A210",
+    "value": "Amend phone number and e-mail address(es) of buyer"
+  },
+  {
+    "key": "A211",
+    "value": "Amend buyer name"
+  },
+  {
+    "key": "A212",
+    "value": "Amend buyer identification number"
+  },
+  {
+    "key": "A213",
+    "value": "Amend buyer type of person (legal or natural person)"
+  },
+  {
+    "key": "A214",
+    "value": "Amend buyer address"
+  },
+  {
+    "key": "A30",
+    "value": "Amend Consignee name"
+  },
+  {
+    "key": "A300",
+    "value": "Amend phone number and e-mail address(es) of carrier"
+  },
+  {
+    "key": "A302",
+    "value": "Amend carrier identification number"
+  },
+  {
+    "key": "A304",
+    "value": "Amend carrier address"
+  },
+  {
+    "key": "A40",
+    "value": "Amend Consignee address"
+  },
+  {
+    "key": "A400",
+    "value": "Amend phone number and e-mail address(es) of notify party"
+  },
+  {
+    "key": "A401",
+    "value": "Amend notify party name"
+  },
+  {
+    "key": "A402",
+    "value": "Amend notify party identification number"
+  },
+  {
+    "key": "A403",
+    "value": "Amend notify party type of person (legal or natural person)"
+  },
+  {
+    "key": "A404",
+    "value": "Amend that notify party address"
+  },
+  {
+    "key": "A50",
+    "value": "Amend number of packages"
+  },
+  {
+    "key": "A502",
+    "value": "Amend identification number of additional supply chain actor"
+  },
+  {
+    "key": "A505",
+    "value": "Amend role of additional supply chain actor"
+  },
+  {
+    "key": "A60",
+    "value": "Amend description of goods"
+  },
+  {
+    "key": "A600",
+    "value": "Amend ENS data elements"
+  },
+  {
+    "key": "A601",
+    "value": "Amend total gross mass of Consignment (master level)"
+  },
+  {
+    "key": "A602",
+    "value": "Amend total gross mass of Consignment (house level)"
+  },
+  {
+    "key": "A603",
+    "value": "Amend gross mass of goods item"
+  },
+  {
+    "key": "A604",
+    "value": "Amend goods item description"
+  },
+  {
+    "key": "A605",
+    "value": "Provide more detailed description of goods items"
+  },
+  {
+    "key": "A606",
+    "value": "Provide translations of goods item description in English"
+  },
+  {
+    "key": "A607",
+    "value": "Amend CUS code"
+  },
+  {
+    "key": "A608",
+    "value": "Amend commodity code"
+  },
+  {
+    "key": "A609",
+    "value": "Amend UN number of dangerous goods"
+  },
+  {
+    "key": "A610",
+    "value": "Amend shipping marks"
+  },
+  {
+    "key": "A611",
+    "value": "Amend number of packages"
+  },
+  {
+    "key": "A612",
+    "value": "Amend type of packages"
+  },
+  {
+    "key": "A620",
+    "value": "Amend method of payment for transport charges"
+  },
+  {
+    "key": "A621",
+    "value": "Amend container identification number"
+  },
+  {
+    "key": "A622",
+    "value": "Amend countries of routing"
+  },
+  {
+    "key": "A623",
+    "value": "Amend transport document details"
+  },
+  {
+    "key": "A70",
+    "value": "Amend gross mass"
+  },
+  {
+    "key": "A801",
+    "value": "Amend place of acceptance"
+  },
+  {
+    "key": "A802",
+    "value": "Amend place of loading"
+  },
+  {
+    "key": "A803",
+    "value": "Amend place of delivery"
+  },
+  {
+    "key": "A804",
+    "value": "Amend place of unloading"
+  },
+  {
+    "key": "B00",
+    "value": "Additional information cannot be provided"
+  },
+  {
+    "key": "B01",
+    "value": "Additional information is provided"
+  },
+  {
+    "key": "B10",
+    "value": "Provide phone number and e-mail address(es) of Consignor"
+  },
+  {
+    "key": "B20",
+    "value": "Provide phone number and e-mail address(es) of Consignee"
+  },
+  {
+    "key": "C00",
+    "value": "PLACI data element is not confirmed"
+  },
+  {
+    "key": "C01",
+    "value": "PLACI data element is confirmed"
+  },
+  {
+    "key": "C10",
+    "value": "Confirm PLACI data elements"
+  },
+  {
+    "key": "D00",
+    "value": "No documents can be provided"
+  },
+  {
+    "key": "D01",
+    "value": "Documents are provided"
+  },
+  {
+    "key": "D02",
+    "value": "Additional information provided"
+  },
+  {
+    "key": "D10",
+    "value": "Provide all available documents"
+  },
+  {
+    "key": "F100",
+    "value": "Provide phone number and e-mail address(es) of consignor"
+  },
+  {
+    "key": "F101",
+    "value": "Confirm that declared consignor name is correct"
+  },
+  {
+    "key": "F102",
+    "value": "Confirm that declared consignor identification number is correct"
+  },
+  {
+    "key": "F103",
+    "value": "Confirm that declared consignor type of person (legal or natural person) is correct"
+  },
+  {
+    "key": "F104",
+    "value": "Confirm that declared consignor address is correct"
+  },
+  {
+    "key": "F105",
+    "value": "Provide EORI number of consignor"
+  },
+  {
+    "key": "F110",
+    "value": "Provide phone number and e-mail address(es) of seller"
+  },
+  {
+    "key": "F111",
+    "value": "Confirm that declared seller name is correct"
+  },
+  {
+    "key": "F112",
+    "value": "Confirm that declared seller identification number is correct"
+  },
+  {
+    "key": "F113",
+    "value": "Confirm that declared seller type of person (legal or natural person) is correct"
+  },
+  {
+    "key": "F114",
+    "value": "Confirm that declared seller address is correct"
+  },
+  {
+    "key": "F200",
+    "value": "Provide phone number and e-mail address(es) of consignee"
+  },
+  {
+    "key": "F201",
+    "value": "Confirm that declared consignee name is correct"
+  },
+  {
+    "key": "F202",
+    "value": "Confirm that declared consignee identification number is correct"
+  },
+  {
+    "key": "F203",
+    "value": "Confirm that declared consignee type of person (legal or natural person) is correct"
+  },
+  {
+    "key": "F204",
+    "value": "Confirm that declared consignee address is correct"
+  },
+  {
+    "key": "F205",
+    "value": "Provide EORI number of consignee"
+  },
+  {
+    "key": "F210",
+    "value": "Provide phone number and e-mail address(es) of buyer"
+  },
+  {
+    "key": "F211",
+    "value": "Confirm that declared buyer name is correct"
+  },
+  {
+    "key": "F212",
+    "value": "Confirm that declared buyer identification number is correct"
+  },
+  {
+    "key": "F213",
+    "value": "Confirm that declared buyer type of person (legal or natural person) is correct"
+  },
+  {
+    "key": "F214",
+    "value": "Confirm that declared buyer address is correct"
+  },
+  {
+    "key": "F300",
+    "value": "Provide phone number and e-mail address(es) of carrier"
+  },
+  {
+    "key": "F302",
+    "value": "Confirm that declared carrier identification number is correct"
+  },
+  {
+    "key": "F304",
+    "value": "Confirm that declared carrier address is correct"
+  },
+  {
+    "key": "F400",
+    "value": "Provide phone number and e-mail address(es) of notify party"
+  },
+  {
+    "key": "F401",
+    "value": "Confirm that declared notify party name is correct"
+  },
+  {
+    "key": "F402",
+    "value": "Confirm that declared notify party identification number is correct"
+  },
+  {
+    "key": "F403",
+    "value": "Confirm that declared notify party type of person (legal or natural person) is correct"
+  },
+  {
+    "key": "F404",
+    "value": "Confirm that declared that notify party address is correct"
+  },
+  {
+    "key": "F502",
+    "value": "Confirm that declared identification number of additional supply chain actor is correct"
+  },
+  {
+    "key": "F505",
+    "value": "Confirm that declared role of additional supply chain actor is correct"
+  },
+  {
+    "key": "F600",
+    "value": "Confirm that declared ENS data elements are correct"
+  },
+  {
+    "key": "F601",
+    "value": "Confirm that declared total gross mass of Consignment (master level) is correct"
+  },
+  {
+    "key": "F602",
+    "value": "Confirm that declared total gross mass of Consignment (house level) is correct"
+  },
+  {
+    "key": "F603",
+    "value": "Confirm that declared gross mass of goods item is correct"
+  },
+  {
+    "key": "F604",
+    "value": "Confirm that declared goods item description is correct"
+  },
+  {
+    "key": "F605",
+    "value": "Provide more detailed description of goods items"
+  },
+  {
+    "key": "F606",
+    "value": "Provide translations of goods item description in English"
+  },
+  {
+    "key": "F607",
+    "value": "Confirm that declared CUS code is correct"
+  },
+  {
+    "key": "F608",
+    "value": "Confirm that declared commodity code is correct"
+  },
+  {
+    "key": "F609",
+    "value": "Confirm that declared UN number of dangerous goods is correct"
+  },
+  {
+    "key": "F610",
+    "value": "Confirm that declared shipping marks is correct"
+  },
+  {
+    "key": "F611",
+    "value": "Confirm that declared number of packages is correct"
+  },
+  {
+    "key": "F612",
+    "value": "Confirm that declared type of packages is correct"
+  },
+  {
+    "key": "F620",
+    "value": "Confirm that declared method of payment for transport charges is correct"
+  },
+  {
+    "key": "F621",
+    "value": "Confirm that declared container identification number is correct"
+  },
+  {
+    "key": "F622",
+    "value": "Confirm that declared countries of routing are correct"
+  },
+  {
+    "key": "F623",
+    "value": "Confirm that declared transport document details are correct"
+  },
+  {
+    "key": "F700",
+    "value": "Provide all available documents"
+  },
+  {
+    "key": "F801",
+    "value": "Confirm that declared place of acceptance is correct"
+  },
+  {
+    "key": "F802",
+    "value": "Confirm that declared place of loading is correct"
+  },
+  {
+    "key": "F803",
+    "value": "Confirm that declared place of delivery is correct"
+  },
+  {
+    "key": "F804",
+    "value": "Confirm that declared place of unloading is correct"
+  },
+  {
+    "key": "R100",
+    "value": "Additional information is provided"
+  },
+  {
+    "key": "R101",
+    "value": "Declared ENS data are confirmed"
+  },
+  {
+    "key": "R102",
+    "value": "Documents are provided"
+  },
+  {
+    "key": "R103",
+    "value": "ENS amended"
+  },
+  {
+    "key": "R200",
+    "value": "Additional information cannot be provided"
+  },
+  {
+    "key": "R201",
+    "value": "Declared ENS data are not confirmed"
+  },
+  {
+    "key": "R202",
+    "value": "Documents cannot be provided"
+  },
+  {
+    "key": "R203",
+    "value": "Amendment is not possible"
+  },
+  {
+    "key": "S00",
+    "value": "HRCM screening not performed"
+  },
+  {
+    "key": "S01",
+    "value": "HRCM screening performed"
+  },
+  {
+    "key": "S10",
+    "value": "Provide information whether HRCM screening has taken place"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "key": "G01",
+    "value": "Guarantee does not exist"
+  },
+  {
+    "key": "G02",
+    "value": "Guarantee exists, but not valid"
+  },
+  {
+    "key": "G03",
+    "value": "Access code not valid"
+  },
+  {
+    "key": "G04",
+    "value": "Holder of Guarantee is not equal to Holder of Transit procedure in declaration"
+  },
+  {
+    "key": "G05",
+    "value": "Individual guarantee voucher already used"
+  },
+  {
+    "key": "G06",
+    "value": "Use restriction: No suspended goods"
+  },
+  {
+    "key": "G08",
+    "value": "Not valid for Country of Transit or Country of Destination"
+  },
+  {
+    "key": "G09",
+    "value": "Reference/Guarantee amounts NOT sufficient"
+  },
+  {
+    "key": "G10",
+    "value": "Individual guarantee by Guarantor already used"
+  },
+  {
+    "key": "G11",
+    "value": "Customs Office of Departure and Customs Office of Destination do not correspond (Guarantee type ‘2’)"
+  },
+  {
+    "key": "G12",
+    "value": "'Declared commodity code' and 'Commodity code' in guarantee do not match"
+  },
+  {
+    "key": "G13",
+    "value": "The 'GRN' and the 'Guarantee type' do not match"
+  }
+]

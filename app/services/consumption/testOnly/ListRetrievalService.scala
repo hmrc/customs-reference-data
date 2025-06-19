@@ -16,26 +16,31 @@
 
 package services.consumption.testOnly
 
-import models._
-import play.api.libs.json._
+import models.*
+import models.Phase.*
+import play.api.libs.json.*
 
 import javax.inject.Inject
 import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String, filterParams: Option[FilterParams]): Try[JsArray] =
+  def get(codeList: String, phase: Phase, filterParams: Option[FilterParams]): Try[JsArray] =
     (filterParams match {
       case None =>
-        resourceService.getJson(codeList)
+        resourceService.getJson(codeList, phase)
       case Some(filterParams) =>
-        resourceService.getJson(codeList).map {
+        resourceService.getJson(codeList, phase).map {
           json =>
             val filteredValues = json.value.filter {
               value =>
                 filterParams.parameters.forall {
                   case (filterParamKey, filterParamValues) =>
-                    val nodes = filterParamKey.split("\\.").tail // removes "data" from path nodes
+                    val nodes = (phase, filterParamKey.split("\\.")) match {
+                      case (Phase5, value)         => value.tail // removes "data" from path nodes
+                      case (Phase6, Array("keys")) => Array("key")
+                      case (Phase6, value)         => "properties" +: value
+                    }
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)
                     }

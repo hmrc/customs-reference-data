@@ -1,0 +1,9346 @@
+[
+  {
+    "key": "0004",
+    "value": "AMMONIUM PICRATE dry or wetted with less than 10% water, by mass"
+  },
+  {
+    "key": "0005",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0006",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0007",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0009",
+    "value": "AMMUNITION, INCENDIARY with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0010",
+    "value": "AMMUNITION, INCENDIARY with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0012",
+    "value": "CARTRIDGES FOR WEAPONS, INERT PROJECTILE or CARTRIDGES, SMALL ARMS"
+  },
+  {
+    "key": "0014",
+    "value": "CARTRIDGES FOR WEAPONS, BLANK or CARTRIDGES, SMALL ARMS, BLANK"
+  },
+  {
+    "key": "0015",
+    "value": "AMMUNITION, SMOKE with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0016",
+    "value": "AMMUNITION, SMOKE with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0018",
+    "value": "AMMUNITION, TEAR-PRODUCING with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0019",
+    "value": "AMMUNITION, TEAR-PRODUCING with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0020",
+    "value": "AMMUNITION, TOXIC with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0021",
+    "value": "AMMUNITION, TOXIC with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0027",
+    "value": "BLACK POWDER (GUNPOWDER), granular or as a meal"
+  },
+  {
+    "key": "0028",
+    "value": "BLACK POWDER (GUNPOWDER), COMPRESSED or BLACK POWDER (GUNPOWDER), IN PELLETS"
+  },
+  {
+    "key": "0029",
+    "value": "DETONATORS, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0030",
+    "value": "DETONATORS, ELECTRIC for blasting"
+  },
+  {
+    "key": "0033",
+    "value": "BOMBS with bursting charge"
+  },
+  {
+    "key": "0034",
+    "value": "BOMBS with bursting charge"
+  },
+  {
+    "key": "0035",
+    "value": "BOMBS with bursting charge"
+  },
+  {
+    "key": "0037",
+    "value": "BOMBS, PHOTO-FLASH"
+  },
+  {
+    "key": "0038",
+    "value": "BOMBS, PHOTO-FLASH"
+  },
+  {
+    "key": "0039",
+    "value": "BOMBS, PHOTO-FLASH"
+  },
+  {
+    "key": "0042",
+    "value": "BOOSTERS without detonator"
+  },
+  {
+    "key": "0043",
+    "value": "BURSTERS, explosive"
+  },
+  {
+    "key": "0044",
+    "value": "PRIMERS, CAP TYPE"
+  },
+  {
+    "key": "0048",
+    "value": "CHARGES, DEMOLITION"
+  },
+  {
+    "key": "0049",
+    "value": "CARTRIDGES, FLASH"
+  },
+  {
+    "key": "0050",
+    "value": "CARTRIDGES, FLASH"
+  },
+  {
+    "key": "0054",
+    "value": "CARTRIDGES, SIGNAL"
+  },
+  {
+    "key": "0055",
+    "value": "CASES, CARTRIDGE, EMPTY, WITH PRIMER"
+  },
+  {
+    "key": "0056",
+    "value": "CHARGES, DEPTH"
+  },
+  {
+    "key": "0059",
+    "value": "CHARGES, SHAPED without detonator"
+  },
+  {
+    "key": "0060",
+    "value": "CHARGES, SUPPLEMENTARY, EXPLOSIVE"
+  },
+  {
+    "key": "0065",
+    "value": "CORD, DETONATING, flexible"
+  },
+  {
+    "key": "0066",
+    "value": "CORD, IGNITER"
+  },
+  {
+    "key": "0070",
+    "value": "CUTTERS, CABLE, EXPLOSIVE"
+  },
+  {
+    "key": "0072",
+    "value": "CYCLOTRI-METHYLENE-TRINITRAMINE (CYCLONITE; HEXOGEN; RDX), WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "0073",
+    "value": "DETONATORS FOR AMMUNITION"
+  },
+  {
+    "key": "0074",
+    "value": "DIAZODINITROPHENOL, WETTED with not less than 40% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0075",
+    "value": "DIETHYLENE-GLYCOL DINITRATE, DESENSITIZED with not less than 25% non-volatile, water-insoluble phlegmatizer, by mass"
+  },
+  {
+    "key": "0076",
+    "value": "DINITROPHENOL, dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0077",
+    "value": "DINITRO-PHENOLATES, alkali metals, dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0078",
+    "value": "DINITRORESORCINOL, dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0079",
+    "value": "HEXANITRODIPHENYLAMINE (DIPICRYLAMINE; HEXYL)"
+  },
+  {
+    "key": "0081",
+    "value": "EXPLOSIVE, BLASTING, TYPE A"
+  },
+  {
+    "key": "0082",
+    "value": "EXPLOSIVE, BLASTING, TYPE B"
+  },
+  {
+    "key": "0083",
+    "value": "EXPLOSIVE, BLASTING, TYPE C"
+  },
+  {
+    "key": "0084",
+    "value": "EXPLOSIVE, BLASTING, TYPE D"
+  },
+  {
+    "key": "0092",
+    "value": "FLARES, SURFACE"
+  },
+  {
+    "key": "0093",
+    "value": "FLARES, AERIAL"
+  },
+  {
+    "key": "0094",
+    "value": "FLASH POWDER"
+  },
+  {
+    "key": "0099",
+    "value": "FRACTURING DEVICES, EXPLOSIVE without detonator, for oil wells"
+  },
+  {
+    "key": "0101",
+    "value": "FUSE, NON-DETONATING"
+  },
+  {
+    "key": "0102",
+    "value": "CORD (FUSE), DETONATING, metal clad"
+  },
+  {
+    "key": "0103",
+    "value": "FUSE, IGNITER, tubular, metal clad"
+  },
+  {
+    "key": "0104",
+    "value": "CORD (FUSE), DETONATING, MILD EFFECT, metal clad"
+  },
+  {
+    "key": "0105",
+    "value": "FUSE, SAFETY"
+  },
+  {
+    "key": "0106",
+    "value": "FUZES, DETONATING"
+  },
+  {
+    "key": "0107",
+    "value": "FUZES, DETONATING"
+  },
+  {
+    "key": "0110",
+    "value": "GRENADES, PRACTICE, hand or rifle"
+  },
+  {
+    "key": "0113",
+    "value": "GUANYL NITROSAMINOGUANYLIDENE HYDRAZINE, WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "0114",
+    "value": "GUANYL NITROSAMINO-GUANYLTETRAZENE (TETRAZENE), WETTED with not less than 30% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0118",
+    "value": "HEXOLITE (HEXOTOL), dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0121",
+    "value": "IGNITERS"
+  },
+  {
+    "key": "0124",
+    "value": "JET PERFORATING GUNS, CHARGED, oil well, without detonator"
+  },
+  {
+    "key": "0129",
+    "value": "LEAD AZIDE, WETTED with not less than 20% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0130",
+    "value": "LEAD STYPHNATE (LEAD TRINITRORESORCINATE), WETTED with not less than 20% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0131",
+    "value": "LIGHTERS, FUSE"
+  },
+  {
+    "key": "0132",
+    "value": "DEFLAGRATING METAL SALTS OF AROMATIC NITRODERIVATIVES, N.O.S."
+  },
+  {
+    "key": "0133",
+    "value": "MANNITOL HEXANITRATE (NITROMANNITE), WETTED with not less than 40% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0135",
+    "value": "MERCURY FULMINATE, WETTED with not less than 20% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0136",
+    "value": "MINES with bursting charge"
+  },
+  {
+    "key": "0137",
+    "value": "MINES with bursting charge"
+  },
+  {
+    "key": "0138",
+    "value": "MINES with bursting charge"
+  },
+  {
+    "key": "0143",
+    "value": "NITROGLYCERIN, DESENSITIZED with not less than 40% non-volatile water-insoluble phlegmatizer, by mass"
+  },
+  {
+    "key": "0144",
+    "value": "NITROGLYCERIN SOLUTION IN ALCOHOL with more than 1% but not more than 10% nitroglycerin"
+  },
+  {
+    "key": "0146",
+    "value": "NITROSTARCH, dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0147",
+    "value": "NITRO UREA"
+  },
+  {
+    "key": "0150",
+    "value": "PENTAERYTHRITE TETRANITRATE (PENTAERYTHRITOL TETRANITRATE; PETN), WETTED with not less than 25% water, by mass, or PENTAERYTHRITE TETRA[...]"
+  },
+  {
+    "key": "0151",
+    "value": "PENTOLITE, dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0153",
+    "value": "TRINITROANILINE (PICRAMIDE)"
+  },
+  {
+    "key": "0154",
+    "value": "TRINITROPHENOL (PICRIC ACID), dry or wetted with less than 30% water, by mass"
+  },
+  {
+    "key": "0155",
+    "value": "TRINITROCHLOROBENZENE (PICRYL CHLORIDE)"
+  },
+  {
+    "key": "0159",
+    "value": "POWDER CAKE (POWDER PASTE), WETTED with not less than 25% water, by mass"
+  },
+  {
+    "key": "0160",
+    "value": "POWDER, SMOKELESS"
+  },
+  {
+    "key": "0161",
+    "value": "POWDER, SMOKELESS"
+  },
+  {
+    "key": "0167",
+    "value": "PROJECTILES with bursting charge"
+  },
+  {
+    "key": "0168",
+    "value": "PROJECTILES with bursting charge"
+  },
+  {
+    "key": "0169",
+    "value": "PROJECTILES with bursting charge"
+  },
+  {
+    "key": "0171",
+    "value": "AMMUNITION, ILLUMINATING with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0173",
+    "value": "RELEASE DEVICES, EXPLOSIVE"
+  },
+  {
+    "key": "0174",
+    "value": "RIVETS, EXPLOSIVE"
+  },
+  {
+    "key": "0180",
+    "value": "ROCKETS with bursting charge"
+  },
+  {
+    "key": "0181",
+    "value": "ROCKETS with bursting charge"
+  },
+  {
+    "key": "0182",
+    "value": "ROCKETS with bursting charge"
+  },
+  {
+    "key": "0183",
+    "value": "ROCKETS with inert head"
+  },
+  {
+    "key": "0186",
+    "value": "ROCKET MOTORS"
+  },
+  {
+    "key": "0190",
+    "value": "SAMPLES, EXPLOSIVE, other than initiating explosive"
+  },
+  {
+    "key": "0191",
+    "value": "SIGNAL DEVICES, HAND"
+  },
+  {
+    "key": "0192",
+    "value": "SIGNALS, RAILWAY TRACK, EXPLOSIVE"
+  },
+  {
+    "key": "0193",
+    "value": "SIGNALS, RAILWAY TRACK, EXPLOSIVE"
+  },
+  {
+    "key": "0194",
+    "value": "SIGNALS, DISTRESS, ship"
+  },
+  {
+    "key": "0195",
+    "value": "SIGNALS, DISTRESS, ship"
+  },
+  {
+    "key": "0196",
+    "value": "SIGNALS, SMOKE"
+  },
+  {
+    "key": "0197",
+    "value": "SIGNALS, SMOKE"
+  },
+  {
+    "key": "0204",
+    "value": "SOUNDING DEVICES, EXPLOSIVE"
+  },
+  {
+    "key": "0207",
+    "value": "TETRANITROANILINE"
+  },
+  {
+    "key": "0208",
+    "value": "TRINITROPHENYLMETHYL-NITRAMINE (TETRYL)"
+  },
+  {
+    "key": "0209",
+    "value": "TRINITROTOLUENE (TNT), dry or wetted with less than 30% water, by mass"
+  },
+  {
+    "key": "0212",
+    "value": "TRACERS FOR AMMUNITION"
+  },
+  {
+    "key": "0213",
+    "value": "TRINITROANISOLE"
+  },
+  {
+    "key": "0214",
+    "value": "TRINITRO-BENZENE, dry or wetted with less than 30% water, by mass"
+  },
+  {
+    "key": "0215",
+    "value": "TRINITROBENZOIC ACID, dry or wetted with less than 30% water, by mass"
+  },
+  {
+    "key": "0216",
+    "value": "TRINITRO-m-CRESOL"
+  },
+  {
+    "key": "0217",
+    "value": "TRINITRONAPHTHALENE"
+  },
+  {
+    "key": "0218",
+    "value": "TRINITROPHENETOLE"
+  },
+  {
+    "key": "0219",
+    "value": "TRINITRORESORCINOL (STYPHNIC ACID), dry or wetted with less than 20% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0220",
+    "value": "UREA NITRATE, dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0221",
+    "value": "WARHEADS, TORPEDO with bursting charge"
+  },
+  {
+    "key": "0222",
+    "value": "AMMONIUM NITRATE"
+  },
+  {
+    "key": "0224",
+    "value": "BARIUM AZIDE, dry or wetted with less than 50% water, by mass"
+  },
+  {
+    "key": "0225",
+    "value": "BOOSTERS WITH DETONATOR"
+  },
+  {
+    "key": "0226",
+    "value": "CYCLOTETRA-METHYLENE-TETRANITRAMINE (HMX; OCTOGEN), WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "0234",
+    "value": "SODIUM DINITRO-o-CRESOLATE, dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0235",
+    "value": "SODIUM PICRAMATE, dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0236",
+    "value": "ZIRCONIUM PICRAMATE, dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0237",
+    "value": "CHARGES, SHAPED, FLEXIBLE, LINEAR"
+  },
+  {
+    "key": "0238",
+    "value": "ROCKETS, LINE-THROWING"
+  },
+  {
+    "key": "0240",
+    "value": "ROCKETS, LINE-THROWING"
+  },
+  {
+    "key": "0241",
+    "value": "EXPLOSIVE, BLASTING, TYPE E"
+  },
+  {
+    "key": "0242",
+    "value": "CHARGES, PROPELLING, FOR CANNON"
+  },
+  {
+    "key": "0243",
+    "value": "AMMUNITION, INCENDIARY, WHITE PHOSPHORUS with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0244",
+    "value": "AMMUNITION, INCENDIARY, WHITE PHOSPHORUS with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0245",
+    "value": "AMMUNITION, SMOKE, WHITE PHOSPHORUS with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0246",
+    "value": "AMMUNITION, SMOKE, WHITE PHOSPHORUS with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0247",
+    "value": "AMMUNITION, INCENDIARY, liquid or gel, with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0248",
+    "value": "CONTRIVANCES, WATER-ACTIVATED with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0249",
+    "value": "CONTRIVANCES, WATER-ACTIVATED with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0250",
+    "value": "ROCKET MOTORS WITH HYPERGOLIC LIQUIDS with or without expelling charge"
+  },
+  {
+    "key": "0254",
+    "value": "AMMUNITION, ILLUMINATING with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0255",
+    "value": "DETONATORS, ELECTRIC for blasting"
+  },
+  {
+    "key": "0257",
+    "value": "FUZES, DETONATING"
+  },
+  {
+    "key": "0266",
+    "value": "OCTOLITE (OCTOL), dry or wetted with less than 15% water, by mass"
+  },
+  {
+    "key": "0267",
+    "value": "DETONATORS, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0268",
+    "value": "BOOSTERS WITH DETONATOR"
+  },
+  {
+    "key": "0271",
+    "value": "CHARGES, PROPELLING"
+  },
+  {
+    "key": "0272",
+    "value": "CHARGES, PROPELLING"
+  },
+  {
+    "key": "0275",
+    "value": "CARTRIDGES, POWER DEVICE"
+  },
+  {
+    "key": "0276",
+    "value": "CARTRIDGES, POWER DEVICE"
+  },
+  {
+    "key": "0277",
+    "value": "CARTRIDGES, OIL WELL"
+  },
+  {
+    "key": "0278",
+    "value": "CARTRIDGES, OIL WELL"
+  },
+  {
+    "key": "0279",
+    "value": "CHARGES, PROPELLING, FOR CANNON"
+  },
+  {
+    "key": "0280",
+    "value": "ROCKET MOTORS"
+  },
+  {
+    "key": "0281",
+    "value": "ROCKET MOTORS"
+  },
+  {
+    "key": "0282",
+    "value": "NITROGUANIDINE (PICRITE), dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0283",
+    "value": "BOOSTERS without detonator"
+  },
+  {
+    "key": "0284",
+    "value": "GRENADES, hand or rifle, with bursting charge"
+  },
+  {
+    "key": "0285",
+    "value": "GRENADES, hand or rifle, with bursting charge"
+  },
+  {
+    "key": "0286",
+    "value": "WARHEADS, ROCKET with bursting charge"
+  },
+  {
+    "key": "0287",
+    "value": "WARHEADS, ROCKET with bursting charge"
+  },
+  {
+    "key": "0288",
+    "value": "CHARGES, SHAPED, FLEXIBLE, LINEAR"
+  },
+  {
+    "key": "0289",
+    "value": "CORD, DETONATING, flexible"
+  },
+  {
+    "key": "0290",
+    "value": "CORD (FUSE), DETONATING, metal clad"
+  },
+  {
+    "key": "0291",
+    "value": "BOMBS with bursting charge"
+  },
+  {
+    "key": "0292",
+    "value": "GRENADES, hand or rifle, with bursting charge"
+  },
+  {
+    "key": "0293",
+    "value": "GRENADES, hand or rifle, with bursting charge"
+  },
+  {
+    "key": "0294",
+    "value": "MINES with bursting charge"
+  },
+  {
+    "key": "0295",
+    "value": "ROCKETS with bursting charge"
+  },
+  {
+    "key": "0296",
+    "value": "SOUNDING DEVICES, EXPLOSIVE"
+  },
+  {
+    "key": "0297",
+    "value": "AMMUNITION, ILLUMINATING with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0299",
+    "value": "BOMBS, PHOTO-FLASH"
+  },
+  {
+    "key": "0300",
+    "value": "AMMUNITION, INCENDIARY with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0301",
+    "value": "AMMUNITION, TEAR-PRODUCING with burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0303",
+    "value": "AMMUNITION, SMOKE with or without burster, expelling charge or propelling charge"
+  },
+  {
+    "key": "0305",
+    "value": "FLASH POWDER"
+  },
+  {
+    "key": "0306",
+    "value": "TRACERS FOR AMMUNITION"
+  },
+  {
+    "key": "0312",
+    "value": "CARTRIDGES, SIGNAL"
+  },
+  {
+    "key": "0313",
+    "value": "SIGNALS, SMOKE"
+  },
+  {
+    "key": "0314",
+    "value": "IGNITERS"
+  },
+  {
+    "key": "0315",
+    "value": "IGNITERS"
+  },
+  {
+    "key": "0316",
+    "value": "FUZES, IGNITING"
+  },
+  {
+    "key": "0317",
+    "value": "FUZES, IGNITING"
+  },
+  {
+    "key": "0318",
+    "value": "GRENADES, PRACTICE, hand or rifle"
+  },
+  {
+    "key": "0319",
+    "value": "PRIMERS, TUBULAR"
+  },
+  {
+    "key": "0320",
+    "value": "PRIMERS, TUBULAR"
+  },
+  {
+    "key": "0321",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0322",
+    "value": "ROCKET MOTORS WITH HYPERGOLIC LIQUIDS with or without expelling charge"
+  },
+  {
+    "key": "0323",
+    "value": "CARTRIDGES, POWER DEVICE"
+  },
+  {
+    "key": "0324",
+    "value": "PROJECTILES with bursting charge"
+  },
+  {
+    "key": "0325",
+    "value": "IGNITERS"
+  },
+  {
+    "key": "0326",
+    "value": "CARTRIDGES FOR WEAPONS, BLANK"
+  },
+  {
+    "key": "0327",
+    "value": "CARTRIDGES FOR WEAPONS, BLANK or CARTRIDGES, SMALL ARMS, BLANK"
+  },
+  {
+    "key": "0328",
+    "value": "CARTRIDGES FOR WEAPONS, INERT PROJECTILE"
+  },
+  {
+    "key": "0329",
+    "value": "TORPEDOES with bursting charge"
+  },
+  {
+    "key": "0330",
+    "value": "TORPEDOES with bursting charge"
+  },
+  {
+    "key": "0331",
+    "value": "EXPLOSIVE, BLASTING, TYPE B(AGENT, BLASTING, TYPE B)"
+  },
+  {
+    "key": "0332",
+    "value": "EXPLOSIVE, BLASTING, TYPE E(AGENT, BLASTING, TYPE E)"
+  },
+  {
+    "key": "0333",
+    "value": "FIREWORKS"
+  },
+  {
+    "key": "0334",
+    "value": "FIREWORKS"
+  },
+  {
+    "key": "0335",
+    "value": "FIREWORKS"
+  },
+  {
+    "key": "0336",
+    "value": "FIREWORKS"
+  },
+  {
+    "key": "0337",
+    "value": "FIREWORKS"
+  },
+  {
+    "key": "0338",
+    "value": "CARTRIDGES FOR WEAPONS, BLANK or CARTRIDGES, SMALL ARMS, BLANK"
+  },
+  {
+    "key": "0339",
+    "value": "CARTRIDGES FOR WEAPONS, INERT PROJECTILE or CARTRIDGES, SMALL ARMS"
+  },
+  {
+    "key": "0340",
+    "value": "NITROCELLULOSE, dry or wetted with less than 25% water (or alcohol), by mass"
+  },
+  {
+    "key": "0341",
+    "value": "NITROCELLULOSE, unmodified or plasticized with less than 18% plasticizing substance, by mass"
+  },
+  {
+    "key": "0342",
+    "value": "NITROCELLULOSE, WETTED with not less than 25% alcohol, by mass"
+  },
+  {
+    "key": "0343",
+    "value": "NITROCELLULOSE, PLASTICIZED with not less than 18% plasticizing substance, by mass"
+  },
+  {
+    "key": "0344",
+    "value": "PROJECTILES with bursting charge"
+  },
+  {
+    "key": "0345",
+    "value": "PROJECTILES, inert with tracer"
+  },
+  {
+    "key": "0346",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0347",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0348",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0349",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0350",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0351",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0352",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0353",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0354",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0355",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0356",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0357",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0358",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0359",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0360",
+    "value": "DETONATOR ASSEMBLIES, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0361",
+    "value": "DETONATOR ASSEMBLIES, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0362",
+    "value": "AMMUNITION, PRACTICE"
+  },
+  {
+    "key": "0363",
+    "value": "AMMUNITION, PROOF"
+  },
+  {
+    "key": "0364",
+    "value": "DETONATORS FOR AMMUNITION"
+  },
+  {
+    "key": "0365",
+    "value": "DETONATORS FOR AMMUNITION"
+  },
+  {
+    "key": "0366",
+    "value": "DETONATORS FOR AMMUNITION"
+  },
+  {
+    "key": "0367",
+    "value": "FUZES, DETONATING"
+  },
+  {
+    "key": "0368",
+    "value": "FUZES, IGNITING"
+  },
+  {
+    "key": "0369",
+    "value": "WARHEADS, ROCKET with bursting charge"
+  },
+  {
+    "key": "0370",
+    "value": "WARHEADS, ROCKET with burster or expelling charge"
+  },
+  {
+    "key": "0371",
+    "value": "WARHEADS, ROCKET with burster or expelling charge"
+  },
+  {
+    "key": "0372",
+    "value": "GRENADES, PRACTICE, hand or rifle"
+  },
+  {
+    "key": "0373",
+    "value": "SIGNAL DEVICES, HAND"
+  },
+  {
+    "key": "0374",
+    "value": "SOUNDING DEVICES, EXPLOSIVE"
+  },
+  {
+    "key": "0375",
+    "value": "SOUNDING DEVICES, EXPLOSIVE"
+  },
+  {
+    "key": "0376",
+    "value": "PRIMERS, TUBULAR"
+  },
+  {
+    "key": "0377",
+    "value": "PRIMERS, CAP TYPE"
+  },
+  {
+    "key": "0378",
+    "value": "PRIMERS, CAP TYPE"
+  },
+  {
+    "key": "0379",
+    "value": "CASES, CARTRIDGE, EMPTY, WITH PRIMER"
+  },
+  {
+    "key": "0380",
+    "value": "ARTICLES, PYROPHORIC"
+  },
+  {
+    "key": "0381",
+    "value": "CARTRIDGES, POWER DEVICE"
+  },
+  {
+    "key": "0382",
+    "value": "COMPONENTS, EXPLOSIVE TRAIN, N.O.S."
+  },
+  {
+    "key": "0383",
+    "value": "COMPONENTS, EXPLOSIVE TRAIN, N.O.S."
+  },
+  {
+    "key": "0384",
+    "value": "COMPONENTS, EXPLOSIVE TRAIN, N.O.S."
+  },
+  {
+    "key": "0385",
+    "value": "5-NITROBENZOTRIAZOL"
+  },
+  {
+    "key": "0386",
+    "value": "TRINITROBENZENE-SULPHONIC ACID"
+  },
+  {
+    "key": "0387",
+    "value": "TRINITROFLUORENONE"
+  },
+  {
+    "key": "0388",
+    "value": "TRINITROTOLUENE (TNT) AND TRINITROBENZENE MIXTURE or TRINITROTOLUENE (TNT) AND HEXANITROSTILBENE MIXTURE"
+  },
+  {
+    "key": "0389",
+    "value": "TRINITROTOLUENE (TNT) MIXTURE CONTAINING TRINITROBENZENE AND HEXANITROSTILBENE"
+  },
+  {
+    "key": "0390",
+    "value": "TRITONAL"
+  },
+  {
+    "key": "0391",
+    "value": "CYCLOTRIMETHYLENE-TRINITRAMINE (CYCLONITE; HEXOGEN; RDX) AND CYCLOTETRAMETHYLENE-TETRANITRAMINE (HMX; OCTOGEN) MIXTURE, WETTED with not less"
+  },
+  {
+    "key": "0392",
+    "value": "HEXANITROSTILBENE"
+  },
+  {
+    "key": "0393",
+    "value": "HEXOTONAL"
+  },
+  {
+    "key": "0394",
+    "value": "TRINITRORESORCINOL (STYPHNIC ACID), WETTED with not less than 20% water, or mixture of alcohol and water, by mass"
+  },
+  {
+    "key": "0395",
+    "value": "ROCKET MOTORS, LIQUID FUELLED"
+  },
+  {
+    "key": "0396",
+    "value": "ROCKET MOTORS, LIQUID FUELLED"
+  },
+  {
+    "key": "0397",
+    "value": "ROCKETS, LIQUID FUELLED with bursting charge"
+  },
+  {
+    "key": "0398",
+    "value": "ROCKETS, LIQUID FUELLED with bursting charge"
+  },
+  {
+    "key": "0399",
+    "value": "BOMBS WITH FLAMMABLE LIQUID with bursting charge"
+  },
+  {
+    "key": "0400",
+    "value": "BOMBS WITH FLAMMABLE LIQUID with bursting charge"
+  },
+  {
+    "key": "0401",
+    "value": "DIPICRYL SULPHIDE, dry or wetted with less than 10% water, by mass"
+  },
+  {
+    "key": "0402",
+    "value": "AMMONIUM PERCHLORATE"
+  },
+  {
+    "key": "0403",
+    "value": "FLARES, AERIAL"
+  },
+  {
+    "key": "0404",
+    "value": "FLARES, AERIAL"
+  },
+  {
+    "key": "0405",
+    "value": "CARTRIDGES, SIGNAL"
+  },
+  {
+    "key": "0406",
+    "value": "DINITROSOBENZENE"
+  },
+  {
+    "key": "0407",
+    "value": "TETRAZOL-1-ACETIC ACID"
+  },
+  {
+    "key": "0408",
+    "value": "FUZES, DETONATING with protective features"
+  },
+  {
+    "key": "0409",
+    "value": "FUZES, DETONATING with protective features"
+  },
+  {
+    "key": "0410",
+    "value": "FUZES, DETONATING with protective features"
+  },
+  {
+    "key": "0411",
+    "value": "PENTAERYTHRITE TETRANITRATE (PENTAERYTHRITOL TETRANITRATE; PETN) with not less than 7% wax, by mass"
+  },
+  {
+    "key": "0412",
+    "value": "CARTRIDGES FOR WEAPONS with bursting charge"
+  },
+  {
+    "key": "0413",
+    "value": "CARTRIDGES FOR WEAPONS, BLANK"
+  },
+  {
+    "key": "0414",
+    "value": "CHARGES, PROPELLING, FOR CANNON"
+  },
+  {
+    "key": "0415",
+    "value": "CHARGES, PROPELLING"
+  },
+  {
+    "key": "0417",
+    "value": "CARTRIDGES FOR WEAPONS, INERT PROJECTILE or CARTRIDGES, SMALL ARMS"
+  },
+  {
+    "key": "0418",
+    "value": "FLARES, SURFACE"
+  },
+  {
+    "key": "0419",
+    "value": "FLARES, SURFACE"
+  },
+  {
+    "key": "0420",
+    "value": "FLARES, AERIAL"
+  },
+  {
+    "key": "0421",
+    "value": "FLARES, AERIAL"
+  },
+  {
+    "key": "0424",
+    "value": "PROJECTILES, inert with tracer"
+  },
+  {
+    "key": "0425",
+    "value": "PROJECTILES, inert with tracer"
+  },
+  {
+    "key": "0426",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0427",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0428",
+    "value": "ARTICLES, PYROTECHNIC for technical purposes"
+  },
+  {
+    "key": "0429",
+    "value": "ARTICLES, PYROTECHNIC for technical purposes"
+  },
+  {
+    "key": "0430",
+    "value": "ARTICLES, PYROTECHNIC for technical purposes"
+  },
+  {
+    "key": "0431",
+    "value": "ARTICLES, PYROTECHNIC for technical purposes"
+  },
+  {
+    "key": "0432",
+    "value": "ARTICLES, PYROTECHNIC for technical purposes"
+  },
+  {
+    "key": "0433",
+    "value": "POWDER CAKE (POWDER PASTE), WETTED with not less than 17% alcohol, by mass"
+  },
+  {
+    "key": "0434",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0435",
+    "value": "PROJECTILES with burster or expelling charge"
+  },
+  {
+    "key": "0436",
+    "value": "ROCKETS with expelling charge"
+  },
+  {
+    "key": "0437",
+    "value": "ROCKETS with expelling charge"
+  },
+  {
+    "key": "0438",
+    "value": "ROCKETS with expelling charge"
+  },
+  {
+    "key": "0439",
+    "value": "CHARGES, SHAPED, without detonator"
+  },
+  {
+    "key": "0440",
+    "value": "CHARGES, SHAPED, without detonator"
+  },
+  {
+    "key": "0441",
+    "value": "CHARGES, SHAPED, without detonator"
+  },
+  {
+    "key": "0442",
+    "value": "CHARGES, EXPLOSIVE, COMMERCIAL without detonator"
+  },
+  {
+    "key": "0443",
+    "value": "CHARGES, EXPLOSIVE, COMMERCIAL without detonator"
+  },
+  {
+    "key": "0444",
+    "value": "CHARGES, EXPLOSIVE, COMMERCIAL without detonator"
+  },
+  {
+    "key": "0445",
+    "value": "CHARGES, EXPLOSIVE, COMMERCIAL without detonator"
+  },
+  {
+    "key": "0446",
+    "value": "CASES, COMBUSTIBLE, EMPTY, WITHOUT PRIMER"
+  },
+  {
+    "key": "0447",
+    "value": "CASES, COMBUSTIBLE, EMPTY, WITHOUT PRIMER"
+  },
+  {
+    "key": "0448",
+    "value": "5-MERCAPTOTETRAZOL-1-ACETIC ACID"
+  },
+  {
+    "key": "0449",
+    "value": "TORPEDOES, LIQUID FUELLED with or without bursting charge"
+  },
+  {
+    "key": "0450",
+    "value": "TORPEDOES, LIQUID FUELLED with inert head"
+  },
+  {
+    "key": "0451",
+    "value": "TORPEDOES with bursting charge"
+  },
+  {
+    "key": "0452",
+    "value": "GRENADES, PRACTICE, hand or rifle"
+  },
+  {
+    "key": "0453",
+    "value": "ROCKETS, LINE-THROWING"
+  },
+  {
+    "key": "0454",
+    "value": "IGNITERS"
+  },
+  {
+    "key": "0455",
+    "value": "DETONATORS, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0456",
+    "value": "DETONATORS, ELECTRIC for blasting"
+  },
+  {
+    "key": "0457",
+    "value": "CHARGES, BURSTING, PLASTICS BONDED"
+  },
+  {
+    "key": "0458",
+    "value": "CHARGES, BURSTING, PLASTICS BONDED"
+  },
+  {
+    "key": "0459",
+    "value": "CHARGES, BURSTING, PLASTICS BONDED"
+  },
+  {
+    "key": "0460",
+    "value": "CHARGES, BURSTING, PLASTICS BONDED"
+  },
+  {
+    "key": "0461",
+    "value": "COMPONENTS, EXPLOSIVE TRAIN, N.O.S."
+  },
+  {
+    "key": "0462",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0463",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0464",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0465",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0466",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0467",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0468",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0469",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0470",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0471",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0472",
+    "value": "ARTICLES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0473",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0474",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0475",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0476",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0477",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0478",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0479",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0480",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0481",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0482",
+    "value": "SUBSTANCES, EXPLOSIVE, VERY INSENSITIVE (SUBSTANCES, EVI), N.O.S."
+  },
+  {
+    "key": "0483",
+    "value": "CYCLOTRIMETHYLENE-TRINITRAMINE (CYCLONITE; HEXOGEN; RDX), DESENSITIZED"
+  },
+  {
+    "key": "0484",
+    "value": "CYCLOTETRAMETHYLENE-TETRANITRAMINE (HMX; OCTOGEN), DESENSITIZED"
+  },
+  {
+    "key": "0485",
+    "value": "SUBSTANCES, EXPLOSIVE, N.O.S."
+  },
+  {
+    "key": "0486",
+    "value": "ARTICLES, EXPLOSIVE, EXTREMELY INSENSITIVE (ARTICLES, EEI)"
+  },
+  {
+    "key": "0487",
+    "value": "SIGNALS, SMOKE"
+  },
+  {
+    "key": "0488",
+    "value": "AMMUNITION, PRACTICE"
+  },
+  {
+    "key": "0489",
+    "value": "DINITROGLYCOLURIL (DINGU)"
+  },
+  {
+    "key": "0490",
+    "value": "NITROTRIAZOLONE (NTO)"
+  },
+  {
+    "key": "0491",
+    "value": "CHARGES, PROPELLING"
+  },
+  {
+    "key": "0492",
+    "value": "SIGNALS, RAILWAY TRACK, EXPLOSIVE"
+  },
+  {
+    "key": "0493",
+    "value": "SIGNALS, RAILWAY TRACK, EXPLOSIVE"
+  },
+  {
+    "key": "0494",
+    "value": "JET PERFORATING GUNS, CHARGED, oil well, without detonator"
+  },
+  {
+    "key": "0495",
+    "value": "PROPELLANT, LIQUID"
+  },
+  {
+    "key": "0496",
+    "value": "OCTONAL"
+  },
+  {
+    "key": "0497",
+    "value": "PROPELLANT, LIQUID"
+  },
+  {
+    "key": "0498",
+    "value": "PROPELLANT, SOLID"
+  },
+  {
+    "key": "0499",
+    "value": "PROPELLANT, SOLID"
+  },
+  {
+    "key": "0500",
+    "value": "DETONATOR ASSEMBLIES, NON-ELECTRIC for blasting"
+  },
+  {
+    "key": "0501",
+    "value": "PROPELLANT, SOLID"
+  },
+  {
+    "key": "0502",
+    "value": "ROCKETS with inert head"
+  },
+  {
+    "key": "0503",
+    "value": "SAFETY DEVICES, PYROTECHNIC"
+  },
+  {
+    "key": "0504",
+    "value": "1H-TETRAZOLE"
+  },
+  {
+    "key": "0505",
+    "value": "SIGNALS, DISTRESS, ship"
+  },
+  {
+    "key": "0506",
+    "value": "SIGNALS, DISTRESS, ship"
+  },
+  {
+    "key": "0507",
+    "value": "SIGNALS, SMOKE"
+  },
+  {
+    "key": "0508",
+    "value": "1-HYDROXYBENZOTRIAZOLE, ANHYDROUS, dry or wetted with less than 20% water, by mass"
+  },
+  {
+    "key": "0509",
+    "value": "POWDER, SMOKELESS"
+  },
+  {
+    "key": "0510",
+    "value": "ROCKET MOTORS"
+  },
+  {
+    "key": "0511",
+    "value": "DETONATORS, ELECTRONIC programmable for blasting 1.1B"
+  },
+  {
+    "key": "0512",
+    "value": "DETONATORS, ELECTRONIC programmable for blasting 1.4B"
+  },
+  {
+    "key": "0513",
+    "value": "DETONATORS, ELECTRONIC programmable for blasting"
+  },
+  {
+    "key": "1001",
+    "value": "ACETYLENE, DISSOLVED"
+  },
+  {
+    "key": "1002",
+    "value": "AIR, COMPRESSED"
+  },
+  {
+    "key": "1003",
+    "value": "AIR, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1005",
+    "value": "AMMONIA, ANHYDROUS"
+  },
+  {
+    "key": "1006",
+    "value": "ARGON, COMPRESSED"
+  },
+  {
+    "key": "1008",
+    "value": "BORON TRIFLUORIDE"
+  },
+  {
+    "key": "1009",
+    "value": "BROMOTRIFLUOROMETHANE (REFRIGERANT GAS R 13B1)"
+  },
+  {
+    "key": "1010",
+    "value": "BUTADIENES, STABILIZED or BUTADIENES AND HYDROCARBON MIXTURE, STABILIZED, containing more than 40% butadienes"
+  },
+  {
+    "key": "1011",
+    "value": "BUTANE"
+  },
+  {
+    "key": "1012",
+    "value": "BUTYLENE"
+  },
+  {
+    "key": "1013",
+    "value": "CARBON DIOXIDE"
+  },
+  {
+    "key": "1016",
+    "value": "CARBON MONOXIDE, COMPRESSED"
+  },
+  {
+    "key": "1017",
+    "value": "CHLORINE"
+  },
+  {
+    "key": "1018",
+    "value": "CHLORODIFLUOROMETHANE (REFRIGERANT GAS R 22)"
+  },
+  {
+    "key": "1020",
+    "value": "CHLOROPENTAFLUORO-ETHANE (REFRIGERANT GAS R 115)"
+  },
+  {
+    "key": "1021",
+    "value": "1-CHLORO-1,2,2,2-TETRAFLUOROETHANE (REFRIGERANT GAS R 124)"
+  },
+  {
+    "key": "1022",
+    "value": "CHLOROTRIFLUORO-METHANE (REFRIGERANT GAS R 13)"
+  },
+  {
+    "key": "1023",
+    "value": "COAL GAS, COMPRESSED"
+  },
+  {
+    "key": "1026",
+    "value": "CYANOGEN"
+  },
+  {
+    "key": "1027",
+    "value": "CYCLOPROPANE"
+  },
+  {
+    "key": "1028",
+    "value": "DICHLORODIFLUORO-METHANE (REFRIGERANT GAS R 12)"
+  },
+  {
+    "key": "1029",
+    "value": "DICHLOROFLUOROMETHANE (REFRIGERANT GAS R 21)"
+  },
+  {
+    "key": "1030",
+    "value": "1,1-DIFLUOROETHANE (REFRIGERANT GAS R 152a)"
+  },
+  {
+    "key": "1032",
+    "value": "DIMETHYLAMINE, ANHYDROUS"
+  },
+  {
+    "key": "1033",
+    "value": "DIMETHYL ETHER"
+  },
+  {
+    "key": "1035",
+    "value": "ETHANE"
+  },
+  {
+    "key": "1036",
+    "value": "ETHYLAMINE"
+  },
+  {
+    "key": "1037",
+    "value": "ETHYL CHLORIDE"
+  },
+  {
+    "key": "1038",
+    "value": "ETHYLENE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1039",
+    "value": "ETHYL METHYL ETHER"
+  },
+  {
+    "key": "1040",
+    "value": "ETHYLENE OXIDE, or ETHYLENE OXIDE WITH NITROGEN up to a total pressure of 1 MPa (10 bar) at 50 °C"
+  },
+  {
+    "key": "1041",
+    "value": "ETHYLENE OXIDE AND CARBON DIOXIDE MIXTURE with more than 9% but not more than 87% ethylene oxide"
+  },
+  {
+    "key": "1043",
+    "value": "FERTILIZER AMMONIATING SOLUTION with free ammonia"
+  },
+  {
+    "key": "1044",
+    "value": "FIRE EXTINGUISHERS with compressed or liquefied gas"
+  },
+  {
+    "key": "1045",
+    "value": "FLUORINE, COMPRESSED"
+  },
+  {
+    "key": "1046",
+    "value": "HELIUM, COMPRESSED"
+  },
+  {
+    "key": "1048",
+    "value": "HYDROGEN BROMIDE, ANHYDROUS"
+  },
+  {
+    "key": "1049",
+    "value": "HYDROGEN, COMPRESSED"
+  },
+  {
+    "key": "1050",
+    "value": "HYDROGEN CHLORIDE, ANHYDROUS"
+  },
+  {
+    "key": "1051",
+    "value": "HYDROGEN CYANIDE, STABILIZED containing less than 3% water"
+  },
+  {
+    "key": "1052",
+    "value": "HYDROGEN FLUORIDE, ANHYDROUS"
+  },
+  {
+    "key": "1053",
+    "value": "HYDROGEN SULPHIDE"
+  },
+  {
+    "key": "1055",
+    "value": "ISOBUTYLENE"
+  },
+  {
+    "key": "1056",
+    "value": "KRYPTON, COMPRESSED"
+  },
+  {
+    "key": "1057",
+    "value": "LIGHTERS or LIGHTER REFILLS containing flammable gas"
+  },
+  {
+    "key": "1058",
+    "value": "LIQUEFIED GASES, non-flammable, charged with nitrogen, carbon dioxide or air"
+  },
+  {
+    "key": "1060",
+    "value": "METHYLACETYLENE AND PROPADIENE MIXTURE, STABILIZED"
+  },
+  {
+    "key": "1061",
+    "value": "METHYLAMINE, ANHYDROUS"
+  },
+  {
+    "key": "1062",
+    "value": "METHYL BROMIDE with not more than 2% chloropicrin"
+  },
+  {
+    "key": "1063",
+    "value": "METHYL CHLORIDE (REFRIGERANT GAS R 40)"
+  },
+  {
+    "key": "1064",
+    "value": "METHYL MERCAPTAN"
+  },
+  {
+    "key": "1065",
+    "value": "NEON, COMPRESSED"
+  },
+  {
+    "key": "1066",
+    "value": "NITROGEN, COMPRESSED"
+  },
+  {
+    "key": "1067",
+    "value": "DINITROGEN TETROXIDE (NITROGEN DIOXIDE)"
+  },
+  {
+    "key": "1069",
+    "value": "NITROSYL CHLORIDE"
+  },
+  {
+    "key": "1070",
+    "value": "NITROUS OXIDE"
+  },
+  {
+    "key": "1071",
+    "value": "OIL GAS, COMPRESSED"
+  },
+  {
+    "key": "1072",
+    "value": "OXYGEN, COMPRESSED"
+  },
+  {
+    "key": "1073",
+    "value": "OXYGEN, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1075",
+    "value": "PETROLEUM GASES, LIQUEFIED"
+  },
+  {
+    "key": "1076",
+    "value": "PHOSGENE"
+  },
+  {
+    "key": "1077",
+    "value": "PROPYLENE"
+  },
+  {
+    "key": "1078",
+    "value": "REFRIGERANT GAS, N.O.S."
+  },
+  {
+    "key": "1079",
+    "value": "SULPHUR DIOXIDE"
+  },
+  {
+    "key": "1080",
+    "value": "SULPHUR HEXAFLUORIDE"
+  },
+  {
+    "key": "1081",
+    "value": "TETRAFLUOROETHYLENE, STABILIZED"
+  },
+  {
+    "key": "1082",
+    "value": "TRIFLUOROCHLORO-ETHYLENE, STABILIZED (REFRIGERANT GAS R 1113)"
+  },
+  {
+    "key": "1083",
+    "value": "TRIMETHYLAMINE, ANHYDROUS"
+  },
+  {
+    "key": "1085",
+    "value": "VINYL BROMIDE, STABILIZED"
+  },
+  {
+    "key": "1086",
+    "value": "VINYL CHLORIDE, STABILIZED"
+  },
+  {
+    "key": "1087",
+    "value": "VINYL METHYL ETHER, STABILIZED"
+  },
+  {
+    "key": "1088",
+    "value": "ACETAL"
+  },
+  {
+    "key": "1089",
+    "value": "ACETALDEHYDE"
+  },
+  {
+    "key": "1090",
+    "value": "ACETONE"
+  },
+  {
+    "key": "1091",
+    "value": "ACETONE OILS"
+  },
+  {
+    "key": "1092",
+    "value": "ACROLEIN, STABILIZED"
+  },
+  {
+    "key": "1093",
+    "value": "ACRYLONITRILE, STABILIZED"
+  },
+  {
+    "key": "1098",
+    "value": "ALLYL ALCOHOL"
+  },
+  {
+    "key": "1099",
+    "value": "ALLYL BROMIDE"
+  },
+  {
+    "key": "1100",
+    "value": "ALLYL CHLORIDE"
+  },
+  {
+    "key": "1104",
+    "value": "AMYL ACETATES"
+  },
+  {
+    "key": "1105",
+    "value": "PENTANOLS"
+  },
+  {
+    "key": "1106",
+    "value": "AMYLAMINE"
+  },
+  {
+    "key": "1107",
+    "value": "AMYL CHLORIDE"
+  },
+  {
+    "key": "1108",
+    "value": "1-PENTENE (n-AMYLENE)"
+  },
+  {
+    "key": "1109",
+    "value": "AMYL FORMATES"
+  },
+  {
+    "key": "1110",
+    "value": "n-AMYL METHYL KETONE"
+  },
+  {
+    "key": "1111",
+    "value": "AMYL MERCAPTAN"
+  },
+  {
+    "key": "1112",
+    "value": "AMYL NITRATE"
+  },
+  {
+    "key": "1113",
+    "value": "AMYL NITRITE"
+  },
+  {
+    "key": "1114",
+    "value": "BENZENE"
+  },
+  {
+    "key": "1120",
+    "value": "BUTANOLS"
+  },
+  {
+    "key": "1123",
+    "value": "BUTYL ACETATES"
+  },
+  {
+    "key": "1125",
+    "value": "n-BUTYLAMINE"
+  },
+  {
+    "key": "1126",
+    "value": "1-BROMOBUTANE"
+  },
+  {
+    "key": "1127",
+    "value": "CHLOROBUTANES"
+  },
+  {
+    "key": "1128",
+    "value": "n-BUTYL FORMATE"
+  },
+  {
+    "key": "1129",
+    "value": "BUTYRALDEHYDE"
+  },
+  {
+    "key": "1130",
+    "value": "CAMPHOR OIL"
+  },
+  {
+    "key": "1131",
+    "value": "CARBON DISULPHIDE"
+  },
+  {
+    "key": "1133",
+    "value": "ADHESIVES containing flammable liquid"
+  },
+  {
+    "key": "1134",
+    "value": "CHLOROBENZENE"
+  },
+  {
+    "key": "1135",
+    "value": "ETHYLENE CHLOROHYDRIN"
+  },
+  {
+    "key": "1136",
+    "value": "COAL TAR DISTILLATES, FLAMMABLE"
+  },
+  {
+    "key": "1139",
+    "value": "COATING SOLUTION (includes surface treatments or coatings used for industrial or other purposes such as vehicle undercoating, drum or barrel"
+  },
+  {
+    "key": "1143",
+    "value": "CROTONALDEHYDE or CROTONALDEHYDE, STABILIZED"
+  },
+  {
+    "key": "1144",
+    "value": "CROTONYLENE"
+  },
+  {
+    "key": "1145",
+    "value": "CYCLOHEXANE"
+  },
+  {
+    "key": "1146",
+    "value": "CYCLOPENTANE"
+  },
+  {
+    "key": "1147",
+    "value": "DECAHYDRONAPHTHALENE"
+  },
+  {
+    "key": "1148",
+    "value": "DIACETONE ALCOHOL"
+  },
+  {
+    "key": "1149",
+    "value": "DIBUTYL ETHERS"
+  },
+  {
+    "key": "1150",
+    "value": "1,2-DICHLOROETHYLENE"
+  },
+  {
+    "key": "1152",
+    "value": "DICHLOROPENTANES"
+  },
+  {
+    "key": "1153",
+    "value": "ETHYLENE GLYCOL DIETHYL ETHER"
+  },
+  {
+    "key": "1154",
+    "value": "DIETHYLAMINE"
+  },
+  {
+    "key": "1155",
+    "value": "DIETHYL ETHER (ETHYL ETHER)"
+  },
+  {
+    "key": "1156",
+    "value": "DIETHYL KETONE"
+  },
+  {
+    "key": "1157",
+    "value": "DIISOBUTYL KETONE"
+  },
+  {
+    "key": "1158",
+    "value": "DIISOPROPYLAMINE"
+  },
+  {
+    "key": "1159",
+    "value": "DIISOPROPYL ETHER"
+  },
+  {
+    "key": "1160",
+    "value": "DIMETHYLAMINE AQUEOUS SOLUTION"
+  },
+  {
+    "key": "1161",
+    "value": "DIMETHYL CARBONATE"
+  },
+  {
+    "key": "1162",
+    "value": "DIMETHYLDICHLOROSILANE"
+  },
+  {
+    "key": "1163",
+    "value": "DIMETHYLHYDRAZINE, UNSYMMETRICAL"
+  },
+  {
+    "key": "1164",
+    "value": "DIMETHYL SULPHIDE"
+  },
+  {
+    "key": "1165",
+    "value": "DIOXANE"
+  },
+  {
+    "key": "1166",
+    "value": "DIOXOLANE"
+  },
+  {
+    "key": "1167",
+    "value": "DIVINYL ETHER, STABILIZED"
+  },
+  {
+    "key": "1169",
+    "value": "EXTRACTS, AROMATIC, LIQUID"
+  },
+  {
+    "key": "1170",
+    "value": "ETHANOL (ETHYL ALCOHOL) or ETHANOL SOLUTION (ETHYL ALCOHOL SOLUTION)"
+  },
+  {
+    "key": "1171",
+    "value": "ETHYLENE GLYCOL MONOETHYL ETHER"
+  },
+  {
+    "key": "1172",
+    "value": "ETHYLENE GLYCOL MONOETHYL ETHER ACETATE"
+  },
+  {
+    "key": "1173",
+    "value": "ETHYL ACETATE"
+  },
+  {
+    "key": "1175",
+    "value": "ETHYLBENZENE"
+  },
+  {
+    "key": "1176",
+    "value": "ETHYL BORATE"
+  },
+  {
+    "key": "1177",
+    "value": "2-ETHYLBUTYL ACETATE"
+  },
+  {
+    "key": "1178",
+    "value": "2-ETHYLBUTYRALDEHYDE"
+  },
+  {
+    "key": "1179",
+    "value": "ETHYL BUTYL ETHER"
+  },
+  {
+    "key": "1180",
+    "value": "ETHYL BUTYRATE"
+  },
+  {
+    "key": "1181",
+    "value": "ETHYL CHLOROACETATE"
+  },
+  {
+    "key": "1182",
+    "value": "ETHYL CHLOROFORMATE"
+  },
+  {
+    "key": "1183",
+    "value": "ETHYLDICHLOROSILANE"
+  },
+  {
+    "key": "1184",
+    "value": "ETHYLENE DICHLORIDE"
+  },
+  {
+    "key": "1185",
+    "value": "ETHYLENEIMINE, STABILIZED"
+  },
+  {
+    "key": "1188",
+    "value": "ETHYLENE GLYCOL MONOMETHYL ETHER"
+  },
+  {
+    "key": "1189",
+    "value": "ETHYLENE GLYCOL MONOMETHYL ETHER ACETATE"
+  },
+  {
+    "key": "1190",
+    "value": "ETHYL FORMATE"
+  },
+  {
+    "key": "1191",
+    "value": "OCTYL ALDEHYDES"
+  },
+  {
+    "key": "1192",
+    "value": "ETHYL LACTATE"
+  },
+  {
+    "key": "1193",
+    "value": "ETHYL METHYL KETONE (METHYL ETHYL KETONE)"
+  },
+  {
+    "key": "1194",
+    "value": "ETHYL NITRITE SOLUTION"
+  },
+  {
+    "key": "1195",
+    "value": "ETHYL PROPIONATE"
+  },
+  {
+    "key": "1196",
+    "value": "ETHYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1197",
+    "value": "EXTRACTS, FLAVOURING, LIQUID"
+  },
+  {
+    "key": "1198",
+    "value": "FORMALDEHYDE SOLUTION, FLAMMABLE"
+  },
+  {
+    "key": "1199",
+    "value": "FURALDEHYDES"
+  },
+  {
+    "key": "1201",
+    "value": "FUSEL OIL"
+  },
+  {
+    "key": "1202",
+    "value": "GAS OIL or DIESEL FUEL or HEATING OIL, LIGHT"
+  },
+  {
+    "key": "1203",
+    "value": "MOTOR SPIRIT or GASOLINE or PETROL"
+  },
+  {
+    "key": "1204",
+    "value": "NITROGLYCERIN SOLUTION IN ALCOHOL with not more than 1% nitroglycerin"
+  },
+  {
+    "key": "1206",
+    "value": "HEPTANES"
+  },
+  {
+    "key": "1207",
+    "value": "HEXALDEHYDE"
+  },
+  {
+    "key": "1208",
+    "value": "HEXANES"
+  },
+  {
+    "key": "1210",
+    "value": "PRINTING INK, flammable or PRINTING INK RELATED MATERIAL (including printing ink thinning or reducing compound), flammable"
+  },
+  {
+    "key": "1212",
+    "value": "ISOBUTANOL (ISOBUTYL ALCOHOL)"
+  },
+  {
+    "key": "1213",
+    "value": "ISOBUTYL ACETATE"
+  },
+  {
+    "key": "1214",
+    "value": "ISOBUTYLAMINE"
+  },
+  {
+    "key": "1216",
+    "value": "ISOOCTENES"
+  },
+  {
+    "key": "1218",
+    "value": "ISOPRENE, STABILIZED"
+  },
+  {
+    "key": "1219",
+    "value": "ISOPROPANOL (ISOPROPYL ALCOHOL)"
+  },
+  {
+    "key": "1220",
+    "value": "ISOPROPYL ACETATE"
+  },
+  {
+    "key": "1221",
+    "value": "ISOPROPYLAMINE"
+  },
+  {
+    "key": "1222",
+    "value": "ISOPROPYL NITRATE"
+  },
+  {
+    "key": "1223",
+    "value": "KEROSENE"
+  },
+  {
+    "key": "1224",
+    "value": "KETONES, LIQUID, N.O.S."
+  },
+  {
+    "key": "1228",
+    "value": "MERCAPTANS, LIQUID, FLAMMABLE, TOXIC, N.O.S. or MERCAPTAN MIXTURE, LIQUID, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "1229",
+    "value": "MESITYL OXIDE"
+  },
+  {
+    "key": "1230",
+    "value": "METHANOL"
+  },
+  {
+    "key": "1231",
+    "value": "METHYL ACETATE"
+  },
+  {
+    "key": "1233",
+    "value": "METHYLAMYL ACETATE"
+  },
+  {
+    "key": "1234",
+    "value": "METHYLAL"
+  },
+  {
+    "key": "1235",
+    "value": "METHYLAMINE, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "1237",
+    "value": "METHYL BUTYRATE"
+  },
+  {
+    "key": "1238",
+    "value": "METHYL CHLOROFORMATE"
+  },
+  {
+    "key": "1239",
+    "value": "METHYL CHLOROMETHYL ETHER"
+  },
+  {
+    "key": "1242",
+    "value": "METHYLDICHLOROSILANE"
+  },
+  {
+    "key": "1243",
+    "value": "METHYL FORMATE"
+  },
+  {
+    "key": "1244",
+    "value": "METHYLHYDRAZINE"
+  },
+  {
+    "key": "1245",
+    "value": "METHYL ISOBUTYL KETONE"
+  },
+  {
+    "key": "1246",
+    "value": "METHYL ISOPROPENYL KETONE, STABILIZED"
+  },
+  {
+    "key": "1247",
+    "value": "METHYL METHACRYLATE MONOMER, STABILIZED"
+  },
+  {
+    "key": "1248",
+    "value": "METHYL PROPIONATE"
+  },
+  {
+    "key": "1249",
+    "value": "METHYL PROPYL KETONE"
+  },
+  {
+    "key": "1250",
+    "value": "METHYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1251",
+    "value": "METHYL VINYL KETONE, STABILIZED"
+  },
+  {
+    "key": "1259",
+    "value": "NICKEL CARBONYL"
+  },
+  {
+    "key": "1261",
+    "value": "NITROMETHANE"
+  },
+  {
+    "key": "1262",
+    "value": "OCTANES"
+  },
+  {
+    "key": "1263",
+    "value": "PAINT (including paint, lacquer, enamel, stain, shellac, varnish, polish, liquid filler and liquid lacquer base) or PAINT RELATED MATERIAL ("
+  },
+  {
+    "key": "1264",
+    "value": "PARALDEHYDE"
+  },
+  {
+    "key": "1265",
+    "value": "PENTANES, liquid"
+  },
+  {
+    "key": "1266",
+    "value": "PERFUMERY PRODUCTS with flammable solvents"
+  },
+  {
+    "key": "1267",
+    "value": "PETROLEUM CRUDE OIL"
+  },
+  {
+    "key": "1268",
+    "value": "PETROLEUM DISTILLATES, N.O.S. or PETROLEUM PRODUCTS, N.O.S."
+  },
+  {
+    "key": "1272",
+    "value": "PINE OIL"
+  },
+  {
+    "key": "1274",
+    "value": "n-PROPANOL (PROPYL ALCOHOL, NORMAL)"
+  },
+  {
+    "key": "1275",
+    "value": "PROPIONALDEHYDE"
+  },
+  {
+    "key": "1276",
+    "value": "n-PROPYL ACETATE"
+  },
+  {
+    "key": "1277",
+    "value": "PROPYLAMINE"
+  },
+  {
+    "key": "1278",
+    "value": "1-CHLOROPROPANE"
+  },
+  {
+    "key": "1279",
+    "value": "1,2-DICHLOROPROPANE"
+  },
+  {
+    "key": "1280",
+    "value": "PROPYLENE OXIDE"
+  },
+  {
+    "key": "1281",
+    "value": "PROPYL FORMATES"
+  },
+  {
+    "key": "1282",
+    "value": "PYRIDINE"
+  },
+  {
+    "key": "1286",
+    "value": "ROSIN OIL"
+  },
+  {
+    "key": "1287",
+    "value": "RUBBER SOLUTION"
+  },
+  {
+    "key": "1288",
+    "value": "SHALE OIL"
+  },
+  {
+    "key": "1289",
+    "value": "SODIUM METHYLATE SOLUTION in alcohol"
+  },
+  {
+    "key": "1292",
+    "value": "TETRAETHYL SILICATE"
+  },
+  {
+    "key": "1293",
+    "value": "TINCTURES, MEDICINAL"
+  },
+  {
+    "key": "1294",
+    "value": "TOLUENE"
+  },
+  {
+    "key": "1295",
+    "value": "TRICHLOROSILANE"
+  },
+  {
+    "key": "1296",
+    "value": "TRIETHYLAMINE"
+  },
+  {
+    "key": "1297",
+    "value": "TRIMETHYLAMINE, AQUEOUS SOLUTION, not more than 50% trimethylamine, by mass"
+  },
+  {
+    "key": "1298",
+    "value": "TRIMETHYLCHLOROSILANE"
+  },
+  {
+    "key": "1299",
+    "value": "TURPENTINE"
+  },
+  {
+    "key": "1300",
+    "value": "TURPENTINE SUBSTITUTE"
+  },
+  {
+    "key": "1301",
+    "value": "VINYL ACETATE, STABILIZED"
+  },
+  {
+    "key": "1302",
+    "value": "VINYL ETHYL ETHER, STABILIZED"
+  },
+  {
+    "key": "1303",
+    "value": "VINYLIDENE CHLORIDE, STABILIZED"
+  },
+  {
+    "key": "1304",
+    "value": "VINYL ISOBUTYL ETHER, STABILIZED"
+  },
+  {
+    "key": "1305",
+    "value": "VINYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1306",
+    "value": "WOOD PRESERVATIVES, LIQUID"
+  },
+  {
+    "key": "1307",
+    "value": "XYLENES"
+  },
+  {
+    "key": "1308",
+    "value": "ZIRCONIUM SUSPENDED IN A FLAMMABLE LIQUID"
+  },
+  {
+    "key": "1309",
+    "value": "ALUMINIUM POWDER, COATED"
+  },
+  {
+    "key": "1310",
+    "value": "AMMONIUM PICRATE, WETTED with not less than 10% water, by mass"
+  },
+  {
+    "key": "1312",
+    "value": "BORNEOL"
+  },
+  {
+    "key": "1313",
+    "value": "CALCIUM RESINATE"
+  },
+  {
+    "key": "1314",
+    "value": "CALCIUM RESINATE, FUSED"
+  },
+  {
+    "key": "1318",
+    "value": "COBALT RESINATE, PRECIPITATED"
+  },
+  {
+    "key": "1320",
+    "value": "DINITROPHENOL, WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "1321",
+    "value": "DINITROPHENOLATES, WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "1322",
+    "value": "DINITRORESORCINOL, WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "1323",
+    "value": "FERROCERIUM"
+  },
+  {
+    "key": "1324",
+    "value": "FILMS, NITROCELLULOSE BASE, gelatin coated, except scrap"
+  },
+  {
+    "key": "1325",
+    "value": "FLAMMABLE SOLID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "1326",
+    "value": "HAFNIUM POWDER, WETTED with not less than 25% water (a visible excess of water must be present) (a) mechanically produced, particle size les"
+  },
+  {
+    "key": "1327",
+    "value": "HAY, STRAW or BHUSA"
+  },
+  {
+    "key": "1328",
+    "value": "HEXAMETHYLENE-TETRAMINE"
+  },
+  {
+    "key": "1330",
+    "value": "MANGANESE RESINATE"
+  },
+  {
+    "key": "1331",
+    "value": "MATCHES, 'STRIKE ANYWHERE'"
+  },
+  {
+    "key": "1332",
+    "value": "METALDEHYDE"
+  },
+  {
+    "key": "1333",
+    "value": "CERIUM, slabs, ingots or rods"
+  },
+  {
+    "key": "1334",
+    "value": "NAPHTHALENE, CRUDE or NAPHTHALENE, REFINED"
+  },
+  {
+    "key": "1336",
+    "value": "NITROGUANIDINE (PICRITE), WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "1337",
+    "value": "NITROSTARCH, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "1338",
+    "value": "PHOSPHORUS, AMORPHOUS"
+  },
+  {
+    "key": "1339",
+    "value": "PHOSPHORUS HEPTASULPHIDE, free from yellow and white phosphorus"
+  },
+  {
+    "key": "1340",
+    "value": "PHOSPHORUS PENTASULPHIDE, free from yellow and white phosphorus"
+  },
+  {
+    "key": "1341",
+    "value": "PHOSPHORUS SESQUISULPHIDE, free from yellow and white phosphorus"
+  },
+  {
+    "key": "1343",
+    "value": "PHOSPHORUS TRISULPHIDE, free from yellow and white phosphorus"
+  },
+  {
+    "key": "1344",
+    "value": "TRINITROPHENOL (PICRIC ACID), WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "1345",
+    "value": "RUBBER SCRAP or RUBBER SHODDY, powdered or granulated, not exceeding 840 microns and rubber content exceeding 45%"
+  },
+  {
+    "key": "1346",
+    "value": "SILICON POWDER, AMORPHOUS"
+  },
+  {
+    "key": "1347",
+    "value": "SILVER PICRATE, WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "1348",
+    "value": "SODIUM DINITRO-o-CRESOLATE, WETTED with not less than 15% water, by mass"
+  },
+  {
+    "key": "1349",
+    "value": "SODIUM PICRAMATE, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "1350",
+    "value": "SULPHUR"
+  },
+  {
+    "key": "1352",
+    "value": "TITANIUM POWDER, WETTED with not less than 25% water (a visible excess of water must be present) (a) mechanically produced, particle size le"
+  },
+  {
+    "key": "1353",
+    "value": "FIBRES or FABRICS IMPREGNATED WITH WEAKLY NITRATED NITROCELLULOSE, N.O.S."
+  },
+  {
+    "key": "1354",
+    "value": "TRINITROBENZENE, WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "1355",
+    "value": "TRINITROBENZOIC ACID, WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "1356",
+    "value": "TRINITROTOLUENE (TNT), WETTED with not less than 30% water, by mass"
+  },
+  {
+    "key": "1357",
+    "value": "UREA NITRATE, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "1358",
+    "value": "ZIRCONIUM POWDER, WETTED with not less than 25% water (a visible excess of water must be present) (a) mechanically produced, particle size l"
+  },
+  {
+    "key": "1360",
+    "value": "CALCIUM PHOSPHIDE"
+  },
+  {
+    "key": "1361",
+    "value": "CARBON, animal or vegetable origin"
+  },
+  {
+    "key": "1362",
+    "value": "CARBON, ACTIVATED"
+  },
+  {
+    "key": "1363",
+    "value": "COPRA"
+  },
+  {
+    "key": "1364",
+    "value": "COTTON WASTE, OILY"
+  },
+  {
+    "key": "1365",
+    "value": "COTTON, WET"
+  },
+  {
+    "key": "1369",
+    "value": "p-NITROSODIMETHYLANILINE"
+  },
+  {
+    "key": "1372",
+    "value": "FIBRES, ANIMAL or FIBRES, VEGETABLE burnt, wet or damp"
+  },
+  {
+    "key": "1373",
+    "value": "FIBRES or FABRICS, ANIMAL or VEGETABLE or SYNTHETIC, N.O.S. with oil"
+  },
+  {
+    "key": "1374",
+    "value": "FISH MEAL (FISH SCRAP), UNSTABILIZED"
+  },
+  {
+    "key": "1376",
+    "value": "IRON OXIDE, SPENT or IRON SPONGE, SPENT obtained from coal gas purification"
+  },
+  {
+    "key": "1378",
+    "value": "METAL CATALYST, WETTED with a visible excess of liquid"
+  },
+  {
+    "key": "1379",
+    "value": "PAPER, UNSATURATED OIL TREATED, incompletely dried (including carbon paper)"
+  },
+  {
+    "key": "1380",
+    "value": "PENTABORANE"
+  },
+  {
+    "key": "1381",
+    "value": "PHOSPHORUS, WHITE or YELLOW, DRY or UNDER WATER or IN SOLUTION"
+  },
+  {
+    "key": "1382",
+    "value": "POTASSIUM SULPHIDE, ANHYDROUS or POTASSIUM SULPHIDE with less than 30% water of crystallization"
+  },
+  {
+    "key": "1383",
+    "value": "PYROPHORIC METAL, N.O.S. or PYROPHORIC ALLOY, N.O.S."
+  },
+  {
+    "key": "1384",
+    "value": "SODIUM DITHIONITE (SODIUM HYDROSULPHITE)"
+  },
+  {
+    "key": "1385",
+    "value": "SODIUM SULPHIDE, ANHYDROUS or SODIUM SULPHIDE with less than 30% water of crystallization"
+  },
+  {
+    "key": "1386",
+    "value": "SEED CAKE with more than 1.5% oil and not more than 11% moisture"
+  },
+  {
+    "key": "1387",
+    "value": "WOOL WASTE, WET"
+  },
+  {
+    "key": "1389",
+    "value": "ALKALI METAL AMALGAM, LIQUID"
+  },
+  {
+    "key": "1390",
+    "value": "ALKALI METAL AMIDES"
+  },
+  {
+    "key": "1391",
+    "value": "ALKALI METAL DISPERSION or ALKALINE EARTH METAL DISPERSION"
+  },
+  {
+    "key": "1392",
+    "value": "ALKALINE EARTH METAL AMALGAM, LIQUID"
+  },
+  {
+    "key": "1393",
+    "value": "ALKALINE EARTH METAL ALLOY, N.O.S."
+  },
+  {
+    "key": "1394",
+    "value": "ALUMINIUM CARBIDE"
+  },
+  {
+    "key": "1395",
+    "value": "ALUMINIUM FERROSILICON POWDER"
+  },
+  {
+    "key": "1396",
+    "value": "ALUMINIUM POWDER, UNCOATED"
+  },
+  {
+    "key": "1397",
+    "value": "ALUMINIUM PHOSPHIDE"
+  },
+  {
+    "key": "1398",
+    "value": "ALUMINIUM SILICON POWDER, UNCOATED"
+  },
+  {
+    "key": "1400",
+    "value": "BARIUM"
+  },
+  {
+    "key": "1401",
+    "value": "CALCIUM"
+  },
+  {
+    "key": "1402",
+    "value": "CALCIUM CARBIDE"
+  },
+  {
+    "key": "1403",
+    "value": "CALCIUM CYANAMIDE with more than 0.1% calcium carbide"
+  },
+  {
+    "key": "1404",
+    "value": "CALCIUM HYDRIDE"
+  },
+  {
+    "key": "1405",
+    "value": "CALCIUM SILICIDE"
+  },
+  {
+    "key": "1407",
+    "value": "CAESIUM"
+  },
+  {
+    "key": "1408",
+    "value": "FERROSILICON with 30% or more but less than 90% silicon"
+  },
+  {
+    "key": "1409",
+    "value": "METAL HYDRIDES, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "1410",
+    "value": "LITHIUM ALUMINIUM HYDRIDE"
+  },
+  {
+    "key": "1411",
+    "value": "LITHIUM ALUMINIUM HYDRIDE, ETHEREAL"
+  },
+  {
+    "key": "1413",
+    "value": "LITHIUM BOROHYDRIDE"
+  },
+  {
+    "key": "1414",
+    "value": "LITHIUM HYDRIDE"
+  },
+  {
+    "key": "1415",
+    "value": "LITHIUM"
+  },
+  {
+    "key": "1417",
+    "value": "LITHIUM SILICON"
+  },
+  {
+    "key": "1418",
+    "value": "MAGNESIUM POWDER or MAGNESIUM ALLOYS POWDER"
+  },
+  {
+    "key": "1419",
+    "value": "MAGNESIUM ALUMINIUM PHOSPHIDE"
+  },
+  {
+    "key": "1420",
+    "value": "POTASSIUM METAL ALLOYS, LIQUID"
+  },
+  {
+    "key": "1421",
+    "value": "ALKALI METAL ALLOY, LIQUID, N.O.S."
+  },
+  {
+    "key": "1422",
+    "value": "POTASSIUM SODIUM ALLOYS, LIQUID"
+  },
+  {
+    "key": "1423",
+    "value": "RUBIDIUM"
+  },
+  {
+    "key": "1426",
+    "value": "SODIUM BOROHYDRIDE"
+  },
+  {
+    "key": "1427",
+    "value": "SODIUM HYDRIDE"
+  },
+  {
+    "key": "1428",
+    "value": "SODIUM"
+  },
+  {
+    "key": "1431",
+    "value": "SODIUM METHYLATE"
+  },
+  {
+    "key": "1432",
+    "value": "SODIUM PHOSPHIDE"
+  },
+  {
+    "key": "1433",
+    "value": "STANNIC PHOSPHIDES"
+  },
+  {
+    "key": "1435",
+    "value": "ZINC ASHES"
+  },
+  {
+    "key": "1436",
+    "value": "ZINC POWDER or ZINC DUST"
+  },
+  {
+    "key": "1437",
+    "value": "ZIRCONIUM HYDRIDE"
+  },
+  {
+    "key": "1438",
+    "value": "ALUMINIUM NITRATE"
+  },
+  {
+    "key": "1439",
+    "value": "AMMONIUM DICHROMATE"
+  },
+  {
+    "key": "1442",
+    "value": "AMMONIUM PERCHLORATE"
+  },
+  {
+    "key": "1444",
+    "value": "AMMONIUM PERSULPHATE"
+  },
+  {
+    "key": "1445",
+    "value": "BARIUM CHLORATE, SOLID"
+  },
+  {
+    "key": "1446",
+    "value": "BARIUM NITRATE"
+  },
+  {
+    "key": "1447",
+    "value": "BARIUM PERCHLORATE, SOLID"
+  },
+  {
+    "key": "1448",
+    "value": "BARIUM PERMANGANATE"
+  },
+  {
+    "key": "1449",
+    "value": "BARIUM PEROXIDE"
+  },
+  {
+    "key": "1450",
+    "value": "BROMATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1451",
+    "value": "CAESIUM NITRATE"
+  },
+  {
+    "key": "1452",
+    "value": "CALCIUM CHLORATE"
+  },
+  {
+    "key": "1453",
+    "value": "CALCIUM CHLORITE"
+  },
+  {
+    "key": "1454",
+    "value": "CALCIUM NITRATE"
+  },
+  {
+    "key": "1455",
+    "value": "CALCIUM PERCHLORATE"
+  },
+  {
+    "key": "1456",
+    "value": "CALCIUM PERMANGANATE"
+  },
+  {
+    "key": "1457",
+    "value": "CALCIUM PEROXIDE"
+  },
+  {
+    "key": "1458",
+    "value": "CHLORATE AND BORATE MIXTURE"
+  },
+  {
+    "key": "1459",
+    "value": "CHLORATE AND MAGNESIUM CHLORIDE MIXTURE, SOLID"
+  },
+  {
+    "key": "1461",
+    "value": "CHLORATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1462",
+    "value": "CHLORITES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1463",
+    "value": "CHROMIUM TRIOXIDE, ANHYDROUS"
+  },
+  {
+    "key": "1465",
+    "value": "DIDYMIUM NITRATE"
+  },
+  {
+    "key": "1466",
+    "value": "FERRIC NITRATE"
+  },
+  {
+    "key": "1467",
+    "value": "GUANIDINE NITRATE"
+  },
+  {
+    "key": "1469",
+    "value": "LEAD NITRATE"
+  },
+  {
+    "key": "1470",
+    "value": "LEAD PERCHLORATE, SOLID"
+  },
+  {
+    "key": "1471",
+    "value": "LITHIUM HYPOCHLORITE, DRY or LITHIUM HYPOCHLORITE MIXTURE"
+  },
+  {
+    "key": "1472",
+    "value": "LITHIUM PEROXIDE"
+  },
+  {
+    "key": "1473",
+    "value": "MAGNESIUM BROMATE"
+  },
+  {
+    "key": "1474",
+    "value": "MAGNESIUM NITRATE"
+  },
+  {
+    "key": "1475",
+    "value": "MAGNESIUM PERCHLORATE"
+  },
+  {
+    "key": "1476",
+    "value": "MAGNESIUM PEROXIDE"
+  },
+  {
+    "key": "1477",
+    "value": "NITRATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1479",
+    "value": "OXIDIZING SOLID, N.O.S."
+  },
+  {
+    "key": "1481",
+    "value": "PERCHLORATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1482",
+    "value": "PERMANGANATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1483",
+    "value": "PEROXIDES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "1484",
+    "value": "POTASSIUM BROMATE"
+  },
+  {
+    "key": "1485",
+    "value": "POTASSIUM CHLORATE"
+  },
+  {
+    "key": "1486",
+    "value": "POTASSIUM NITRATE"
+  },
+  {
+    "key": "1487",
+    "value": "POTASSIUM NITRATE AND SODIUM NITRITE MIXTURE"
+  },
+  {
+    "key": "1488",
+    "value": "POTASSIUM NITRITE"
+  },
+  {
+    "key": "1489",
+    "value": "POTASSIUM PERCHLORATE"
+  },
+  {
+    "key": "1490",
+    "value": "POTASSIUM PERMANGANATE"
+  },
+  {
+    "key": "1491",
+    "value": "POTASSIUM PEROXIDE"
+  },
+  {
+    "key": "1492",
+    "value": "POTASSIUM PERSULPHATE"
+  },
+  {
+    "key": "1493",
+    "value": "SILVER NITRATE"
+  },
+  {
+    "key": "1494",
+    "value": "SODIUM BROMATE"
+  },
+  {
+    "key": "1495",
+    "value": "SODIUM CHLORATE"
+  },
+  {
+    "key": "1496",
+    "value": "SODIUM CHLORITE"
+  },
+  {
+    "key": "1498",
+    "value": "SODIUM NITRATE"
+  },
+  {
+    "key": "1499",
+    "value": "SODIUM NITRATE AND POTASSIUM NITRATE MIXTURE"
+  },
+  {
+    "key": "1500",
+    "value": "SODIUM NITRITE"
+  },
+  {
+    "key": "1502",
+    "value": "SODIUM PERCHLORATE"
+  },
+  {
+    "key": "1503",
+    "value": "SODIUM PERMANGANATE"
+  },
+  {
+    "key": "1504",
+    "value": "SODIUM PEROXIDE"
+  },
+  {
+    "key": "1505",
+    "value": "SODIUM PERSULPHATE"
+  },
+  {
+    "key": "1506",
+    "value": "STRONTIUM CHLORATE"
+  },
+  {
+    "key": "1507",
+    "value": "STRONTIUM NITRATE"
+  },
+  {
+    "key": "1508",
+    "value": "STRONTIUM PERCHLORATE"
+  },
+  {
+    "key": "1509",
+    "value": "STRONTIUM PEROXIDE"
+  },
+  {
+    "key": "1510",
+    "value": "TETRANITROMETHANE"
+  },
+  {
+    "key": "1511",
+    "value": "UREA HYDROGEN PEROXIDE"
+  },
+  {
+    "key": "1512",
+    "value": "ZINC AMMONIUM NITRITE"
+  },
+  {
+    "key": "1513",
+    "value": "ZINC CHLORATE"
+  },
+  {
+    "key": "1514",
+    "value": "ZINC NITRATE"
+  },
+  {
+    "key": "1515",
+    "value": "ZINC PERMANGANATE"
+  },
+  {
+    "key": "1516",
+    "value": "ZINC PEROXIDE"
+  },
+  {
+    "key": "1517",
+    "value": "ZIRCONIUM PICRAMATE, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "1541",
+    "value": "ACETONE CYANOHYDRIN, STABILIZED"
+  },
+  {
+    "key": "1544",
+    "value": "ALKALOIDS, SOLID, N.O.S. or ALKALOID SALTS, SOLID, N.O.S."
+  },
+  {
+    "key": "1545",
+    "value": "ALLYL ISOTHIOCYANATE, STABILIZED"
+  },
+  {
+    "key": "1546",
+    "value": "AMMONIUM ARSENATE"
+  },
+  {
+    "key": "1547",
+    "value": "ANILINE"
+  },
+  {
+    "key": "1548",
+    "value": "ANILINE HYDROCHLORIDE"
+  },
+  {
+    "key": "1549",
+    "value": "ANTIMONY COMPOUND, INORGANIC, SOLID, N.O.S."
+  },
+  {
+    "key": "1550",
+    "value": "ANTIMONY LACTATE"
+  },
+  {
+    "key": "1551",
+    "value": "ANTIMONY POTASSIUM TARTRATE"
+  },
+  {
+    "key": "1553",
+    "value": "ARSENIC ACID, LIQUID"
+  },
+  {
+    "key": "1554",
+    "value": "ARSENIC ACID, SOLID"
+  },
+  {
+    "key": "1555",
+    "value": "ARSENIC BROMIDE"
+  },
+  {
+    "key": "1556",
+    "value": "ARSENIC COMPOUND, LIQUID, N.O.S., inorganic, including: Arsenates, n.o.s., Arsenites, n.o.s.; and Arsenic sulphides, n.o.s."
+  },
+  {
+    "key": "1557",
+    "value": "ARSENIC COMPOUND, SOLID, N.O.S., inorganic, including: Arsenates, n.o.s.; Arsenites, n.o.s.; and Arsenic sulphides, n.o.s."
+  },
+  {
+    "key": "1558",
+    "value": "ARSENIC"
+  },
+  {
+    "key": "1559",
+    "value": "ARSENIC PENTOXIDE"
+  },
+  {
+    "key": "1560",
+    "value": "ARSENIC TRICHLORIDE"
+  },
+  {
+    "key": "1561",
+    "value": "ARSENIC TRIOXIDE"
+  },
+  {
+    "key": "1562",
+    "value": "ARSENICAL DUST"
+  },
+  {
+    "key": "1564",
+    "value": "BARIUM COMPOUND, N.O.S."
+  },
+  {
+    "key": "1565",
+    "value": "BARIUM CYANIDE"
+  },
+  {
+    "key": "1566",
+    "value": "BERYLLIUM COMPOUND, N.O.S."
+  },
+  {
+    "key": "1567",
+    "value": "BERYLLIUM POWDER"
+  },
+  {
+    "key": "1569",
+    "value": "BROMOACETONE"
+  },
+  {
+    "key": "1570",
+    "value": "BRUCINE"
+  },
+  {
+    "key": "1571",
+    "value": "BARIUM AZIDE, WETTED with not less than 50% water, by mass"
+  },
+  {
+    "key": "1572",
+    "value": "CACODYLIC ACID"
+  },
+  {
+    "key": "1573",
+    "value": "CALCIUM ARSENATE"
+  },
+  {
+    "key": "1574",
+    "value": "CALCIUM ARSENATE AND CALCIUM ARSENITE MIXTURE, SOLID"
+  },
+  {
+    "key": "1575",
+    "value": "CALCIUM CYANIDE"
+  },
+  {
+    "key": "1577",
+    "value": "CHLORODINITROBENZENES, LIQUID"
+  },
+  {
+    "key": "1578",
+    "value": "CHLORONITROBENZENES, SOLID"
+  },
+  {
+    "key": "1579",
+    "value": "4-CHLORO-o-TOLUIDINE HYDROCHLORIDE, SOLID"
+  },
+  {
+    "key": "1580",
+    "value": "CHLOROPICRIN"
+  },
+  {
+    "key": "1581",
+    "value": "CHLOROPICRIN AND METHYL BROMIDE MIXTURE with more than 2% chloropicrin"
+  },
+  {
+    "key": "1582",
+    "value": "CHLOROPICRIN AND METHYL CHLORIDE MIXTURE"
+  },
+  {
+    "key": "1583",
+    "value": "CHLOROPICRIN MIXTURE, N.O.S."
+  },
+  {
+    "key": "1585",
+    "value": "COPPER ACETOARSENITE"
+  },
+  {
+    "key": "1586",
+    "value": "COPPER ARSENITE"
+  },
+  {
+    "key": "1587",
+    "value": "COPPER CYANIDE"
+  },
+  {
+    "key": "1588",
+    "value": "CYANIDES, INORGANIC, SOLID, N.O.S."
+  },
+  {
+    "key": "1589",
+    "value": "CYANOGEN CHLORIDE, STABILIZED"
+  },
+  {
+    "key": "1590",
+    "value": "DICHLOROANILINES, LIQUID"
+  },
+  {
+    "key": "1591",
+    "value": "o-DICHLOROBENZENE"
+  },
+  {
+    "key": "1593",
+    "value": "DICHLOROMETHANE"
+  },
+  {
+    "key": "1594",
+    "value": "DIETHYL SULPHATE"
+  },
+  {
+    "key": "1595",
+    "value": "DIMETHYL SULPHATE"
+  },
+  {
+    "key": "1596",
+    "value": "DINITROANILINES"
+  },
+  {
+    "key": "1597",
+    "value": "DINITROBENZENES, LIQUID"
+  },
+  {
+    "key": "1598",
+    "value": "DINITRO-o-CRESOL"
+  },
+  {
+    "key": "1599",
+    "value": "DINITROPHENOL SOLUTION"
+  },
+  {
+    "key": "1600",
+    "value": "DINITROTOLUENES, MOLTEN"
+  },
+  {
+    "key": "1601",
+    "value": "DISINFECTANT, SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "1602",
+    "value": "DYE, LIQUID, TOXIC, N.O.S. or DYE INTERMEDIATE, LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "1603",
+    "value": "ETHYL BROMOACETATE"
+  },
+  {
+    "key": "1604",
+    "value": "ETHYLENEDIAMINE"
+  },
+  {
+    "key": "1605",
+    "value": "ETHYLENE DIBROMIDE"
+  },
+  {
+    "key": "1606",
+    "value": "FERRIC ARSENATE"
+  },
+  {
+    "key": "1607",
+    "value": "FERRIC ARSENITE"
+  },
+  {
+    "key": "1608",
+    "value": "FERROUS ARSENATE"
+  },
+  {
+    "key": "1611",
+    "value": "HEXAETHYL TETRAPHOSPHATE"
+  },
+  {
+    "key": "1612",
+    "value": "HEXAETHYL TETRAPHOSPHATE AND COMPRESSED GAS MIXTURE"
+  },
+  {
+    "key": "1613",
+    "value": "HYDROCYANIC ACID, AQUEOUS SOLUTION (HYDROGEN CYANIDE, AQUEOUS SOLUTION) with not more than 20% hydrogen cyanide"
+  },
+  {
+    "key": "1614",
+    "value": "HYDROGEN CYANIDE, STABILIZED, containing less than 3% water and absorbed in a porous inert material"
+  },
+  {
+    "key": "1616",
+    "value": "LEAD ACETATE"
+  },
+  {
+    "key": "1617",
+    "value": "LEAD ARSENATES"
+  },
+  {
+    "key": "1618",
+    "value": "LEAD ARSENITES"
+  },
+  {
+    "key": "1620",
+    "value": "LEAD CYANIDE"
+  },
+  {
+    "key": "1621",
+    "value": "LONDON PURPLE"
+  },
+  {
+    "key": "1622",
+    "value": "MAGNESIUM ARSENATE"
+  },
+  {
+    "key": "1623",
+    "value": "MERCURIC ARSENATE"
+  },
+  {
+    "key": "1624",
+    "value": "MERCURIC CHLORIDE"
+  },
+  {
+    "key": "1625",
+    "value": "MERCURIC NITRATE"
+  },
+  {
+    "key": "1626",
+    "value": "MERCURIC POTASSIUM CYANIDE"
+  },
+  {
+    "key": "1627",
+    "value": "MERCUROUS NITRATE"
+  },
+  {
+    "key": "1629",
+    "value": "MERCURY ACETATE"
+  },
+  {
+    "key": "1630",
+    "value": "MERCURY AMMONIUM CHLORIDE"
+  },
+  {
+    "key": "1631",
+    "value": "MERCURY BENZOATE"
+  },
+  {
+    "key": "1634",
+    "value": "MERCURY BROMIDES"
+  },
+  {
+    "key": "1636",
+    "value": "MERCURY CYANIDE"
+  },
+  {
+    "key": "1637",
+    "value": "MERCURY GLUCONATE"
+  },
+  {
+    "key": "1638",
+    "value": "MERCURY IODIDE"
+  },
+  {
+    "key": "1639",
+    "value": "MERCURY NUCLEATE"
+  },
+  {
+    "key": "1640",
+    "value": "MERCURY OLEATE"
+  },
+  {
+    "key": "1641",
+    "value": "MERCURY OXIDE"
+  },
+  {
+    "key": "1642",
+    "value": "MERCURY OXYCYANIDE, DESENSITIZED"
+  },
+  {
+    "key": "1643",
+    "value": "MERCURY POTASSIUM IODIDE"
+  },
+  {
+    "key": "1644",
+    "value": "MERCURY SALICYLATE"
+  },
+  {
+    "key": "1645",
+    "value": "MERCURY SULPHATE"
+  },
+  {
+    "key": "1646",
+    "value": "MERCURY THIOCYANATE"
+  },
+  {
+    "key": "1647",
+    "value": "METHYL BROMIDE AND ETHYLENE DIBROMIDE MIXTURE, LIQUID"
+  },
+  {
+    "key": "1648",
+    "value": "ACETONITRILE"
+  },
+  {
+    "key": "1649",
+    "value": "MOTOR FUEL ANTI-KNOCK MIXTURE"
+  },
+  {
+    "key": "1650",
+    "value": "beta-NAPHTHYLAMINE, SOLID"
+  },
+  {
+    "key": "1651",
+    "value": "NAPHTHYLTHIOUREA"
+  },
+  {
+    "key": "1652",
+    "value": "NAPHTHYLUREA"
+  },
+  {
+    "key": "1653",
+    "value": "NICKEL CYANIDE"
+  },
+  {
+    "key": "1654",
+    "value": "NICOTINE"
+  },
+  {
+    "key": "1655",
+    "value": "NICOTINE COMPOUND, SOLID, N.O.S. or NICOTINE PREPARATION, SOLID, N.O.S."
+  },
+  {
+    "key": "1656",
+    "value": "NICOTINE HYDROCHLORIDE, LIQUID or SOLUTION"
+  },
+  {
+    "key": "1657",
+    "value": "NICOTINE SALICYLATE"
+  },
+  {
+    "key": "1658",
+    "value": "NICOTINE SULPHATE SOLUTION"
+  },
+  {
+    "key": "1659",
+    "value": "NICOTINE TARTRATE"
+  },
+  {
+    "key": "1660",
+    "value": "NITRIC OXIDE, COMPRESSED"
+  },
+  {
+    "key": "1661",
+    "value": "NITROANILINES (o-, m-, p-)"
+  },
+  {
+    "key": "1662",
+    "value": "NITROBENZENE"
+  },
+  {
+    "key": "1663",
+    "value": "NITROPHENOLS (o-, m-, p-)"
+  },
+  {
+    "key": "1664",
+    "value": "NITROTOLUENES, LIQUID"
+  },
+  {
+    "key": "1665",
+    "value": "NITROXYLENES, LIQUID"
+  },
+  {
+    "key": "1669",
+    "value": "PENTACHLOROETHANE"
+  },
+  {
+    "key": "1670",
+    "value": "PERCHLOROMETHYL MERCAPTAN"
+  },
+  {
+    "key": "1671",
+    "value": "PHENOL, SOLID"
+  },
+  {
+    "key": "1672",
+    "value": "PHENYLCARBYLAMINE CHLORIDE"
+  },
+  {
+    "key": "1673",
+    "value": "PHENYLENEDIAMINES (o-, m-, p-)"
+  },
+  {
+    "key": "1674",
+    "value": "PHENYLMERCURIC ACETATE"
+  },
+  {
+    "key": "1677",
+    "value": "POTASSIUM ARSENATE"
+  },
+  {
+    "key": "1678",
+    "value": "POTASSIUM ARSENITE"
+  },
+  {
+    "key": "1679",
+    "value": "POTASSIUM CUPROCYANIDE"
+  },
+  {
+    "key": "1680",
+    "value": "POTASSIUM CYANIDE, SOLID"
+  },
+  {
+    "key": "1683",
+    "value": "SILVER ARSENITE"
+  },
+  {
+    "key": "1684",
+    "value": "SILVER CYANIDE"
+  },
+  {
+    "key": "1685",
+    "value": "SODIUM ARSENATE"
+  },
+  {
+    "key": "1686",
+    "value": "SODIUM ARSENITE, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "1687",
+    "value": "SODIUM AZIDE"
+  },
+  {
+    "key": "1688",
+    "value": "SODIUM CACODYLATE"
+  },
+  {
+    "key": "1689",
+    "value": "SODIUM CYANIDE, SOLID"
+  },
+  {
+    "key": "1690",
+    "value": "SODIUM FLUORIDE, SOLID"
+  },
+  {
+    "key": "1691",
+    "value": "STRONTIUM ARSENITE"
+  },
+  {
+    "key": "1692",
+    "value": "STRYCHNINE or STRYCHNINE SALTS"
+  },
+  {
+    "key": "1693",
+    "value": "TEAR GAS SUBSTANCE, LIQUID, N.O.S."
+  },
+  {
+    "key": "1694",
+    "value": "BROMOBENZYL CYANIDES, LIQUID"
+  },
+  {
+    "key": "1695",
+    "value": "CHLOROACETONE, STABILIZED"
+  },
+  {
+    "key": "1697",
+    "value": "CHLOROACETOPHENONE, SOLID"
+  },
+  {
+    "key": "1698",
+    "value": "DIPHENYLAMINE CHLOROARSINE"
+  },
+  {
+    "key": "1699",
+    "value": "DIPHENYLCHLOROARSINE, LIQUID"
+  },
+  {
+    "key": "1700",
+    "value": "TEAR GAS CANDLES"
+  },
+  {
+    "key": "1701",
+    "value": "XYLYL BROMIDE, LIQUID"
+  },
+  {
+    "key": "1702",
+    "value": "1,1,2,2-TETRACHLORO-ETHANE"
+  },
+  {
+    "key": "1704",
+    "value": "TETRAETHYL DITHIOPYROPHOSPHATE"
+  },
+  {
+    "key": "1707",
+    "value": "THALLIUM COMPOUND, N.O.S."
+  },
+  {
+    "key": "1708",
+    "value": "TOLUIDINES, LIQUID"
+  },
+  {
+    "key": "1709",
+    "value": "2,4-TOLUYLENEDIAMINE, SOLID"
+  },
+  {
+    "key": "1710",
+    "value": "TRICHLOROETHYLENE"
+  },
+  {
+    "key": "1711",
+    "value": "XYLIDINES, LIQUID"
+  },
+  {
+    "key": "1712",
+    "value": "ZINC ARSENATE, ZINC ARSENITE or ZINC ARSENATE AND ZINC ARSENITE MIXTURE"
+  },
+  {
+    "key": "1713",
+    "value": "ZINC CYANIDE"
+  },
+  {
+    "key": "1714",
+    "value": "ZINC PHOSPHIDE"
+  },
+  {
+    "key": "1715",
+    "value": "ACETIC ANHYDRIDE"
+  },
+  {
+    "key": "1716",
+    "value": "ACETYL BROMIDE"
+  },
+  {
+    "key": "1717",
+    "value": "ACETYL CHLORIDE"
+  },
+  {
+    "key": "1718",
+    "value": "BUTYL ACID PHOSPHATE"
+  },
+  {
+    "key": "1719",
+    "value": "CAUSTIC ALKALI LIQUID, N.O.S."
+  },
+  {
+    "key": "1722",
+    "value": "ALLYL CHLOROFORMATE"
+  },
+  {
+    "key": "1723",
+    "value": "ALLYL IODIDE"
+  },
+  {
+    "key": "1724",
+    "value": "ALLYLTRICHLOROSILANE, STABILIZED"
+  },
+  {
+    "key": "1725",
+    "value": "ALUMINIUM BROMIDE, ANHYDROUS"
+  },
+  {
+    "key": "1726",
+    "value": "ALUMINIUM CHLORIDE, ANHYDROUS"
+  },
+  {
+    "key": "1727",
+    "value": "AMMONIUM HYDROGENDIFLUORIDE, SOLID"
+  },
+  {
+    "key": "1728",
+    "value": "AMYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1729",
+    "value": "ANISOYL CHLORIDE"
+  },
+  {
+    "key": "1730",
+    "value": "ANTIMONY PENTACHLORIDE, LIQUID"
+  },
+  {
+    "key": "1731",
+    "value": "ANTIMONY PENTACHLORIDE SOLUTION"
+  },
+  {
+    "key": "1732",
+    "value": "ANTIMONY PENTAFLUORIDE"
+  },
+  {
+    "key": "1733",
+    "value": "ANTIMONY TRICHLORIDE"
+  },
+  {
+    "key": "1736",
+    "value": "BENZOYL CHLORIDE"
+  },
+  {
+    "key": "1737",
+    "value": "BENZYL BROMIDE"
+  },
+  {
+    "key": "1738",
+    "value": "BENZYL CHLORIDE"
+  },
+  {
+    "key": "1739",
+    "value": "BENZYL CHLOROFORMATE"
+  },
+  {
+    "key": "1740",
+    "value": "HYDROGENDIFLUORIDES, SOLID, N.O.S."
+  },
+  {
+    "key": "1741",
+    "value": "BORON TRICHLORIDE"
+  },
+  {
+    "key": "1742",
+    "value": "BORON TRIFLUORIDE ACETIC ACID COMPLEX, LIQUID"
+  },
+  {
+    "key": "1743",
+    "value": "BORON TRIFLUORIDE PROPIONIC ACID COMPLEX, LIQUID"
+  },
+  {
+    "key": "1744",
+    "value": "BROMINE or BROMINE SOLUTION"
+  },
+  {
+    "key": "1745",
+    "value": "BROMINE PENTAFLUORIDE"
+  },
+  {
+    "key": "1746",
+    "value": "BROMINE TRIFLUORIDE"
+  },
+  {
+    "key": "1747",
+    "value": "BUTYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1748",
+    "value": "CALCIUM HYPOCHLORITE, DRY or CALCIUM HYPOCHLORITE MIXTURE, DRY with more than 39% available chlorine (8.8% available oxygen)"
+  },
+  {
+    "key": "1749",
+    "value": "CHLORINE TRIFLUORIDE"
+  },
+  {
+    "key": "1750",
+    "value": "CHLOROACETIC ACID SOLUTION"
+  },
+  {
+    "key": "1751",
+    "value": "CHLOROACETIC ACID, SOLID"
+  },
+  {
+    "key": "1752",
+    "value": "CHLOROACETYL CHLORIDE"
+  },
+  {
+    "key": "1753",
+    "value": "CHLOROPHENYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1754",
+    "value": "CHLOROSULPHONIC ACID (with or without sulphur trioxide)"
+  },
+  {
+    "key": "1755",
+    "value": "CHROMIC ACID SOLUTION"
+  },
+  {
+    "key": "1756",
+    "value": "CHROMIC FLUORIDE, SOLID"
+  },
+  {
+    "key": "1757",
+    "value": "CHROMIC FLUORIDE SOLUTION"
+  },
+  {
+    "key": "1758",
+    "value": "CHROMIUM OXYCHLORIDE"
+  },
+  {
+    "key": "1759",
+    "value": "CORROSIVE SOLID, N.O.S."
+  },
+  {
+    "key": "1760",
+    "value": "CORROSIVE LIQUID, N.O.S."
+  },
+  {
+    "key": "1761",
+    "value": "CUPRIETHYLENEDIAMINE SOLUTION"
+  },
+  {
+    "key": "1762",
+    "value": "CYCLOHEXENYL-TRICHLOROSILANE"
+  },
+  {
+    "key": "1763",
+    "value": "CYCLOHEXYL-TRICHLOROSILANE"
+  },
+  {
+    "key": "1764",
+    "value": "DICHLOROACETIC ACID"
+  },
+  {
+    "key": "1765",
+    "value": "DICHLOROACETYL CHLORIDE"
+  },
+  {
+    "key": "1766",
+    "value": "DICHLOROPHENYL-TRICHLOROSILANE"
+  },
+  {
+    "key": "1767",
+    "value": "DIETHYLDICHLOROSILANE"
+  },
+  {
+    "key": "1768",
+    "value": "DIFLUOROPHOSPHORIC ACID, ANHYDROUS"
+  },
+  {
+    "key": "1769",
+    "value": "DIPHENYLDICHLOROSILANE"
+  },
+  {
+    "key": "1770",
+    "value": "DIPHENYLMETHYL BROMIDE"
+  },
+  {
+    "key": "1771",
+    "value": "DODECYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1773",
+    "value": "FERRIC CHLORIDE, ANHYDROUS"
+  },
+  {
+    "key": "1774",
+    "value": "FIRE EXTINGUISHER CHARGES, corrosive liquid"
+  },
+  {
+    "key": "1775",
+    "value": "FLUOROBORIC ACID"
+  },
+  {
+    "key": "1776",
+    "value": "FLUOROPHOSPHORIC ACID, ANHYDROUS"
+  },
+  {
+    "key": "1777",
+    "value": "FLUOROSULPHONIC ACID"
+  },
+  {
+    "key": "1778",
+    "value": "FLUOROSILICIC ACID"
+  },
+  {
+    "key": "1779",
+    "value": "FORMIC ACID with more than 85% acid by mass"
+  },
+  {
+    "key": "1780",
+    "value": "FUMARYL CHLORIDE"
+  },
+  {
+    "key": "1781",
+    "value": "HEXADECYL-TRICHLOROSILANE"
+  },
+  {
+    "key": "1782",
+    "value": "HEXAFLUOROPHOSPHORIC ACID"
+  },
+  {
+    "key": "1783",
+    "value": "HEXAMETHYLENEDIAMINE SOLUTION"
+  },
+  {
+    "key": "1784",
+    "value": "HEXYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1786",
+    "value": "HYDROFLUORIC ACID AND SULPHURIC ACID MIXTURE"
+  },
+  {
+    "key": "1787",
+    "value": "HYDRIODIC ACID"
+  },
+  {
+    "key": "1788",
+    "value": "HYDROBROMIC ACID"
+  },
+  {
+    "key": "1789",
+    "value": "HYDROCHLORIC ACID"
+  },
+  {
+    "key": "1790",
+    "value": "HYDROFLUORIC ACID, with more than 60% hydrogen fluoride"
+  },
+  {
+    "key": "1791",
+    "value": "HYPOCHLORITE SOLUTION"
+  },
+  {
+    "key": "1792",
+    "value": "IODINE MONOCHLORIDE"
+  },
+  {
+    "key": "1793",
+    "value": "ISOPROPYL ACID PHOSPHATE"
+  },
+  {
+    "key": "1794",
+    "value": "LEAD SULPHATE with more than 3% free acid"
+  },
+  {
+    "key": "1796",
+    "value": "NITRATING ACID MIXTURE with more than 50% nitric acid"
+  },
+  {
+    "key": "1798",
+    "value": "NITROHYDROCHLORIC ACID"
+  },
+  {
+    "key": "1799",
+    "value": "NONYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1800",
+    "value": "OCTADECYL-TRICHLOROSILANE"
+  },
+  {
+    "key": "1801",
+    "value": "OCTYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1802",
+    "value": "PERCHLORIC ACID with not more than 50% acid, by mass"
+  },
+  {
+    "key": "1803",
+    "value": "PHENOLSULPHONIC ACID, LIQUID"
+  },
+  {
+    "key": "1804",
+    "value": "PHENYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1805",
+    "value": "PHOSPHORIC ACID, SOLUTION"
+  },
+  {
+    "key": "1806",
+    "value": "PHOSPHORUS PENTACHLORIDE"
+  },
+  {
+    "key": "1807",
+    "value": "PHOSPHORUS PENTOXIDE"
+  },
+  {
+    "key": "1808",
+    "value": "PHOSPHORUS TRIBROMIDE"
+  },
+  {
+    "key": "1809",
+    "value": "PHOSPHORUS TRICHLORIDE"
+  },
+  {
+    "key": "1810",
+    "value": "PHOSPHORUS OXYCHLORIDE"
+  },
+  {
+    "key": "1811",
+    "value": "POTASSIUM HYDROGEN DIFLUORIDE SOLID"
+  },
+  {
+    "key": "1812",
+    "value": "POTASSIUM FLUORIDE, SOLID"
+  },
+  {
+    "key": "1813",
+    "value": "POTASSIUM HYDROXIDE, SOLID"
+  },
+  {
+    "key": "1814",
+    "value": "POTASSIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "1815",
+    "value": "PROPIONYL CHLORIDE"
+  },
+  {
+    "key": "1816",
+    "value": "PROPYLTRICHLOROSILANE"
+  },
+  {
+    "key": "1817",
+    "value": "PYROSULPHURYL CHLORIDE"
+  },
+  {
+    "key": "1818",
+    "value": "SILICON TETRACHLORIDE"
+  },
+  {
+    "key": "1819",
+    "value": "SODIUM ALUMINATE SOLUTION"
+  },
+  {
+    "key": "1823",
+    "value": "SODIUM HYDROXIDE, SOLID"
+  },
+  {
+    "key": "1824",
+    "value": "SODIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "1825",
+    "value": "SODIUM MONOXIDE"
+  },
+  {
+    "key": "1826",
+    "value": "NITRATING ACID MIXTURE, SPENT, with more than 50% nitric acid"
+  },
+  {
+    "key": "1827",
+    "value": "STANNIC CHLORIDE, ANHYDROUS"
+  },
+  {
+    "key": "1828",
+    "value": "SULPHUR CHLORIDES"
+  },
+  {
+    "key": "1829",
+    "value": "SULPHUR TRIOXIDE, STABILIZED"
+  },
+  {
+    "key": "1830",
+    "value": "SULPHURIC ACID with more than 51% acid"
+  },
+  {
+    "key": "1831",
+    "value": "SULPHURIC ACID, FUMING"
+  },
+  {
+    "key": "1832",
+    "value": "SULPHURIC ACID, SPENT"
+  },
+  {
+    "key": "1833",
+    "value": "SULPHUROUS ACID"
+  },
+  {
+    "key": "1834",
+    "value": "SULPHURYL CHLORIDE"
+  },
+  {
+    "key": "1835",
+    "value": "TETRAMETHYLAMMONIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "1836",
+    "value": "THIONYL CHLORIDE"
+  },
+  {
+    "key": "1837",
+    "value": "THIOPHOSPHORYL CHLORIDE"
+  },
+  {
+    "key": "1838",
+    "value": "TITANIUM TETRACHLORIDE"
+  },
+  {
+    "key": "1839",
+    "value": "TRICHLOROACETIC ACID"
+  },
+  {
+    "key": "1840",
+    "value": "ZINC CHLORIDE SOLUTION"
+  },
+  {
+    "key": "1841",
+    "value": "ACETALDEHYDE AMMONIA"
+  },
+  {
+    "key": "1843",
+    "value": "AMMONIUM DINITRO-o-CRESOLATE, SOLID"
+  },
+  {
+    "key": "1845",
+    "value": "CARBON DIOXIDE, SOLID (DRY ICE)"
+  },
+  {
+    "key": "1846",
+    "value": "CARBON TETRACHLORIDE"
+  },
+  {
+    "key": "1847",
+    "value": "POTASSIUM SULPHIDE, HYDRATED with not less than 30% water of crystallization"
+  },
+  {
+    "key": "1848",
+    "value": "PROPIONIC ACID with not less than 10% and less than 90% acid by mass"
+  },
+  {
+    "key": "1849",
+    "value": "SODIUM SULPHIDE, HYDRATED with not less than 30% water"
+  },
+  {
+    "key": "1851",
+    "value": "MEDICINE, LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "1854",
+    "value": "BARIUM ALLOYS, PYROPHORIC"
+  },
+  {
+    "key": "1855",
+    "value": "CALCIUM, PYROPHORIC or CALCIUM ALLOYS, PYROPHORIC"
+  },
+  {
+    "key": "1856",
+    "value": "RAGS, OILY"
+  },
+  {
+    "key": "1857",
+    "value": "TEXTILE WASTE, WET"
+  },
+  {
+    "key": "1858",
+    "value": "HEXAFLUOROPROPYLENE (REFRIGERANT GAS R 1216)"
+  },
+  {
+    "key": "1859",
+    "value": "SILICON TETRAFLUORIDE"
+  },
+  {
+    "key": "1860",
+    "value": "VINYL FLUORIDE, STABILIZED"
+  },
+  {
+    "key": "1862",
+    "value": "ETHYL CROTONATE"
+  },
+  {
+    "key": "1863",
+    "value": "FUEL, AVIATION, TURBINE ENGINE"
+  },
+  {
+    "key": "1865",
+    "value": "n-PROPYL NITRATE"
+  },
+  {
+    "key": "1866",
+    "value": "RESIN SOLUTION, flammable"
+  },
+  {
+    "key": "1868",
+    "value": "DECABORANE"
+  },
+  {
+    "key": "1869",
+    "value": "MAGNESIUM or MAGNESIUM ALLOYS with more than 50% magnesium in pellets, turnings or ribbons"
+  },
+  {
+    "key": "1870",
+    "value": "POTASSIUM BOROHYDRIDE"
+  },
+  {
+    "key": "1871",
+    "value": "TITANIUM HYDRIDE"
+  },
+  {
+    "key": "1872",
+    "value": "LEAD DIOXIDE"
+  },
+  {
+    "key": "1873",
+    "value": "PERCHLORIC ACID with more than 50% but not more than 72% acid, by mass"
+  },
+  {
+    "key": "1884",
+    "value": "BARIUM OXIDE"
+  },
+  {
+    "key": "1885",
+    "value": "BENZIDINE"
+  },
+  {
+    "key": "1886",
+    "value": "BENZYLIDENE CHLORIDE"
+  },
+  {
+    "key": "1887",
+    "value": "BROMOCHLOROMETHANE"
+  },
+  {
+    "key": "1888",
+    "value": "CHLOROFORM"
+  },
+  {
+    "key": "1889",
+    "value": "CYANOGEN BROMIDE"
+  },
+  {
+    "key": "1891",
+    "value": "ETHYL BROMIDE"
+  },
+  {
+    "key": "1892",
+    "value": "ETHYLDICHLOROARSINE"
+  },
+  {
+    "key": "1894",
+    "value": "PHENYLMERCURIC HYDROXIDE"
+  },
+  {
+    "key": "1895",
+    "value": "PHENYLMERCURIC NITRATE"
+  },
+  {
+    "key": "1897",
+    "value": "TETRACHLOROETHYLENE"
+  },
+  {
+    "key": "1898",
+    "value": "ACETYL IODIDE"
+  },
+  {
+    "key": "1902",
+    "value": "DIISOOCTYL ACID PHOSPHATE"
+  },
+  {
+    "key": "1903",
+    "value": "DISINFECTANT, LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "1905",
+    "value": "SELENIC ACID"
+  },
+  {
+    "key": "1906",
+    "value": "SLUDGE ACID"
+  },
+  {
+    "key": "1907",
+    "value": "SODA LIME with more than 4% sodium hydroxide"
+  },
+  {
+    "key": "1908",
+    "value": "CHLORITE SOLUTION"
+  },
+  {
+    "key": "1910",
+    "value": "CALCIUM OXIDE"
+  },
+  {
+    "key": "1911",
+    "value": "DIBORANE"
+  },
+  {
+    "key": "1912",
+    "value": "METHYL CHLORIDE AND METHYLENE CHLORIDE MIXTURE"
+  },
+  {
+    "key": "1913",
+    "value": "NEON, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1914",
+    "value": "BUTYL PROPIONATES"
+  },
+  {
+    "key": "1915",
+    "value": "CYCLOHEXANONE"
+  },
+  {
+    "key": "1916",
+    "value": "2,2'-DICHLORODIETHYL ETHER"
+  },
+  {
+    "key": "1917",
+    "value": "ETHYL ACRYLATE, STABILIZED"
+  },
+  {
+    "key": "1918",
+    "value": "ISOPROPYLBENZENE"
+  },
+  {
+    "key": "1919",
+    "value": "METHYL ACRYLATE, STABILIZED"
+  },
+  {
+    "key": "1920",
+    "value": "NONANES"
+  },
+  {
+    "key": "1921",
+    "value": "PROPYLENEIMINE, STABILIZED"
+  },
+  {
+    "key": "1922",
+    "value": "PYRROLIDINE"
+  },
+  {
+    "key": "1923",
+    "value": "CALCIUM DITHIONITE (CALCIUM HYDROSULPHITE)"
+  },
+  {
+    "key": "1928",
+    "value": "METHYL MAGNESIUM BROMIDE IN ETHYL ETHER"
+  },
+  {
+    "key": "1929",
+    "value": "POTASSIUM DITHIONITE (POTASSIUM HYDROSULPHITE)"
+  },
+  {
+    "key": "1931",
+    "value": "ZINC DITHIONITE (ZINC HYDROSULPHITE)"
+  },
+  {
+    "key": "1932",
+    "value": "ZIRCONIUM SCRAP"
+  },
+  {
+    "key": "1935",
+    "value": "CYANIDE SOLUTION, N.O.S."
+  },
+  {
+    "key": "1938",
+    "value": "BROMOACETIC ACID SOLUTION"
+  },
+  {
+    "key": "1939",
+    "value": "PHOSPHORUS OXYBROMIDE"
+  },
+  {
+    "key": "1940",
+    "value": "THIOGLYCOLIC ACID"
+  },
+  {
+    "key": "1941",
+    "value": "DIBROMODIFLUOROMETHANE"
+  },
+  {
+    "key": "1942",
+    "value": "AMMONIUM NITRATE with not more than 0.2% combustible substances, including any organic substance calculated as carbon, to the exclusion of any other added substance"
+  },
+  {
+    "key": "1944",
+    "value": "MATCHES, SAFETY (book, card or strike on box)"
+  },
+  {
+    "key": "1945",
+    "value": "MATCHES, WAX 'VESTA'"
+  },
+  {
+    "key": "1950",
+    "value": "AEROSOLS"
+  },
+  {
+    "key": "1951",
+    "value": "ARGON, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1952",
+    "value": "ETHYLENE OXIDE AND CARBON DIOXIDE MIXTURE with not more than 9% ethylene oxide"
+  },
+  {
+    "key": "1953",
+    "value": "COMPRESSED GAS, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "1954",
+    "value": "COMPRESSED GAS, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "1955",
+    "value": "COMPRESSED GAS, TOXIC, N.O.S."
+  },
+  {
+    "key": "1956",
+    "value": "COMPRESSED GAS, N.O.S."
+  },
+  {
+    "key": "1957",
+    "value": "DEUTERIUM, COMPRESSED"
+  },
+  {
+    "key": "1958",
+    "value": "1,2-DICHLORO-1,1,2,2-TETRAFLUOROETHANE (REFRIGERANT GAS R 114)"
+  },
+  {
+    "key": "1959",
+    "value": "1,1-DIFLUOROETHYLENE (REFRIGERANT GAS R 1132a)"
+  },
+  {
+    "key": "1961",
+    "value": "ETHANE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1962",
+    "value": "ETHYLENE"
+  },
+  {
+    "key": "1963",
+    "value": "HELIUM, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1964",
+    "value": "HYDROCARBON GAS MIXTURE, COMPRESSED, N.O.S."
+  },
+  {
+    "key": "1965",
+    "value": "HYDROCARBON GAS MIXTURE, LIQUEFIED, N.O.S."
+  },
+  {
+    "key": "1966",
+    "value": "HYDROGEN, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1967",
+    "value": "INSECTICIDE GAS, TOXIC, N.O.S."
+  },
+  {
+    "key": "1968",
+    "value": "INSECTICIDE GAS, N.O.S."
+  },
+  {
+    "key": "1969",
+    "value": "ISOBUTANE"
+  },
+  {
+    "key": "1970",
+    "value": "KRYPTON, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1971",
+    "value": "METHANE, COMPRESSED or NATURAL GAS, COMPRESSED with high methane content"
+  },
+  {
+    "key": "1972",
+    "value": "METHANE, REFRIGERATED LIQUID or NATURAL GAS, REFRIGERATED LIQUID with high methane content"
+  },
+  {
+    "key": "1973",
+    "value": "CHLORODIFLUOROMETHANE AND CHLOROPENTAFLUOROETHANE MIXTURE with fixed boiling point, with approximately 49% chlorodifluoromethane (REFRIGERAN"
+  },
+  {
+    "key": "1974",
+    "value": "CHLORODIFLUORO-BROMOMETHANE (REFRIGERANT GAS R 12B1)"
+  },
+  {
+    "key": "1975",
+    "value": "NITRIC OXIDE AND DINITROGEN TETROXIDE MIXTURE (NITRIC OXIDE AND NITROGEN DIOXIDE MIXTURE)"
+  },
+  {
+    "key": "1976",
+    "value": "OCTAFLUOROCYCLOBUTANE (REFRIGERANT GAS RC 318)"
+  },
+  {
+    "key": "1977",
+    "value": "NITROGEN, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "1978",
+    "value": "PROPANE"
+  },
+  {
+    "key": "1982",
+    "value": "TETRAFLUOROMETHANE (REFRIGERANT GAS R 14)"
+  },
+  {
+    "key": "1983",
+    "value": "1-CHLORO-2,2,2-TRIFLUOROETHANE (REFRIGERANT GAS R 133a)"
+  },
+  {
+    "key": "1984",
+    "value": "TRIFLUOROMETHANE (REFRIGERANT GAS R 23)"
+  },
+  {
+    "key": "1986",
+    "value": "ALCOHOLS, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "1987",
+    "value": "ALCOHOLS, N.O.S."
+  },
+  {
+    "key": "1988",
+    "value": "ALDEHYDES, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "1989",
+    "value": "ALDEHYDES, N.O.S."
+  },
+  {
+    "key": "1990",
+    "value": "BENZALDEHYDE"
+  },
+  {
+    "key": "1991",
+    "value": "CHLOROPRENE, STABILIZED"
+  },
+  {
+    "key": "1992",
+    "value": "FLAMMABLE LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "1993",
+    "value": "FLAMMABLE LIQUID, N.O.S."
+  },
+  {
+    "key": "1994",
+    "value": "IRON PENTACARBONYL"
+  },
+  {
+    "key": "1999",
+    "value": "TARS, LIQUID, including road asphalt and oils, bitumen and cut backs"
+  },
+  {
+    "key": "2000",
+    "value": "CELLULOID in block, rods, rolls, sheets, tubes, etc., except scrap"
+  },
+  {
+    "key": "2001",
+    "value": "COBALT NAPHTHENATES, POWDER"
+  },
+  {
+    "key": "2002",
+    "value": "CELLULOID, SCRAP"
+  },
+  {
+    "key": "2004",
+    "value": "MAGNESIUM DIAMIDE"
+  },
+  {
+    "key": "2006",
+    "value": "PLASTICS, NITROCELLULOSE-BASED, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "2008",
+    "value": "ZIRCONIUM POWDER, DRY"
+  },
+  {
+    "key": "2009",
+    "value": "ZIRCONIUM, DRY, finished sheets, strip or coiled wire"
+  },
+  {
+    "key": "2010",
+    "value": "MAGNESIUM HYDRIDE"
+  },
+  {
+    "key": "2011",
+    "value": "MAGNESIUM PHOSPHIDE"
+  },
+  {
+    "key": "2012",
+    "value": "POTASSIUM PHOSPHIDE"
+  },
+  {
+    "key": "2013",
+    "value": "STRONTIUM PHOSPHIDE"
+  },
+  {
+    "key": "2014",
+    "value": "HYDROGEN PEROXIDE, AQUEOUS SOLUTION with not less than 20% but not more than 60% hydrogen peroxide (stabilized as necessary)"
+  },
+  {
+    "key": "2015",
+    "value": "HYDROGEN PEROXIDE, STABILIZED or HYDROGEN PEROXIDE, AQUEOUS SOLUTION, STABILIZED with more than 60% hydrogen peroxide"
+  },
+  {
+    "key": "2016",
+    "value": "AMMUNITION, TOXIC, NON-EXPLOSIVE without burster or expelling charge, non-fuzed"
+  },
+  {
+    "key": "2017",
+    "value": "AMMUNITION, TEAR-PRODUCING, NON-EXPLOSIVE without burster or expelling charge, non-fuzed"
+  },
+  {
+    "key": "2018",
+    "value": "CHLOROANILINES, SOLID"
+  },
+  {
+    "key": "2019",
+    "value": "CHLOROANILINES, LIQUID"
+  },
+  {
+    "key": "2020",
+    "value": "CHLOROPHENOLS, SOLID"
+  },
+  {
+    "key": "2021",
+    "value": "CHLOROPHENOLS, LIQUID"
+  },
+  {
+    "key": "2022",
+    "value": "CRESYLIC ACID"
+  },
+  {
+    "key": "2023",
+    "value": "EPICHLOROHYDRIN"
+  },
+  {
+    "key": "2024",
+    "value": "MERCURY COMPOUND, LIQUID, N.O.S."
+  },
+  {
+    "key": "2025",
+    "value": "MERCURY COMPOUND, SOLID, N.O.S."
+  },
+  {
+    "key": "2026",
+    "value": "PHENYLMERCURIC COMPOUND, N.O.S."
+  },
+  {
+    "key": "2027",
+    "value": "SODIUM ARSENITE, SOLID"
+  },
+  {
+    "key": "2028",
+    "value": "BOMBS, SMOKE, NON-EXPLOSIVE with corrosive liquid, without initiating device"
+  },
+  {
+    "key": "2029",
+    "value": "HYDRAZINE, ANHYDROUS"
+  },
+  {
+    "key": "2030",
+    "value": "HYDRAZINE AQUEOUS SOLUTION with more than 37% hydrazine, by mass"
+  },
+  {
+    "key": "2031",
+    "value": "NITRIC ACID, other than red fuming, with more than 70% nitric acid"
+  },
+  {
+    "key": "2032",
+    "value": "NITRIC ACID, RED FUMING"
+  },
+  {
+    "key": "2033",
+    "value": "POTASSIUM MONOXIDE"
+  },
+  {
+    "key": "2034",
+    "value": "HYDROGEN AND METHANE MIXTURE, COMPRESSED"
+  },
+  {
+    "key": "2035",
+    "value": "1,1,1-TRIFLUOROETHANE (REFRIGERANT GAS R 143a)"
+  },
+  {
+    "key": "2036",
+    "value": "XENON"
+  },
+  {
+    "key": "2037",
+    "value": "RECEPTACLES, SMALL, CONTAINING GAS (GAS CARTRIDGES) without a release device, non-refillable"
+  },
+  {
+    "key": "2038",
+    "value": "DINITROTOLUENES, LIQUID"
+  },
+  {
+    "key": "2044",
+    "value": "2,2-DIMETHYLPROPANE"
+  },
+  {
+    "key": "2045",
+    "value": "ISOBUTYRALDEHYDE (ISOBUTYL ALDEHYDE)"
+  },
+  {
+    "key": "2046",
+    "value": "CYMENES"
+  },
+  {
+    "key": "2047",
+    "value": "DICHLOROPROPENES"
+  },
+  {
+    "key": "2048",
+    "value": "DICYCLOPENTADIENE"
+  },
+  {
+    "key": "2049",
+    "value": "DIETHYLBENZENE"
+  },
+  {
+    "key": "2050",
+    "value": "DIISOBUTYLENE, ISOMERIC COMPOUNDS"
+  },
+  {
+    "key": "2051",
+    "value": "2-DIMETHYLAMINOETHANOL"
+  },
+  {
+    "key": "2052",
+    "value": "DIPENTENE"
+  },
+  {
+    "key": "2053",
+    "value": "METHYL ISOBUTYL CARBINOL"
+  },
+  {
+    "key": "2054",
+    "value": "MORPHOLINE"
+  },
+  {
+    "key": "2055",
+    "value": "STYRENE MONOMER, STABILIZED"
+  },
+  {
+    "key": "2056",
+    "value": "TETRAHYDROFURAN"
+  },
+  {
+    "key": "2057",
+    "value": "TRIPROPYLENE"
+  },
+  {
+    "key": "2058",
+    "value": "VALERALDEHYDE"
+  },
+  {
+    "key": "2059",
+    "value": "NITROCELLULOSE SOLUTION, FLAMMABLE with not more than 12.6% nitrogen, by dry mass, and not more than 55% nitrocellulose"
+  },
+  {
+    "key": "2067",
+    "value": "AMMONIUM NITRATE BASED FERTILIZER"
+  },
+  {
+    "key": "2071",
+    "value": "AMMONIUM NITRATE BASED FERTILIZER"
+  },
+  {
+    "key": "2073",
+    "value": "AMMONIA SOLUTION, relative density less than 0.880 at 15 °C in water, with more than 35% but not more than 50% ammonia"
+  },
+  {
+    "key": "2074",
+    "value": "ACRYLAMIDE, SOLID"
+  },
+  {
+    "key": "2075",
+    "value": "CHLORAL, ANHYDROUS, STABILIZED"
+  },
+  {
+    "key": "2076",
+    "value": "CRESOLS, LIQUID"
+  },
+  {
+    "key": "2077",
+    "value": "alpha-NAPHTHYLAMINE"
+  },
+  {
+    "key": "2078",
+    "value": "TOLUENE DIISOCYANATE"
+  },
+  {
+    "key": "2079",
+    "value": "DIETHYLENETRIAMINE"
+  },
+  {
+    "key": "2186",
+    "value": "HYDROGEN CHLORIDE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "2187",
+    "value": "CARBON DIOXIDE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "2188",
+    "value": "ARSINE"
+  },
+  {
+    "key": "2189",
+    "value": "DICHLOROSILANE"
+  },
+  {
+    "key": "2190",
+    "value": "OXYGEN DIFLUORIDE, COMPRESSED"
+  },
+  {
+    "key": "2191",
+    "value": "SULPHURYL FLUORIDE"
+  },
+  {
+    "key": "2192",
+    "value": "GERMANE"
+  },
+  {
+    "key": "2193",
+    "value": "HEXAFLUOROETHANE (REFRIGERANT GAS R 116)"
+  },
+  {
+    "key": "2194",
+    "value": "SELENIUM HEXAFLUORIDE"
+  },
+  {
+    "key": "2195",
+    "value": "TELLURIUM HEXAFLUORIDE"
+  },
+  {
+    "key": "2196",
+    "value": "TUNGSTEN HEXAFLUORIDE"
+  },
+  {
+    "key": "2197",
+    "value": "HYDROGEN IODIDE, ANHYDROUS"
+  },
+  {
+    "key": "2198",
+    "value": "PHOSPHORUS PENTAFLUORIDE"
+  },
+  {
+    "key": "2199",
+    "value": "PHOSPHINE"
+  },
+  {
+    "key": "2200",
+    "value": "PROPADIENE, STABILIZED"
+  },
+  {
+    "key": "2201",
+    "value": "NITROUS OXIDE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "2202",
+    "value": "HYDROGEN SELENIDE, ANHYDROUS"
+  },
+  {
+    "key": "2203",
+    "value": "SILANE"
+  },
+  {
+    "key": "2204",
+    "value": "CARBONYL SULPHIDE"
+  },
+  {
+    "key": "2205",
+    "value": "ADIPONITRILE"
+  },
+  {
+    "key": "2206",
+    "value": "ISOCYANATES, TOXIC, N.O.S. or ISOCYANATE SOLUTION, TOXIC, N.O.S."
+  },
+  {
+    "key": "2208",
+    "value": "CALCIUM HYPOCHLORITE MIXTURE, DRY with more than 10% but not more than 39% available chlorine"
+  },
+  {
+    "key": "2209",
+    "value": "FORMALDEHYDE SOLUTION with not less than 25% formaldehyde"
+  },
+  {
+    "key": "2210",
+    "value": "MANEB or MANEB PREPARATION with not less than 60% maneb"
+  },
+  {
+    "key": "2211",
+    "value": "POLYMERIC BEADS, EXPANDABLE, evolving flammable vapour"
+  },
+  {
+    "key": "2212",
+    "value": "ASBESTOS, AMPHIBOLE (amosite, tremolite, actinolite, anthophyllite, crocidolite)"
+  },
+  {
+    "key": "2213",
+    "value": "PARAFORMALDEHYDE"
+  },
+  {
+    "key": "2214",
+    "value": "PHTHALIC ANHYDRIDE with more than 0.05% of maleic anhydride"
+  },
+  {
+    "key": "2215",
+    "value": "MALEIC ANHYDRIDE"
+  },
+  {
+    "key": "2216",
+    "value": "FISH MEAL (FISH SCRAP), STABILIZED"
+  },
+  {
+    "key": "2217",
+    "value": "SEED CAKE with not more than 1.5% oil and not more than 11% moisture"
+  },
+  {
+    "key": "2218",
+    "value": "ACRYLIC ACID, STABILIZED"
+  },
+  {
+    "key": "2219",
+    "value": "ALLYL GLYCIDYL ETHER"
+  },
+  {
+    "key": "2222",
+    "value": "ANISOLE"
+  },
+  {
+    "key": "2224",
+    "value": "BENZONITRILE"
+  },
+  {
+    "key": "2225",
+    "value": "BENZENESULPHONYL CHLORIDE"
+  },
+  {
+    "key": "2226",
+    "value": "BENZOTRICHLORIDE"
+  },
+  {
+    "key": "2227",
+    "value": "n-BUTYL METHACRYLATE, STABILIZED"
+  },
+  {
+    "key": "2232",
+    "value": "2-CHLOROETHANAL"
+  },
+  {
+    "key": "2233",
+    "value": "CHLOROANISIDINES"
+  },
+  {
+    "key": "2234",
+    "value": "CHLOROBENZOTRIFLUORIDES"
+  },
+  {
+    "key": "2235",
+    "value": "CHLOROBENZYL CHLORIDES, LIQUID"
+  },
+  {
+    "key": "2236",
+    "value": "3-CHLORO-4-METHYLPHENYL ISOCYANATE, LIQUID"
+  },
+  {
+    "key": "2237",
+    "value": "CHLORONITROANILINES"
+  },
+  {
+    "key": "2238",
+    "value": "CHLOROTOLUENES"
+  },
+  {
+    "key": "2239",
+    "value": "CHLOROTOLUIDINES, SOLID"
+  },
+  {
+    "key": "2240",
+    "value": "CHROMOSULPHURIC ACID"
+  },
+  {
+    "key": "2241",
+    "value": "CYCLOHEPTANE"
+  },
+  {
+    "key": "2242",
+    "value": "CYCLOHEPTENE"
+  },
+  {
+    "key": "2243",
+    "value": "CYCLOHEXYL ACETATE"
+  },
+  {
+    "key": "2244",
+    "value": "CYCLOPENTANOL"
+  },
+  {
+    "key": "2245",
+    "value": "CYCLOPENTANONE"
+  },
+  {
+    "key": "2246",
+    "value": "CYCLOPENTENE"
+  },
+  {
+    "key": "2247",
+    "value": "n-DECANE"
+  },
+  {
+    "key": "2248",
+    "value": "DI-n-BUTYLAMINE"
+  },
+  {
+    "key": "2249",
+    "value": "DICHLORODIMETHYL ETHER, SYMMETRICAL"
+  },
+  {
+    "key": "2250",
+    "value": "DICHLOROPHENYL ISOCYANATES"
+  },
+  {
+    "key": "2251",
+    "value": "BICYCLO[2.2.1]-HEPTA-2,5-DIENE, STABILIZED (2,5-NORBORNADIENE, STABILIZED)"
+  },
+  {
+    "key": "2252",
+    "value": "1,2-DIMETHOXYETHANE"
+  },
+  {
+    "key": "2253",
+    "value": "N,N-DIMETHYLANILINE"
+  },
+  {
+    "key": "2254",
+    "value": "MATCHES, FUSEE"
+  },
+  {
+    "key": "2256",
+    "value": "CYCLOHEXENE"
+  },
+  {
+    "key": "2257",
+    "value": "POTASSIUM"
+  },
+  {
+    "key": "2258",
+    "value": "1,2-PROPYLENEDIAMINE"
+  },
+  {
+    "key": "2259",
+    "value": "TRIETHYLENETETRAMINE"
+  },
+  {
+    "key": "2260",
+    "value": "TRIPROPYLAMINE"
+  },
+  {
+    "key": "2261",
+    "value": "XYLENOLS, SOLID"
+  },
+  {
+    "key": "2262",
+    "value": "DIMETHYLCARBAMOYL CHLORIDE"
+  },
+  {
+    "key": "2263",
+    "value": "DIMETHYLCYCLOHEXANES"
+  },
+  {
+    "key": "2264",
+    "value": "N,N-DIMETHYL-CYCLOHEXYLAMINE"
+  },
+  {
+    "key": "2265",
+    "value": "N,N-DIMETHYLFORMAMIDE"
+  },
+  {
+    "key": "2266",
+    "value": "DIMETHYL-N-PROPYLAMINE"
+  },
+  {
+    "key": "2267",
+    "value": "DIMETHYL THIOPHOSPHORYL CHLORIDE"
+  },
+  {
+    "key": "2269",
+    "value": "3,3'-IMINODIPROPYLAMINE"
+  },
+  {
+    "key": "2270",
+    "value": "ETHYLAMINE, AQUEOUS SOLUTION with not less than 50% but not more than 70% ethylamine"
+  },
+  {
+    "key": "2271",
+    "value": "ETHYL AMYL KETONE"
+  },
+  {
+    "key": "2272",
+    "value": "N-ETHYLANILINE"
+  },
+  {
+    "key": "2273",
+    "value": "2-ETHYLANILINE"
+  },
+  {
+    "key": "2274",
+    "value": "N-ETHYL-N-BENZYLANILINE"
+  },
+  {
+    "key": "2275",
+    "value": "2-ETHYLBUTANOL"
+  },
+  {
+    "key": "2276",
+    "value": "2-ETHYLHEXYLAMINE"
+  },
+  {
+    "key": "2277",
+    "value": "ETHYL METHACRYLATE, STABILIZED"
+  },
+  {
+    "key": "2278",
+    "value": "n-HEPTENE"
+  },
+  {
+    "key": "2279",
+    "value": "HEXACHLOROBUTADIENE"
+  },
+  {
+    "key": "2280",
+    "value": "HEXAMETHYLENEDIAMINE, SOLID"
+  },
+  {
+    "key": "2281",
+    "value": "HEXAMETHYLENE- DIISOCYANATE"
+  },
+  {
+    "key": "2282",
+    "value": "HEXANOLS"
+  },
+  {
+    "key": "2283",
+    "value": "ISOBUTYL METHACRYLATE, STABILIZED"
+  },
+  {
+    "key": "2284",
+    "value": "ISOBUTYRONITRILE"
+  },
+  {
+    "key": "2285",
+    "value": "ISOCYANATOBENZO-TRIFLUORIDES"
+  },
+  {
+    "key": "2286",
+    "value": "PENTAMETHYLHEPTANE"
+  },
+  {
+    "key": "2287",
+    "value": "ISOHEPTENES"
+  },
+  {
+    "key": "2288",
+    "value": "ISOHEXENES"
+  },
+  {
+    "key": "2289",
+    "value": "ISOPHORONEDIAMINE"
+  },
+  {
+    "key": "2290",
+    "value": "ISOPHORONE DIISOCYANATE"
+  },
+  {
+    "key": "2291",
+    "value": "LEAD COMPOUND, SOLUBLE, N.O.S."
+  },
+  {
+    "key": "2293",
+    "value": "4-METHOXY-4-METHYLPENTAN-2-ONE"
+  },
+  {
+    "key": "2294",
+    "value": "N-METHYLANILINE"
+  },
+  {
+    "key": "2295",
+    "value": "METHYL CHLOROACETATE"
+  },
+  {
+    "key": "2296",
+    "value": "METHYLCYCLOHEXANE"
+  },
+  {
+    "key": "2297",
+    "value": "METHYLCYCLOHEXANONE"
+  },
+  {
+    "key": "2298",
+    "value": "METHYLCYCLOPENTANE"
+  },
+  {
+    "key": "2299",
+    "value": "METHYL DICHLOROACETATE"
+  },
+  {
+    "key": "2300",
+    "value": "2-METHYL-5-ETHYLPYRIDINE"
+  },
+  {
+    "key": "2301",
+    "value": "2-METHYLFURAN"
+  },
+  {
+    "key": "2302",
+    "value": "5-METHYLHEXAN-2-ONE"
+  },
+  {
+    "key": "2303",
+    "value": "ISOPROPENYLBENZENE"
+  },
+  {
+    "key": "2304",
+    "value": "NAPHTHALENE, MOLTEN"
+  },
+  {
+    "key": "2305",
+    "value": "NITROBENZENESULPHONIC ACID"
+  },
+  {
+    "key": "2306",
+    "value": "NITROBENZOTRIFLUORIDES, LIQUID"
+  },
+  {
+    "key": "2307",
+    "value": "3-NITRO-4-CHLOROBENZOTRIFLUORIDE"
+  },
+  {
+    "key": "2308",
+    "value": "NITROSYLSULPHURIC ACID, LIQUID"
+  },
+  {
+    "key": "2309",
+    "value": "OCTADIENE"
+  },
+  {
+    "key": "2310",
+    "value": "PENTANE-2,4-DIONE"
+  },
+  {
+    "key": "2311",
+    "value": "PHENETIDINES"
+  },
+  {
+    "key": "2312",
+    "value": "PHENOL, MOLTEN"
+  },
+  {
+    "key": "2313",
+    "value": "PICOLINES"
+  },
+  {
+    "key": "2315",
+    "value": "POLYCHLORINATED BIPHENYLS, LIQUID"
+  },
+  {
+    "key": "2316",
+    "value": "SODIUM CUPROCYANIDE, SOLID"
+  },
+  {
+    "key": "2317",
+    "value": "SODIUM CUPROCYANIDE SOLUTION"
+  },
+  {
+    "key": "2318",
+    "value": "SODIUM HYDROSULPHIDE with less than 25% water of crystallization"
+  },
+  {
+    "key": "2319",
+    "value": "TERPENE HYDROCARBONS, N.O.S."
+  },
+  {
+    "key": "2320",
+    "value": "TETRAETHYLENEPENTAMINE"
+  },
+  {
+    "key": "2321",
+    "value": "TRICHLOROBENZENES, LIQUID"
+  },
+  {
+    "key": "2322",
+    "value": "TRICHLOROBUTENE"
+  },
+  {
+    "key": "2323",
+    "value": "TRIETHYL PHOSPHITE"
+  },
+  {
+    "key": "2324",
+    "value": "TRIISOBUTYLENE"
+  },
+  {
+    "key": "2325",
+    "value": "1,3,5-TRIMETHYLBENZENE"
+  },
+  {
+    "key": "2326",
+    "value": "TRIMETHYL-CYCLOHEXYLAMINE"
+  },
+  {
+    "key": "2327",
+    "value": "TRIMETHYL-HEXAMETHYLENEDIAMINES"
+  },
+  {
+    "key": "2328",
+    "value": "TRIMETHYLHEXAMETHYLENE DIISOCYANATE"
+  },
+  {
+    "key": "2329",
+    "value": "TRIMETHYL PHOSPHITE"
+  },
+  {
+    "key": "2330",
+    "value": "UNDECANE"
+  },
+  {
+    "key": "2331",
+    "value": "ZINC CHLORIDE, ANHYDROUS"
+  },
+  {
+    "key": "2332",
+    "value": "ACETALDEHYDE OXIME"
+  },
+  {
+    "key": "2333",
+    "value": "ALLYL ACETATE"
+  },
+  {
+    "key": "2334",
+    "value": "ALLYLAMINE"
+  },
+  {
+    "key": "2335",
+    "value": "ALLYL ETHYL ETHER"
+  },
+  {
+    "key": "2336",
+    "value": "ALLYL FORMATE"
+  },
+  {
+    "key": "2337",
+    "value": "PHENYL MERCAPTAN"
+  },
+  {
+    "key": "2338",
+    "value": "BENZOTRIFLUORIDE"
+  },
+  {
+    "key": "2339",
+    "value": "2-BROMOBUTANE"
+  },
+  {
+    "key": "2340",
+    "value": "2-BROMOETHYL ETHYL ETHER"
+  },
+  {
+    "key": "2341",
+    "value": "1-BROMO-3-METHYLBUTANE"
+  },
+  {
+    "key": "2342",
+    "value": "BROMOMETHYLPROPANES"
+  },
+  {
+    "key": "2343",
+    "value": "2-BROMOPENTANE"
+  },
+  {
+    "key": "2344",
+    "value": "BROMOPROPANES"
+  },
+  {
+    "key": "2345",
+    "value": "3-BROMOPROPYNE"
+  },
+  {
+    "key": "2346",
+    "value": "BUTANEDIONE"
+  },
+  {
+    "key": "2347",
+    "value": "BUTYL MERCAPTAN"
+  },
+  {
+    "key": "2348",
+    "value": "BUTYL ACRYLATES, STABILIZED"
+  },
+  {
+    "key": "2350",
+    "value": "BUTYL METHYL ETHER"
+  },
+  {
+    "key": "2351",
+    "value": "BUTYL NITRITES"
+  },
+  {
+    "key": "2352",
+    "value": "BUTYL VINYL ETHER, STABILIZED"
+  },
+  {
+    "key": "2353",
+    "value": "BUTYRYL CHLORIDE"
+  },
+  {
+    "key": "2354",
+    "value": "CHLOROMETHYL ETHYL ETHER"
+  },
+  {
+    "key": "2356",
+    "value": "2-CHLOROPROPANE"
+  },
+  {
+    "key": "2357",
+    "value": "CYCLOHEXYLAMINE"
+  },
+  {
+    "key": "2358",
+    "value": "CYCLOOCTATETRAENE"
+  },
+  {
+    "key": "2359",
+    "value": "DIALLYLAMINE"
+  },
+  {
+    "key": "2360",
+    "value": "DIALLYL ETHER"
+  },
+  {
+    "key": "2361",
+    "value": "DIISOBUTYLAMINE"
+  },
+  {
+    "key": "2362",
+    "value": "1,1-DICHLOROETHANE"
+  },
+  {
+    "key": "2363",
+    "value": "ETHYL MERCAPTAN"
+  },
+  {
+    "key": "2364",
+    "value": "n-PROPYLBENZENE"
+  },
+  {
+    "key": "2366",
+    "value": "DIETHYL CARBONATE"
+  },
+  {
+    "key": "2367",
+    "value": "alpha-METHYL-VALERALDEHYDE"
+  },
+  {
+    "key": "2368",
+    "value": "alpha-PINENE"
+  },
+  {
+    "key": "2370",
+    "value": "1-HEXENE"
+  },
+  {
+    "key": "2371",
+    "value": "ISOPENTENES"
+  },
+  {
+    "key": "2372",
+    "value": "1,2-DI-(DIMETHYLAMINO) ETHANE"
+  },
+  {
+    "key": "2373",
+    "value": "DIETHOXYMETHANE"
+  },
+  {
+    "key": "2374",
+    "value": "3,3-DIETHOXYPROPENE"
+  },
+  {
+    "key": "2375",
+    "value": "DIETHYL SULPHIDE"
+  },
+  {
+    "key": "2376",
+    "value": "2,3-DIHYDROPYRAN"
+  },
+  {
+    "key": "2377",
+    "value": "1,1-DIMETHOXYETHANE"
+  },
+  {
+    "key": "2378",
+    "value": "2-DIMETHYL-AMINOACETONITRILE"
+  },
+  {
+    "key": "2379",
+    "value": "1,3-DIMETHYLBUTYLAMINE"
+  },
+  {
+    "key": "2380",
+    "value": "DIMETHYLDIETHOXYSILANE"
+  },
+  {
+    "key": "2381",
+    "value": "DIMETHYL DISULPHIDE"
+  },
+  {
+    "key": "2382",
+    "value": "DIMETHYLHYDRAZINE, SYMMETRICAL"
+  },
+  {
+    "key": "2383",
+    "value": "DIPROPYLAMINE"
+  },
+  {
+    "key": "2384",
+    "value": "DI-n-PROPYL ETHER"
+  },
+  {
+    "key": "2385",
+    "value": "ETHYL ISOBUTYRATE"
+  },
+  {
+    "key": "2386",
+    "value": "1-ETHYLPIPERIDINE"
+  },
+  {
+    "key": "2387",
+    "value": "FLUOROBENZENE"
+  },
+  {
+    "key": "2388",
+    "value": "FLUOROTOLUENES"
+  },
+  {
+    "key": "2389",
+    "value": "FURAN"
+  },
+  {
+    "key": "2390",
+    "value": "2-IODOBUTANE"
+  },
+  {
+    "key": "2391",
+    "value": "IODOMETHYLPROPANES"
+  },
+  {
+    "key": "2392",
+    "value": "IODOPROPANES"
+  },
+  {
+    "key": "2393",
+    "value": "ISOBUTYL FORMATE"
+  },
+  {
+    "key": "2394",
+    "value": "ISOBUTYL PROPIONATE"
+  },
+  {
+    "key": "2395",
+    "value": "ISOBUTYRYL CHLORIDE"
+  },
+  {
+    "key": "2396",
+    "value": "METHACRYLALDEHYDE, STABILIZED"
+  },
+  {
+    "key": "2397",
+    "value": "3-METHYLBUTAN-2-ONE"
+  },
+  {
+    "key": "2398",
+    "value": "METHYL tert-BUTYL ETHER"
+  },
+  {
+    "key": "2399",
+    "value": "1-METHYLPIPERIDINE"
+  },
+  {
+    "key": "2400",
+    "value": "METHYL ISOVALERATE"
+  },
+  {
+    "key": "2401",
+    "value": "PIPERIDINE"
+  },
+  {
+    "key": "2402",
+    "value": "PROPANETHIOLS"
+  },
+  {
+    "key": "2403",
+    "value": "ISOPROPENYL ACETATE"
+  },
+  {
+    "key": "2404",
+    "value": "PROPIONITRILE"
+  },
+  {
+    "key": "2405",
+    "value": "ISOPROPYL BUTYRATE"
+  },
+  {
+    "key": "2406",
+    "value": "ISOPROPYL ISOBUTYRATE"
+  },
+  {
+    "key": "2407",
+    "value": "ISOPROPYL CHLOROFORMATE"
+  },
+  {
+    "key": "2409",
+    "value": "ISOPROPYL PROPIONATE"
+  },
+  {
+    "key": "2410",
+    "value": "1,2,3,6-TETRAHYDROPYRIDINE"
+  },
+  {
+    "key": "2411",
+    "value": "BUTYRONITRILE"
+  },
+  {
+    "key": "2412",
+    "value": "TETRAHYDROTHIOPHENE"
+  },
+  {
+    "key": "2413",
+    "value": "TETRAPROPYL ORTHOTITANATE"
+  },
+  {
+    "key": "2414",
+    "value": "THIOPHENE"
+  },
+  {
+    "key": "2416",
+    "value": "TRIMETHYL BORATE"
+  },
+  {
+    "key": "2417",
+    "value": "CARBONYL FLUORIDE"
+  },
+  {
+    "key": "2418",
+    "value": "SULPHUR TETRAFLUORIDE"
+  },
+  {
+    "key": "2419",
+    "value": "BROMOTRIFLUOROETHYLENE"
+  },
+  {
+    "key": "2420",
+    "value": "HEXAFLUORO-ACETONE"
+  },
+  {
+    "key": "2421",
+    "value": "NITROGEN TRIOXIDE"
+  },
+  {
+    "key": "2422",
+    "value": "OCTAFLUOROBUT-2-ENE (REFRIGERANT GAS R 1318)"
+  },
+  {
+    "key": "2424",
+    "value": "OCTAFLUOROPROPANE (REFRIGERANT GAS R 218)"
+  },
+  {
+    "key": "2426",
+    "value": "AMMONIUM NITRATE, LIQUID (hot concentrated solution)"
+  },
+  {
+    "key": "2427",
+    "value": "POTASSIUM CHLORATE, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "2428",
+    "value": "SODIUM CHLORATE, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "2429",
+    "value": "CALCIUM CHLORATE, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "2430",
+    "value": "ALKYLPHENOLS, SOLID, N.O.S. (including C2-C12 homologues)"
+  },
+  {
+    "key": "2431",
+    "value": "ANISIDINES"
+  },
+  {
+    "key": "2432",
+    "value": "N,N-DIETHYLANILINE"
+  },
+  {
+    "key": "2433",
+    "value": "CHLORONITROTOLUENES, LIQUID"
+  },
+  {
+    "key": "2434",
+    "value": "DIBENZYLDICHLOROSILANE"
+  },
+  {
+    "key": "2435",
+    "value": "ETHYLPHENYL-DICHLOROSILANE"
+  },
+  {
+    "key": "2436",
+    "value": "THIOACETIC ACID"
+  },
+  {
+    "key": "2437",
+    "value": "METHYLPHENYL-DICHLOROSILANE"
+  },
+  {
+    "key": "2438",
+    "value": "TRIMETHYLACETYL CHLORIDE"
+  },
+  {
+    "key": "2439",
+    "value": "SODIUM HYDROGENDIFLUORIDE"
+  },
+  {
+    "key": "2440",
+    "value": "STANNIC CHLORIDE PENTAHYDRATE"
+  },
+  {
+    "key": "2441",
+    "value": "TITANIUM TRICHLORIDE, PYROPHORIC or TITANIUM TRICHLORIDE MIXTURE, PYROPHORIC"
+  },
+  {
+    "key": "2442",
+    "value": "TRICHLOROACETYL CHLORIDE"
+  },
+  {
+    "key": "2443",
+    "value": "VANADIUM OXYTRICHLORIDE"
+  },
+  {
+    "key": "2444",
+    "value": "VANADIUM TETRACHLORIDE"
+  },
+  {
+    "key": "2446",
+    "value": "NITROCRESOLS, SOLID"
+  },
+  {
+    "key": "2447",
+    "value": "PHOSPHORUS, WHITE, MOLTEN"
+  },
+  {
+    "key": "2448",
+    "value": "SULPHUR, MOLTEN"
+  },
+  {
+    "key": "2451",
+    "value": "NITROGEN TRIFLUORIDE"
+  },
+  {
+    "key": "2452",
+    "value": "ETHYLACETYLENE, STABILIZED"
+  },
+  {
+    "key": "2453",
+    "value": "ETHYL FLUORIDE (REFRIGERANT GAS R 161)"
+  },
+  {
+    "key": "2454",
+    "value": "METHYL FLUORIDE (REFRIGERANT GAS R 41)"
+  },
+  {
+    "key": "2455",
+    "value": "METHYL NITRITE"
+  },
+  {
+    "key": "2456",
+    "value": "2-CHLOROPROPENE"
+  },
+  {
+    "key": "2457",
+    "value": "2,3-DIMETHYLBUTANE"
+  },
+  {
+    "key": "2458",
+    "value": "HEXADIENE"
+  },
+  {
+    "key": "2459",
+    "value": "2-METHYL-1-BUTENE"
+  },
+  {
+    "key": "2460",
+    "value": "2-METHYL-2-BUTENE"
+  },
+  {
+    "key": "2461",
+    "value": "METHYLPENTADIENE"
+  },
+  {
+    "key": "2463",
+    "value": "ALUMINIUM HYDRIDE"
+  },
+  {
+    "key": "2464",
+    "value": "BERYLLIUM NITRATE"
+  },
+  {
+    "key": "2465",
+    "value": "DICHLOROISOCYANURIC ACID, DRY or DICHLOROISOCYANURIC ACID SALTS"
+  },
+  {
+    "key": "2466",
+    "value": "POTASSIUM SUPEROXIDE"
+  },
+  {
+    "key": "2468",
+    "value": "TRICHLOROISOCYANURIC ACID, DRY"
+  },
+  {
+    "key": "2469",
+    "value": "ZINC BROMATE"
+  },
+  {
+    "key": "2470",
+    "value": "PHENYLACETONITRILE, LIQUID"
+  },
+  {
+    "key": "2471",
+    "value": "OSMIUM TETROXIDE"
+  },
+  {
+    "key": "2473",
+    "value": "SODIUM ARSANILATE"
+  },
+  {
+    "key": "2474",
+    "value": "THIOPHOSGENE"
+  },
+  {
+    "key": "2475",
+    "value": "VANADIUM TRICHLORIDE"
+  },
+  {
+    "key": "2477",
+    "value": "METHYL ISOTHIOCYANATE"
+  },
+  {
+    "key": "2478",
+    "value": "ISOCYANATES, FLAMMABLE, TOXIC, N.O.S. or ISOCYANATE SOLUTION, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "2480",
+    "value": "METHYL ISOCYANATE"
+  },
+  {
+    "key": "2481",
+    "value": "ETHYL ISOCYANATE"
+  },
+  {
+    "key": "2482",
+    "value": "n-PROPYL ISOCYANATE"
+  },
+  {
+    "key": "2483",
+    "value": "ISOPROPYL ISOCYANATE"
+  },
+  {
+    "key": "2484",
+    "value": "tert-BUTYL ISOCYANATE"
+  },
+  {
+    "key": "2485",
+    "value": "n-BUTYL ISOCYANATE"
+  },
+  {
+    "key": "2486",
+    "value": "ISOBUTYL ISOCYANATE"
+  },
+  {
+    "key": "2487",
+    "value": "PHENYL ISOCYANATE"
+  },
+  {
+    "key": "2488",
+    "value": "CYCLOHEXYL ISOCYANATE"
+  },
+  {
+    "key": "2490",
+    "value": "DICHLOROISOPROPYL ETHER"
+  },
+  {
+    "key": "2491",
+    "value": "ETHANOLAMINE or ETHANOLAMINE SOLUTION"
+  },
+  {
+    "key": "2493",
+    "value": "HEXAMETHYLENEIMINE"
+  },
+  {
+    "key": "2495",
+    "value": "IODINE PENTAFLUORIDE"
+  },
+  {
+    "key": "2496",
+    "value": "PROPIONIC ANHYDRIDE"
+  },
+  {
+    "key": "2498",
+    "value": "1,2,3,6-TETRAHYDRO-BENZALDEHYDE"
+  },
+  {
+    "key": "2501",
+    "value": "TRIS-(1-AZIRIDINYL) PHOSPHINE OXIDE SOLUTION"
+  },
+  {
+    "key": "2502",
+    "value": "VALERYL CHLORIDE"
+  },
+  {
+    "key": "2503",
+    "value": "ZIRCONIUM TETRACHLORIDE"
+  },
+  {
+    "key": "2504",
+    "value": "TETRABROMOETHANE"
+  },
+  {
+    "key": "2505",
+    "value": "AMMONIUM FLUORIDE"
+  },
+  {
+    "key": "2506",
+    "value": "AMMONIUM HYDROGEN SULPHATE"
+  },
+  {
+    "key": "2507",
+    "value": "CHLOROPLATINIC ACID, SOLID"
+  },
+  {
+    "key": "2508",
+    "value": "MOLYBDENUM PENTACHLORIDE"
+  },
+  {
+    "key": "2509",
+    "value": "POTASSIUM HYDROGEN SULPHATE"
+  },
+  {
+    "key": "2511",
+    "value": "2-CHLOROPROPIONIC ACID"
+  },
+  {
+    "key": "2512",
+    "value": "AMINOPHENOLS (o-, m-, p-)"
+  },
+  {
+    "key": "2513",
+    "value": "BROMOACETYL BROMIDE"
+  },
+  {
+    "key": "2514",
+    "value": "BROMOBENZENE"
+  },
+  {
+    "key": "2515",
+    "value": "BROMOFORM"
+  },
+  {
+    "key": "2516",
+    "value": "CARBON TETRABROMIDE"
+  },
+  {
+    "key": "2517",
+    "value": "1-CHLORO-1,1-DIFLUOROETHANE (REFRIGERANT GAS R 142b)"
+  },
+  {
+    "key": "2518",
+    "value": "1,5,9-CYCLODODECATRIENE"
+  },
+  {
+    "key": "2520",
+    "value": "CYCLOOCTADIENES"
+  },
+  {
+    "key": "2521",
+    "value": "DIKETENE, STABILIZED"
+  },
+  {
+    "key": "2522",
+    "value": "2-DIMETHYLAMINOETHYL METHACRYLATE"
+  },
+  {
+    "key": "2524",
+    "value": "ETHYL ORTHOFORMATE"
+  },
+  {
+    "key": "2525",
+    "value": "ETHYL OXALATE"
+  },
+  {
+    "key": "2526",
+    "value": "FURFURYLAMINE"
+  },
+  {
+    "key": "2527",
+    "value": "ISOBUTYL ACRYLATE, STABILIZED"
+  },
+  {
+    "key": "2528",
+    "value": "ISOBUTYL ISOBUTYRATE"
+  },
+  {
+    "key": "2529",
+    "value": "ISOBUTYRIC ACID"
+  },
+  {
+    "key": "2531",
+    "value": "METHACRYLIC ACID, STABILIZED"
+  },
+  {
+    "key": "2533",
+    "value": "METHYL TRICHLOROACETATE"
+  },
+  {
+    "key": "2534",
+    "value": "METHYLCHLOROSILANE"
+  },
+  {
+    "key": "2535",
+    "value": "4-METHYLMORPHOLINE (N-METHYLMORPHOLINE)"
+  },
+  {
+    "key": "2536",
+    "value": "METHYLTETRAHYDROFURAN"
+  },
+  {
+    "key": "2538",
+    "value": "NITRONAPHTHALENE"
+  },
+  {
+    "key": "2541",
+    "value": "TERPINOLENE"
+  },
+  {
+    "key": "2542",
+    "value": "TRIBUTYLAMINE"
+  },
+  {
+    "key": "2545",
+    "value": "HAFNIUM POWDER, DRY"
+  },
+  {
+    "key": "2546",
+    "value": "TITANIUM POWDER, DRY"
+  },
+  {
+    "key": "2547",
+    "value": "SODIUM SUPEROXIDE"
+  },
+  {
+    "key": "2548",
+    "value": "CHLORINE PENTAFLUORIDE"
+  },
+  {
+    "key": "2552",
+    "value": "HEXAFLUOROACETONE HYDRATE, LIQUID"
+  },
+  {
+    "key": "2554",
+    "value": "METHYLALLYL CHLORIDE"
+  },
+  {
+    "key": "2555",
+    "value": "NITROCELLULOSE WITH WATER (not less than 25% water, by mass)"
+  },
+  {
+    "key": "2556",
+    "value": "NITROCELLULOSE WITH ALCOHOL (not less than 25% alcohol, by mass, and not more than 12.6% nitrogen, by dry mass)"
+  },
+  {
+    "key": "2557",
+    "value": "NITROCELLULOSE, with not more than 12.6% nitrogen, by dry mass, MIXTURE WITH or WITHOUT PLASTICIZER, WITH or WITHOUT PIGMENT"
+  },
+  {
+    "key": "2558",
+    "value": "EPIBROMOHYDRIN"
+  },
+  {
+    "key": "2560",
+    "value": "2-METHYLPENTAN-2-OL"
+  },
+  {
+    "key": "2561",
+    "value": "3-METHYL-1-BUTENE"
+  },
+  {
+    "key": "2564",
+    "value": "TRICHLOROACETIC ACID SOLUTION"
+  },
+  {
+    "key": "2565",
+    "value": "DICYCLOHEXYLAMINE"
+  },
+  {
+    "key": "2567",
+    "value": "SODIUM PENTACHLOROPHENATE"
+  },
+  {
+    "key": "2570",
+    "value": "CADMIUM COMPOUND"
+  },
+  {
+    "key": "2571",
+    "value": "ALKYLSULPHURIC ACIDS"
+  },
+  {
+    "key": "2572",
+    "value": "PHENYLHYDRAZINE"
+  },
+  {
+    "key": "2573",
+    "value": "THALLIUM CHLORATE"
+  },
+  {
+    "key": "2574",
+    "value": "TRICRESYL PHOSPHATE with more than 3% ortho isomer"
+  },
+  {
+    "key": "2576",
+    "value": "PHOSPHORUS OXYBROMIDE, MOLTEN"
+  },
+  {
+    "key": "2577",
+    "value": "PHENYLACETYL CHLORIDE"
+  },
+  {
+    "key": "2578",
+    "value": "PHOSPHORUS TRIOXIDE"
+  },
+  {
+    "key": "2579",
+    "value": "PIPERAZINE"
+  },
+  {
+    "key": "2580",
+    "value": "ALUMINIUM BROMIDE SOLUTION"
+  },
+  {
+    "key": "2581",
+    "value": "ALUMINIUM CHLORIDE SOLUTION"
+  },
+  {
+    "key": "2582",
+    "value": "FERRIC CHLORIDE SOLUTION"
+  },
+  {
+    "key": "2583",
+    "value": "ALKYLSULPHONIC ACIDS, SOLID or ARYLSULPHONIC ACIDS, SOLID with more than 5% free sulphuric acid"
+  },
+  {
+    "key": "2584",
+    "value": "ALKYSULPHONIC ACIDS, LIQUID or ARYLSULPHONIC ACIDS, LIQUID with more than 5% free sulphuric acid"
+  },
+  {
+    "key": "2585",
+    "value": "ALKYLSULPHONIC ACIDS, SOLID or ARYLSULPHONIC ACIDS, SOLID with not more than 5% free sulphuric acid"
+  },
+  {
+    "key": "2586",
+    "value": "ALKYLSULPHONIC ACIDS, LIQUID or ARYLSULPHONIC ACIDS, LIQUID with not more than 5% free sulphuric acid"
+  },
+  {
+    "key": "2587",
+    "value": "BENZOQUINONE"
+  },
+  {
+    "key": "2588",
+    "value": "PESTICIDE, SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "2589",
+    "value": "VINYL CHLOROACETATE"
+  },
+  {
+    "key": "2590",
+    "value": "ASBESTOS, CHRYSOTILE"
+  },
+  {
+    "key": "2591",
+    "value": "XENON, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "2599",
+    "value": "CHLOROTRIFLUOROMETHANE AND TRIFLUOROMETHANE AZEOTROPIC MIXTURE with approximately 60% chlorotrifluoromethane (REFRIGERANT GAS R 503)"
+  },
+  {
+    "key": "2601",
+    "value": "CYCLOBUTANE"
+  },
+  {
+    "key": "2602",
+    "value": "DICHLORODIFLUORO-METHANE AND DIFLUOROETHANE AZEOTROPIC MIXTURE with approximately 74% dichlorodifluoromethane (REFRIGERANT GAS R 500)"
+  },
+  {
+    "key": "2603",
+    "value": "CYCLOHEPTATRIENE"
+  },
+  {
+    "key": "2604",
+    "value": "BORON TRIFLUORIDE DIETHYL ETHERATE"
+  },
+  {
+    "key": "2605",
+    "value": "METHOXYMETHYL ISOCYANATE"
+  },
+  {
+    "key": "2606",
+    "value": "METHYL ORTHOSILICATE"
+  },
+  {
+    "key": "2607",
+    "value": "ACROLEIN DIMER, STABILIZED"
+  },
+  {
+    "key": "2608",
+    "value": "NITROPROPANES"
+  },
+  {
+    "key": "2609",
+    "value": "TRIALLYL BORATE"
+  },
+  {
+    "key": "2610",
+    "value": "TRIALLYLAMINE"
+  },
+  {
+    "key": "2611",
+    "value": "PROPYLENE CHLOROHYDRIN"
+  },
+  {
+    "key": "2612",
+    "value": "METHYL PROPYL ETHER"
+  },
+  {
+    "key": "2614",
+    "value": "METHALLYL ALCOHOL"
+  },
+  {
+    "key": "2615",
+    "value": "ETHYL PROPYL ETHER"
+  },
+  {
+    "key": "2616",
+    "value": "TRIISOPROPYL BORATE"
+  },
+  {
+    "key": "2617",
+    "value": "METHYLCYCLOHEXANOLS, flammable"
+  },
+  {
+    "key": "2618",
+    "value": "VINYLTOLUENES, STABILIZED"
+  },
+  {
+    "key": "2619",
+    "value": "BENZYLDIMETHYLAMINE"
+  },
+  {
+    "key": "2620",
+    "value": "AMYL BUTYRATES"
+  },
+  {
+    "key": "2621",
+    "value": "ACETYL METHYL CARBINOL"
+  },
+  {
+    "key": "2622",
+    "value": "GLYCIDALDEHYDE"
+  },
+  {
+    "key": "2623",
+    "value": "FIRELIGHTERS, SOLID with flammable liquid"
+  },
+  {
+    "key": "2624",
+    "value": "MAGNESIUM SILICIDE"
+  },
+  {
+    "key": "2626",
+    "value": "CHLORIC ACID, AQUEOUS SOLUTION with not more than 10% chloric acid"
+  },
+  {
+    "key": "2627",
+    "value": "NITRITES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "2628",
+    "value": "POTASSIUM FLUOROACETATE"
+  },
+  {
+    "key": "2629",
+    "value": "SODIUM FLUOROACETATE"
+  },
+  {
+    "key": "2630",
+    "value": "SELENATES or SELENITES"
+  },
+  {
+    "key": "2642",
+    "value": "FLUOROACETIC ACID"
+  },
+  {
+    "key": "2643",
+    "value": "METHYL BROMOACETATE"
+  },
+  {
+    "key": "2644",
+    "value": "METHYL IODIDE"
+  },
+  {
+    "key": "2645",
+    "value": "PHENACYL BROMIDE"
+  },
+  {
+    "key": "2646",
+    "value": "HEXACHLOROCYCLO-PENTADIENE"
+  },
+  {
+    "key": "2647",
+    "value": "MALONONITRILE"
+  },
+  {
+    "key": "2648",
+    "value": "1,2-DIBROMOBUTAN-3-ONE"
+  },
+  {
+    "key": "2649",
+    "value": "1,3-DICHLOROACETONE"
+  },
+  {
+    "key": "2650",
+    "value": "1,1-DICHLORO-1-NITROETHANE"
+  },
+  {
+    "key": "2651",
+    "value": "4,4'-DIAMINODIPHENYL-METHANE"
+  },
+  {
+    "key": "2653",
+    "value": "BENZYL IODIDE"
+  },
+  {
+    "key": "2655",
+    "value": "POTASSIUM FLUOROSILICATE"
+  },
+  {
+    "key": "2656",
+    "value": "QUINOLINE"
+  },
+  {
+    "key": "2657",
+    "value": "SELENIUM DISULPHIDE"
+  },
+  {
+    "key": "2659",
+    "value": "SODIUM CHLOROACETATE"
+  },
+  {
+    "key": "2660",
+    "value": "NITROTOLUIDINES (MONO)"
+  },
+  {
+    "key": "2661",
+    "value": "HEXACHLOROACETONE"
+  },
+  {
+    "key": "2664",
+    "value": "DIBROMOMETHANE"
+  },
+  {
+    "key": "2667",
+    "value": "BUTYLTOLUENES"
+  },
+  {
+    "key": "2668",
+    "value": "CHLOROACETONITRILE"
+  },
+  {
+    "key": "2669",
+    "value": "CHLOROCRESOLS SOLUTION"
+  },
+  {
+    "key": "2670",
+    "value": "CYANURIC CHLORIDE"
+  },
+  {
+    "key": "2671",
+    "value": "AMINOPYRIDINES(o-, m-, p,)"
+  },
+  {
+    "key": "2672",
+    "value": "AMMONIA SOLUTION, relative density between 0.880 and 0.957 at 15 °C in water, with more than 10% but not more than 35% ammonia"
+  },
+  {
+    "key": "2673",
+    "value": "2-AMINO-4-CHLOROPHENOL"
+  },
+  {
+    "key": "2674",
+    "value": "SODIUM FLUOROSILICATE"
+  },
+  {
+    "key": "2676",
+    "value": "STIBINE"
+  },
+  {
+    "key": "2677",
+    "value": "RUBIDIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "2678",
+    "value": "RUBIDIUM HYDROXIDE"
+  },
+  {
+    "key": "2679",
+    "value": "LITHIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "2680",
+    "value": "LITHIUM HYDROXIDE"
+  },
+  {
+    "key": "2681",
+    "value": "CAESIUM HYDROXIDE SOLUTION"
+  },
+  {
+    "key": "2682",
+    "value": "CAESIUM HYDROXIDE"
+  },
+  {
+    "key": "2683",
+    "value": "AMMONIUM SULPHIDE SOLUTION"
+  },
+  {
+    "key": "2684",
+    "value": "3-DIETHYLAMINOPROPYL-AMINE"
+  },
+  {
+    "key": "2685",
+    "value": "N,N-DIETHYLETHYLENE-DIAMINE"
+  },
+  {
+    "key": "2686",
+    "value": "2-DIETHYLAMINOETHANOL"
+  },
+  {
+    "key": "2687",
+    "value": "DICYCLOHEXYLAMMONIUM NITRITE"
+  },
+  {
+    "key": "2688",
+    "value": "1-BROMO-3-CHLOROPROPANE"
+  },
+  {
+    "key": "2689",
+    "value": "GLYCEROL alpha-MONOCHLOROHYDRIN"
+  },
+  {
+    "key": "2690",
+    "value": "N,n-BUTYLIMIDAZOLE"
+  },
+  {
+    "key": "2691",
+    "value": "PHOSPHORUS PENTABROMIDE"
+  },
+  {
+    "key": "2692",
+    "value": "BORON TRIBROMIDE"
+  },
+  {
+    "key": "2693",
+    "value": "BISULPHITES, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "2698",
+    "value": "TETRAHYDROPHTHALIC ANHYDRIDES with more than 0.05% of maleic anhydride"
+  },
+  {
+    "key": "2699",
+    "value": "TRIFLUOROACETIC ACID"
+  },
+  {
+    "key": "2705",
+    "value": "1-PENTOL"
+  },
+  {
+    "key": "2707",
+    "value": "DIMETHYLDIOXANES"
+  },
+  {
+    "key": "2709",
+    "value": "BUTYLBENZENES"
+  },
+  {
+    "key": "2710",
+    "value": "DIPROPYL KETONE"
+  },
+  {
+    "key": "2713",
+    "value": "ACRIDINE"
+  },
+  {
+    "key": "2714",
+    "value": "ZINC RESINATE"
+  },
+  {
+    "key": "2715",
+    "value": "ALUMINIUM RESINATE"
+  },
+  {
+    "key": "2716",
+    "value": "1,4-BUTYNEDIOL"
+  },
+  {
+    "key": "2717",
+    "value": "CAMPHOR, synthetic"
+  },
+  {
+    "key": "2719",
+    "value": "BARIUM BROMATE"
+  },
+  {
+    "key": "2720",
+    "value": "CHROMIUM NITRATE"
+  },
+  {
+    "key": "2721",
+    "value": "COPPER CHLORATE"
+  },
+  {
+    "key": "2722",
+    "value": "LITHIUM NITRATE"
+  },
+  {
+    "key": "2723",
+    "value": "MAGNESIUM CHLORATE"
+  },
+  {
+    "key": "2724",
+    "value": "MANGANESE NITRATE"
+  },
+  {
+    "key": "2725",
+    "value": "NICKEL NITRATE"
+  },
+  {
+    "key": "2726",
+    "value": "NICKEL NITRITE"
+  },
+  {
+    "key": "2727",
+    "value": "THALLIUM NITRATE"
+  },
+  {
+    "key": "2728",
+    "value": "ZIRCONIUM NITRATE"
+  },
+  {
+    "key": "2729",
+    "value": "HEXACHLOROBENZENE"
+  },
+  {
+    "key": "2730",
+    "value": "NITROANISOLES, LIQUID"
+  },
+  {
+    "key": "2732",
+    "value": "NITROBROMOBENZENES, LIQUID"
+  },
+  {
+    "key": "2733",
+    "value": "AMINES, FLAMMABLE, CORROSIVE, N.O.S. or POLYAMINES, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2734",
+    "value": "AMINES, LIQUID, CORROSIVE, FLAMMABLE, N.O.S. or POLYAMINES, LIQUID, CORROSIVE, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "2735",
+    "value": "AMINES, LIQUID, CORROSIVE, N.O.S. or POLYAMINES, LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2738",
+    "value": "N-BUTYLANILINE"
+  },
+  {
+    "key": "2739",
+    "value": "BUTYRIC ANHYDRIDE"
+  },
+  {
+    "key": "2740",
+    "value": "n-PROPYL CHLOROFORMATE"
+  },
+  {
+    "key": "2741",
+    "value": "BARIUM HYPOCHLORITE with more than 22% available chlorine"
+  },
+  {
+    "key": "2742",
+    "value": "CHLOROFORMATES, TOXIC, CORROSIVE, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "2743",
+    "value": "n-BUTYL CHLOROFORMATE"
+  },
+  {
+    "key": "2744",
+    "value": "CYCLOBUTYL CHLOROFORMATE"
+  },
+  {
+    "key": "2745",
+    "value": "CHLOROMETHYL CHLOROFORMATE"
+  },
+  {
+    "key": "2746",
+    "value": "PHENYL CHLOROFORMATE"
+  },
+  {
+    "key": "2747",
+    "value": "tert-BUTYLCYCLOHEXYL CHLOROFORMATE"
+  },
+  {
+    "key": "2748",
+    "value": "2-ETHYLHEXYL CHLOROFORMATE"
+  },
+  {
+    "key": "2749",
+    "value": "TETRAMETHYLSILANE"
+  },
+  {
+    "key": "2750",
+    "value": "1,3-DICHLOROPROPANOL-2"
+  },
+  {
+    "key": "2751",
+    "value": "DIETHYLTHIOPHOSPHORYL CHLORIDE"
+  },
+  {
+    "key": "2752",
+    "value": "1,2-EPOXY-3-ETHOXYPROPANE"
+  },
+  {
+    "key": "2753",
+    "value": "N-ETHYLBENZYLTOLUIDINES, LIQUID"
+  },
+  {
+    "key": "2754",
+    "value": "N-ETHYLTOLUIDINES"
+  },
+  {
+    "key": "2757",
+    "value": "CARBAMATE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2758",
+    "value": "CARBAMATE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2759",
+    "value": "ARSENICAL PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2760",
+    "value": "ARSENICAL PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2761",
+    "value": "ORGANOCHLORINE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2762",
+    "value": "ORGANOCHLORINE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2763",
+    "value": "TRIAZINE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2764",
+    "value": "TRIAZINE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2771",
+    "value": "THIOCARBAMATE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2772",
+    "value": "THIOCARBAMATE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2775",
+    "value": "COPPER BASED PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2776",
+    "value": "COPPER BASED PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2777",
+    "value": "MERCURY BASED PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2778",
+    "value": "MERCURY BASED PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2779",
+    "value": "SUBSTITUTED NITROPHENOL PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2780",
+    "value": "SUBSTITUTED NITROPHENOL PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2781",
+    "value": "BIPYRIDILIUM PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2782",
+    "value": "BIPYRIDILIUM PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2783",
+    "value": "ORGANOPHOSPHORUS PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2784",
+    "value": "ORGANOPHOSPHORUS PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2785",
+    "value": "4-THIAPENTANAL"
+  },
+  {
+    "key": "2786",
+    "value": "ORGANOTIN PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "2787",
+    "value": "ORGANOTIN PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "2788",
+    "value": "ORGANOTIN COMPOUND, LIQUID, N.O.S."
+  },
+  {
+    "key": "2789",
+    "value": "ACETIC ACID, GLACIAL or ACETIC ACID SOLUTION, more than 80% acid, by mass"
+  },
+  {
+    "key": "2790",
+    "value": "ACETIC ACID SOLUTION, not less than 50% but not more than 80% acid, by mass"
+  },
+  {
+    "key": "2793",
+    "value": "FERROUS METAL BORINGS, SHAVINGS, TURNINGS or CUTTINGS in a form liable to self-heating"
+  },
+  {
+    "key": "2794",
+    "value": "BATTERIES, WET, FILLED WITH ACID, electric storage"
+  },
+  {
+    "key": "2795",
+    "value": "BATTERIES, WET, FILLED WITH ALKALI, electric storage"
+  },
+  {
+    "key": "2796",
+    "value": "SULPHURIC ACID with not more than 51% acid or BATTERY FLUID, ACID"
+  },
+  {
+    "key": "2797",
+    "value": "BATTERY FLUID, ALKALI"
+  },
+  {
+    "key": "2798",
+    "value": "PHENYLPHOSPHORUS DICHLORIDE"
+  },
+  {
+    "key": "2799",
+    "value": "PHENYLPHOSPHORUS THIODICHLORIDE"
+  },
+  {
+    "key": "2800",
+    "value": "BATTERIES, WET, NON-SPILLABLE, electric storage"
+  },
+  {
+    "key": "2801",
+    "value": "DYE, LIQUID, CORROSIVE, N.O.S. or DYE INTERMEDIATE, LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2802",
+    "value": "COPPER CHLORIDE"
+  },
+  {
+    "key": "2803",
+    "value": "GALLIUM"
+  },
+  {
+    "key": "2805",
+    "value": "LITHIUM HYDRIDE, FUSED SOLID"
+  },
+  {
+    "key": "2806",
+    "value": "LITHIUM NITRIDE"
+  },
+  {
+    "key": "2807",
+    "value": "MAGNETIZED MATERIAL"
+  },
+  {
+    "key": "2809",
+    "value": "MERCURY"
+  },
+  {
+    "key": "2810",
+    "value": "TOXIC LIQUID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2811",
+    "value": "TOXIC SOLID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2812",
+    "value": "SODIUM ALUMINATE, SOLID"
+  },
+  {
+    "key": "2813",
+    "value": "WATER-REACTIVE SOLID, N.O.S."
+  },
+  {
+    "key": "2814",
+    "value": "INFECTIOUS SUBSTANCE, AFFECTING HUMANS"
+  },
+  {
+    "key": "2815",
+    "value": "N-AMINOETHYLPIPERAZINE"
+  },
+  {
+    "key": "2817",
+    "value": "AMMONIUM HYDROGEN-DIFLUORIDE SOLUTION"
+  },
+  {
+    "key": "2818",
+    "value": "AMMONIUM POLYSULPHIDE SOLUTION"
+  },
+  {
+    "key": "2819",
+    "value": "AMYL ACID PHOSPHATE"
+  },
+  {
+    "key": "2820",
+    "value": "BUTYRIC ACID"
+  },
+  {
+    "key": "2821",
+    "value": "PHENOL SOLUTION"
+  },
+  {
+    "key": "2822",
+    "value": "2-CHLOROPYRIDINE"
+  },
+  {
+    "key": "2823",
+    "value": "CROTONIC ACID, SOLID"
+  },
+  {
+    "key": "2826",
+    "value": "ETHYL CHLOROTHIOFORMATE"
+  },
+  {
+    "key": "2829",
+    "value": "CAPROIC ACID"
+  },
+  {
+    "key": "2830",
+    "value": "LITHIUM FERROSILICON"
+  },
+  {
+    "key": "2831",
+    "value": "1,1,1-TRICHLOROETHANE"
+  },
+  {
+    "key": "2834",
+    "value": "PHOSPHOROUS ACID"
+  },
+  {
+    "key": "2835",
+    "value": "SODIUM ALUMINIUM HYDRIDE"
+  },
+  {
+    "key": "2837",
+    "value": "BISULPHATES, AQUEOUS SOLUTION"
+  },
+  {
+    "key": "2838",
+    "value": "VINYL BUTYRATE, STABILIZED"
+  },
+  {
+    "key": "2839",
+    "value": "ALDOL"
+  },
+  {
+    "key": "2840",
+    "value": "BUTYRALDOXIME"
+  },
+  {
+    "key": "2841",
+    "value": "DI-n-AMYLAMINE"
+  },
+  {
+    "key": "2842",
+    "value": "NITROETHANE"
+  },
+  {
+    "key": "2844",
+    "value": "CALCIUM MANGANESE SILICON"
+  },
+  {
+    "key": "2845",
+    "value": "PYROPHORIC LIQUID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2846",
+    "value": "PYROPHORIC SOLID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2849",
+    "value": "3-CHLORO-PROPANOL-1"
+  },
+  {
+    "key": "2850",
+    "value": "PROPYLENE TETRAMER"
+  },
+  {
+    "key": "2851",
+    "value": "BORON TRIFLUORIDE DIHYDRATE"
+  },
+  {
+    "key": "2852",
+    "value": "DIPICRYL SULPHIDE, WETTED with not less than 10% water, by mass"
+  },
+  {
+    "key": "2853",
+    "value": "MAGNESIUM FLUOROSILICATE"
+  },
+  {
+    "key": "2854",
+    "value": "AMMONIUM FLUOROSILICATE"
+  },
+  {
+    "key": "2855",
+    "value": "ZINC FLUOROSILICATE"
+  },
+  {
+    "key": "2856",
+    "value": "FLUOROSILICATES, N.O.S."
+  },
+  {
+    "key": "2857",
+    "value": "REFRIGERATING MACHINES containing non-flammable, non-toxic, gases or ammonia solutions (UN 2672)"
+  },
+  {
+    "key": "2858",
+    "value": "ZIRCONIUM, DRY, coiled wire, finished metal sheets, strip (thinner than 254 microns but not thinner than 18 microns)"
+  },
+  {
+    "key": "2859",
+    "value": "AMMONIUM METAVANADATE"
+  },
+  {
+    "key": "2861",
+    "value": "AMMONIUM POLYVANADATE"
+  },
+  {
+    "key": "2862",
+    "value": "VANADIUM PENTOXIDE, non-fused form"
+  },
+  {
+    "key": "2863",
+    "value": "SODIUM AMMONIUM VANADATE"
+  },
+  {
+    "key": "2864",
+    "value": "POTASSIUM METAVANADATE"
+  },
+  {
+    "key": "2865",
+    "value": "HYDROXYLAMINE SULPHATE"
+  },
+  {
+    "key": "2869",
+    "value": "TITANIUM TRICHLORIDE MIXTURE"
+  },
+  {
+    "key": "2870",
+    "value": "ALUMINIUM BOROHYDRIDE"
+  },
+  {
+    "key": "2871",
+    "value": "ANTIMONY POWDER"
+  },
+  {
+    "key": "2872",
+    "value": "DIBROMOCHLOROPROPANES"
+  },
+  {
+    "key": "2873",
+    "value": "DIBUTYLAMINOETHANOL"
+  },
+  {
+    "key": "2874",
+    "value": "FURFURYL ALCOHOL"
+  },
+  {
+    "key": "2875",
+    "value": "HEXACHLOROPHENE"
+  },
+  {
+    "key": "2876",
+    "value": "RESORCINOL"
+  },
+  {
+    "key": "2878",
+    "value": "TITANIUM SPONGE GRANULES or TITANIUM SPONGE POWDERS"
+  },
+  {
+    "key": "2879",
+    "value": "SELENIUM OXYCHLORIDE"
+  },
+  {
+    "key": "2880",
+    "value": "CALCIUM HYPOCHLORITE, HYDRATED or CALCIUM HYPOCHLORITE, HYDRATED MIXTURE, with not less than 5.5% but not more than 16% water"
+  },
+  {
+    "key": "2881",
+    "value": "METAL CATALYST, DRY"
+  },
+  {
+    "key": "2900",
+    "value": "INFECTIOUS SUBSTANCE, AFFECTING ANIMALS only"
+  },
+  {
+    "key": "2901",
+    "value": "BROMINE CHLORIDE"
+  },
+  {
+    "key": "2902",
+    "value": "PESTICIDE, LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "2903",
+    "value": "PESTICIDE, LIQUID, TOXIC, FLAMMABLE, N.O.S., flash point not less than 23 °C"
+  },
+  {
+    "key": "2904",
+    "value": "CHLOROPHENOLATES, LIQUID or PHENOLATES, LIQUID"
+  },
+  {
+    "key": "2905",
+    "value": "CHLOROPHENOLATES, SOLID or PHENOLATES, SOLID"
+  },
+  {
+    "key": "2907",
+    "value": "ISOSORBIDE DINITRATE MIXTURE with not less than 60% lactose, mannose, starch or calcium hydrogen phosphate"
+  },
+  {
+    "key": "2908",
+    "value": "RADIOACTIVE MATERIAL, EXCEPTED PACKAGE - EMPTY PACKAGING"
+  },
+  {
+    "key": "2909",
+    "value": "RADIOACTIVE MATERIAL, EXCEPTED PACKAGE - ARTICLES MANUFACTURED FROM NATURAL URANIUM or DEPLETED URANIUM or NATURAL THORIUM"
+  },
+  {
+    "key": "2910",
+    "value": "RADIOACTIVE MATERIAL, EXCEPTED PACKAGE - LIMITED QUANTITY OF MATERIAL"
+  },
+  {
+    "key": "2911",
+    "value": "RADIOACTIVE MATERIAL, EXCEPTED PACKAGE - INSTRUMENTS or ARTICLES"
+  },
+  {
+    "key": "2912",
+    "value": "RADIOACTIVE MATERIAL, LOW SPECIFIC ACTIVITY (LSA-I), non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2913",
+    "value": "RADIOACTIVE MATERIAL, SURFACE CONTAMINATED OBJECTS (SCO-I or SCO-II), non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2915",
+    "value": "RADIOACTIVE MATERIAL, TYPE A PACKAGE, non-special form, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2916",
+    "value": "RADIOACTIVE MATERIAL, TYPE B(U) PACKAGE, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2917",
+    "value": "RADIOACTIVE MATERIAL, TYPE B(M) PACKAGE, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2919",
+    "value": "RADIOACTIVE MATERIAL, TRANSPORTED UNDER SPECIAL ARRANGEMENT, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2920",
+    "value": "CORROSIVE LIQUID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "2921",
+    "value": "CORROSIVE SOLID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "2922",
+    "value": "CORROSIVE LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "2923",
+    "value": "CORROSIVE SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "2924",
+    "value": "FLAMMABLE LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2925",
+    "value": "FLAMMABLE SOLID, CORROSIVE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2926",
+    "value": "FLAMMABLE SOLID, TOXIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2927",
+    "value": "TOXIC LIQUID, CORROSIVE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2928",
+    "value": "TOXIC SOLID, CORROSIVE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2929",
+    "value": "TOXIC LIQUID, FLAMMABLE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2930",
+    "value": "TOXIC SOLID, FLAMMABLE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "2931",
+    "value": "VANADYL SULPHATE"
+  },
+  {
+    "key": "2933",
+    "value": "METHYL 2-CHLORO-PROPIONATE"
+  },
+  {
+    "key": "2934",
+    "value": "ISOPROPYL 2-CHLORO-PROPIONATE"
+  },
+  {
+    "key": "2935",
+    "value": "ETHYL 2-CHLOROPROPIONATE"
+  },
+  {
+    "key": "2936",
+    "value": "THIOLACTIC ACID"
+  },
+  {
+    "key": "2937",
+    "value": "alpha-METHYLBENZYL ALCOHOL, LIQUID"
+  },
+  {
+    "key": "2940",
+    "value": "9-PHOSPHABICYCLO-NONANES (CYCLOOCTADIENE PHOSPHINES)"
+  },
+  {
+    "key": "2941",
+    "value": "FLUOROANILINES"
+  },
+  {
+    "key": "2942",
+    "value": "2-TRIFLUOROMETHYLANILINE"
+  },
+  {
+    "key": "2943",
+    "value": "TETRAHYDROFURFURYL-AMINE"
+  },
+  {
+    "key": "2945",
+    "value": "N-METHYLBUTYLAMINE"
+  },
+  {
+    "key": "2946",
+    "value": "2-AMINO-5-DIETHYLAMINO-PENTANE"
+  },
+  {
+    "key": "2947",
+    "value": "ISOPROPYL CHLOROACETATE"
+  },
+  {
+    "key": "2948",
+    "value": "3-TRIFLUOROMETHYL-ANILINE"
+  },
+  {
+    "key": "2949",
+    "value": "SODIUM HYDROSULPHIDE, HYDRATED with not less than 25% water of crystallization"
+  },
+  {
+    "key": "2950",
+    "value": "MAGNESIUM GRANULES, COATED, particle size not less than 149 microns"
+  },
+  {
+    "key": "2956",
+    "value": "5-tert-BUTYL-2,4,6-TRINITRO-m-XYLENE (MUSK XYLENE)"
+  },
+  {
+    "key": "2965",
+    "value": "BORON TRIFLUORIDE DIMETHYL ETHERATE"
+  },
+  {
+    "key": "2966",
+    "value": "THIOGLYCOL"
+  },
+  {
+    "key": "2967",
+    "value": "SULPHAMIC ACID"
+  },
+  {
+    "key": "2968",
+    "value": "MANEB, STABILIZED or MANEB PREPARATION, STABILIZED against self-heating"
+  },
+  {
+    "key": "2969",
+    "value": "CASTOR BEANS or CASTOR MEAL or CASTOR POMACE or CASTOR FLAKE"
+  },
+  {
+    "key": "2977",
+    "value": "RADIOACTIVE MATERIAL, URANIUM HEXAFLUORIDE, FISSILE"
+  },
+  {
+    "key": "2978",
+    "value": "RADIOACTIVE MATERIAL, URANIUM HEXAFLUORIDE, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "2983",
+    "value": "ETHYLENE OXIDE AND PROPYLENE OXIDE MIXTURE, not more than 30% ethylene oxide"
+  },
+  {
+    "key": "2984",
+    "value": "HYDROGEN PEROXIDE, AQUEOUS SOLUTION with not less than 8% but less than 20% hydrogen peroxide (stabilized as necessary)"
+  },
+  {
+    "key": "2985",
+    "value": "CHLOROSILANES, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2986",
+    "value": "CHLOROSILANES, CORROSIVE, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "2987",
+    "value": "CHLOROSILANES, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2988",
+    "value": "CHLOROSILANES, WATER-REACTIVE, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "2989",
+    "value": "LEAD PHOSPHITE, DIBASIC"
+  },
+  {
+    "key": "2990",
+    "value": "LIFE-SAVING APPLIANCES, SELF-INFLATING"
+  },
+  {
+    "key": "2991",
+    "value": "CARBAMATE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "2992",
+    "value": "CARBAMATE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "2993",
+    "value": "ARSENICAL PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "2994",
+    "value": "ARSENICAL PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "2995",
+    "value": "ORGANOCHLORINE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "2996",
+    "value": "ORGANOCHLORINE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "2997",
+    "value": "TRIAZINE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "2998",
+    "value": "TRIAZINE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3005",
+    "value": "THIOCARBAMATE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3006",
+    "value": "THIOCARBAMATE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3009",
+    "value": "COPPER BASED PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3010",
+    "value": "COPPER BASED PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3011",
+    "value": "MERCURY BASED PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3012",
+    "value": "MERCURY BASED PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3013",
+    "value": "SUBSTITUTED NITROPHENOL PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3014",
+    "value": "SUBSTITUTED NITROPHENOL PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3015",
+    "value": "BIPYRIDILIUM PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3016",
+    "value": "BIPYRIDILIUM PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3017",
+    "value": "ORGANOPHOSPHORUS PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3018",
+    "value": "ORGANOPHOSPHORUS PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3019",
+    "value": "ORGANOTIN PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3020",
+    "value": "ORGANOTIN PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3021",
+    "value": "PESTICIDE, LIQUID,FLAMMABLE, TOXIC, N.O.S., flash point less than 23 °C"
+  },
+  {
+    "key": "3022",
+    "value": "1,2-BUTYLENE OXIDE, STABILIZED"
+  },
+  {
+    "key": "3023",
+    "value": "2-METHYL-2-HEPTANETHIOL"
+  },
+  {
+    "key": "3024",
+    "value": "COUMARIN DERIVATIVE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "3025",
+    "value": "COUMARIN DERIVATIVE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3026",
+    "value": "COUMARIN DERIVATIVE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3027",
+    "value": "COUMARIN DERIVATIVE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "3028",
+    "value": "BATTERIES, DRY, CONTAINING POTASSIUM HYDROXIDE SOLID, electric storage"
+  },
+  {
+    "key": "3048",
+    "value": "ALUMINIUM PHOSPHIDE PESTICIDE"
+  },
+  {
+    "key": "3054",
+    "value": "CYCLOHEXYL MERCAPTAN"
+  },
+  {
+    "key": "3055",
+    "value": "2-(2-AMINOETHOXY)ETHANOL"
+  },
+  {
+    "key": "3056",
+    "value": "n-HEPTALDEHYDE"
+  },
+  {
+    "key": "3057",
+    "value": "TRIFLUOROACETYL CHLORIDE"
+  },
+  {
+    "key": "3064",
+    "value": "NITROGLYCERIN, SOLUTION IN ALCOHOL with more than 1% but not more than 5% nitroglycerin"
+  },
+  {
+    "key": "3065",
+    "value": "ALCOHOLIC BEVERAGES, with more than 70% alcohol by volume"
+  },
+  {
+    "key": "3066",
+    "value": "PAINT (including paint, lacquer, enamel, stain, shellac, varnish, polish, liquid filler and liquid lacquer base) or PAINT RELATED MATERIAL ("
+  },
+  {
+    "key": "3070",
+    "value": "ETHYLENE OXIDE AND DICHLORODIFLUORO-METHANE MIXTURE with not more than 12.5% ethylene oxide"
+  },
+  {
+    "key": "3071",
+    "value": "MERCAPTANS, LIQUID, TOXIC, FLAMMABLE, N.O.S. or MERCAPTAN MIXTURE, LIQUID, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3072",
+    "value": "LIFE-SAVING APPLIANCES NOT SELF-INFLATING containing dangerous goods as equipment"
+  },
+  {
+    "key": "3073",
+    "value": "VINYLPYRIDINES, STABILIZED"
+  },
+  {
+    "key": "3077",
+    "value": "ENVIRONMENTALLY HAZARDOUS SUBSTANCE, SOLID, N.O.S."
+  },
+  {
+    "key": "3078",
+    "value": "CERIUM, turnings or gritty powder"
+  },
+  {
+    "key": "3079",
+    "value": "METHACRYLONITRILE, STABILIZED"
+  },
+  {
+    "key": "3080",
+    "value": "ISOCYANATES, TOXIC, FLAMMABLE, N.O.S. or ISOCYANATE SOLUTION, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3082",
+    "value": "ENVIRONMENTALLY HAZARDOUS SUBSTANCE, LIQUID, N.O.S."
+  },
+  {
+    "key": "3083",
+    "value": "PERCHLORYL FLUORIDE"
+  },
+  {
+    "key": "3084",
+    "value": "CORROSIVE SOLID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3085",
+    "value": "OXIDIZING SOLID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3086",
+    "value": "TOXIC SOLID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3087",
+    "value": "OXIDIZING SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3088",
+    "value": "SELF-HEATING SOLID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3089",
+    "value": "METAL POWDER, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3090",
+    "value": "LITHIUM METAL BATTERIES (including lithium alloy batteries)"
+  },
+  {
+    "key": "3091",
+    "value": "LITHIUM METAL BATTERIES CONTAINED IN EQUIPMENT or LITHIUM METAL BATTERIES PACKED WITH EQUIPMENT (including lithium alloy batteries)"
+  },
+  {
+    "key": "3092",
+    "value": "1-METHOXY-2-PROPANOL"
+  },
+  {
+    "key": "3093",
+    "value": "CORROSIVE LIQUID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3094",
+    "value": "CORROSIVE LIQUID, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3095",
+    "value": "CORROSIVE SOLID, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3096",
+    "value": "CORROSIVE SOLID, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3097",
+    "value": "FLAMMABLE SOLID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3098",
+    "value": "OXIDIZING LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3099",
+    "value": "OXIDIZING LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3100",
+    "value": "OXIDIZING SOLID, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3101",
+    "value": "ORGANIC PEROXIDE TYPE B, LIQUID"
+  },
+  {
+    "key": "3102",
+    "value": "ORGANIC PEROXIDE TYPE B, SOLID"
+  },
+  {
+    "key": "3103",
+    "value": "ORGANIC PEROXIDE TYPE C, LIQUID"
+  },
+  {
+    "key": "3104",
+    "value": "ORGANIC PEROXIDE TYPE C, SOLID"
+  },
+  {
+    "key": "3105",
+    "value": "ORGANIC PEROXIDE TYPE D, LIQUID"
+  },
+  {
+    "key": "3106",
+    "value": "ORGANIC PEROXIDE TYPE D, SOLID"
+  },
+  {
+    "key": "3107",
+    "value": "ORGANIC PEROXIDE TYPE E, LIQUID"
+  },
+  {
+    "key": "3108",
+    "value": "ORGANIC PEROXIDE TYPE E, SOLID"
+  },
+  {
+    "key": "3109",
+    "value": "ORGANIC PEROXIDE TYPE F, LIQUID"
+  },
+  {
+    "key": "3110",
+    "value": "ORGANIC PEROXIDE TYPE F, SOLID"
+  },
+  {
+    "key": "3111",
+    "value": "ORGANIC PEROXIDE TYPE B, LIQUID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3112",
+    "value": "ORGANIC PEROXIDE TYPE B, SOLID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3113",
+    "value": "ORGANIC PEROXIDE TYPE C, LIQUID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3114",
+    "value": "ORGANIC PEROXIDE TYPE C, SOLID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3115",
+    "value": "ORGANIC PEROXIDE TYPE D, LIQUID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3116",
+    "value": "ORGANIC PEROXIDE TYPE D, SOLID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3117",
+    "value": "ORGANIC PEROXIDE TYPE E, LIQUID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3118",
+    "value": "ORGANIC PEROXIDE TYPE E, SOLID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3119",
+    "value": "ORGANIC PEROXIDE TYPE F, LIQUID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3120",
+    "value": "ORGANIC PEROXIDE TYPE F, SOLID, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3121",
+    "value": "OXIDIZING SOLID, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3122",
+    "value": "TOXIC LIQUID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3123",
+    "value": "TOXIC LIQUID, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3124",
+    "value": "TOXIC SOLID, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3125",
+    "value": "TOXIC SOLID, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3126",
+    "value": "SELF-HEATING SOLID, CORROSIVE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3127",
+    "value": "SELF-HEATING SOLID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3128",
+    "value": "SELF-HEATING SOLID, TOXIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3129",
+    "value": "WATER-REACTIVE LIQUID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3130",
+    "value": "WATER-REACTIVE LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3131",
+    "value": "WATER-REACTIVE SOLID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3132",
+    "value": "WATER-REACTIVE SOLID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3133",
+    "value": "WATER-REACTIVE SOLID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3134",
+    "value": "WATER-REACTIVE SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3135",
+    "value": "WATER-REACTIVE SOLID, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3136",
+    "value": "TRIFLUOROMETHANE, REFRIGERATED LIQUID"
+  },
+  {
+    "key": "3137",
+    "value": "OXIDIZING SOLID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3138",
+    "value": "ETHYLENE, ACETYLENE AND PROPYLENE MIXTURE, REFRIGERATED LIQUID containing at least 71.5% ethylene with not more than 22.5% acetylene and not"
+  },
+  {
+    "key": "3139",
+    "value": "OXIDIZING LIQUID, N.O.S."
+  },
+  {
+    "key": "3140",
+    "value": "ALKALOIDS, LIQUID, N.O.S. or ALKALOID SALTS, LIQUID, N.O.S."
+  },
+  {
+    "key": "3141",
+    "value": "ANTIMONY COMPOUND, INORGANIC, LIQUID, N.O.S."
+  },
+  {
+    "key": "3142",
+    "value": "DISINFECTANT, LIQUID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3143",
+    "value": "DYE, SOLID, TOXIC, N.O.S. or DYE INTERMEDIATE, SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3144",
+    "value": "NICOTINE COMPOUND, LIQUID, N.O.S. or NICOTINE PREPARATION, LIQUID, N.O.S."
+  },
+  {
+    "key": "3145",
+    "value": "ALKYLPHENOLS, LIQUID, N.O.S. (including C2-C12 homologues)"
+  },
+  {
+    "key": "3146",
+    "value": "ORGANOTIN COMPOUND, SOLID, N.O.S."
+  },
+  {
+    "key": "3147",
+    "value": "DYE, SOLID, CORROSIVE, N.O.S. or DYE INTERMEDIATE, SOLID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3148",
+    "value": "WATER-REACTIVE LIQUID, N.O.S."
+  },
+  {
+    "key": "3149",
+    "value": "HYDROGEN PEROXIDE AND PEROXYACETIC ACID MIXTURE with acid(s), water and not more than 5% peroxyacetic acid, STABILIZED"
+  },
+  {
+    "key": "3150",
+    "value": "DEVICES, SMALL, HYDROCARBON GAS POWERED or HYDROCARBON GAS REFILLS FOR SMALL DEVICES with release device"
+  },
+  {
+    "key": "3151",
+    "value": "POLYHALOGENATED BIPHENYLS, LIQUID or POLYHALOGENATED TERPHENYLS, LIQUID"
+  },
+  {
+    "key": "3152",
+    "value": "POLYHALOGENATED BIPHENYLS, SOLID or POLYHALOGENATED TERPHENYLS, SOLID"
+  },
+  {
+    "key": "3153",
+    "value": "PERFLUORO(METHYL VINYL ETHER)"
+  },
+  {
+    "key": "3154",
+    "value": "PERFLUORO(ETHYL VINYL ETHER)"
+  },
+  {
+    "key": "3155",
+    "value": "PENTACHLOROPHENOL"
+  },
+  {
+    "key": "3156",
+    "value": "COMPRESSED GAS, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3157",
+    "value": "LIQUEFIED GAS, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3158",
+    "value": "GAS, REFRIGERATED LIQUID, N.O.S."
+  },
+  {
+    "key": "3159",
+    "value": "1,1,1,2-TETRAFLUOROETHANE (REFRIGERANT GAS R 134a)"
+  },
+  {
+    "key": "3160",
+    "value": "LIQUEFIED GAS, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3161",
+    "value": "LIQUEFIED GAS, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3162",
+    "value": "LIQUEFIED GAS, TOXIC, N.O.S."
+  },
+  {
+    "key": "3163",
+    "value": "LIQUEFIED GAS, N.O.S."
+  },
+  {
+    "key": "3164",
+    "value": "ARTICLES, PRESSURIZED, PNEUMATIC or HYDRAULIC (containing non-flammable gas)"
+  },
+  {
+    "key": "3165",
+    "value": "AIRCRAFT HYDRAULIC POWER UNIT FUEL TANK (containing a mixture of anhydrous hydrazine and methylhydrazine) (M86 fuel)"
+  },
+  {
+    "key": "3166",
+    "value": "ENGINE, INTERNAL COMBUSTION or VEHICLE, FLAMMABLE GAS, POWERED or VEHICLE, FLAMMABLE LIQUID, POWERED"
+  },
+  {
+    "key": "3167",
+    "value": "GAS SAMPLE, NON-PRESSURIZED, FLAMMABLE, N.O.S., not refrigerated liquid"
+  },
+  {
+    "key": "3168",
+    "value": "GAS SAMPLE, NON-PRESSURIZED, TOXIC, FLAMMABLE, N.O.S., not refrigerated liquid"
+  },
+  {
+    "key": "3169",
+    "value": "GAS SAMPLE, NON-PRESSURIZED, TOXIC, N.O.S., not refrigerated liquid"
+  },
+  {
+    "key": "3170",
+    "value": "ALUMINIUM SMELTING BY-PRODUCTS or ALUMINIUM REMELTING BY-PRODUCTS"
+  },
+  {
+    "key": "3171",
+    "value": "BATTERY-POWERED VEHICLE or BATTERY-POWERED EQUIPMENT"
+  },
+  {
+    "key": "3172",
+    "value": "TOXINS, EXTRACTED FROM LIVING SOURCES, LIQUID, N.O.S."
+  },
+  {
+    "key": "3174",
+    "value": "TITANIUM DISULPHIDE"
+  },
+  {
+    "key": "3175",
+    "value": "SOLIDS CONTAINING FLAMMABLE LIQUID, N.O.S."
+  },
+  {
+    "key": "3176",
+    "value": "FLAMMABLE SOLID, ORGANIC, MOLTEN, N.O.S."
+  },
+  {
+    "key": "3178",
+    "value": "FLAMMABLE SOLID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3179",
+    "value": "FLAMMABLE SOLID, TOXIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3180",
+    "value": "FLAMMABLE SOLID, CORROSIVE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3181",
+    "value": "METAL SALTS OF ORGANIC COMPOUNDS, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3182",
+    "value": "METAL HYDRIDES, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3183",
+    "value": "SELF-HEATING LIQUID, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3184",
+    "value": "SELF-HEATING LIQUID, TOXIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3185",
+    "value": "SELF-HEATING LIQUID, CORROSIVE, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3186",
+    "value": "SELF-HEATING LIQUID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3187",
+    "value": "SELF-HEATING LIQUID, TOXIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3188",
+    "value": "SELF-HEATING LIQUID, CORROSIVE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3189",
+    "value": "METAL POWDER, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3190",
+    "value": "SELF-HEATING SOLID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3191",
+    "value": "SELF-HEATING SOLID, TOXIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3192",
+    "value": "SELF-HEATING SOLID, CORROSIVE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3194",
+    "value": "PYROPHORIC LIQUID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3200",
+    "value": "PYROPHORIC SOLID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3205",
+    "value": "ALKALINE EARTH METAL ALCOHOLATES, N.O.S."
+  },
+  {
+    "key": "3206",
+    "value": "ALKALI METAL ALCOHOLATES, SELF-HEATING, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3208",
+    "value": "METALLIC SUBSTANCE, WATER-REACTIVE, N.O.S."
+  },
+  {
+    "key": "3209",
+    "value": "METALLIC SUBSTANCE, WATER-REACTIVE, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3210",
+    "value": "CHLORATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3211",
+    "value": "PERCHLORATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3212",
+    "value": "HYPOCHLORITES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3213",
+    "value": "BROMATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3214",
+    "value": "PERMANGANATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3215",
+    "value": "PERSULPHATES, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3216",
+    "value": "PERSULPHATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3218",
+    "value": "NITRATES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3219",
+    "value": "NITRITES, INORGANIC, AQUEOUS SOLUTION, N.O.S."
+  },
+  {
+    "key": "3220",
+    "value": "PENTAFLUOROETHANE (REFRIGERANT GAS R 125)"
+  },
+  {
+    "key": "3221",
+    "value": "SELF-REACTIVE LIQUID TYPE B"
+  },
+  {
+    "key": "3222",
+    "value": "SELF-REACTIVE SOLID TYPE B"
+  },
+  {
+    "key": "3223",
+    "value": "SELF-REACTIVE LIQUID TYPE C"
+  },
+  {
+    "key": "3224",
+    "value": "SELF-REACTIVE SOLID TYPE C"
+  },
+  {
+    "key": "3225",
+    "value": "SELF-REACTIVE LIQUID TYPE D"
+  },
+  {
+    "key": "3226",
+    "value": "SELF-REACTIVE SOLID TYPE D"
+  },
+  {
+    "key": "3227",
+    "value": "SELF-REACTIVE LIQUID TYPE E"
+  },
+  {
+    "key": "3228",
+    "value": "SELF-REACTIVE SOLID TYPE E"
+  },
+  {
+    "key": "3229",
+    "value": "SELF-REACTIVE LIQUID TYPE F"
+  },
+  {
+    "key": "3230",
+    "value": "SELF-REACTIVE SOLID TYPE F"
+  },
+  {
+    "key": "3231",
+    "value": "SELF-REACTIVE LIQUID TYPE B, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3232",
+    "value": "SELF-REACTIVE SOLID TYPE B, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3233",
+    "value": "SELF-REACTIVE LIQUID TYPE C, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3234",
+    "value": "SELF-REACTIVE SOLID TYPE C, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3235",
+    "value": "SELF-REACTIVE LIQUID TYPE D, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3236",
+    "value": "SELF-REACTIVE SOLID TYPE D, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3237",
+    "value": "SELF-REACTIVE LIQUID TYPE E, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3238",
+    "value": "SELF-REACTIVE SOLID TYPE E, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3239",
+    "value": "SELF-REACTIVE LIQUID TYPE F, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3240",
+    "value": "SELF-REACTIVE SOLID TYPE F, TEMPERATURE CONTROLLED"
+  },
+  {
+    "key": "3241",
+    "value": "2-BROMO-2-NITROPROPANE-1,3-DIOL"
+  },
+  {
+    "key": "3242",
+    "value": "AZODICARBONAMIDE"
+  },
+  {
+    "key": "3243",
+    "value": "SOLIDS CONTAINING TOXIC LIQUID, N.O.S."
+  },
+  {
+    "key": "3244",
+    "value": "SOLIDS CONTAINING CORROSIVE LIQUID, N.O.S."
+  },
+  {
+    "key": "3245",
+    "value": "GENETICALLY MODIFIED MICROORGANISMS or GENETICALLY MODIFIED ORGANISMS"
+  },
+  {
+    "key": "3246",
+    "value": "METHANESULPHONYL CHLORIDE"
+  },
+  {
+    "key": "3247",
+    "value": "SODIUM PEROXOBORATE, ANHYDROUS"
+  },
+  {
+    "key": "3248",
+    "value": "MEDICINE, LIQUID, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "3249",
+    "value": "MEDICINE, SOLID, TOXIC, N.O.S."
+  },
+  {
+    "key": "3250",
+    "value": "CHLOROACETIC ACID, MOLTEN"
+  },
+  {
+    "key": "3251",
+    "value": "ISOSORBIDE-5-MONONITRATE"
+  },
+  {
+    "key": "3252",
+    "value": "DIFLUOROMETHANE (REFRIGERANT GAS R 32)"
+  },
+  {
+    "key": "3253",
+    "value": "DISODIUM TRIOXOSILICATE"
+  },
+  {
+    "key": "3254",
+    "value": "TRIBUTYLPHOSPHANE"
+  },
+  {
+    "key": "3255",
+    "value": "tert-BUTYL HYPOCHLORITE"
+  },
+  {
+    "key": "3256",
+    "value": "ELEVATED TEMPERATURE LIQUID, FLAMMABLE, N.O.S. with flash point above 60 °C, at or above its flash point"
+  },
+  {
+    "key": "3257",
+    "value": "ELEVATED TEMPERATURE LIQUID, N.O.S., at or above 100 °C and below its flash point (including molten metals, molten salts, etc.)"
+  },
+  {
+    "key": "3258",
+    "value": "ELEVATED TEMPERATURE SOLID, N.O.S., at or above 240 °C"
+  },
+  {
+    "key": "3259",
+    "value": "AMINES, SOLID, CORROSIVE, N.O.S. or POLYAMINES, SOLID, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3260",
+    "value": "CORROSIVE SOLID, ACIDIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3261",
+    "value": "CORROSIVE SOLID, ACIDIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3262",
+    "value": "CORROSIVE SOLID, BASIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3263",
+    "value": "CORROSIVE SOLID, BASIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3264",
+    "value": "CORROSIVE LIQUID, ACIDIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3265",
+    "value": "CORROSIVE LIQUID, ACIDIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3266",
+    "value": "CORROSIVE LIQUID, BASIC, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3267",
+    "value": "CORROSIVE LIQUID, BASIC, ORGANIC, N.O.S."
+  },
+  {
+    "key": "3268",
+    "value": "SAFETY DEVICES, electrically initiated"
+  },
+  {
+    "key": "3269",
+    "value": "POLYESTER RESIN KIT"
+  },
+  {
+    "key": "3270",
+    "value": "NITROCELLULOSE MEMBRANE FILTERS, with not more than 12.6% nitrogen, by dry mass"
+  },
+  {
+    "key": "3271",
+    "value": "ETHERS, N.O.S."
+  },
+  {
+    "key": "3272",
+    "value": "ESTERS, N.O.S."
+  },
+  {
+    "key": "3273",
+    "value": "NITRILES, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "3274",
+    "value": "ALCOHOLATES SOLUTION, N.O.S., in alcohol"
+  },
+  {
+    "key": "3275",
+    "value": "NITRILES, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3276",
+    "value": "NITRILES, TOXIC, LIQUID, N.O.S."
+  },
+  {
+    "key": "3277",
+    "value": "CHLOROFORMATES, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3278",
+    "value": "ORGANOPHOSPHORUS COMPOUND, TOXIC, LIQUID, N.O.S."
+  },
+  {
+    "key": "3279",
+    "value": "ORGANOPHOSPHORUS COMPOUND, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3280",
+    "value": "ORGANOARSENIC COMPOUND, LIQUID, N.O.S."
+  },
+  {
+    "key": "3281",
+    "value": "METAL CARBONYLS, LIQUID, N.O.S."
+  },
+  {
+    "key": "3282",
+    "value": "ORGANOMETALLIC COMPOUND, TOXIC, LIQUID, N.O.S."
+  },
+  {
+    "key": "3283",
+    "value": "SELENIUM COMPOUND, SOLID, N.O.S."
+  },
+  {
+    "key": "3284",
+    "value": "TELLURIUM COMPOUND, N.O.S."
+  },
+  {
+    "key": "3285",
+    "value": "VANADIUM COMPOUND, N.O.S."
+  },
+  {
+    "key": "3286",
+    "value": "FLAMMABLE LIQUID, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3287",
+    "value": "TOXIC LIQUID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3288",
+    "value": "TOXIC SOLID, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3289",
+    "value": "TOXIC LIQUID, CORROSIVE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3290",
+    "value": "TOXIC SOLID, CORROSIVE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3291",
+    "value": "CLINICAL WASTE, UNSPECIFIED, N.O.S. or (BIO) MEDICAL WASTE, N.O.S. or REGULATED MEDICAL WASTE, N.O.S."
+  },
+  {
+    "key": "3292",
+    "value": "BATTERIES, CONTAINING SODIUM, or CELLS, CONTAINING SODIUM"
+  },
+  {
+    "key": "3293",
+    "value": "HYDRAZINE, AQUEOUS SOLUTION with not more than 37% hydrazine, by mass"
+  },
+  {
+    "key": "3294",
+    "value": "HYDROGEN CYANIDE, SOLUTION IN ALCOHOL with not more than 45% hydrogen cyanide"
+  },
+  {
+    "key": "3295",
+    "value": "HYDROCARBONS, LIQUID, N.O.S."
+  },
+  {
+    "key": "3296",
+    "value": "HEPTAFLUOROPROPANE (REFRIGERANT GAS R 227)"
+  },
+  {
+    "key": "3297",
+    "value": "ETHYLENE OXIDE AND CHLOROTETRAFLUORO-ETHANE MIXTURE with not more than 8.8% ethylene oxide"
+  },
+  {
+    "key": "3298",
+    "value": "ETHYLENE OXIDE AND PENTAFLUOROETHANE MIXTURE with not more than 7.9% ethylene oxide"
+  },
+  {
+    "key": "3299",
+    "value": "ETHYLENE OXIDE AND TETRAFLUOROETHANE MIXTURE with not more than 5.6% ethylene oxide"
+  },
+  {
+    "key": "3300",
+    "value": "ETHYLENE OXIDE AND CARBON DIOXIDE MIXTURE with more than 87% ethylene oxide"
+  },
+  {
+    "key": "3301",
+    "value": "CORROSIVE LIQUID, SELF-HEATING, N.O.S."
+  },
+  {
+    "key": "3302",
+    "value": "2-DIMETHYLAMINOETHYL ACRYLATE"
+  },
+  {
+    "key": "3303",
+    "value": "COMPRESSED GAS, TOXIC, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3304",
+    "value": "COMPRESSED GAS, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3305",
+    "value": "COMPRESSED GAS, TOXIC, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3306",
+    "value": "COMPRESSED GAS, TOXIC, OXIDIZING, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3307",
+    "value": "LIQUEFIED GAS, TOXIC, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3308",
+    "value": "LIQUEFIED GAS, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3309",
+    "value": "LIQUEFIED GAS, TOXIC, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3310",
+    "value": "LIQUEFIED GAS, TOXIC, OXIDIZING, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3311",
+    "value": "GAS, REFRIGERATED LIQUID, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3312",
+    "value": "GAS, REFRIGERATED LIQUID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3313",
+    "value": "ORGANIC PIGMENTS, SELF-HEATING"
+  },
+  {
+    "key": "3314",
+    "value": "PLASTICS MOULDING COMPOUND in dough, sheet or extruded rope form evolving flammable vapour"
+  },
+  {
+    "key": "3315",
+    "value": "CHEMICAL SAMPLE, TOXIC"
+  },
+  {
+    "key": "3316",
+    "value": "CHEMICAL KIT or FIRST AID KIT"
+  },
+  {
+    "key": "3317",
+    "value": "2-AMINO-4,6-DINITROPHENOL, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "3318",
+    "value": "AMMONIA SOLUTION, relative density less than 0.880 at 15 °C in water, with more than 50% ammonia"
+  },
+  {
+    "key": "3319",
+    "value": "NITROGLYCERIN MIXTURE, DESENSITIZED, SOLID, N.O.S. with more than 2% but not more than 10% nitroglycerin, by mass"
+  },
+  {
+    "key": "3320",
+    "value": "SODIUM BOROHYDRIDE AND SODIUM HYDROXIDE SOLUTION, with not more than 12% sodium borohydride and not more than 40% sodium hydroxide by mass"
+  },
+  {
+    "key": "3321",
+    "value": "RADIOACTIVE MATERIAL, LOW SPECIFIC ACTIVITY (LSA-II), non fissile or fissile-excepted"
+  },
+  {
+    "key": "3322",
+    "value": "RADIOACTIVE MATERIAL, LOW SPECIFIC ACTIVITY (LSA-III), non fissile or fissile-excepted"
+  },
+  {
+    "key": "3323",
+    "value": "RADIOACTIVE MATERIAL, TYPE C PACKAGE, non fissile or fissile-excepted"
+  },
+  {
+    "key": "3324",
+    "value": "RADIOACTIVE MATERIAL, LOW SPECIFIC ACTIVITY (LSA-II), FISSILE"
+  },
+  {
+    "key": "3325",
+    "value": "RADIOACTIVE MATERIAL, LOW SPECIFIC ACTIVITY, (LSA-III), FISSILE"
+  },
+  {
+    "key": "3326",
+    "value": "RADIOACTIVE MATERIAL, SURFACE CONTAMINATED OBJECTS (SCO-I or SCO-II), FISSILE"
+  },
+  {
+    "key": "3327",
+    "value": "RADIOACTIVE MATERIAL, TYPE A PACKAGE, FISSILE, non-special form"
+  },
+  {
+    "key": "3328",
+    "value": "RADIOACTIVE MATERIAL, TYPE B(U) PACKAGE, FISSILE"
+  },
+  {
+    "key": "3329",
+    "value": "RADIOACTIVE MATERIAL, TYPE B(M) PACKAGE, FISSILE"
+  },
+  {
+    "key": "3330",
+    "value": "RADIOACTIVE MATERIAL, TYPE C PACKAGE, FISSILE"
+  },
+  {
+    "key": "3331",
+    "value": "RADIOACTIVE MATERIAL, TRANSPORTED UNDER SPECIAL ARRANGEMENT, FISSILE"
+  },
+  {
+    "key": "3332",
+    "value": "RADIOACTIVE MATERIAL, TYPE A PACKAGE, SPECIAL FORM, non fissile or fissile-excepted"
+  },
+  {
+    "key": "3333",
+    "value": "RADIOACTIVE MATERIAL, TYPE A PACKAGE, SPECIAL FORM, FISSILE"
+  },
+  {
+    "key": "3334",
+    "value": "AVIATION REGULATED LIQUID, N.O.S."
+  },
+  {
+    "key": "3335",
+    "value": "AVIATION REGULATED SOLID, N.O.S."
+  },
+  {
+    "key": "3336",
+    "value": "MERCAPTANS, LIQUID, FLAMMABLE, N.O.S. or MERCAPTAN MIXTURE, LIQUID, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3337",
+    "value": "REFRIGERANT GAS R 404A"
+  },
+  {
+    "key": "3338",
+    "value": "REFRIGERANT GAS R 407A"
+  },
+  {
+    "key": "3339",
+    "value": "REFRIGERANT GAS R 407B"
+  },
+  {
+    "key": "3340",
+    "value": "REFRIGERANT GAS R 407C"
+  },
+  {
+    "key": "3341",
+    "value": "THIOUREA DIOXIDE"
+  },
+  {
+    "key": "3342",
+    "value": "XANTHATES"
+  },
+  {
+    "key": "3343",
+    "value": "NITROGLYCERIN MIXTURE, DESENSITIZED, LIQUID, FLAMMABLE, N.O.S. with not more than 30% nitroglycerin, by mass"
+  },
+  {
+    "key": "3344",
+    "value": "PENTAERYTHRITE TETRANITRATE (PENTAERYTHRITOL TETRANITRATE; PETN) MIXTURE, DESENSITIZED, SOLID, N.O.S. with more than 10% but not more than 2"
+  },
+  {
+    "key": "3345",
+    "value": "PHENOXYACETIC ACID DERIVATIVE PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "3346",
+    "value": "PHENOXYACETIC ACID DERIVATIVE PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "3347",
+    "value": "PHENOXYACETIC ACID DERIVATIVE PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3348",
+    "value": "PHENOXYACETIC ACID DERIVATIVE PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3349",
+    "value": "PYRETHROID PESTICIDE, SOLID, TOXIC"
+  },
+  {
+    "key": "3350",
+    "value": "PYRETHROID PESTICIDE, LIQUID, FLAMMABLE, TOXIC, flash point less than 23 °C"
+  },
+  {
+    "key": "3351",
+    "value": "PYRETHROID PESTICIDE, LIQUID, TOXIC, FLAMMABLE, flash point not less than 23 °C"
+  },
+  {
+    "key": "3352",
+    "value": "PYRETHROID PESTICIDE, LIQUID, TOXIC"
+  },
+  {
+    "key": "3354",
+    "value": "INSECTICIDE GAS, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3355",
+    "value": "INSECTICIDE GAS, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3356",
+    "value": "OXYGEN GENERATOR, CHEMICAL"
+  },
+  {
+    "key": "3357",
+    "value": "NITROGLYCERIN MIXTURE, DESENSITIZED, LIQUID, N.O.S. with not more than 30% nitroglycerin, by mass"
+  },
+  {
+    "key": "3358",
+    "value": "REFRIGERATING MACHINES containing flammable, non-toxic, liquefied gas"
+  },
+  {
+    "key": "3359",
+    "value": "FUMIGATED UNIT"
+  },
+  {
+    "key": "3360",
+    "value": "FIBRES, VEGETABLE, DRY"
+  },
+  {
+    "key": "3361",
+    "value": "CHLOROSILANES, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3362",
+    "value": "CHLOROSILANES, TOXIC, CORROSIVE, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3363",
+    "value": "DANGEROUS GOODS IN MACHINERY or DANGEROUS GOODS IN APPARATUS"
+  },
+  {
+    "key": "3364",
+    "value": "TRINITROPHENOL (PICRIC ACID), WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3365",
+    "value": "TRINITROCHLOROBENZENE (PICRYL CHLORIDE), WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3366",
+    "value": "TRINITROTOLUENE (TNT), WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3367",
+    "value": "TRINITROBENZENE, WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3368",
+    "value": "TRINITROBENZOIC ACID, WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3369",
+    "value": "SODIUM DINITRO-o-CRESOLATE, WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3370",
+    "value": "UREA NITRATE, WETTED, with not less than 10% water by mass"
+  },
+  {
+    "key": "3371",
+    "value": "2-METHYLBUTANAL"
+  },
+  {
+    "key": "3373",
+    "value": "BIOLOGICAL SUBSTANCE, CATEGORY B"
+  },
+  {
+    "key": "3374",
+    "value": "ACETYLENE, SOLVENT FREE"
+  },
+  {
+    "key": "3375",
+    "value": "AMMONIUM NITRATE EMULSION or SUSPENSION or GEL, intermediate for blasting explosives"
+  },
+  {
+    "key": "3376",
+    "value": "4-NITROPHENYLHYDRAZINE, with not less than 30% water, by mass"
+  },
+  {
+    "key": "3377",
+    "value": "SODIUM PERBORATE MONOHYDRATE"
+  },
+  {
+    "key": "3378",
+    "value": "SODIUM CARBONATE PEROXYHYDRATE"
+  },
+  {
+    "key": "3379",
+    "value": "DESENSITIZED EXPLOSIVE, LIQUID, N.O.S."
+  },
+  {
+    "key": "3380",
+    "value": "DESENSITIZED EXPLOSIVE, SOLID, N.O.S."
+  },
+  {
+    "key": "3381",
+    "value": "TOXIC BY INHALATION LIQUID, N.O.S. with an inhalation toxicity lower than or equal to 200 ml/m3 and saturated vapour concentration greater"
+  },
+  {
+    "key": "3382",
+    "value": "TOXIC BY INHALATION LIQUID, N.O.S. with an inhalation toxicity lower than or equal to 1000 ml/m3 and saturated vapour concentration greater"
+  },
+  {
+    "key": "3383",
+    "value": "TOXIC BY INHALATION LIQUID, FLAMMABLE, N.O.S. with an inhalation toxicity lower than or equal to 200 ml/m3 and saturated vapour concentrati"
+  },
+  {
+    "key": "3384",
+    "value": "TOXIC BY INHALATION LIQUID, FLAMMABLE, N.O.S. with an inhalation toxicity lower than or equal to 1000 ml/m3 and saturated vapour concentrat"
+  },
+  {
+    "key": "3385",
+    "value": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, N.O.S. with an inhalation toxicity lower than or equal to 200 ml/m3 and saturated vapour concent"
+  },
+  {
+    "key": "3386",
+    "value": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, N.O.S. with an inhalation toxicity lower than or equal to 1000 ml/m3 and saturated vapour concen"
+  },
+  {
+    "key": "3387",
+    "value": "TOXIC BY INHALATION LIQUID, OXIDIZING, N.O.S. with an inhalation toxicity lower than or equal to 200 ml/m3 and saturated vapour concentratio"
+  },
+  {
+    "key": "3388",
+    "value": "TOXIC BY INHALATION LIQUID, OXIDIZING, N.O.S. with an inhalation toxicity lower than or equal to 1000 ml/m3 and saturated vapour concentrati"
+  },
+  {
+    "key": "3389",
+    "value": "TOXIC BY INHALATION LIQUID, CORROSIVE, N.O.S. with an inhalation toxicity lower than or equal to 200 ml/m3 and saturated vapour concentratio"
+  },
+  {
+    "key": "3390",
+    "value": "TOXIC BY INHALATION LIQUID, CORROSIVE, N.O.S. with an inhalation toxicity lower than or equal to 1000 ml/m3 and saturated vapour concentrati"
+  },
+  {
+    "key": "3391",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, PYROPHORIC"
+  },
+  {
+    "key": "3392",
+    "value": "ORGANOMETALLIC SUBSTANCE, LIQUID, PYROPHORIC"
+  },
+  {
+    "key": "3393",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, PYROPHORIC, WATER-REACTIVE"
+  },
+  {
+    "key": "3394",
+    "value": "ORGANOMETALLIC SUBSTANCE, LIQUID, PYROPHORIC, WATER-REACTIVE"
+  },
+  {
+    "key": "3395",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, WATER-REACTIVE"
+  },
+  {
+    "key": "3396",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, WATER-REACTIVE, FLAMMABLE"
+  },
+  {
+    "key": "3397",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, WATER-REACTIVE, SELF-HEATING"
+  },
+  {
+    "key": "3398",
+    "value": "ORGANOMETALLIC SUBSTANCE, LIQUID, WATER-REACTIVE"
+  },
+  {
+    "key": "3399",
+    "value": "ORGANOMETALLIC SUBSTANCE, LIQUID, WATER-REACTIVE, FLAMMABLE"
+  },
+  {
+    "key": "3400",
+    "value": "ORGANOMETALLIC SUBSTANCE, SOLID, SELF-HEATING"
+  },
+  {
+    "key": "3401",
+    "value": "ALKALI METAL AMALGAM, SOLID"
+  },
+  {
+    "key": "3402",
+    "value": "ALKALINE EARTH METAL AMALGAM, SOLID"
+  },
+  {
+    "key": "3403",
+    "value": "POTASSIUM METAL ALLOYS, SOLID"
+  },
+  {
+    "key": "3404",
+    "value": "POTASSIUM SODIUM ALLOYS, SOLID"
+  },
+  {
+    "key": "3405",
+    "value": "BARIUM CHLORATE SOLUTION"
+  },
+  {
+    "key": "3406",
+    "value": "BARIUM PERCHLORATE SOLUTION"
+  },
+  {
+    "key": "3407",
+    "value": "CHLORATE AND MAGNESIUM CHLORIDE MIXTURE SOLUTION"
+  },
+  {
+    "key": "3408",
+    "value": "LEAD PERCHLORATE SOLUTION"
+  },
+  {
+    "key": "3409",
+    "value": "CHLORONITROBENZENES, LIQUID"
+  },
+  {
+    "key": "3410",
+    "value": "4-CHLORO-o-TOLUIDINE HYDROCHLORIDE SOLUTION"
+  },
+  {
+    "key": "3411",
+    "value": "beta-NAPHTHYLAMINE SOLUTION"
+  },
+  {
+    "key": "3412",
+    "value": "FORMIC ACID with not less than 10% but not more than 85% acid by mass"
+  },
+  {
+    "key": "3413",
+    "value": "POTASSIUM CYANIDE SOLUTION"
+  },
+  {
+    "key": "3414",
+    "value": "SODIUM CYANIDE SOLUTION"
+  },
+  {
+    "key": "3415",
+    "value": "SODIUM FLUORIDE SOLUTION"
+  },
+  {
+    "key": "3416",
+    "value": "CHLOROACETOPHENONE, LIQUID"
+  },
+  {
+    "key": "3417",
+    "value": "XYLYL BROMIDE, SOLID"
+  },
+  {
+    "key": "3418",
+    "value": "2,4-TOLUYLENEDIAMINE SOLUTION"
+  },
+  {
+    "key": "3419",
+    "value": "BORON TRIFLUORIDE ACETIC ACID COMPLEX, SOLID"
+  },
+  {
+    "key": "3420",
+    "value": "BORON TRIFLUORIDE PROPIONIC ACID COMPLEX, SOLID"
+  },
+  {
+    "key": "3421",
+    "value": "POTASSIUM HYDROGEN DIFLUORIDE SOLUTION"
+  },
+  {
+    "key": "3422",
+    "value": "POTASSIUM FLUORIDE SOLUTION"
+  },
+  {
+    "key": "3423",
+    "value": "TETRAMETHYLAMMONIUM HYDROXIDE, SOLID"
+  },
+  {
+    "key": "3424",
+    "value": "AMMONIUM DINITRO-o-CRESOLATE, SOLUTION"
+  },
+  {
+    "key": "3425",
+    "value": "BROMOACETIC ACID, SOLID"
+  },
+  {
+    "key": "3426",
+    "value": "ACRYLAMIDE SOLUTION"
+  },
+  {
+    "key": "3427",
+    "value": "CHLOROBENZYL CHLORIDES, SOLID"
+  },
+  {
+    "key": "3428",
+    "value": "3-CHLORO-4-METHYLPHENYL ISOCYANATE, SOLID"
+  },
+  {
+    "key": "3429",
+    "value": "CHLOROTOLUIDINES, LIQUID"
+  },
+  {
+    "key": "3430",
+    "value": "XYLENOLS, LIQUID"
+  },
+  {
+    "key": "3431",
+    "value": "NITROBENZOTRIFLUORIDES, SOLID"
+  },
+  {
+    "key": "3432",
+    "value": "POLYCHLORINATED BIPHENYLS, SOLID"
+  },
+  {
+    "key": "3434",
+    "value": "NITROCRESOLS, LIQUID"
+  },
+  {
+    "key": "3436",
+    "value": "HEXAFLUOROACETONE HYDRATE, SOLID"
+  },
+  {
+    "key": "3437",
+    "value": "CHLOROCRESOLS, SOLID"
+  },
+  {
+    "key": "3438",
+    "value": "alpha-METHYLBENZYL ALCOHOL, SOLID"
+  },
+  {
+    "key": "3439",
+    "value": "NITRILES, TOXIC, SOLID, N.O.S."
+  },
+  {
+    "key": "3440",
+    "value": "SELENIUM COMPOUND , LIQUID, N.O.S."
+  },
+  {
+    "key": "3441",
+    "value": "CHLORODINITROBENZENES, SOLID"
+  },
+  {
+    "key": "3442",
+    "value": "DICHLOROANILINES, SOLID"
+  },
+  {
+    "key": "3443",
+    "value": "DINITROBENZENES, SOLID"
+  },
+  {
+    "key": "3444",
+    "value": "NICOTINE HYDROCHLORIDE, SOLID"
+  },
+  {
+    "key": "3445",
+    "value": "NICOTINE SULPHATE, SOLID"
+  },
+  {
+    "key": "3446",
+    "value": "NITROTOLUENES, SOLID"
+  },
+  {
+    "key": "3447",
+    "value": "NITROXYLENES, SOLID"
+  },
+  {
+    "key": "3448",
+    "value": "TEAR GAS SUBSTANCE, SOLID, N.O.S."
+  },
+  {
+    "key": "3449",
+    "value": "BROMOBENZYL CYANIDES, SOLID"
+  },
+  {
+    "key": "3450",
+    "value": "DIPHENYLCHLOROARSINE, SOLID"
+  },
+  {
+    "key": "3451",
+    "value": "TOLUIDINES, SOLID"
+  },
+  {
+    "key": "3452",
+    "value": "XYLIDINES, SOLID"
+  },
+  {
+    "key": "3453",
+    "value": "PHOSPHORIC ACID, SOLID"
+  },
+  {
+    "key": "3454",
+    "value": "DINITROTOLUENES, SOLID"
+  },
+  {
+    "key": "3455",
+    "value": "CRESOLS, SOLID"
+  },
+  {
+    "key": "3456",
+    "value": "NITROSYLSULPHURIC ACID, SOLID"
+  },
+  {
+    "key": "3457",
+    "value": "CHLORONITROTOLUENES, SOLID"
+  },
+  {
+    "key": "3458",
+    "value": "NITROANISOLES, SOLID"
+  },
+  {
+    "key": "3459",
+    "value": "NITROBROMOBENZENES, SOLID"
+  },
+  {
+    "key": "3460",
+    "value": "N-ETHYLBENZYLTOLUIDINES, SOLID"
+  },
+  {
+    "key": "3462",
+    "value": "TOXINS, EXTRACTED FROM LIVING SOURCES, SOLID, N.O.S."
+  },
+  {
+    "key": "3463",
+    "value": "PROPIONIC ACID with not less than 90% acid by mass"
+  },
+  {
+    "key": "3464",
+    "value": "ORGANOPHOSPHORUS COMPOUND, TOXIC, SOLID, N.O.S."
+  },
+  {
+    "key": "3465",
+    "value": "ORGANOARSENIC COMPOUND, SOLID, N.O.S."
+  },
+  {
+    "key": "3466",
+    "value": "METAL CARBONYLS, SOLID, N.O.S."
+  },
+  {
+    "key": "3467",
+    "value": "ORGANOMETALLIC COMPOUND, TOXIC, SOLID, N.O.S."
+  },
+  {
+    "key": "3468",
+    "value": "HYDROGEN IN A METAL HYDRIDE STORAGE SYSTEM or HYDROGEN IN A METAL HYDRIDESTORAGE SYSTEM CONTAINED IN EQUIPMENT or HYDROGEN IN AMETAL HYDRI"
+  },
+  {
+    "key": "3469",
+    "value": "PAINT, FLAMMABLE, CORROSIVE (including paint, lacquer, enamel, stain, shellac, varnish, polish, liquid filler and liquid lacquer base) or PA"
+  },
+  {
+    "key": "3470",
+    "value": "PAINT, CORROSIVE, FLAMMABLE (including paint, lacquer, enamel, stain, shellac, varnish, polish, liquid filler and liquid lacquer base) or PA"
+  },
+  {
+    "key": "3471",
+    "value": "HYDROGENDIFLUORIDES SOLUTION, N.O.S."
+  },
+  {
+    "key": "3472",
+    "value": "CROTONIC ACID, LIQUID"
+  },
+  {
+    "key": "3473",
+    "value": "FUEL CELLCARTRIDGES or FUEL CELL CARTRIDGES CONTAINED IN EQUIPMENT orFUEL CELL CARTRIDGES PACKED WITH EQUIPMENT, containing flammable liqu"
+  },
+  {
+    "key": "3474",
+    "value": "1-HYDROXYBENZOTRIAZOLE, ANHYDROUS, WETTED with not less than 20% water, by mass"
+  },
+  {
+    "key": "3475",
+    "value": "ETHANOL AND GASOLINE MIXTURE or ETHANOL AND MOTOR SPIRIT MIXTURE or ETHANOL AND PETROL MIXTURE, with more than 10% ethanol"
+  },
+  {
+    "key": "3476",
+    "value": "FUEL CELL CARTRIDGES or FUEL CELL CARTRIDGES CONTAINED IN EQUIPMENT or FUEL CELL CARTRIDGES PACKED WITH EQUIPMENT, containing water-reactive"
+  },
+  {
+    "key": "3477",
+    "value": "FUEL CELL CARTRIDGES or FUEL CELL CARTRIDGES CONTAINED IN EQUIPMENT or FUEL CELL CARTRIDGES PACKED WITH EQUIPMENT, containing corrosive subs"
+  },
+  {
+    "key": "3478",
+    "value": "FUEL CELL CARTRIDGES or FUEL CELL CARTRIDGES CONTAINED IN EQUIPMENT or FUEL CELL CARTRIDGES PACKED WITH EQUIPMENT, containing liquefied flam"
+  },
+  {
+    "key": "3479",
+    "value": "FUEL CELL CARTRIDGES or FUEL CELL CARTRIDGES CONTAINED IN EQUIPMENT or FUEL CELL CARTRIDGES PACKED WITH EQUIPMENT, containing hydrogen in me"
+  },
+  {
+    "key": "3480",
+    "value": "LITHIUM ION BATTERIES (including lithium ion polymer batteries)"
+  },
+  {
+    "key": "3481",
+    "value": "LITHIUM ION BATTERIES CONTAINED IN EQUIPMENT or LITHIUM ION BATTERIES PACKED WITH EQUIPMENT (including lithium ion polymer batteries)"
+  },
+  {
+    "key": "3482",
+    "value": "ALKALI METAL DISPERSION, FLAMMABLE or ALKALINE EARTH METAL DISPERSION, FLAMMABLE"
+  },
+  {
+    "key": "3483",
+    "value": "MOTOR FUEL ANTI-KNOCK MIXTURE, FLAMMABLE"
+  },
+  {
+    "key": "3484",
+    "value": "HYDRAZINE AQUEOUS SOLUTION, FLAMABLE with more than 37% hydrazine, by mass"
+  },
+  {
+    "key": "3485",
+    "value": "CALCIUM HYPOCHLORITE, DRY, CORROSIVE or CALCIUM HYPOCHLORITE MIXTURE, DRY, CORROSIVE with > 39% available chlorine (8.8% available oxygen)"
+  },
+  {
+    "key": "3486",
+    "value": "CALCIUM HYPOCHLORITE, DRY, CORROSIVE with more than 10% but not more than 39% available chlorine"
+  },
+  {
+    "key": "3487",
+    "value": "CALCIUM HYPOCHLORITE, HYDRATED, CORROSIVE or CALCIUM HYPOCHLORITE, HYDRATED MIXTURE, CORROSIVE with < 5.5% but not more than 16% water"
+  },
+  {
+    "key": "3488",
+    "value": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 200 ml/m3 &amp; saturated vapour concentration >= 500 LC50"
+  },
+  {
+    "key": "3489",
+    "value": "TOXIC BY INHALATION LIQUID, FLAMMABLE, CORROSIVE, NOS with an inhalation toxicity <= 1000 ml/m3 &amp; saturated vapour concentration >= 10 LC50"
+  },
+  {
+    "key": "3490",
+    "value": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=200ml/m3 &amp; saturated vapour concentration >=500 LC50"
+  },
+  {
+    "key": "3491",
+    "value": "TOXIC BY INHALATION LIQUID, WATER-REACTIVE, FLAMMABLE, NOS with inhalation toxicity <=1000ml/m3 &amp; saturated vapour concentration >=10 LC50"
+  },
+  {
+    "key": "3494",
+    "value": "PETROLEUM SOUR CRUDE OIL, FLAMMABLE, TOXIC"
+  },
+  {
+    "key": "3495",
+    "value": "IODINE"
+  },
+  {
+    "key": "3496",
+    "value": "Batteries, nickel-metal hydride"
+  },
+  {
+    "key": "3497",
+    "value": "KRILL MEAL"
+  },
+  {
+    "key": "3498",
+    "value": "IODINE MONOCHLORIDE, LIQUID"
+  },
+  {
+    "key": "3499",
+    "value": "CAPACITOR, ELECTRIC DOUBLE LAYER (with an energy storage capacity greater than 0.3Wh)"
+  },
+  {
+    "key": "3500",
+    "value": "CHEMICAL UNDER PRESSURE, N.O.S."
+  },
+  {
+    "key": "3501",
+    "value": "CHEMICAL UNDER PRESSURE, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3502",
+    "value": "CHEMICAL UNDER PRESSURE, TOXIC, N.O.S."
+  },
+  {
+    "key": "3503",
+    "value": "CHEMICAL UNDER PRESSURE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3504",
+    "value": "CHEMICAL UNDER PRESSURE, FLAMMABLE, TOXIC, N.O.S."
+  },
+  {
+    "key": "3505",
+    "value": "CHEMICAL UNDER PRESSURE, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3506",
+    "value": "MERCURY CONTAINED IN MANUFACTURED ARTICLES"
+  },
+  {
+    "key": "3507",
+    "value": "URANIUM HEXAFLUORIDE, RADIOACTIVE MATERIAL, EXCEPTED PACKAGE, less than 0.1 kg per package, non-fissile or fissile-excepted"
+  },
+  {
+    "key": "3508",
+    "value": "CAPACITOR, ASYMMETRIC (with an energy storage capacity greater than 0.3Wh)"
+  },
+  {
+    "key": "3509",
+    "value": "PACKAGING DISCARDED, EMPTY, UNCLEANED"
+  },
+  {
+    "key": "3510",
+    "value": "ADSORBED GAS, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3511",
+    "value": "ADSORBED GAS, N.O.S."
+  },
+  {
+    "key": "3512",
+    "value": "ADSORBED GAS, TOXIC, N.O.S."
+  },
+  {
+    "key": "3513",
+    "value": "ADSORBED GAS, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3514",
+    "value": "ADSORBED GAS, TOXIC, FLAMMABLE, N.O.S."
+  },
+  {
+    "key": "3515",
+    "value": "ADSORBED GAS, TOXIC, OXIDIZING, N.O.S."
+  },
+  {
+    "key": "3516",
+    "value": "ADSORBED GAS, TOXIC, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3517",
+    "value": "ADSORBED GAS, TOXIC, FLAMMABLE, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3518",
+    "value": "ADSORBED GAS, TOXIC, OXIDIZING, CORROSIVE, N.O.S."
+  },
+  {
+    "key": "3519",
+    "value": "BORON TRIFLUORIDE, ADSORBED"
+  },
+  {
+    "key": "3520",
+    "value": "CHLORINE, ADSORBED"
+  },
+  {
+    "key": "3521",
+    "value": "SILICON TETRAFLUORIDE, ADSORBED"
+  },
+  {
+    "key": "3522",
+    "value": "ARSINE, ADSORBED"
+  },
+  {
+    "key": "3523",
+    "value": "GERMANE, ADSORBED"
+  },
+  {
+    "key": "3524",
+    "value": "PHOSPHORUS PENTAFLUORIDE, ADSORBED"
+  },
+  {
+    "key": "3525",
+    "value": "PHOSPHINE, ADSORBED"
+  },
+  {
+    "key": "3526",
+    "value": "HYDROGEN SELENIDE, ADSORBED"
+  },
+  {
+    "key": "3527",
+    "value": "POLYESTER RESIN KIT, solid base material"
+  },
+  {
+    "key": "3528",
+    "value": "ENGINE, INTERNAL COMBUSTION, FLAMMABLE LIQUID POWERED or ENGINE, FUEL CELL, FLAMMABLE LIQUID POWERED or MACHINERY, INTERNAL COMBUSTION, FLAMMABLE LIQUID POWERED or MACHINERY, FUEL CELL, FLAMMABLE LIQUID POWERED"
+  },
+  {
+    "key": "3529",
+    "value": "ENGINE, INTERNAL COMBUSTION, FLAMMABLE GAS POWERED or ENGINE, FUEL CELL, FLAMMABLE GAS POWERED or MACHINERY, INTERNAL COMBUSTION, FLAMMABLE GAS POWERED or MACHINERY, FUEL CELL, FLAMMABLE GAS POWERED"
+  },
+  {
+    "key": "3530",
+    "value": "ENGINE, INTERNAL COMBUSTION or MACHINERY, INTERNAL COMBUSTION"
+  },
+  {
+    "key": "3531",
+    "value": "POLYMERIZING SUBSTANCE, SOLID, STABILIZED, N.O.S."
+  },
+  {
+    "key": "3532",
+    "value": "POLYMERIZING SUBSTANCE, LIQUID, STABILIZED, N.O.S."
+  },
+  {
+    "key": "3533",
+    "value": "POLYMERIZING SUBSTANCE, SOLID, TEMPERATURE CONTROLLED, N.O.S."
+  },
+  {
+    "key": "3534",
+    "value": "POLYMERIZING SUBSTANCE, LIQUID, TEMPERATURE CONTROLLED, N.O.S."
+  },
+  {
+    "key": "3535",
+    "value": "TOXIC SOLID, FLAMMABLE, INORGANIC, N.O.S."
+  },
+  {
+    "key": "3536",
+    "value": "LITHIUM BATTERIES INSTALLED IN CARGO TRANSPORT UNIT lithium ion batteries or lithium metal batteries"
+  },
+  {
+    "key": "3537",
+    "value": "ARTICLES CONTAINING FLAMMABLE GAS, N.O.S."
+  },
+  {
+    "key": "3538",
+    "value": "ARTICLES CONTAINING NON-FLAMMABLE, NON-TOXIC GAS, N.O.S."
+  },
+  {
+    "key": "3539",
+    "value": "ARTICLES CONTAINING TOXIC GAS, N.O.S."
+  },
+  {
+    "key": "3540",
+    "value": "ARTICLES CONTAINING FLAMMABLE LIQUID, N.O.S"
+  },
+  {
+    "key": "3541",
+    "value": "ARTICLES CONTAINING FLAMMABLE SOLID, N.O.S."
+  },
+  {
+    "key": "3542",
+    "value": "ARTICLES CONTAINING A SUBSTANCE LIABLE TO SPONTANEOUS COMBUSTION, N.O.S."
+  },
+  {
+    "key": "3543",
+    "value": "ARTICLES CONTAINING A SUBSTANCE WHICH IN CONTACT WITH WATER EMITS FLAMMABLE GASES, N.O.S."
+  },
+  {
+    "key": "3544",
+    "value": "ARTICLES CONTAINING OXIDIZING SUBSTANCE, N.O.S."
+  },
+  {
+    "key": "3545",
+    "value": "ARTICLES CONTAINING ORGANIC PEROXIDE, N.O.S."
+  },
+  {
+    "key": "3546",
+    "value": "ARTICLES CONTAINING TOXIC SUBSTANCE, N.O.S."
+  },
+  {
+    "key": "3547",
+    "value": "ARTICLES CONTAINING CORROSIVE SUBSTANCE, N.O.S."
+  },
+  {
+    "key": "3548",
+    "value": "ARTICLES CONTAINING MISCELLANEOUS DANGEROUS GOODS, N.O.S."
+  },
+  {
+    "key": "3549",
+    "value": "MEDICAL WASTE, CATEGORY A, AFFECTING HUMANS, solid or MEDICAL WASTE, CATEGORY A, AFFECTING ANIMALS only, solid"
+  }
+]
