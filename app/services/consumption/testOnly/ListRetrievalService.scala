@@ -37,9 +37,10 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
                 filterParams.parameters.forall {
                   case (filterParamKey, filterParamValues) =>
                     val nodes = (phase, filterParamKey.split("\\.")) match {
-                      case (Phase5, value)         => value.tail // removes "data" from path nodes
-                      case (Phase6, Array("keys")) => Array("key")
-                      case (Phase6, value)         => "properties" +: value
+                      case (Phase5, value)                                 => value.tail // removes "data" from path nodes
+                      case (Phase6, value) if codeList == "CustomsOffices" => value.tail // removes "data" from path nodes
+                      case (Phase6, Array("keys"))                         => Array("key")
+                      case (Phase6, value)                                 => "properties" +: value
                     }
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)
