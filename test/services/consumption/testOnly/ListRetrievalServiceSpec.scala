@@ -87,7 +87,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               forAll(codeListGen) {
                 codeList =>
                   val result = service.get(codeList, Phase5, None)
-                  result.isSuccess mustBe true
+                  result.isSuccess mustEqual true
               }
           }
         }
@@ -99,7 +99,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             application =>
               val service = application.injector.instanceOf[ListRetrievalService]
               val result  = service.get("foo", Phase5, None)
-              result.isSuccess mustBe false
+              result.isSuccess mustEqual false
           }
         }
       }
@@ -170,7 +170,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
               val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
-              result.get mustBe Json.parse("""
+              result.get mustEqual Json.parse("""
                   |[
                   |  {
                   |    "name": "CO2",
@@ -218,7 +218,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
               val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
-              result.get mustBe Json.parse("""
+              result.get mustEqual Json.parse("""
                   |[
                   |  {
                   |    "name": "CO2",
@@ -261,7 +261,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
               val result       = service.get("CountryCodesFullList", Phase5, Some(filterParams))
-              result.get mustBe Json.parse("""
+              result.get mustEqual Json.parse("""
                   |[
                   |  {
                   |    "code": "AD",
@@ -280,7 +280,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               app =>
                 val service = app.injector.instanceOf[ListRetrievalService]
                 val result  = service.get("DeclarationTypeSecurity", Phase5, None)
-                result.get mustBe Json.parse("""
+                result.get mustEqual Json.parse("""
                     |[
                     |  {
                     |    "code": "0",
@@ -309,7 +309,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 val service      = app.injector.instanceOf[ListRetrievalService]
                 val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
                 val result       = service.get("DeclarationTypeSecurity", Phase5, Some(filterParams))
-                result.get mustBe Json.parse("""
+                result.get mustEqual Json.parse("""
                     |[
                     |  {
                     |    "code": "3",
@@ -340,7 +340,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               forAll(codeListGen) {
                 codeList =>
                   val result = service.get(codeList, Phase6, None)
-                  result.isSuccess mustBe true
+                  result.isSuccess mustEqual true
               }
           }
         }
@@ -352,7 +352,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             application =>
               val service = application.injector.instanceOf[ListRetrievalService]
               val result  = service.get("foo", Phase6, None)
-              result.isSuccess mustBe false
+              result.isSuccess mustEqual false
           }
         }
       }
@@ -389,7 +389,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
           val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
-          result.get mustBe Json.parse("""
+          result.get mustEqual Json.parse("""
               |[
               |  {
               |    "key": "00200",
@@ -434,7 +434,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
           val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
-          result.get mustBe Json.parse("""
+          result.get mustEqual Json.parse("""
               |[
               |  {
               |    "key": "00200",
@@ -452,39 +452,96 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
       "when multiple filters" in {
         val data = Json
           .parse("""
+            |[
+            |  {
+            |    "key": "00200",
+            |    "value": "Several occurrences of documents and parties",
+            |    "properties": {
+            |      "state": "valid"
+            |    }
+            |  },
+            |  {
+            |    "key": "00200",
+            |    "value": "Several occurrences of documents and parties",
+            |    "properties": {
+            |      "state": "invalid"
+            |    }
+            |  }
+            |]
+            |""".stripMargin)
+          .as[JsArray]
+
+        val mockResourceService = mock[ResourceService]
+        when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+        val app = baseApplicationBuilder
+          .apply {
+            new GuiceApplicationBuilder()
+              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          }
+          .build()
+
+        running(app) {
+          val service      = app.injector.instanceOf[ListRetrievalService]
+          val filterParams = FilterParams(Seq("keys" -> Seq("00200"), "state" -> Seq("valid")))
+          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          result.get mustEqual Json.parse("""
               |[
               |  {
-              |    "key": "AD000001",
-              |    "value": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties",
               |    "properties": {
-              |      "countryId": "AD",
-              |      "roles": [
-              |        {
-              |          "role": "TRA"
-              |        },
-              |        {
-              |          "role": "AUT"
-              |        }
-              |      ]
+              |      "state": "valid"
               |    }
+              |  }
+              |]
+              |""".stripMargin)
+        }
+      }
+
+      "when customs offices" in {
+        val data = Json
+          .parse("""
+              |[
+              |  {
+              |    "languageCode": "EN",
+              |    "name": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
+              |    "phoneNumber": "+ (376) 84 1090",
+              |    "id": "AD000001",
+              |    "countryId": "AD",
+              |    "roles": [
+              |      {
+              |        "role": "AUT"
+              |      },
+              |      {
+              |        "role": "DEP"
+              |      },
+              |      {
+              |        "role": "DES"
+              |      },
+              |      {
+              |        "role": "TRA"
+              |      }
+              |    ]
               |  },
               |  {
-              |    "key": "AD000002",
-              |    "value": "DCNJ PORTA",
-              |    "properties": {
-              |      "countryId": "AD",
-              |      "roles": [
-              |        {
-              |          "role": "DEP"
-              |        },
-              |        {
-              |          "role": "DES"
-              |        },
-              |        {
-              |          "role": "TRA"
-              |        }
-              |      ]
-              |    }
+              |     "languageCode": "EN",
+              |     "name": "DCNJ PORTA",
+              |     "phoneNumber": "+ (376) 755125",
+              |     "eMailAddress": "duana.pasdelacasa@andorra.ad",
+              |     "id": "AD000002",
+              |     "countryId": "AD",
+              |     "roles": [
+              |       {
+              |         "role": "DEP"
+              |       },
+              |       {
+              |         "role": "DES"
+              |       },
+              |       {
+              |         "role": "TRA"
+              |       }
+              |     ]
               |  }
               |]
               |""".stripMargin)
@@ -502,24 +559,30 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
         running(app) {
           val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("countryId" -> Seq("AD"), "roles.role" -> Seq("AUT")))
+          val filterParams = FilterParams(Seq("data.id" -> Seq("AD000001")))
           val result       = service.get("CustomsOffices", Phase6, Some(filterParams))
-          result.get mustBe Json.parse("""
+          result.get mustEqual Json.parse("""
               |[
               |  {
-              |    "key": "AD000001",
-              |    "value": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
-              |    "properties": {
-              |      "countryId": "AD",
-              |      "roles": [
-              |        {
-              |          "role": "TRA"
-              |        },
-              |        {
-              |          "role": "AUT"
-              |        }
-              |      ]
-              |    }
+              |    "languageCode": "EN",
+              |    "name": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
+              |    "phoneNumber": "+ (376) 84 1090",
+              |    "id": "AD000001",
+              |    "countryId": "AD",
+              |    "roles": [
+              |      {
+              |        "role": "AUT"
+              |      },
+              |      {
+              |        "role": "DEP"
+              |      },
+              |      {
+              |        "role": "DES"
+              |      },
+              |      {
+              |        "role": "TRA"
+              |      }
+              |    ]
               |  }
               |]
               |""".stripMargin)
