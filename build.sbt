@@ -16,6 +16,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     PlayKeys.playDefaultPort := 9492,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+    dependencyOverrides ++= AppDependencies.overrides,
     ThisBuild / useSuperShell := false,
     scalacOptions += "-Wconf:src=routes/.*:s"
   )
@@ -35,5 +36,6 @@ lazy val it = project
   .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
   .settings(
     libraryDependencies ++= AppDependencies.test,
+    dependencyOverrides ++= AppDependencies.overrides,
     DefaultBuildSettings.itSettings()
   )
