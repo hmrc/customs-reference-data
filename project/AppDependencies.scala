@@ -2,9 +2,9 @@ import sbt.*
 
 object AppDependencies {
 
-  private val mongoVersion = "2.6.0"
+  private val mongoVersion     = "2.6.0"
   private val bootstrapVersion = "9.14.0"
-  private val pekkoVersion = "1.1.4"
+  private val pekkoVersion     = "1.0.3"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-backend-play-30"       % bootstrapVersion,
@@ -28,10 +28,4 @@ object AppDependencies {
     "org.apache.pekko"       %% "pekko-testkit"            % pekkoVersion,
     "org.apache.pekko"       %% "pekko-stream-testkit"     % pekkoVersion
   ).map(_ % "test")
-
-  val overrides: Seq[ModuleID] = Seq(
-    "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion,
-    "org.apache.pekko" %% "pekko-serialization-jackson" % pekkoVersion,
-    "org.apache.pekko" %% "pekko-slf4j" % pekkoVersion
-  )
 }
