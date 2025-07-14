@@ -17,8 +17,9 @@
 package services.consumption.testOnly
 
 import base.SpecBase
-import models.FilterParams
+import models.CodeList.RefDataCodeList
 import models.Phase.*
+import models.{CodeList, FilterParams, ListName}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Gen
@@ -34,7 +35,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
   "when phase 5" - {
 
-    val codeListGen = Gen.oneOf(
+    val listNameGen = Gen.oneOf(
       "AdditionalInformation",
       "AdditionalReference",
       "AdditionalSupplyChainActorRoleCode",
@@ -84,9 +85,10 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
           running(baseApplicationBuilder) {
             application =>
               val service = application.injector.instanceOf[ListRetrievalService]
-              forAll(codeListGen) {
-                codeList =>
-                  val result = service.get(codeList, Phase5, None)
+              forAll(listNameGen) {
+                listName =>
+                  val codeList = CodeList(listName)
+                  val result   = service.get(codeList, Phase5, None)
                   result.isSuccess mustEqual true
               }
           }
@@ -97,8 +99,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         "when code list not found" in {
           running(baseApplicationBuilder) {
             application =>
-              val service = application.injector.instanceOf[ListRetrievalService]
-              val result  = service.get("foo", Phase5, None)
+              val service  = application.injector.instanceOf[ListRetrievalService]
+              val codeList = RefDataCodeList(ListName("foo"), "foo")
+              val result   = service.get(codeList, Phase5, None)
               result.isSuccess mustEqual false
           }
         }
@@ -107,6 +110,8 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
     "get (with filter)" - {
       "when customs offices" - {
+
+        val codeList = CodeList("CustomsOffices")
 
         val customsOffices = Json
           .parse("""
@@ -169,7 +174,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             running(app) {
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
-              val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
+              val result       = service.get(codeList, Phase5, Some(filterParams))
               result.get mustEqual Json.parse("""
                   |[
                   |  {
@@ -217,7 +222,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             running(app) {
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
-              val result       = service.get("CustomsOffices", Phase5, Some(filterParams))
+              val result       = service.get(codeList, Phase5, Some(filterParams))
               result.get mustEqual Json.parse("""
                   |[
                   |  {
@@ -255,12 +260,14 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
       "when countries" - {
 
+        val codeList = CodeList("CountryCodesFullList")
+
         "must return values that match the filter" in {
           running(baseApplicationBuilder) {
             app =>
               val service      = app.injector.instanceOf[ListRetrievalService]
               val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
-              val result       = service.get("CountryCodesFullList", Phase5, Some(filterParams))
+              val result       = service.get(codeList, Phase5, Some(filterParams))
               result.get mustEqual Json.parse("""
                   |[
                   |  {
@@ -274,12 +281,15 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
       }
 
       "when security types" - {
+
+        val codeList = CodeList("DeclarationTypeSecurity")
+
         "must return values (with unescaped XML)" - {
           "when no filtering" in {
             running(baseApplicationBuilder) {
               app =>
                 val service = app.injector.instanceOf[ListRetrievalService]
-                val result  = service.get("DeclarationTypeSecurity", Phase5, None)
+                val result  = service.get(codeList, Phase5, None)
                 result.get mustEqual Json.parse("""
                     |[
                     |  {
@@ -308,7 +318,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               app =>
                 val service      = app.injector.instanceOf[ListRetrievalService]
                 val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
-                val result       = service.get("DeclarationTypeSecurity", Phase5, Some(filterParams))
+                val result       = service.get(codeList, Phase5, Some(filterParams))
                 result.get mustEqual Json.parse("""
                     |[
                     |  {
@@ -326,7 +336,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
   "when phase 6" - {
 
-    val codeListGen = Gen.oneOf(
+    val listNameGen = Gen.oneOf(
       "AdditionalInformation",
       "AdditionalReference"
     )
@@ -337,9 +347,10 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
           running(baseApplicationBuilder) {
             application =>
               val service = application.injector.instanceOf[ListRetrievalService]
-              forAll(codeListGen) {
-                codeList =>
-                  val result = service.get(codeList, Phase6, None)
+              forAll(listNameGen) {
+                listName =>
+                  val codeList = CodeList(listName)
+                  val result   = service.get(codeList, Phase6, None)
                   result.isSuccess mustEqual true
               }
           }
@@ -350,8 +361,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         "when code list not found" in {
           running(baseApplicationBuilder) {
             application =>
-              val service = application.injector.instanceOf[ListRetrievalService]
-              val result  = service.get("foo", Phase6, None)
+              val service  = application.injector.instanceOf[ListRetrievalService]
+              val codeList = RefDataCodeList(ListName("foo"), "foo")
+              val result   = service.get(codeList, Phase6, None)
               result.isSuccess mustEqual false
           }
         }
@@ -359,6 +371,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     }
 
     "get (with filter)" - {
+
+      val codeList = CodeList("AdditionalInformation")
+
       "when one filter with one value" in {
         val data = Json
           .parse("""
@@ -388,7 +403,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         running(app) {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
-          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
           result.get mustEqual Json.parse("""
               |[
               |  {
@@ -433,7 +448,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         running(app) {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
-          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
           result.get mustEqual Json.parse("""
               |[
               |  {
@@ -484,7 +499,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         running(app) {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("keys" -> Seq("00200"), "state" -> Seq("valid")))
-          val result       = service.get("AdditionalInformation", Phase6, Some(filterParams))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
           result.get mustEqual Json.parse("""
               |[
               |  {
@@ -500,6 +515,8 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
       }
 
       "when customs offices" in {
+        val codeList = CodeList("CustomsOffices")
+
         val data = Json
           .parse("""
               |[
@@ -560,7 +577,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         running(app) {
           val service      = app.injector.instanceOf[ListRetrievalService]
           val filterParams = FilterParams(Seq("data.id" -> Seq("AD000001")))
-          val result       = service.get("CustomsOffices", Phase6, Some(filterParams))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
           result.get mustEqual Json.parse("""
               |[
               |  {

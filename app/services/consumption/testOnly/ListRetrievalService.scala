@@ -17,6 +17,7 @@
 package services.consumption.testOnly
 
 import models.*
+import models.CodeList.*
 import models.Phase.*
 import play.api.libs.json.*
 
@@ -25,22 +26,22 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String, phase: Phase, filterParams: Option[FilterParams]): Try[JsArray] =
+  def get(codeList: CodeList, phase: Phase, filterParams: Option[FilterParams]): Try[JsArray] =
     (filterParams match {
       case None =>
-        resourceService.getJson(codeList, phase)
+        resourceService.getJson(codeList.listName, phase)
       case Some(filterParams) =>
-        resourceService.getJson(codeList, phase).map {
+        resourceService.getJson(codeList.listName, phase).map {
           json =>
             val filteredValues = json.value.filter {
               value =>
                 filterParams.parameters.forall {
                   case (filterParamKey, filterParamValues) =>
-                    val nodes = (phase, filterParamKey.split("\\.")) match {
-                      case (Phase5, value)                                 => value.tail // removes "data" from path nodes
-                      case (Phase6, value) if codeList == "CustomsOffices" => value.tail // removes "data" from path nodes
-                      case (Phase6, Array("keys"))                         => Array("key")
-                      case (Phase6, value)                                 => "properties" +: value
+                    val nodes = (phase, filterParamKey.split("\\."), codeList) match {
+                      case (Phase5, value, _)               => value.tail // removes "data" from path nodes
+                      case (Phase6, value, ColDataCodeList) => value.tail // removes "data" from path nodes
+                      case (Phase6, Array("keys"), _)       => Array("key")
+                      case (Phase6, value, _)               => "properties" +: value
                     }
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)

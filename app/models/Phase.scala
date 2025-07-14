@@ -16,7 +16,7 @@
 
 package models
 
-trait Phase {
+sealed trait Phase {
   val directory: String
 }
 

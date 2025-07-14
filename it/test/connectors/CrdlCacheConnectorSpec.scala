@@ -18,7 +18,8 @@ package connectors
 
 import base.{ItSpecBase, WireMockServerHandler}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, okJson, urlEqualTo}
-import models.FilterParams
+import models.CodeList.ColDataCodeList
+import models.{CodeList, FilterParams}
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Sink
 import org.apache.pekko.util.ByteString
@@ -41,106 +42,318 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
   "get" - {
 
     "must return response JSON" - {
-      "when no query parameters" in {
-        val filterParams = FilterParams(Nil)
+      "when a RefDataCodeList" - {
+        "when no query parameters" in {
+          val codeList = CodeList("AdditionalInformation")
 
-        val url = "/crdl-cache/lists/CL239"
+          val filterParams = FilterParams(Nil)
 
-        val json = Json.parse("""
-            |[
-            |  {
-            |    "key": "00200",
-            |    "value": "Several occurrences of documents and parties",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  },
-            |  {
-            |    "key": "00700",
-            |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  },
-            |  {
-            |    "key": "00800",
-            |    "value": "Discharge of inward processing (specific commercial policy measures)",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  }
-            |]
-            |""".stripMargin)
+          val url = "/crdl-cache/lists/CL239"
 
-        server.stubFor(
-          get(urlEqualTo(url))
-            .willReturn(okJson(Json.stringify(json)))
-        )
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  },
+              |  {
+              |    "key": "00800",
+              |    "value": "Discharge of inward processing (specific commercial policy measures)",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
 
-        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
 
-        Json.parse(result.toArray) mustEqual json
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          Json.parse(result.toArray) mustEqual json
+        }
+
+        "when one query parameter" in {
+          val codeList = CodeList("AdditionalInformation")
+
+          val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+
+          val url = "/crdl-cache/lists/CL239?keys=00200"
+
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
+
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
+
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          Json.parse(result.toArray) mustEqual json
+        }
+
+        "when multiple query parameters" in {
+          val codeList = CodeList("AdditionalInformation")
+
+          val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
+
+          val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700"
+
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
+              |    "properties": {
+              |      "state": "valid"
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
+
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
+
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          Json.parse(result.toArray) mustEqual json
+        }
       }
 
-      "when one query parameter" in {
-        val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+      "when a ColDataCodeList" - {
 
-        val url = "/crdl-cache/lists/CL239?keys=00200"
+        val codeList = ColDataCodeList
 
-        val json = Json.parse("""
-            |[
-            |  {
-            |    "key": "00200",
-            |    "value": "Several occurrences of documents and parties",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  }
-            |]
-            |""".stripMargin)
+        "when no query parameters" in {
+          val filterParams = FilterParams(Nil)
 
-        server.stubFor(
-          get(urlEqualTo(url))
-            .willReturn(okJson(Json.stringify(json)))
-        )
+          val url = "/crdl-cache/offices"
 
-        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "languageCode": "EN",
+              |    "customsOfficeLsd": {
+              |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+              |    },
+              |    "phoneNumber": "+ (376) 84 1090",
+              |    "referenceNumber": "AD000001",
+              |    "countryCode": "AD",
+              |    "customsOfficeTimetable": {
+              |      "customsOfficeTimetableLine": [
+              |        {
+              |          "customsOfficeRoleTrafficCompetence": [
+              |            {
+              |              "roleName": "AUT"
+              |            },
+              |            {
+              |              "roleName": "DEP"
+              |            },
+              |            {
+              |              "roleName": "DES"
+              |            },
+              |            {
+              |              "roleName": "TRA"
+              |            }
+              |          ]
+              |        }
+              |      ]
+              |    }
+              |  },
+              |  {
+              |    "languageCode": "EN",
+              |    "customsOfficeLsd": {
+              |      "customsOfficeUsualName": "DCNJ PORTA"
+              |    },
+              |    "phoneNumber": "+ (376) 755125",
+              |    "referenceNumber": "AD000002",
+              |    "countryCode": "AD",
+              |    "customsOfficeTimetable": {
+              |      "customsOfficeTimetableLine": [
+              |        {
+              |          "customsOfficeRoleTrafficCompetence": [
+              |            {
+              |              "roleName": "DEP"
+              |            },
+              |            {
+              |              "roleName": "DES"
+              |            },
+              |            {
+              |              "roleName": "TRA"
+              |            }
+              |          ]
+              |        }
+              |      ]
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
 
-        Json.parse(result.toArray) mustEqual json
-      }
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
 
-      "when multiple query parameters" in {
-        val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
 
-        val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700"
+          Json.parse(result.toArray) mustEqual json
+        }
 
-        val json = Json.parse("""
-            |[
-            |  {
-            |    "key": "00200",
-            |    "value": "Several occurrences of documents and parties",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  },
-            |  {
-            |    "key": "00700",
-            |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
-            |    "properties": {
-            |      "state": "valid"
-            |    }
-            |  }
-            |]
-            |""".stripMargin)
+        "when one query parameter" in {
+          val filterParams = FilterParams(Seq("referenceNumber" -> Seq("AD000001")))
 
-        server.stubFor(
-          get(urlEqualTo(url))
-            .willReturn(okJson(Json.stringify(json)))
-        )
+          val url = "/crdl-cache/offices?referenceNumber=AD000001"
 
-        val result = connector.get("CL239", filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "languageCode": "EN",
+              |    "customsOfficeLsd": {
+              |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+              |    },
+              |    "phoneNumber": "+ (376) 84 1090",
+              |    "referenceNumber": "AD000001",
+              |    "countryCode": "AD",
+              |    "customsOfficeTimetable": {
+              |      "customsOfficeTimetableLine": [
+              |        {
+              |          "customsOfficeRoleTrafficCompetence": [
+              |            {
+              |              "roleName": "AUT"
+              |            },
+              |            {
+              |              "roleName": "DEP"
+              |            },
+              |            {
+              |              "roleName": "DES"
+              |            },
+              |            {
+              |              "roleName": "TRA"
+              |            }
+              |          ]
+              |        }
+              |      ]
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
 
-        Json.parse(result.toArray) mustEqual json
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
+
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          Json.parse(result.toArray) mustEqual json
+        }
+
+        "when multiple query parameters" in {
+          val filterParams = FilterParams(Seq("referenceNumber" -> Seq("AD000001", "AD000002")))
+
+          val url = "/crdl-cache/offices?referenceNumber=AD000001&referenceNumber=AD000002"
+
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "languageCode": "EN",
+              |    "customsOfficeLsd": {
+              |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+              |    },
+              |    "phoneNumber": "+ (376) 84 1090",
+              |    "referenceNumber": "AD000001",
+              |    "countryCode": "AD",
+              |    "customsOfficeTimetable": {
+              |      "customsOfficeTimetableLine": [
+              |        {
+              |          "customsOfficeRoleTrafficCompetence": [
+              |            {
+              |              "roleName": "AUT"
+              |            },
+              |            {
+              |              "roleName": "DEP"
+              |            },
+              |            {
+              |              "roleName": "DES"
+              |            },
+              |            {
+              |              "roleName": "TRA"
+              |            }
+              |          ]
+              |        }
+              |      ]
+              |    }
+              |  },
+              |  {
+              |    "languageCode": "EN",
+              |    "customsOfficeLsd": {
+              |      "customsOfficeUsualName": "DCNJ PORTA"
+              |    },
+              |    "phoneNumber": "+ (376) 755125",
+              |    "referenceNumber": "AD000002",
+              |    "countryCode": "AD",
+              |    "customsOfficeTimetable": {
+              |      "customsOfficeTimetableLine": [
+              |        {
+              |          "customsOfficeRoleTrafficCompetence": [
+              |            {
+              |              "roleName": "DEP"
+              |            },
+              |            {
+              |              "roleName": "DES"
+              |            },
+              |            {
+              |              "roleName": "TRA"
+              |            }
+              |          ]
+              |        }
+              |      ]
+              |    }
+              |  }
+              |]
+              |""".stripMargin)
+
+          server.stubFor(
+            get(urlEqualTo(url))
+              .willReturn(okJson(Json.stringify(json)))
+          )
+
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          Json.parse(result.toArray) mustEqual json
+        }
       }
     }
   }

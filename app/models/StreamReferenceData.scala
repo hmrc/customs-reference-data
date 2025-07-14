@@ -19,21 +19,20 @@ package models
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Flow
 import org.apache.pekko.util.ByteString
-import play.api.libs.json.Json
-import play.api.libs.json.Writes
+import play.api.libs.json.{Json, Writes}
 
-class StreamReferenceData(listName: ListName, metaData: MetaData) {
+case class StreamReferenceData(codeList: CodeList, metaData: MetaData) {
 
   private def jsonFormat(filterParams: Option[FilterParams]): String =
     s"""
        |{
        |   "_links": {
        |     "self": {
-       |       "href": "${controllers.consumption.routes.ListRetrievalController.get(listName, filterParams).url}"
+       |       "href": "${controllers.consumption.routes.ListRetrievalController.get(codeList, filterParams).url}"
        |     }
        |   },
        |   "meta": ${Json.toJsObject(metaData)},
-       |   "id": "${listName.listName}",
+       |   "id": "${codeList.listName}",
        |   "data": [
        |""".stripMargin
 
@@ -48,5 +47,7 @@ class StreamReferenceData(listName: ListName, metaData: MetaData) {
 }
 
 object StreamReferenceData {
-  def apply(listName: ListName, metaData: MetaData): StreamReferenceData = new StreamReferenceData(listName: ListName, metaData: MetaData)
+
+  def apply(codeList: CodeList, metaData: MetaData): StreamReferenceData =
+    new StreamReferenceData(codeList, metaData)
 }
