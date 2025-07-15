@@ -62,9 +62,9 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       href mustNot include("v1.0/")
       href mustNot include("v2.0/")
 
-      (result \ "meta").as[MetaData] mustBe meta
-      (result \ "id").as[String] mustBe name.listName
-      (result \ "data").as[Seq[JsObject]] mustBe Seq.fill(5)(Json.obj("index" -> "value"))
+      (result \ "meta").as[MetaData] mustEqual meta
+      (result \ "id").as[String] mustEqual name.listName
+      (result \ "data").as[Seq[JsObject]] mustEqual Seq.fill(5)(Json.obj("index" -> "value"))
 
     }
   }

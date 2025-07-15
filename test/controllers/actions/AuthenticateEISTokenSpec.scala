@@ -52,7 +52,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
       val request = FakeRequest("POST", "/")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        _ mustBe None
+        _ must not be defined
       }
     }
 
@@ -65,7 +65,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
         val request = FakeRequest("POST", "/", FakeHeaders(Seq("Authentication" -> token)), "")
 
         whenReady[Option[Result], Assertion](sut.filter(request)) {
-          _ mustBe None
+          _ must not be defined
         }
     }
 
@@ -77,7 +77,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Authorization" -> "Bearer ABC")), "")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        _ mustBe None
+        _ must not be defined
       }
     }
 
@@ -93,7 +93,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
       val request = FakeRequest("POST", "/")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        case Some(value) => value.header.status mustBe UNAUTHORIZED
+        case Some(value) => value.header.status mustEqual UNAUTHORIZED
         case None        => fail("Should have returned a result")
       }
     }
@@ -107,7 +107,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
         val request = FakeRequest("POST", "/", FakeHeaders(Seq("Authorization" -> token)), "")
 
         whenReady[Option[Result], Assertion](sut.filter(request)) {
-          case Some(value) => value.header.status mustBe UNAUTHORIZED
+          case Some(value) => value.header.status mustEqual UNAUTHORIZED
           case None        => fail("Should have returned a result")
         }
     }
@@ -121,7 +121,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
         val request = FakeRequest("POST", "/", FakeHeaders(Seq("Authorization" -> s"Bearer $token")), "")
 
         whenReady[Option[Result], Assertion](sut.filter(request)) {
-          case Some(value) => value.header.status mustBe UNAUTHORIZED
+          case Some(value) => value.header.status mustEqual UNAUTHORIZED
           case None        => fail("Should have returned a result")
         }
     }
@@ -134,7 +134,7 @@ class AuthenticateEISTokenSpec extends AnyFreeSpec with Matchers with OptionValu
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Authorization" -> "Bearer ABC")), "")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        _ mustBe None
+        _ must not be defined
       }
     }
 

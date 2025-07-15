@@ -71,7 +71,7 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
 
     listRepo.insertList(basicList(versionId)).futureValue
 
-    versionRepo.getLatest(defaultListName).futureValue.map(_.messageInformation) mustBe Some(defaultMessageInformation)
+    versionRepo.getLatest(defaultListName).futureValue.map(_.messageInformation).value mustEqual defaultMessageInformation
   }
 
   "ListRetrievalController" - {
@@ -79,20 +79,20 @@ class GetListsIntegrationSpec extends ItSpecBase with ConsumptionHelper with Gui
       "should return a list from the current version" in new Setup {
         val myResponse: WSResponse = ws.url(getListUrl()).get().futureValue
 
-        (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustBe versionId.versionId
-        (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustBe defaultData
+        (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustEqual versionId.versionId
+        (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustEqual defaultData
       }
     }
     "When get ListName is called while data ingestion is in progress" - {
       "should return a list from the previous version" in new Setup {
         ws.url(postUrl).post(Json.parse(request)) map {
           r =>
-            r.status mustBe ACCEPTED
+            r.status mustEqual ACCEPTED
 
             val myResponse: WSResponse = ws.url(getListUrl()).get().futureValue
 
-            (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustBe versionId.versionId
-            (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustBe defaultData
+            (Json.parse(myResponse.body) \ "meta" \ "version").as[String] mustEqual versionId.versionId
+            (Json.parse(myResponse.body) \ "data").as[Seq[JsObject]] mustEqual defaultData
         }
       }
     }

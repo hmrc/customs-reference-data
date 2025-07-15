@@ -42,9 +42,9 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
             .post(file(validGzipFile))
             .futureValue
 
-        response.status mustBe ACCEPTED
+        response.status mustEqual ACCEPTED
 
-        countDocuments mustBe 4791
+        countDocuments mustEqual 4791
       }
     }
 
@@ -63,9 +63,9 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
             .post(file(validJsonFile))
             .futureValue
 
-        response.status mustBe ACCEPTED
+        response.status mustEqual ACCEPTED
 
-        countDocuments mustBe 4791
+        countDocuments mustEqual 4791
       }
     }
 
@@ -85,9 +85,9 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
             .post(file(invalidDataFile))
             .futureValue
 
-        response.status mustBe BAD_REQUEST
+        response.status mustEqual BAD_REQUEST
 
-        countDocuments mustBe 0
+        countDocuments mustEqual 0
       }
     }
 
@@ -106,9 +106,9 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
             .post(file(validGzipFile))
             .futureValue
 
-        response.status mustBe UNAUTHORIZED
+        response.status mustEqual UNAUTHORIZED
 
-        countDocuments mustBe 0
+        countDocuments mustEqual 0
       }
     }
 
@@ -128,7 +128,7 @@ class CustomsOfficeListControllerSpec extends IngestionControllerSpec {
             .post(file(validGzipFile))
             .futureValue
 
-        response.status mustBe BAD_REQUEST
+        response.status mustEqual BAD_REQUEST
       }
     }
   }

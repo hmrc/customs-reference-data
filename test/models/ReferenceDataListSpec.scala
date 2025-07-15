@@ -30,7 +30,7 @@ class ReferenceDataListSpec extends SpecBase with ScalaCheckDrivenPropertyChecks
     "must serialise and deserialise" in {
       forAll(arbitrary[ReferenceDataList]) {
         referenceDataList =>
-          Json.toJsObject(referenceDataList).validate[ReferenceDataList].get mustBe referenceDataList
+          Json.toJsObject(referenceDataList).validate[ReferenceDataList].get mustEqual referenceDataList
       }
     }
   }

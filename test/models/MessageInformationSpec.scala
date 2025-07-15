@@ -41,14 +41,14 @@ class MessageInformationSpec extends SpecBase with ScalaCheckPropertyChecks with
                 )
               )
             )
-            .validate[MessageInformation] mustBe JsSuccess(MessageInformation(messageId, snapshotDate))
+            .validate[MessageInformation] mustEqual JsSuccess(MessageInformation(messageId, snapshotDate))
       }
     }
 
     "must write to json" in {
       forAll(arbitrary[String], arbitrary[LocalDate]) {
         (messageId, snapshotDate) =>
-          Json.toJson(MessageInformation(messageId, snapshotDate)) mustBe
+          Json.toJson(MessageInformation(messageId, snapshotDate)) mustEqual
             Json
               .obj(
                 "messageID" -> messageId,
