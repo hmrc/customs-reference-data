@@ -28,7 +28,7 @@ class FilterParamsSpec extends SpecBase {
 
       val result = queryStringBindable.bind("filter", Map())
 
-      result mustBe None
+      result must not be defined
     }
 
     "when one value" in {
