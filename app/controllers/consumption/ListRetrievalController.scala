@@ -41,13 +41,12 @@ class ListRetrievalController @Inject() (
   def get(codeList: CodeList, filter: Option[FilterParams]): Action[AnyContent] =
     versionedAction.async {
       implicit request =>
-        val listName = codeList.listName
         request.phase match {
           case Phase5 =>
             (
               for {
-                latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-                streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId, filter)
+                latestVersion <- OptionT(listRetrievalService.getLatestVersion(codeList.listName))
+                streamedList = listRetrievalService.getStreamedList(codeList.listName, latestVersion.versionId, filter)
                 nestJson     = StreamReferenceData(codeList, MetaData(latestVersion))
               } yield streamedList.via(nestJson.nestInJson(filter))
             ).value.map {
