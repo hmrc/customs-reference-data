@@ -32,13 +32,13 @@ class ApiDataSourceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "when casting to string" - {
       "when of type RefDataFeed" - {
         "must return RefDataFeed" in {
-          RefDataFeed.toString mustBe "RefDataFeed"
+          RefDataFeed.toString mustEqual "RefDataFeed"
         }
       }
 
       "when of type ColDataFeed" - {
         "must return ColDataFeed" in {
-          ColDataFeed.toString mustBe "ColDataFeed"
+          ColDataFeed.toString mustEqual "ColDataFeed"
         }
       }
     }
@@ -46,11 +46,11 @@ class ApiDataSourceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "when reading from json" - {
       "must read successfully" - {
         "when RefDataFeed" in {
-          JsString("RefDataFeed").validate[ApiDataSource] mustBe JsSuccess(RefDataFeed)
+          JsString("RefDataFeed").validate[ApiDataSource] mustEqual JsSuccess(RefDataFeed)
         }
 
         "when ColDataFeed" in {
-          JsString("ColDataFeed").validate[ApiDataSource] mustBe JsSuccess(ColDataFeed)
+          JsString("ColDataFeed").validate[ApiDataSource] mustEqual JsSuccess(ColDataFeed)
         }
       }
 
@@ -68,14 +68,14 @@ class ApiDataSourceSpec extends SpecBase with ScalaCheckPropertyChecks {
       "when RefDataFeed" - {
         "must return JsString('RefDataFeed')" in {
           val source: ApiDataSource = RefDataFeed
-          Json.toJson(source) mustBe JsString("RefDataFeed")
+          Json.toJson(source) mustEqual JsString("RefDataFeed")
         }
       }
 
       "when ColDataFeed" - {
         "must return JsString('ColDataFeed')" in {
           val source: ApiDataSource = ColDataFeed
-          Json.toJson(source) mustBe JsString("ColDataFeed")
+          Json.toJson(source) mustEqual JsString("ColDataFeed")
         }
       }
     }

@@ -36,7 +36,7 @@ class GZipServiceSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with 
 
         val decompressedResult = result.map(_.toChar).mkString
 
-        decompressedResult mustBe testString
+        decompressedResult mustEqual testString
       }
 
       "return an error when given uncompressed array[Byte]" in {

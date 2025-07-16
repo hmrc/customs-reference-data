@@ -40,7 +40,7 @@ class ResourceLinksSpec extends SpecBase with ModelArbitraryInstances with Scala
 
         forAll(arbitrary[ResourceLinks]) {
           resourceLinks =>
-            Json.toJsObject(resourceLinks).validate[ResourceLinks].get mustBe resourceLinks
+            Json.toJsObject(resourceLinks).validate[ResourceLinks].get mustEqual resourceLinks
         }
       }
     }

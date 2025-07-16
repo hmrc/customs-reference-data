@@ -57,8 +57,8 @@ class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
             val result = route(app, fakeRequest).get
 
-            status(result) mustBe OK
-            contentType(result).get mustBe "application/json"
+            status(result) mustEqual OK
+            contentType(result).get mustEqual "application/json"
         }
       }
 
@@ -69,7 +69,7 @@ class ResourceLinksControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         val result = route(app, fakeRequest).get
 
-        status(result) mustBe INTERNAL_SERVER_ERROR
+        status(result) mustEqual INTERNAL_SERVER_ERROR
       }
     }
   }

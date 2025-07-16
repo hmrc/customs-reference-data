@@ -88,7 +88,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
     val list = GenericList(ListName(listName), Seq(customsOffice1, customsOffice2, customsOffice3))
     listRepository.insertList(list).futureValue
 
-    countDocuments mustBe 3
+    countDocuments mustEqual 3
   }
 
   "ListRetrievalController" - {
@@ -103,7 +103,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             .get()
             .futureValue
 
-        response.status mustBe OK
+        response.status mustEqual OK
 
         val expectedJson = Json.parse("""
             |{
@@ -134,7 +134,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |}
             |""".stripMargin)
 
-        Json.parse(response.body) mustBe expectedJson
+        Json.parse(response.body) mustEqual expectedJson
       }
     }
 
@@ -149,7 +149,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             .get()
             .futureValue
 
-        response.status mustBe OK
+        response.status mustEqual OK
 
         val expectedJson = Json.parse("""
             |{
@@ -172,7 +172,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |}
             |""".stripMargin)
 
-        Json.parse(response.body) mustBe expectedJson
+        Json.parse(response.body) mustEqual expectedJson
       }
     }
 
@@ -187,7 +187,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             .get()
             .futureValue
 
-        response.status mustBe OK
+        response.status mustEqual OK
 
         val expectedJson = Json.parse("""
             |{
@@ -214,7 +214,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |}
             |""".stripMargin)
 
-        Json.parse(response.body) mustBe expectedJson
+        Json.parse(response.body) mustEqual expectedJson
       }
     }
 

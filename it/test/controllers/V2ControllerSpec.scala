@@ -58,6 +58,6 @@ trait V2ControllerSpec extends ItSpecBase with GuiceOneServerPerSuite with Befor
   override def beforeEach(): Unit = {
     super.beforeEach()
     dropTestDatabase()
-    countDocuments mustBe 0
+    countDocuments mustEqual 0
   }
 }

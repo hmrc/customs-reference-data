@@ -62,7 +62,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
 
             val service = application.injector.instanceOf[ListRetrievalService]
 
-            service.getResourceLinks.futureValue mustBe None
+            service.getResourceLinks.futureValue must not be defined
         }
       }
 
@@ -93,7 +93,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
                   "self" -> JsObject(Seq("href" -> JsString("/customs-reference-data/lists")))
                 ) ++ resourceLinks.flatten
 
-                service.getResourceLinks.futureValue mustBe Some(ResourceLinks(_links = links))
+                service.getResourceLinks.futureValue.value mustEqual ResourceLinks(_links = links)
             }
 
         }
@@ -122,7 +122,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
               val service = application.injector.instanceOf[ListRetrievalService]
               val result  = service.getLatestVersion(versionInformation.listNames.head)
 
-              result.futureValue.value mustBe versionInformation
+              result.futureValue.value mustEqual versionInformation
           }
       }
     }
@@ -144,7 +144,7 @@ class ListRetrievalServiceSpec extends SpecBase with ModelArbitraryInstances wit
           val service = application.injector.instanceOf[ListRetrievalService]
           val result  = service.getLatestVersion(ListName("Invalid"))
 
-          result.futureValue mustBe None
+          result.futureValue must not be defined
       }
     }
   }

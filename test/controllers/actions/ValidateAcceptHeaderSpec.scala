@@ -33,7 +33,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
     val request = FakeRequest("POST", "/")
 
     whenReady[Option[Result], Assertion](sut.filter(request)) {
-      _.value.header.status mustBe BAD_REQUEST
+      _.value.header.status mustEqual BAD_REQUEST
     }
   }
 
@@ -43,7 +43,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
     val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.1.0+gzip")), "")
 
     whenReady[Option[Result], Assertion](sut.filter(request)) {
-      _.value.header.status mustBe BAD_REQUEST
+      _.value.header.status mustEqual BAD_REQUEST
     }
   }
 
@@ -54,7 +54,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.2.0+gzip")), "")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        _ mustBe None
+        _ must not be defined
       }
     }
 
@@ -64,7 +64,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.2.0+json")), "")
 
       whenReady[Option[Result], Assertion](sut.filter(request)) {
-        _ mustBe None
+        _ must not be defined
       }
     }
   }
