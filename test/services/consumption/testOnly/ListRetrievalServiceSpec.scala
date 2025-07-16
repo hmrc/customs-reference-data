@@ -653,13 +653,17 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |        {
                 |          "customsOfficeRoleTrafficCompetence": [
                 |            {
-                |              "roleName": "AUT"
+                |              "roleName": "DES"
                 |            },
                 |            {
                 |              "roleName": "DEP"
-                |            },
+                |            }
+                |          ]
+                |        },
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
                 |            {
-                |              "roleName": "DES"
+                |              "roleName": "AUT"
                 |            },
                 |            {
                 |              "roleName": "TRA"
@@ -729,13 +733,17 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |        {
                 |          "customsOfficeRoleTrafficCompetence": [
                 |            {
-                |              "roleName": "AUT"
+                |              "roleName": "DES"
                 |            },
                 |            {
                 |              "roleName": "DEP"
-                |            },
+                |            }
+                |          ]
+                |        },
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
                 |            {
-                |              "roleName": "DES"
+                |              "roleName": "AUT"
                 |            },
                 |            {
                 |              "roleName": "TRA"
