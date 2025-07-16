@@ -514,95 +514,399 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
         }
       }
 
-      "when customs offices" in {
-        val codeList = CodeList("CustomsOffices")
+      "when customs offices" - {
+        "when querying by reference number" in {
+          val codeList = CodeList("CustomsOffices")
 
-        val data = Json
-          .parse("""
-              |[
-              |  {
-              |    "languageCode": "EN",
-              |    "name": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
-              |    "phoneNumber": "+ (376) 84 1090",
-              |    "id": "AD000001",
-              |    "countryId": "AD",
-              |    "roles": [
-              |      {
-              |        "role": "AUT"
-              |      },
-              |      {
-              |        "role": "DEP"
-              |      },
-              |      {
-              |        "role": "DES"
-              |      },
-              |      {
-              |        "role": "TRA"
-              |      }
-              |    ]
-              |  },
-              |  {
-              |     "languageCode": "EN",
-              |     "name": "DCNJ PORTA",
-              |     "phoneNumber": "+ (376) 755125",
-              |     "eMailAddress": "duana.pasdelacasa@andorra.ad",
-              |     "id": "AD000002",
-              |     "countryId": "AD",
-              |     "roles": [
-              |       {
-              |         "role": "DEP"
-              |       },
-              |       {
-              |         "role": "DES"
-              |       },
-              |       {
-              |         "role": "TRA"
-              |       }
-              |     ]
-              |  }
-              |]
-              |""".stripMargin)
-          .as[JsArray]
+          val data = Json
+            .parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+                |    },
+                |    "phoneNumber": "+ (376) 84 1090",
+                |    "referenceNumber": "AD000001",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "AUT"
+                |            },
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  },
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "DCNJ PORTA"
+                |    },
+                |    "phoneNumber": "+ (376) 755125",
+                |    "referenceNumber": "AD000002",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
+            .as[JsArray]
 
-        val mockResourceService = mock[ResourceService]
-        when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+          val mockResourceService = mock[ResourceService]
+          when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
+          val app = baseApplicationBuilder
+            .apply {
+              new GuiceApplicationBuilder()
+                .overrides(bind[ResourceService].toInstance(mockResourceService))
+            }
+            .build()
+
+          running(app) {
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("referenceNumber" -> Seq("AD000001")))
+            val result       = service.get(codeList, Phase6, Some(filterParams))
+            result.get mustEqual Json.parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+                |    },
+                |    "phoneNumber": "+ (376) 84 1090",
+                |    "referenceNumber": "AD000001",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "AUT"
+                |            },
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
           }
-          .build()
+        }
 
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("data.id" -> Seq("AD000001")))
-          val result       = service.get(codeList, Phase6, Some(filterParams))
-          result.get mustEqual Json.parse("""
-              |[
-              |  {
-              |    "languageCode": "EN",
-              |    "name": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA",
-              |    "phoneNumber": "+ (376) 84 1090",
-              |    "id": "AD000001",
-              |    "countryId": "AD",
-              |    "roles": [
-              |      {
-              |        "role": "AUT"
-              |      },
-              |      {
-              |        "role": "DEP"
-              |      },
-              |      {
-              |        "role": "DES"
-              |      },
-              |      {
-              |        "role": "TRA"
-              |      }
-              |    ]
-              |  }
-              |]
-              |""".stripMargin)
+        "when querying by role" in {
+          val codeList = CodeList("CustomsOffices")
+
+          val data = Json
+            .parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+                |    },
+                |    "phoneNumber": "+ (376) 84 1090",
+                |    "referenceNumber": "AD000001",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "AUT"
+                |            },
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  },
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "DCNJ PORTA"
+                |    },
+                |    "phoneNumber": "+ (376) 755125",
+                |    "referenceNumber": "AD000002",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
+            .as[JsArray]
+
+          val mockResourceService = mock[ResourceService]
+          when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+          val app = baseApplicationBuilder
+            .apply {
+              new GuiceApplicationBuilder()
+                .overrides(bind[ResourceService].toInstance(mockResourceService))
+            }
+            .build()
+
+          running(app) {
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("roles" -> Seq("AUT")))
+            val result       = service.get(codeList, Phase6, Some(filterParams))
+            result.get mustEqual Json.parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+                |    },
+                |    "phoneNumber": "+ (376) 84 1090",
+                |    "referenceNumber": "AD000001",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "AUT"
+                |            },
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
+          }
+        }
+
+        "when querying by country codes" in {
+          val codeList = CodeList("CustomsOffices")
+
+          val data = Json
+            .parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "CUSTOMS OFFICE SANT JULIÀ DE LÒRIA"
+                |    },
+                |    "phoneNumber": "+ (376) 84 1090",
+                |    "referenceNumber": "AD000001",
+                |    "countryCode": "AD",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "AUT"
+                |            },
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  },
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "Glasgow Airport"
+                |    },
+                |    "phoneNumber": "+44(0)300 106 3520",
+                |    "referenceNumber": "GB000054",
+                |    "countryCode": "GB",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  },
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "Belfast International Airport"
+                |    },
+                |    "phoneNumber": "+44 (0)3000 575 988",
+                |    "referenceNumber": "XI000014",
+                |    "countryCode": "XI",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "ENT"
+                |            },
+                |            {
+                |              "roleName": "EXP"
+                |            },
+                |            {
+                |              "roleName": "EXT"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
+            .as[JsArray]
+
+          val mockResourceService = mock[ResourceService]
+          when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
+
+          val app = baseApplicationBuilder
+            .apply {
+              new GuiceApplicationBuilder()
+                .overrides(bind[ResourceService].toInstance(mockResourceService))
+            }
+            .build()
+
+          running(app) {
+            val service      = app.injector.instanceOf[ListRetrievalService]
+            val filterParams = FilterParams(Seq("countryCodes" -> Seq("GB", "XI")))
+            val result       = service.get(codeList, Phase6, Some(filterParams))
+            result.get mustEqual Json.parse("""
+                |[
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "Glasgow Airport"
+                |    },
+                |    "phoneNumber": "+44(0)300 106 3520",
+                |    "referenceNumber": "GB000054",
+                |    "countryCode": "GB",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "DEP"
+                |            },
+                |            {
+                |              "roleName": "DES"
+                |            },
+                |            {
+                |              "roleName": "TRA"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  },
+                |  {
+                |    "customsOfficeLsd": {
+                |      "languageCode": "EN",
+                |      "customsOfficeUsualName": "Belfast International Airport"
+                |    },
+                |    "phoneNumber": "+44 (0)3000 575 988",
+                |    "referenceNumber": "XI000014",
+                |    "countryCode": "XI",
+                |    "customsOfficeTimetable": {
+                |      "customsOfficeTimetableLine": [
+                |        {
+                |          "customsOfficeRoleTrafficCompetence": [
+                |            {
+                |              "roleName": "ENT"
+                |            },
+                |            {
+                |              "roleName": "EXP"
+                |            },
+                |            {
+                |              "roleName": "EXT"
+                |            }
+                |          ]
+                |        }
+                |      ]
+                |    }
+                |  }
+                |]
+                |""".stripMargin)
+          }
         }
       }
     }

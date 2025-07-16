@@ -38,10 +38,21 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
                 filterParams.parameters.forall {
                   case (filterParamKey, filterParamValues) =>
                     val nodes = (phase, filterParamKey.split("\\."), codeList) match {
-                      case (Phase5, value, _)               => value.tail // removes "data" from path nodes
-                      case (Phase6, value, ColDataCodeList) => value.tail // removes "data" from path nodes
-                      case (Phase6, Array("keys"), _)       => Array("key")
-                      case (Phase6, value, _)               => "properties" +: value
+                      case (Phase5, value, _) =>
+                        value.tail // removes "data" from path nodes
+                      case (Phase6, value, ColDataCodeList) =>
+                        value match {
+                          case Array("countryCodes") =>
+                            Array("countryCode")
+                          case Array("roles") =>
+                            Array("customsOfficeTimetable", "customsOfficeTimetableLine", "customsOfficeRoleTrafficCompetence", "roleName")
+                          case _ =>
+                            value
+                        }
+                      case (Phase6, Array("keys"), _) =>
+                        Array("key")
+                      case (Phase6, value, _) =>
+                        "properties" +: value
                     }
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)
