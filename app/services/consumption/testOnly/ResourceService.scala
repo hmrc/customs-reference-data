@@ -16,26 +16,24 @@
 
 package services.consumption.testOnly
 
-import models.Phase
+import models.{ListName, Phase}
 import play.api.Environment
-import play.api.libs.json.JsArray
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 
 import javax.inject.Inject
 import scala.io.Source
-import scala.util.Failure
-import scala.util.Try
+import scala.util.{Failure, Try}
 
 class ResourceService @Inject() (env: Environment) {
 
-  def getJson(codeList: String, phase: Phase): Try[JsArray] =
+  def getJson(listName: ListName, phase: Phase): Try[JsArray] =
     env
-      .resourceAsStream(s"resources/${phase.directory}/$codeList.json")
+      .resourceAsStream(s"resources/${phase.directory}/$listName.json")
       .map {
         inputStream =>
           val rawData = Source.fromInputStream(inputStream).mkString
           Json.parse(rawData)
       }
       .map(_.validate[JsArray].asTry)
-      .getOrElse(Failure(new Exception(s"Could not find code list $codeList")))
+      .getOrElse(Failure(new Exception(s"Could not find code list $listName")))
 }

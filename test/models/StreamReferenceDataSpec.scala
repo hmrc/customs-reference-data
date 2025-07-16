@@ -22,11 +22,10 @@ import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.stream.testkit.scaladsl.TestSink
 import org.apache.pekko.util.ByteString
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.OptionValues
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.{BeforeAndAfterAll, OptionValues}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import play.api.libs.json.JsObject
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChecks with ModelArbitraryInstances with OptionValues with BeforeAndAfterAll {
 
@@ -39,10 +38,10 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
 
     "must transform stream and turn it into a ByteString" in {
 
-      val name = arbitraryListName.arbitrary.sample.value
-      val meta = arbitraryMetaData.arbitrary.sample.value
+      val codeList = CodeList.apply("AdditionalReference")
+      val meta     = arbitrary[MetaData].sample.value
 
-      val testFlow = StreamReferenceData(name, meta).nestInJson[JsObject](None)
+      val testFlow = StreamReferenceData(codeList, meta).nestInJson[JsObject](None)
 
       val source = Source(1 to 5).map(
         _ => Json.obj("index" -> "value")
@@ -55,7 +54,7 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
         .expectNextN(11)
 
       val result = Json.parse(streamOutput.map(_.utf8String).mkString)
-      val url    = controllers.consumption.routes.ListRetrievalController.get(name, None).url
+      val url    = controllers.consumption.routes.ListRetrievalController.get(codeList, None).url
 
       val href = (result \ "_links" \ "self" \ "href").as[String]
       url must include(href)
@@ -63,9 +62,8 @@ class StreamReferenceDataSpec extends SpecBase with ScalaCheckDrivenPropertyChec
       href mustNot include("v2.0/")
 
       (result \ "meta").as[MetaData] mustEqual meta
-      (result \ "id").as[String] mustEqual name.listName
+      (result \ "id").as[String] mustEqual codeList.listName.toString
       (result \ "data").as[Seq[JsObject]] mustEqual Seq.fill(5)(Json.obj("index" -> "value"))
-
     }
   }
 }

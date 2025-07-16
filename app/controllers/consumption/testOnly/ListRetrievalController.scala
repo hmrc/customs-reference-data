@@ -18,7 +18,7 @@ package controllers.consumption.testOnly
 
 import controllers.actions.VersionedAction
 import models.Phase.{Phase5, Phase6}
-import models.{FilterParams, ListName}
+import models.{CodeList, FilterParams}
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
@@ -35,10 +35,10 @@ class ListRetrievalController @Inject() (
 ) extends BackendController(cc)
     with Logging {
 
-  def get(listName: ListName, filterParams: Option[FilterParams]): Action[AnyContent] =
+  def get(codeList: CodeList, filterParams: Option[FilterParams]): Action[AnyContent] =
     versionedAction {
       implicit request =>
-        listRetrievalService.get(listName.listName, request.phase, filterParams) match {
+        listRetrievalService.get(codeList, request.phase, filterParams) match {
           case Success(json) =>
             Ok {
               request.phase match {

@@ -21,14 +21,14 @@ import cats.implicits.*
 import connectors.CrdlCacheConnector
 import controllers.actions.VersionedAction
 import models.Phase.*
-import models.{FilterParams, ListName, MetaData, StreamReferenceData}
+import models.{CodeList, FilterParams, MetaData, StreamReferenceData}
 import play.api.http.HttpEntity
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.consumption.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
@@ -38,29 +38,24 @@ class ListRetrievalController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def get(listName: ListName, filter: Option[FilterParams]): Action[AnyContent] =
+  def get(codeList: CodeList, filter: Option[FilterParams]): Action[AnyContent] =
     versionedAction.async {
       implicit request =>
         request.phase match {
           case Phase5 =>
             (
               for {
-                latestVersion <- OptionT(listRetrievalService.getLatestVersion(listName))
-                streamedList = listRetrievalService.getStreamedList(listName, latestVersion.versionId, filter)
-                nestJson     = StreamReferenceData(listName, MetaData(latestVersion))
+                latestVersion <- OptionT(listRetrievalService.getLatestVersion(codeList.listName))
+                streamedList = listRetrievalService.getStreamedList(codeList.listName, latestVersion.versionId, filter)
+                nestJson     = StreamReferenceData(codeList, MetaData(latestVersion))
               } yield streamedList.via(nestJson.nestInJson(filter))
             ).value.map {
               case Some(source) => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
               case None         => NotFound
             }
           case Phase6 =>
-            listName.code match {
-              case Some(value) =>
-                crdlConnector.get(value, filter.getOrElse(FilterParams())).map {
-                  source => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
-                }
-              case None =>
-                Future.successful(BadRequest(s"$listName is not a valid code list name"))
+            crdlConnector.get(codeList, filter.getOrElse(FilterParams())).map {
+              source => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
             }
         }
     }

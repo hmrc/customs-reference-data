@@ -19,7 +19,7 @@ package controllers.consumption
 import base.SpecBase
 import connectors.CrdlCacheConnector
 import generators.ModelArbitraryInstances
-import models.{FilterParams, ListName, ReferenceDataList, VersionInformation}
+import models.{CodeList, FilterParams, VersionInformation}
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
@@ -67,9 +67,9 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         "should return OK" in {
 
-          val referenceDataList = arbitrary[ReferenceDataList].sample.value
-          val version           = arbitrary[VersionInformation].sample.value
-          lazy val url          = s"/customs-reference-data/lists/${referenceDataList.id.listName}"
+          val codeList = CodeList("AdditionalInformation")
+          val version  = arbitrary[VersionInformation].sample.value
+          lazy val url = s"/customs-reference-data/lists/${codeList.listName}"
 
           val fakeRequest = FakeRequest(GET, url)
             .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
@@ -85,14 +85,14 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           status(result) mustEqual OK
 
-          verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-          verify(mockListRetrievalService).getStreamedList(referenceDataList.id, version.versionId, None)
+          verify(mockListRetrievalService).getLatestVersion(codeList.listName)
+          verify(mockListRetrievalService).getStreamedList(codeList.listName, version.versionId, None)
         }
 
         "should return NotFound when latest version returns None" in {
 
-          val referenceDataList = arbitrary[ReferenceDataList].sample.value
-          lazy val url          = s"/customs-reference-data/lists/${referenceDataList.id.listName}"
+          val codeList = CodeList("AdditionalInformation")
+          lazy val url = s"/customs-reference-data/lists/${codeList.listName}"
 
           val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
 
@@ -107,8 +107,8 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           status(result) mustEqual NOT_FOUND
 
-          verify(mockListRetrievalService).getLatestVersion(referenceDataList.id)
-          verify(mockListRetrievalService, never()).getStreamedList(eqTo(referenceDataList.id), any(), any())
+          verify(mockListRetrievalService).getLatestVersion(codeList.listName)
+          verify(mockListRetrievalService, never()).getStreamedList(eqTo(codeList.listName), any(), any())
         }
       }
 
@@ -118,7 +118,8 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           "when there are no query parameters" in {
 
-            val listName = ListName("AdditionalReference")
+            val listName = "AdditionalReference"
+            val codeList = CodeList(listName)
 
             lazy val url = s"/customs-reference-data/lists/$listName"
 
@@ -136,12 +137,14 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
             status(result) mustEqual OK
 
             verifyNoInteractions(mockListRetrievalService)
-            verify(mockConnector).get(eqTo(listName.code.value), eqTo(FilterParams()))(any())
+            verify(mockConnector).get(eqTo(codeList), eqTo(FilterParams()))(any())
           }
 
           "when there are query parameters" in {
 
-            val listName     = ListName("AdditionalReference")
+            val listName = "AdditionalReference"
+            val codeList = CodeList(listName)
+
             val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
 
             lazy val url = s"/customs-reference-data/lists/$listName?keys=00200"
@@ -160,15 +163,13 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
             status(result) mustEqual OK
 
             verifyNoInteractions(mockListRetrievalService)
-            verify(mockConnector).get(eqTo(listName.code.value), eqTo(filterParams))(any())
+            verify(mockConnector).get(eqTo(codeList), eqTo(filterParams))(any())
           }
         }
 
         "should return BAD_REQUEST when code list doesn't exist" in {
 
-          val listName = ListName("foo")
-
-          lazy val url = s"/customs-reference-data/lists/$listName"
+          lazy val url = s"/customs-reference-data/lists/foo"
 
           val fakeRequest = FakeRequest(GET, url)
             .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
