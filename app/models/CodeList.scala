@@ -22,6 +22,9 @@ import scala.util.Try
 
 sealed trait CodeList {
   val listName: ListName
+
+  // maps query parameters to JSON path nodes in test-only resource data
+  def nodes(value: Array[String]): Array[String]
 }
 
 object CodeList {
@@ -37,10 +40,29 @@ object CodeList {
           .getOrElse(throw IllegalArgumentException(s"$value is not a valid code list name"))
     }
 
-  case class RefDataCodeList(listName: ListName, code: String) extends CodeList
+  case class RefDataCodeList(listName: ListName, code: String) extends CodeList {
+
+    override def nodes(value: Array[String]): Array[String] =
+      value match {
+        case Array("keys") =>
+          Array("key")
+        case _ =>
+          "properties" +: value
+      }
+  }
 
   case object ColDataCodeList extends CodeList {
     override val listName: ListName = ListName("CustomsOffices")
+
+    override def nodes(value: Array[String]): Array[String] =
+      value match {
+        case Array("countryCodes") =>
+          Array("countryCode")
+        case Array("roles") =>
+          Array("customsOfficeTimetable", "customsOfficeTimetableLine", "customsOfficeRoleTrafficCompetence", "roleName")
+        case _ =>
+          value
+      }
   }
 
   implicit lazy val pathBindable: PathBindable[CodeList] = new PathBindable[CodeList] {
