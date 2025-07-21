@@ -17,7 +17,8 @@
 package connectors
 
 import config.AppConfig
-import models.FilterParams
+import models.CodeList.*
+import models.{CodeList, FilterParams}
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
@@ -29,9 +30,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(implicit ec: ExecutionContext, mat: Materializer) {
 
-  def get(codeList: String, filterParams: FilterParams)(implicit hc: HeaderCarrier): Future[Source[ByteString, ?]] = {
-    val url = url"${config.crdlCacheUrl}/lists/$codeList?${filterParams.toList}"
+  def get(codeList: CodeList, filterParams: FilterParams)(implicit hc: HeaderCarrier): Future[Source[ByteString, ?]] = {
+    val url = codeList match {
+      case ColDataCodeList =>
+        url"${config.crdlCacheUrl}/offices?${filterParams.toList}"
+      case RefDataCodeList(_, code) =>
+        url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList}"
+    }
     http.get(url).stream[Source[ByteString, ?]]
   }
-
 }

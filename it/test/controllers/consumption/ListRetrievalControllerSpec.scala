@@ -91,7 +91,7 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
     countDocuments mustEqual 3
   }
 
-  "v2 list retrieval endpoint" - {
+  "ListRetrievalController" - {
     "when given no values in query param" - {
       val url = s"$baseUrl/customs-reference-data/lists/$listName"
 
@@ -215,6 +215,21 @@ class ListRetrievalControllerSpec extends V2ControllerSpec {
             |""".stripMargin)
 
         Json.parse(response.body) mustEqual expectedJson
+      }
+    }
+
+    "when given unknown code list" - {
+      val url = s"$baseUrl/customs-reference-data/lists/foo"
+
+      "must respond with 400 status" in {
+        val response =
+          wsClient
+            .url(url)
+            .withHttpHeaders(headers*)
+            .get()
+            .futureValue
+
+        response.status mustEqual BAD_REQUEST
       }
     }
   }

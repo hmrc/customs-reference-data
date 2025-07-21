@@ -17,6 +17,7 @@
 package services.consumption.testOnly
 
 import models.*
+import models.CodeList.*
 import models.Phase.*
 import play.api.libs.json.*
 
@@ -25,22 +26,22 @@ import scala.util.Try
 
 class ListRetrievalService @Inject() (resourceService: ResourceService) {
 
-  def get(codeList: String, phase: Phase, filterParams: Option[FilterParams]): Try[JsArray] =
-    (filterParams match {
+  def get(codeList: CodeList, phase: Phase, filterParams: Option[FilterParams]): Try[JsArray] = {
+    filterParams match {
       case None =>
-        resourceService.getJson(codeList, phase)
+        resourceService.getJson(codeList.listName, phase)
       case Some(filterParams) =>
-        resourceService.getJson(codeList, phase).map {
+        resourceService.getJson(codeList.listName, phase).map {
           json =>
             val filteredValues = json.value.filter {
               value =>
                 filterParams.parameters.forall {
                   case (filterParamKey, filterParamValues) =>
                     val nodes = (phase, filterParamKey.split("\\.")) match {
-                      case (Phase5, value)                                 => value.tail // removes "data" from path nodes
-                      case (Phase6, value) if codeList == "CustomsOffices" => value.tail // removes "data" from path nodes
-                      case (Phase6, Array("keys"))                         => Array("key")
-                      case (Phase6, value)                                 => "properties" +: value
+                      case (Phase5, value) =>
+                        value.tail // removes "data" from path nodes
+                      case (Phase6, value) =>
+                        codeList.nodes(value)
                     }
                     val values = nodes.tail.foldLeft(value \\ nodes.head) {
                       case (acc, node) => acc.flatMap(_ \\ node)
@@ -50,5 +51,31 @@ class ListRetrievalService @Inject() (resourceService: ResourceService) {
             }
             JsArray(filteredValues)
         }
-    }).map(_.unescapeXml)
+    }
+  }.map(filterByLanguageCode(_, phase, codeList)).map(_.unescapeXml)
+
+  // Tries to find the EN language code version of each office, otherwise takes the first value
+  private def filterByLanguageCode(array: JsArray, phase: Phase, codeList: CodeList): JsArray =
+    (phase, codeList) match {
+      case (Phase6, ColDataCodeList) =>
+        JsArray {
+          array.value
+            .groupBy {
+              _.asOpt((__ \ "referenceNumber").json.pick[JsString])
+            }
+            .values
+            .flatMap {
+              values =>
+                values
+                  .find {
+                    _.asOpt((__ \ "customsOfficeLsd" \ "languageCode").json.pick[JsString]).map(_.value).contains("EN")
+                  }
+                  .orElse(values.headOption)
+                  .toList
+            }
+            .toSeq
+        }
+      case _ =>
+        array
+    }
 }

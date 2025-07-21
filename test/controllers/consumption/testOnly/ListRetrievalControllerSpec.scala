@@ -18,11 +18,11 @@ package controllers.consumption.testOnly
 
 import base.SpecBase
 import generators.ModelArbitraryInstances
+import models.CodeList.RefDataCodeList
 import models.ListName
 import models.Phase.*
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.{BeforeAndAfterEach, TestData}
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -61,7 +61,8 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         "should return OK when get returns a Success" in {
 
-          val listName = arbitrary[ListName].sample.value
+          val listName = ListName("AdditionalReference")
+          val codeList = RefDataCodeList(listName, "CL380")
 
           lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
@@ -81,12 +82,13 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
           status(result) mustEqual OK
           contentAsJson(result) mustEqual Json.obj("data" -> json)
 
-          verify(mockListRetrievalService).get(eqTo(listName.listName), eqTo(Phase5), eqTo(None))
+          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase5), eqTo(None))
         }
 
         "should return NotFound when get returns a Failure" in {
 
-          val listName = arbitrary[ListName].sample.value
+          val listName = ListName("AdditionalReference")
+          val codeList = RefDataCodeList(listName, "CL380")
 
           lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
@@ -99,7 +101,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           status(result) mustEqual NOT_FOUND
 
-          verify(mockListRetrievalService).get(eqTo(listName.listName), eqTo(Phase5), eqTo(None))
+          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase5), eqTo(None))
         }
       }
 
@@ -107,7 +109,8 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
         "should return OK when get returns a Success" in {
 
-          val listName = arbitrary[ListName].sample.value
+          val listName = ListName("AdditionalReference")
+          val codeList = RefDataCodeList(listName, "CL380")
 
           lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
@@ -127,12 +130,13 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
           status(result) mustEqual OK
           contentAsJson(result) mustEqual json
 
-          verify(mockListRetrievalService).get(eqTo(listName.listName), eqTo(Phase6), eqTo(None))
+          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase6), eqTo(None))
         }
 
         "should return NotFound when get returns a Failure" in {
 
-          val listName = arbitrary[ListName].sample.value
+          val listName = ListName("AdditionalReference")
+          val codeList = RefDataCodeList(listName, "CL380")
 
           lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
@@ -145,7 +149,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           status(result) mustEqual NOT_FOUND
 
-          verify(mockListRetrievalService).get(eqTo(listName.listName), eqTo(Phase6), eqTo(None))
+          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase6), eqTo(None))
         }
       }
     }

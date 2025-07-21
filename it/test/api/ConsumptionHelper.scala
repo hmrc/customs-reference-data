@@ -30,7 +30,7 @@ trait ConsumptionHelper {
 
   val defaultMessageInformation: MessageInformation = MessageInformation(defaultMessageId, defaultSnapshotDate)
 
-  val defaultListName: ListName = ListName("UnodLanguages")
+  val defaultListName: ListName = ListName("AdditionalInformation")
 
   val firstDefaultDataItem: JsObject  = Json.obj("state" -> "default", "activeFrom" -> "2015-12-12", "code" -> "CS", "description" -> Json.arr())
   val secondDefaultDataItem: JsObject = Json.obj("state" -> "default", "activeFrom" -> "2015-12-12", "code" -> "DE", "description" -> Json.arr())
