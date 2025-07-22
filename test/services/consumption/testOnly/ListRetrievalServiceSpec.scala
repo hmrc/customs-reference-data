@@ -592,7 +592,7 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
           running(app) {
             val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("referenceNumber" -> Seq("AD000001")))
+            val filterParams = FilterParams(Seq("referenceNumbers" -> Seq("AD000001")))
             val result       = service.get(codeList, Phase6, Some(filterParams))
             val expectedResult = Json
               .parse("""
