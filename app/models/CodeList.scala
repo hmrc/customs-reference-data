@@ -56,6 +56,8 @@ object CodeList {
 
     override def nodes(value: Array[String]): Array[String] =
       value match {
+        case Array("referenceNumbers") =>
+          Array("referenceNumber")
         case Array("countryCodes") =>
           Array("countryCode")
         case Array("roles") =>
