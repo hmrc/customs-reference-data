@@ -17,25 +17,17 @@
 package services.ingestion
 
 import base.SpecBase
-import javax.inject.Inject
-import models.SchemaValidationError
-import models.SimpleJsonSchemaProvider
+import models.{JsonSchemaProvider, SchemaValidationError}
 import org.leadpony.justify.api.JsonValidationService
 import org.scalatest.EitherValues
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Environment
-import play.api.inject.SimpleModule
-import play.api.inject.bind
+import play.api.Mode.Test
+import play.api.inject.{bind, SimpleModule}
 import play.api.libs.json.Json
 
-class TestJsonSchema @Inject() (env: Environment, jvs: JsonValidationService) extends SimpleJsonSchemaProvider(env, jvs)("test.schema.json")
+import java.io.File
 
-class TestModule
-    extends SimpleModule(
-      (_, _) => Seq(bind[TestJsonSchema].toSelf.eagerly())
-    )
-
-class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with EitherValues {
+class SchemaValidationServiceSpec extends SpecBase with EitherValues {
 
   "validate" - {
     "returns true when the json matches the schema specifications" in {
@@ -45,10 +37,13 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         "age"       -> 21
       )
 
-      val service        = app.injector.instanceOf[SchemaValidationService]
-      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+      val jsonValidationService = JsonValidationService.newInstance()
 
-      service.validate(testJsonSchema, json).value mustEqual json
+      val testJsonSchemaProvider = new TestJsonSchemaProvider()
+
+      val service = new SchemaValidationService(jsonValidationService)
+
+      service.validate(testJsonSchemaProvider.getSchema, json).value mustEqual json
     }
 
     "returns SchemaValidationError with description of the problem when the json does not match the schema specifications" in {
@@ -62,12 +57,31 @@ class SchemaValidationServiceSpec extends SpecBase with GuiceOneAppPerSuite with
         )
       )
 
-      val service        = app.injector.instanceOf[SchemaValidationService]
-      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
+      val jsonValidationService = JsonValidationService.newInstance()
 
-      service.validate(testJsonSchema, json).left.value mustBe a[SchemaValidationError]
+      val testJsonSchemaProvider = new TestJsonSchemaProvider()
+
+      val service = new SchemaValidationService(jsonValidationService)
+
+      service.validate(testJsonSchemaProvider.getSchema, json).left.value mustBe a[SchemaValidationError]
     }
-
   }
-
 }
+
+class TestJsonSchemaProvider extends JsonSchemaProvider {
+
+  override val env: Environment = Environment(
+    rootPath = new File("."),
+    classLoader = getClass.getClassLoader,
+    mode = Test
+  )
+
+  override val jsonValidationService: JsonValidationService = JsonValidationService.newInstance()
+
+  override val path: String = "test.schema.json"
+}
+
+class TestModule
+    extends SimpleModule(
+      (_, _) => Seq(bind[TestJsonSchemaProvider].toSelf.eagerly())
+    )

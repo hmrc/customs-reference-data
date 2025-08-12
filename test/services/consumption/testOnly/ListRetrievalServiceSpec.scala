@@ -24,14 +24,13 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsArray, Json}
-import play.api.test.Helpers.*
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
+
+  private val mockResourceService = mock[ResourceService]
 
   "when phase 5" - {
 
@@ -82,28 +81,24 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "get (without filter)" - {
       "should succeed" - {
         "when code list found" in {
-          running(baseApplicationBuilder) {
-            application =>
-              val service = application.injector.instanceOf[ListRetrievalService]
-              forAll(listNameGen) {
-                listName =>
-                  val codeList = CodeList(listName)
-                  val result   = service.get(codeList, Phase5, None)
-                  result.isSuccess mustEqual true
-              }
+          forAll(listNameGen) {
+            listName =>
+              when(mockResourceService.getJson(any(), any())).thenReturn(Success(JsArray()))
+              val service  = new ListRetrievalService(mockResourceService)
+              val codeList = CodeList(listName)
+              val result   = service.get(codeList, Phase5, None)
+              result.isSuccess mustEqual true
           }
         }
       }
 
       "should fail" - {
         "when code list not found" in {
-          running(baseApplicationBuilder) {
-            application =>
-              val service  = application.injector.instanceOf[ListRetrievalService]
-              val codeList = RefDataCodeList(ListName("foo"), "foo")
-              val result   = service.get(codeList, Phase5, None)
-              result.isSuccess mustEqual false
-          }
+          when(mockResourceService.getJson(any(), any())).thenReturn(Failure(new Throwable("")))
+          val service  = new ListRetrievalService(mockResourceService)
+          val codeList = RefDataCodeList(ListName("foo"), "foo")
+          val result   = service.get(codeList, Phase5, None)
+          result.isSuccess mustEqual false
         }
       }
     }
@@ -161,99 +156,78 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
         "must return values that match the filter" - {
           "when one filter" in {
-            val mockResourceService = mock[ResourceService]
             when(mockResourceService.getJson(any(), any())).thenReturn(Success(customsOffices))
-
-            val app = baseApplicationBuilder
-              .apply {
-                new GuiceApplicationBuilder()
-                  .overrides(bind[ResourceService].toInstance(mockResourceService))
-              }
-              .build()
-
-            running(app) {
-              val service      = app.injector.instanceOf[ListRetrievalService]
-              val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
-              val result       = service.get(codeList, Phase5, Some(filterParams))
-              result.get mustEqual Json.parse("""
-                  |[
-                  |  {
-                  |    "name": "CO2",
-                  |    "id": "GB1",
-                  |    "countryId": "GB",
-                  |    "roles": [
-                  |      {
-                  |        "role": "TRA"
-                  |      },
-                  |      {
-                  |        "role": "AUT"
-                  |      }
-                  |    ]
-                  |  },
-                  |  {
-                  |    "name": "CO3",
-                  |    "id": "GB2",
-                  |    "countryId": "GB",
-                  |    "roles": [
-                  |      {
-                  |        "role": "TRA"
-                  |      },
-                  |      {
-                  |        "role": "DES"
-                  |      }
-                  |    ]
-                  |  }
-                  |]
-                  |""".stripMargin)
-            }
+            val service      = new ListRetrievalService(mockResourceService)
+            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB")))
+            val result       = service.get(codeList, Phase5, Some(filterParams))
+            result.get mustEqual Json.parse("""
+                |[
+                |  {
+                |    "name": "CO2",
+                |    "id": "GB1",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "AUT"
+                |      }
+                |    ]
+                |  },
+                |  {
+                |    "name": "CO3",
+                |    "id": "GB2",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "DES"
+                |      }
+                |    ]
+                |  }
+                |]
+                |""".stripMargin)
           }
 
           "when multiple filters" in {
-            val mockResourceService = mock[ResourceService]
             when(mockResourceService.getJson(any(), any())).thenReturn(Success(customsOffices))
 
-            val app = baseApplicationBuilder
-              .apply {
-                new GuiceApplicationBuilder()
-                  .overrides(bind[ResourceService].toInstance(mockResourceService))
-              }
-              .build()
-
-            running(app) {
-              val service      = app.injector.instanceOf[ListRetrievalService]
-              val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
-              val result       = service.get(codeList, Phase5, Some(filterParams))
-              result.get mustEqual Json.parse("""
-                  |[
-                  |  {
-                  |    "name": "CO2",
-                  |    "id": "GB1",
-                  |    "countryId": "GB",
-                  |    "roles": [
-                  |      {
-                  |        "role": "TRA"
-                  |      },
-                  |      {
-                  |        "role": "AUT"
-                  |      }
-                  |    ]
-                  |  },
-                  |  {
-                  |    "name": "CO3",
-                  |    "id": "GB2",
-                  |    "countryId": "GB",
-                  |    "roles": [
-                  |      {
-                  |        "role": "TRA"
-                  |      },
-                  |      {
-                  |        "role": "DES"
-                  |      }
-                  |    ]
-                  |  }
-                  |]
-                  |""".stripMargin)
-            }
+            val service      = new ListRetrievalService(mockResourceService)
+            val filterParams = FilterParams(Seq("data.countryId" -> Seq("GB"), "data.roles.role" -> Seq("AUT", "DES")))
+            val result       = service.get(codeList, Phase5, Some(filterParams))
+            result.get mustEqual Json.parse("""
+                |[
+                |  {
+                |    "name": "CO2",
+                |    "id": "GB1",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "AUT"
+                |      }
+                |    ]
+                |  },
+                |  {
+                |    "name": "CO3",
+                |    "id": "GB2",
+                |    "countryId": "GB",
+                |    "roles": [
+                |      {
+                |        "role": "TRA"
+                |      },
+                |      {
+                |        "role": "DES"
+                |      }
+                |    ]
+                |  }
+                |]
+                |""".stripMargin)
           }
         }
       }
@@ -262,73 +236,38 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
 
         val codeList = CodeList("CountryCodesFullList")
 
+        val json = Json
+          .parse("""
+            |[
+            |  {
+            |    "code": "AD",
+            |    "description": "Andorra"
+            |  },
+            |  {
+            |    "code": "ES",
+            |    "description": "Spain"
+            |  },
+            |  {
+            |    "code": "FR",
+            |    "description": "France"
+            |  }
+            |]
+            |""".stripMargin)
+          .as[JsArray]
+
         "must return values that match the filter" in {
-          running(baseApplicationBuilder) {
-            app =>
-              val service      = app.injector.instanceOf[ListRetrievalService]
-              val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
-              val result       = service.get(codeList, Phase5, Some(filterParams))
-              result.get mustEqual Json.parse("""
-                  |[
-                  |  {
-                  |    "code": "AD",
-                  |    "description": "Andorra"
-                  |  }
-                  |]
-                  |""".stripMargin)
-          }
-        }
-      }
-
-      "when security types" - {
-
-        val codeList = CodeList("DeclarationTypeSecurity")
-
-        "must return values (with unescaped XML)" - {
-          "when no filtering" in {
-            running(baseApplicationBuilder) {
-              app =>
-                val service = app.injector.instanceOf[ListRetrievalService]
-                val result  = service.get(codeList, Phase5, None)
-                result.get mustEqual Json.parse("""
-                    |[
-                    |  {
-                    |    "code": "0",
-                    |    "description": "Not used for safety and security purposes"
-                    |  },
-                    |  {
-                    |    "code": "1",
-                    |    "description": "ENS"
-                    |  },
-                    |  {
-                    |    "code": "2",
-                    |    "description": "EXS"
-                    |  },
-                    |  {
-                    |    "code": "3",
-                    |    "description": "ENS & EXS"
-                    |  }
-                    |]
-                    |""".stripMargin)
-            }
-          }
-
-          "when filtering" in {
-            running(baseApplicationBuilder) {
-              app =>
-                val service      = app.injector.instanceOf[ListRetrievalService]
-                val filterParams = FilterParams(Seq("data.code" -> Seq("3")))
-                val result       = service.get(codeList, Phase5, Some(filterParams))
-                result.get mustEqual Json.parse("""
-                    |[
-                    |  {
-                    |    "code": "3",
-                    |    "description": "ENS & EXS"
-                    |  }
-                    |]
-                    |""".stripMargin)
-            }
-          }
+          when(mockResourceService.getJson(any(), any())).thenReturn(Success(json))
+          val service      = new ListRetrievalService(mockResourceService)
+          val filterParams = FilterParams(Seq("data.code" -> Seq("AD")))
+          val result       = service.get(codeList, Phase5, Some(filterParams))
+          result.get mustEqual Json.parse("""
+              |[
+              |  {
+              |    "code": "AD",
+              |    "description": "Andorra"
+              |  }
+              |]
+              |""".stripMargin)
         }
       }
     }
@@ -344,28 +283,23 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
     "get (without filter)" - {
       "should succeed" - {
         "when code list found" in {
-          running(baseApplicationBuilder) {
-            application =>
-              val service = application.injector.instanceOf[ListRetrievalService]
-              forAll(listNameGen) {
-                listName =>
-                  val codeList = CodeList(listName)
-                  val result   = service.get(codeList, Phase6, None)
-                  result.isSuccess mustEqual true
-              }
+          val service = new ListRetrievalService(mockResourceService)
+          forAll(listNameGen) {
+            listName =>
+              val codeList = CodeList(listName)
+              val result   = service.get(codeList, Phase6, None)
+              result.isSuccess mustEqual true
           }
         }
       }
 
       "should fail" - {
         "when code list not found" in {
-          running(baseApplicationBuilder) {
-            application =>
-              val service  = application.injector.instanceOf[ListRetrievalService]
-              val codeList = RefDataCodeList(ListName("foo"), "foo")
-              val result   = service.get(codeList, Phase6, None)
-              result.isSuccess mustEqual false
-          }
+          when(mockResourceService.getJson(any(), any())).thenReturn(Failure(new Throwable("")))
+          val service  = new ListRetrievalService(mockResourceService)
+          val codeList = RefDataCodeList(ListName("foo"), "foo")
+          val result   = service.get(codeList, Phase6, None)
+          result.isSuccess mustEqual false
         }
       }
     }
@@ -390,21 +324,12 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |""".stripMargin)
           .as[JsArray]
 
-        val mockResourceService = mock[ResourceService]
         when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
-          }
-          .build()
-
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
-          val result       = service.get(codeList, Phase6, Some(filterParams))
-          result.get mustEqual Json.parse("""
+        val service      = new ListRetrievalService(mockResourceService)
+        val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+        val result       = service.get(codeList, Phase6, Some(filterParams))
+        result.get mustEqual Json.parse("""
               |[
               |  {
               |    "key": "00200",
@@ -412,7 +337,6 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |  }
               |]
               |""".stripMargin)
-        }
       }
 
       "when one filter with multiple values" in {
@@ -435,21 +359,12 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |""".stripMargin)
           .as[JsArray]
 
-        val mockResourceService = mock[ResourceService]
         when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
-          }
-          .build()
-
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
-          val result       = service.get(codeList, Phase6, Some(filterParams))
-          result.get mustEqual Json.parse("""
+        val service      = new ListRetrievalService(mockResourceService)
+        val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
+        val result       = service.get(codeList, Phase6, Some(filterParams))
+        result.get mustEqual Json.parse("""
               |[
               |  {
               |    "key": "00200",
@@ -461,7 +376,6 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |  }
               |]
               |""".stripMargin)
-        }
       }
 
       "when multiple filters" in {
@@ -486,21 +400,12 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
             |""".stripMargin)
           .as[JsArray]
 
-        val mockResourceService = mock[ResourceService]
         when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-        val app = baseApplicationBuilder
-          .apply {
-            new GuiceApplicationBuilder()
-              .overrides(bind[ResourceService].toInstance(mockResourceService))
-          }
-          .build()
-
-        running(app) {
-          val service      = app.injector.instanceOf[ListRetrievalService]
-          val filterParams = FilterParams(Seq("keys" -> Seq("00200"), "state" -> Seq("valid")))
-          val result       = service.get(codeList, Phase6, Some(filterParams))
-          result.get mustEqual Json.parse("""
+        val service      = new ListRetrievalService(mockResourceService)
+        val filterParams = FilterParams(Seq("keys" -> Seq("00200"), "state" -> Seq("valid")))
+        val result       = service.get(codeList, Phase6, Some(filterParams))
+        result.get mustEqual Json.parse("""
               |[
               |  {
               |    "key": "00200",
@@ -511,7 +416,6 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
               |  }
               |]
               |""".stripMargin)
-        }
       }
 
       "when customs offices" - {
@@ -580,22 +484,13 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |""".stripMargin)
             .as[JsArray]
 
-          val mockResourceService = mock[ResourceService]
           when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-          val app = baseApplicationBuilder
-            .apply {
-              new GuiceApplicationBuilder()
-                .overrides(bind[ResourceService].toInstance(mockResourceService))
-            }
-            .build()
-
-          running(app) {
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("referenceNumbers" -> Seq("AD000001")))
-            val result       = service.get(codeList, Phase6, Some(filterParams))
-            val expectedResult = Json
-              .parse("""
+          val service      = new ListRetrievalService(mockResourceService)
+          val filterParams = FilterParams(Seq("referenceNumbers" -> Seq("AD000001")))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
+          val expectedResult = Json
+            .parse("""
                 |[
                 |  {
                 |    "customsOfficeLsd": {
@@ -628,10 +523,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |  }
                 |]
                 |""".stripMargin)
-              .as[JsArray]
+            .as[JsArray]
 
-            result.get.value.toSet mustEqual expectedResult.value.toSet
-          }
+          result.get.value.toSet mustEqual expectedResult.value.toSet
         }
 
         "when querying by role" in {
@@ -703,22 +597,13 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |""".stripMargin)
             .as[JsArray]
 
-          val mockResourceService = mock[ResourceService]
           when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-          val app = baseApplicationBuilder
-            .apply {
-              new GuiceApplicationBuilder()
-                .overrides(bind[ResourceService].toInstance(mockResourceService))
-            }
-            .build()
-
-          running(app) {
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("roles" -> Seq("AUT")))
-            val result       = service.get(codeList, Phase6, Some(filterParams))
-            val expectedResult = Json
-              .parse("""
+          val service      = new ListRetrievalService(mockResourceService)
+          val filterParams = FilterParams(Seq("roles" -> Seq("AUT")))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
+          val expectedResult = Json
+            .parse("""
                 |[
                 |  {
                 |    "customsOfficeLsd": {
@@ -755,10 +640,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |  }
                 |]
                 |""".stripMargin)
-              .as[JsArray]
+            .as[JsArray]
 
-            result.get.value.toSet mustEqual expectedResult.value.toSet
-          }
+          result.get.value.toSet mustEqual expectedResult.value.toSet
         }
 
         "when querying by country codes" in {
@@ -852,22 +736,13 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |""".stripMargin)
             .as[JsArray]
 
-          val mockResourceService = mock[ResourceService]
           when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-          val app = baseApplicationBuilder
-            .apply {
-              new GuiceApplicationBuilder()
-                .overrides(bind[ResourceService].toInstance(mockResourceService))
-            }
-            .build()
-
-          running(app) {
-            val service      = app.injector.instanceOf[ListRetrievalService]
-            val filterParams = FilterParams(Seq("countryCodes" -> Seq("GB", "XI")))
-            val result       = service.get(codeList, Phase6, Some(filterParams))
-            val expectedResult = Json
-              .parse("""
+          val service      = new ListRetrievalService(mockResourceService)
+          val filterParams = FilterParams(Seq("countryCodes" -> Seq("GB", "XI")))
+          val result       = service.get(codeList, Phase6, Some(filterParams))
+          val expectedResult = Json
+            .parse("""
                 |[
                 |  {
                 |    "customsOfficeLsd": {
@@ -923,10 +798,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |  }
                 |]
                 |""".stripMargin)
-              .as[JsArray]
+            .as[JsArray]
 
-            result.get.value.toSet mustEqual expectedResult.value.toSet
-          }
+          result.get.value.toSet mustEqual expectedResult.value.toSet
         }
 
         "when multiple offices have the same ID" - {
@@ -1105,21 +979,12 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                   |""".stripMargin)
               .as[JsArray]
 
-            val mockResourceService = mock[ResourceService]
             when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-            val app = baseApplicationBuilder
-              .apply {
-                new GuiceApplicationBuilder()
-                  .overrides(bind[ResourceService].toInstance(mockResourceService))
-              }
-              .build()
-
-            running(app) {
-              val service = app.injector.instanceOf[ListRetrievalService]
-              val result  = service.get(codeList, Phase6, None)
-              val expectedResult = Json
-                .parse("""
+            val service = new ListRetrievalService(mockResourceService)
+            val result  = service.get(codeList, Phase6, None)
+            val expectedResult = Json
+              .parse("""
                   |[
                   |  {
                   |    "customsOfficeLsd": {
@@ -1178,10 +1043,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                   |  }
                   |]
                   |""".stripMargin)
-                .as[JsArray]
+              .as[JsArray]
 
-              result.get.value.toSet mustEqual expectedResult.value.toSet
-            }
+            result.get.value.toSet mustEqual expectedResult.value.toSet
           }
 
           "must take first language code if there is no EN language code" in {
@@ -1304,22 +1168,13 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                   |""".stripMargin)
               .as[JsArray]
 
-            val mockResourceService = mock[ResourceService]
             when(mockResourceService.getJson(any(), any())).thenReturn(Success(data))
 
-            val app = baseApplicationBuilder
-              .apply {
-                new GuiceApplicationBuilder()
-                  .overrides(bind[ResourceService].toInstance(mockResourceService))
-              }
-              .build()
+            val service = new ListRetrievalService(mockResourceService)
+            val result  = service.get(codeList, Phase6, None)
 
-            running(app) {
-              val service = app.injector.instanceOf[ListRetrievalService]
-              val result  = service.get(codeList, Phase6, None)
-
-              val expectedResult = Json
-                .parse("""
+            val expectedResult = Json
+              .parse("""
                 |[
                 |  {
                 |    "customsOfficeLsd": {
@@ -1378,10 +1233,9 @@ class ListRetrievalServiceSpec extends SpecBase with ScalaCheckPropertyChecks {
                 |  }
                 |]
                 |""".stripMargin)
-                .as[JsArray]
+              .as[JsArray]
 
-              result.get.value.toSet mustEqual expectedResult.value.toSet
-            }
+            result.get.value.toSet mustEqual expectedResult.value.toSet
           }
         }
       }

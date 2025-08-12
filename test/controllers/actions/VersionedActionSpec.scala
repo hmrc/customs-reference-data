@@ -19,7 +19,6 @@ package controllers.actions
 import base.SpecBase
 import models.Phase.*
 import models.request.VersionedRequest
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.*
 import play.api.mvc.Results.BadRequest
 import play.api.test.FakeRequest
@@ -29,7 +28,7 @@ import sttp.model.HeaderNames.Accept
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
+class VersionedActionSpec extends SpecBase {
 
   private class Harness(override val parser: BodyParsers.Default) extends VersionedActionImpl(parser) {
 
@@ -43,8 +42,7 @@ class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when 1.0 header" - {
       "must return request with version 1.0" in {
-        val parser = app.injector.instanceOf[BodyParsers.Default]
-        val action = new Harness(parser)
+        val action = new Harness(bodyParser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.1.0+json")
         val result  = action.callRefine(request).futureValue
@@ -55,8 +53,7 @@ class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when 2.0 header" - {
       "must return request with version 2.0" in {
-        val parser = app.injector.instanceOf[BodyParsers.Default]
-        val action = new Harness(parser)
+        val action = new Harness(bodyParser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.2.0+json")
         val result  = action.callRefine(request).futureValue
@@ -67,8 +64,7 @@ class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when undefined header" - {
       "must return request with version 1.0" in {
-        val parser = app.injector.instanceOf[BodyParsers.Default]
-        val action = new Harness(parser)
+        val action = new Harness(bodyParser)
 
         val request = fakeRequest
         val result  = action.callRefine(request).futureValue
@@ -79,8 +75,7 @@ class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when invalid version" - {
       "must return bad request" in {
-        val parser = app.injector.instanceOf[BodyParsers.Default]
-        val action = new Harness(parser)
+        val action = new Harness(bodyParser)
 
         val request = fakeRequest.withHeaders(Accept -> "application/vnd.hmrc.foo+json")
         val result  = action.callRefine(request).futureValue
@@ -91,8 +86,7 @@ class VersionedActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when random header" - {
       "must return request with version 1.0" in {
-        val parser = app.injector.instanceOf[BodyParsers.Default]
-        val action = new Harness(parser)
+        val action = new Harness(bodyParser)
 
         val request = fakeRequest.withHeaders(Accept -> "foo")
         val result  = action.callRefine(request).futureValue
