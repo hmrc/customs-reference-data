@@ -29,4 +29,6 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: MyServicesConf
   lazy val incomingAuth: IncomingAuthConfig = config.get[IncomingAuthConfig]("incomingRequestAuth")
 
   lazy val crdlCacheUrl: String = servicesConfig.fullServiceUrl("crdl-cache")
+
+  lazy val internalAuthToken: String = config.get[String]("internal-auth.token")
 }
