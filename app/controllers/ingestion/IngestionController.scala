@@ -22,7 +22,7 @@ import models.*
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, BodyParser, ControllerComponents, PlayBodyParsers}
-import services.ingestion.ReferenceDataService
+import services.ingestion.{ReferenceDataService, SchemaValidationService}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,6 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 abstract class IngestionController(
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
+  schemaValidationService: SchemaValidationService,
   logHeaders: LogHeaders,
   authenticateEISToken: AuthenticateEISToken,
   validateAcceptHeader: ValidateAcceptHeader
@@ -39,7 +40,7 @@ abstract class IngestionController(
 
   def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue]
 
-  val schema: SimpleJsonSchemaProvider
+  val schemaProvider: JsonSchemaProvider
 
   val source: ApiDataSource
 
@@ -48,7 +49,7 @@ abstract class IngestionController(
       implicit request =>
         (
           for {
-            validate <- EitherT.fromEither[Future](referenceDataService.validate(schema, request.body))
+            validate <- EitherT.fromEither[Future](schemaValidationService.validate(schemaProvider.getSchema, request.body))
             referenceDataPayload = ReferenceDataListsPayload(validate)
             insert <- EitherT(referenceDataService.insert(source, referenceDataPayload))
           } yield insert

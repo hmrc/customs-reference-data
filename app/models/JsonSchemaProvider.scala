@@ -24,13 +24,13 @@ import play.api.Environment
 
 trait JsonSchemaProvider {
 
-  val schema: JsonSchema
+  val env: Environment
 
-}
+  val jsonValidationService: JsonValidationService
 
-class SimpleJsonSchemaProvider(env: Environment, jsonValidationService: JsonValidationService)(path: String) extends JsonSchemaProvider {
+  val path: String
 
-  val schema: JsonSchema =
+  def getSchema: JsonSchema =
     env
       .resourceAsStream(path)
       .fold(

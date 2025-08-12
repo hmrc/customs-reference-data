@@ -18,8 +18,8 @@ package services.ingestion
 
 import jakarta.json.JsonReader
 import jakarta.json.stream.JsonParsingException
-import models.{BadRequestError, InvalidJsonError, JsonSchemaProvider, SchemaValidationError}
-import org.leadpony.justify.api.{JsonValidationService, Problem, ProblemHandler}
+import models.{BadRequestError, InvalidJsonError, SchemaValidationError}
+import org.leadpony.justify.api.{JsonSchema, JsonValidationService, Problem, ProblemHandler}
 import play.api.libs.json.{JsObject, JsValue}
 
 import java.io.StringReader
@@ -34,12 +34,12 @@ class SchemaValidationService @Inject() (jsonValidationService: JsonValidationSe
         schemaValidationProblems += problem
     }
 
-  def validate(schema: JsonSchemaProvider, json: JsValue): Either[BadRequestError, JsObject] = {
+  def validate(schema: JsonSchema, json: JsValue): Either[BadRequestError, JsObject] = {
 
     val schemaValidationProblems = ListBuffer.empty[Problem]
 
     val jsonReader: JsonReader =
-      jsonValidationService.createReader(new StringReader(json.toString), schema.schema, problemHandler(schemaValidationProblems))
+      jsonValidationService.createReader(new StringReader(json.toString), schema, problemHandler(schemaValidationProblems))
 
     try {
       jsonReader.read()

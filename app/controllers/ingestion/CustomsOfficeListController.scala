@@ -25,7 +25,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc.BodyParser
 import play.api.mvc.ControllerComponents
 import play.api.mvc.PlayBodyParsers
-import services.ingestion.ReferenceDataService
+import services.ingestion.{ReferenceDataService, SchemaValidationService}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -33,13 +33,14 @@ import scala.concurrent.ExecutionContext
 class CustomsOfficeListController @Inject() (
   cc: ControllerComponents,
   referenceDataService: ReferenceDataService,
+  schemaValidationService: SchemaValidationService,
   parseConfig: ReferenceDataControllerParserConfig,
-  override val schema: CTCUP08Schema,
+  override val schemaProvider: CTCUP08Schema,
   logHeaders: LogHeaders,
   authenticateEISToken: AuthenticateEISToken,
   validateAcceptHeader: ValidateAcceptHeader
 )(implicit ec: ExecutionContext)
-    extends IngestionController(cc, referenceDataService, logHeaders, authenticateEISToken, validateAcceptHeader) {
+    extends IngestionController(cc, referenceDataService, schemaValidationService, logHeaders, authenticateEISToken, validateAcceptHeader) {
 
   override def parseRequestBody(parse: PlayBodyParsers): BodyParser[JsValue] = parseConfig.customsOfficeParser(parse)
 

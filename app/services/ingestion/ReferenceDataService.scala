@@ -20,7 +20,6 @@ import cats.data.EitherT
 import com.google.inject.{ImplementedBy, Inject}
 import models.*
 import play.api.Logging
-import play.api.libs.json.{JsObject, JsValue}
 import repositories.*
 import services.TimeService
 import uk.gov.hmrc.mongo.MongoComponent
@@ -33,13 +32,11 @@ import scala.util.control.NonFatal
 @ImplementedBy(classOf[ReferenceDataServiceImpl])
 trait ReferenceDataService extends Logging {
   def insert(feed: ApiDataSource, payload: ReferenceDataPayload): Future[Either[ErrorDetails, Unit]]
-  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject]
 }
 
 private[ingestion] class ReferenceDataServiceImpl @Inject() (
   listRepository: ListRepository,
   versionRepository: VersionRepository,
-  schemaValidationService: SchemaValidationService,
   versionIdProducer: VersionIdProducer,
   timeService: TimeService,
   val mongoComponent: MongoComponent
@@ -100,7 +97,4 @@ private[ingestion] class ReferenceDataServiceImpl @Inject() (
 
           Left(MongoError(message))
       }
-
-  def validate(jsonSchemaProvider: JsonSchemaProvider, body: JsValue): Either[ErrorDetails, JsObject] =
-    schemaValidationService.validate(jsonSchemaProvider, body)
 }

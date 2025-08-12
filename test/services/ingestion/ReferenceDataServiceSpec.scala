@@ -25,7 +25,6 @@ import org.mockito.Mockito.*
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.Json
 import repositories.*
 import services.TimeService
 import uk.gov.hmrc.mongo.test.MongoSupport
@@ -36,17 +35,15 @@ import scala.concurrent.Future
 
 class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaCheckPropertyChecks with BeforeAndAfterEach {
 
-  private val mockSchemaValidationService: SchemaValidationService = mock[SchemaValidationService]
-  private val mockTimeService: TimeService                   = mock[TimeService]
-  private val mockVersionRepository                          = mock[VersionRepository]
-  private val mockListRepository                             = mock[ListRepository]
-  private val mockVersionIdProducer                          = mock[VersionIdProducer]
+  private val mockTimeService: TimeService = mock[TimeService]
+  private val mockVersionRepository        = mock[VersionRepository]
+  private val mockListRepository           = mock[ListRepository]
+  private val mockVersionIdProducer        = mock[VersionIdProducer]
 
   private val now: Instant = Instant.now()
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockSchemaValidationService)
     reset(mockTimeService)
     reset(mockVersionRepository)
     reset(mockListRepository)
@@ -77,7 +74,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -111,7 +107,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -152,7 +147,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -185,7 +179,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -212,7 +205,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -244,7 +236,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -276,7 +267,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -309,7 +299,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -342,7 +331,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
           val service = new ReferenceDataServiceImpl(
             mockListRepository,
             mockVersionRepository,
-            mockSchemaValidationService,
             mockVersionIdProducer,
             mockTimeService,
             mongoComponent
@@ -350,43 +338,6 @@ class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaChec
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
-    }
-  }
-
-  "validate" - {
-
-    val testJson = Json.obj("foo" -> "bar")
-
-    "must return JsObject on successful validation" in {
-
-      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
-
-      val service = new ReferenceDataServiceImpl(
-        mockListRepository,
-        mockVersionRepository,
-        mockSchemaValidationService,
-        mockVersionIdProducer,
-        mockTimeService,
-        mongoComponent
-      )
-
-      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
-
-      val result = service.validate(testJsonSchema, testJson).value
-
-      result mustEqual testJson
-    }
-
-    "must return error when a json validation error occurs" in {
-
-      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(OtherError("Json failed")))
-
-      val service        = app.injector.instanceOf[ReferenceDataService]
-      val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
-
-      val result = service.validate(testJsonSchema, testJson).left.value
-
-      result mustEqual OtherError("Json failed")
     }
   }
 }

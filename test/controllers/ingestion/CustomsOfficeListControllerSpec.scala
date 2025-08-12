@@ -20,7 +20,6 @@ import base.SpecBase
 import models.ApiDataSource.ColDataFeed
 import models.{InvalidJsonError, MongoError}
 import org.mockito.ArgumentMatchers.{eq as eqTo, *}
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -32,13 +31,14 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.ingestion.ReferenceDataService
+import services.ingestion.{ReferenceDataService, SchemaValidationService}
 
 import scala.concurrent.Future
 
 class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val mockReferenceDataService: ReferenceDataService = mock[ReferenceDataService]
+  val mockReferenceDataService: ReferenceDataService       = mock[ReferenceDataService]
+  val mockSchemaValidationService: SchemaValidationService = mock[SchemaValidationService]
 
   private val testJson = Json.obj("foo" -> "bar")
 
@@ -55,7 +55,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
     "returns ACCEPTED when the data has been validated and processed" in {
 
-      when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Right(())))
 
       val result = route(app, fakeRequest).value
@@ -65,7 +65,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
     "returns Bad Request when a validation error occurs" in {
       val error = InvalidJsonError("error")
-      when(mockReferenceDataService.validate(any(), any())).thenReturn(Left(error))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(error))
 
       val result = route(app, fakeRequest).value
 
@@ -74,7 +74,7 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     }
 
     "returns with an Internal Server Error when the data has been validated but was not processed successfully" in {
-      when(mockReferenceDataService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
       when(mockReferenceDataService.insert(eqTo(ColDataFeed), any())).thenReturn(Future.successful(Left(MongoError("error"))))
 
       val result = route(app, fakeRequest).value
@@ -86,7 +86,8 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    Mockito.reset(mockReferenceDataService)
+    reset(mockReferenceDataService)
+    reset(mockSchemaValidationService)
   }
 
   // Do not use directly use `app` instead
@@ -94,7 +95,8 @@ class CustomsOfficeListControllerSpec extends SpecBase with GuiceOneAppPerSuite 
     new GuiceApplicationBuilder()
       .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
       .overrides(
-        bind[ReferenceDataService].toInstance(mockReferenceDataService)
+        bind[ReferenceDataService].toInstance(mockReferenceDataService),
+        bind[SchemaValidationService].toInstance(mockSchemaValidationService)
       )
       .build()
 }

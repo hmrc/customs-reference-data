@@ -23,5 +23,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CTCUP08Schema @Inject() (env: Environment, jsonValidationService: JsonValidationService)
-    extends SimpleJsonSchemaProvider(env, jsonValidationService)("schemas/CTCUP08.schema.json")
+class CTCUP08Schema @Inject() (
+  override val env: Environment,
+  override val jsonValidationService: JsonValidationService
+) extends JsonSchemaProvider {
+
+  override val path: String = "schemas/CTCUP08.schema.json"
+}
