@@ -18,17 +18,16 @@ package controllers.actions
 
 import base.SpecBase
 import org.scalatest.Assertion
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status.*
 import play.api.mvc.Result
-import play.api.test.FakeHeaders
-import play.api.test.FakeRequest
+import play.api.test.{FakeHeaders, FakeRequest}
 
-class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
+import scala.concurrent.ExecutionContext.Implicits.global
+
+class ValidateAcceptHeaderSpec extends SpecBase {
 
   "ensure we return BadRequest when no Accept header" in {
-    val sut = app.injector.instanceOf[ValidateAcceptHeaderImpl]
+    val sut = new ValidateAcceptHeaderImpl(bodyParser)
 
     val request = FakeRequest("POST", "/")
 
@@ -38,7 +37,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
   }
 
   "ensure we return BadRequest when v1 Accept header" in {
-    val sut = app.injector.instanceOf[ValidateAcceptHeaderImpl]
+    val sut = new ValidateAcceptHeaderImpl(bodyParser)
 
     val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.1.0+gzip")), "")
 
@@ -49,7 +48,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
 
   "ensure we allow action to proceed when a valid Accept header" - {
     "when data is compressed" in {
-      val sut = app.injector.instanceOf[ValidateAcceptHeaderImpl]
+      val sut = new ValidateAcceptHeaderImpl(bodyParser)
 
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.2.0+gzip")), "")
 
@@ -59,7 +58,7 @@ class ValidateAcceptHeaderSpec extends SpecBase with GuiceOneAppPerSuite {
     }
 
     "when data is uncompressed" in {
-      val sut = app.injector.instanceOf[ValidateAcceptHeaderImpl]
+      val sut = new ValidateAcceptHeaderImpl(bodyParser)
 
       val request = FakeRequest("POST", "/", FakeHeaders(Seq("Accept" -> "application/vnd.hmrc.2.0+json")), "")
 

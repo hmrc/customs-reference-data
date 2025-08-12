@@ -23,27 +23,20 @@ import models.*
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.{BeforeAndAfterEach, TestData}
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
-import org.scalatestplus.scalacheck.{ScalaCheckDrivenPropertyChecks, ScalaCheckPropertyChecks}
-import play.api.Application
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.Json
 import repositories.*
 import services.TimeService
+import uk.gov.hmrc.mongo.test.MongoSupport
 
 import java.time.Instant
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReferenceDataServiceSpec
-    extends SpecBase
-    with ScalaCheckDrivenPropertyChecks
-    with GuiceOneAppPerTest
-    with ScalaCheckPropertyChecks
-    with BeforeAndAfterEach {
+class ReferenceDataServiceSpec extends SpecBase with MongoSupport with ScalaCheckPropertyChecks with BeforeAndAfterEach {
 
-  private val mockValidationService: SchemaValidationService = mock[SchemaValidationService]
+  private val mockSchemaValidationService: SchemaValidationService = mock[SchemaValidationService]
   private val mockTimeService: TimeService                   = mock[TimeService]
   private val mockVersionRepository                          = mock[VersionRepository]
   private val mockListRepository                             = mock[ListRepository]
@@ -51,20 +44,9 @@ class ReferenceDataServiceSpec
 
   private val now: Instant = Instant.now()
 
-  override def newAppForTest(testData: TestData): Application =
-    new GuiceApplicationBuilder()
-      .overrides(
-        bind[SchemaValidationService].toInstance(mockValidationService),
-        bind[TimeService].toInstance(mockTimeService),
-        bind[VersionRepository].toInstance(mockVersionRepository),
-        bind[ListRepository].toInstance(mockListRepository),
-        bind[VersionIdProducer].toInstance(mockVersionIdProducer)
-      )
-      .build()
-
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockValidationService)
+    reset(mockSchemaValidationService)
     reset(mockTimeService)
     reset(mockVersionRepository)
     reset(mockListRepository)
@@ -92,7 +74,14 @@ class ReferenceDataServiceSpec
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.value mustEqual ()
 
@@ -119,7 +108,14 @@ class ReferenceDataServiceSpec
             .thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName, 1)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           val expectedError = MongoError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName.listName}"
@@ -153,7 +149,14 @@ class ReferenceDataServiceSpec
             .thenReturn(Future.successful(FailedWrite(failedListName2, 1)))
             .thenReturn(Future.successful(FailedWrite(failedListName3, 1)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           val expectedError = MongoError(
             s"[services.ingestion.ReferenceDataServiceImpl]: Failed to insert the following lists: ${failedListName1.listName}, ${failedListName2.listName}, ${failedListName3.listName}"
@@ -179,7 +182,14 @@ class ReferenceDataServiceSpec
           when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.successful(Left(error)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
       }
@@ -199,7 +209,14 @@ class ReferenceDataServiceSpec
           when(mockVersionRepository.getExpiredVersions(any(), any())).thenReturn(Future.successful(Nil))
           when(mockVersionRepository.save(eqTo(versionId), any(), any(), any(), any())).thenReturn(Future.failed(new Throwable(message)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
@@ -224,7 +241,14 @@ class ReferenceDataServiceSpec
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
       }
@@ -249,7 +273,14 @@ class ReferenceDataServiceSpec
           when(mockListRepository.insertList(any())).thenReturn(Future.successful(SuccessfulWrite(ListName("foo"), 1)))
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
@@ -275,7 +306,14 @@ class ReferenceDataServiceSpec
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Left(error)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual error
       }
@@ -301,7 +339,14 @@ class ReferenceDataServiceSpec
           when(mockListRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.successful(Right(())))
           when(mockVersionRepository.remove(eqTo(expiredVersionIds))).thenReturn(Future.failed(new Throwable(message)))
 
-          val service = app.injector.instanceOf[ReferenceDataService]
+          val service = new ReferenceDataServiceImpl(
+            mockListRepository,
+            mockVersionRepository,
+            mockSchemaValidationService,
+            mockVersionIdProducer,
+            mockTimeService,
+            mongoComponent
+          )
 
           service.insert(apiDataSource, payload).futureValue.left.value mustEqual MongoError(message)
       }
@@ -314,9 +359,17 @@ class ReferenceDataServiceSpec
 
     "must return JsObject on successful validation" in {
 
-      when(mockValidationService.validate(any(), any())).thenReturn(Right(testJson))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Right(testJson))
 
-      val service        = app.injector.instanceOf[ReferenceDataService]
+      val service = new ReferenceDataServiceImpl(
+        mockListRepository,
+        mockVersionRepository,
+        mockSchemaValidationService,
+        mockVersionIdProducer,
+        mockTimeService,
+        mongoComponent
+      )
+
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]
 
       val result = service.validate(testJsonSchema, testJson).value
@@ -326,7 +379,7 @@ class ReferenceDataServiceSpec
 
     "must return error when a json validation error occurs" in {
 
-      when(mockValidationService.validate(any(), any())).thenReturn(Left(OtherError("Json failed")))
+      when(mockSchemaValidationService.validate(any(), any())).thenReturn(Left(OtherError("Json failed")))
 
       val service        = app.injector.instanceOf[ReferenceDataService]
       val testJsonSchema = app.injector.instanceOf[TestJsonSchema]

@@ -24,14 +24,18 @@ import play.api.Environment
 
 trait JsonSchemaProvider {
 
-  def schema: JsonSchema
+  val schema: JsonSchema
 
 }
 
-abstract class SimpleJsonSchemaProvider(env: Environment, jsonValidationService: JsonValidationService)(path: String) extends JsonSchemaProvider {
+class SimpleJsonSchemaProvider(env: Environment, jsonValidationService: JsonValidationService)(path: String) extends JsonSchemaProvider {
 
   val schema: JsonSchema =
     env
       .resourceAsStream(path)
-      .fold(throw new FileNotFoundException(s"File for schema: ${getClass.getSimpleName} not find file at path $path"))(jsonValidationService.readSchema)
+      .fold(
+        throw new FileNotFoundException(s"File for schema: ${getClass.getSimpleName} not find file at path $path")
+      )(
+        jsonValidationService.readSchema
+      )
 }
