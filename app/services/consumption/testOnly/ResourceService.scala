@@ -28,7 +28,7 @@ class ResourceService @Inject() (env: Environment) {
 
   def getJson(listName: ListName): Try[JsArray] =
     env
-      .resourceAsStream(s"resources/phase-5/$listName.json")
+      .resourceAsStream(s"resources/code-lists/$listName.json")
       .map {
         inputStream =>
           val rawData = Source.fromInputStream(inputStream).mkString
