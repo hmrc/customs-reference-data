@@ -16,39 +16,48 @@
 
 package controllers.consumption.testOnly
 
+import connectors.CrdlCacheConnector
 import controllers.actions.VersionedAction
 import models.Phase.{Phase5, Phase6}
 import models.{CodeList, FilterParams}
 import play.api.Logging
+import play.api.http.HttpEntity
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.consumption.testOnly.ListRetrievalService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 class ListRetrievalController @Inject() (
   cc: ControllerComponents,
+  versionedAction: VersionedAction,
   listRetrievalService: ListRetrievalService,
-  versionedAction: VersionedAction
-) extends BackendController(cc)
+  crdlConnector: CrdlCacheConnector
+)(implicit ec: ExecutionContext)
+    extends BackendController(cc)
     with Logging {
 
-  def get(codeList: CodeList, filterParams: Option[FilterParams]): Action[AnyContent] =
-    versionedAction {
+  def get(codeList: CodeList, filter: Option[FilterParams]): Action[AnyContent] =
+    versionedAction.async {
       implicit request =>
-        listRetrievalService.get(codeList, request.phase, filterParams) match {
-          case Success(json) =>
-            Ok {
-              request.phase match {
-                case Phase5 => Json.obj("data" -> json)
-                case Phase6 => json
+        request.phase match {
+          case Phase5 =>
+            Future.successful {
+              listRetrievalService.get(codeList, filter) match {
+                case Success(json) =>
+                  Ok(Json.obj("data" -> json))
+                case Failure(exception) =>
+                  logger.error(exception.getMessage)
+                  NotFound
               }
             }
-          case Failure(exception) =>
-            logger.error(exception.getMessage)
-            NotFound
+          case Phase6 =>
+            crdlConnector.get(codeList, filter.getOrElse(FilterParams())).map {
+              source => Ok.sendEntity(HttpEntity.Streamed(source, None, Some("application/json")))
+            }
         }
     }
 

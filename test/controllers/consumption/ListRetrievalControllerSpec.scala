@@ -21,6 +21,8 @@ import connectors.CrdlCacheConnector
 import generators.ModelArbitraryInstances
 import models.{CodeList, FilterParams, VersionInformation}
 import org.apache.pekko.NotUsed
+import scala.collection.immutable.{Seq => ImmSeq}
+import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
@@ -65,28 +67,123 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
       "when phase 5" - {
 
-        "should return OK" in {
+        "should return OK" - {
 
-          val codeList = CodeList("AdditionalInformation")
-          val version  = arbitrary[VersionInformation].sample.value
-          lazy val url = s"/customs-reference-data/lists/${codeList.listName}"
+          "when there are no query parameters" in {
 
-          val fakeRequest = FakeRequest(GET, url)
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
+            implicit val mat: Materializer = app.materializer
 
-          val source: Source[JsObject, NotUsed] = Source(1 to 4).map(
-            _ => Json.obj("index" -> "value")
-          )
+            val codeList = CodeList("AdditionalInformation")
+            val version  = arbitrary[VersionInformation].sample.value
+            lazy val url = s"/customs-reference-data/lists/${codeList.listName}"
 
-          when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
-          when(mockListRetrievalService.getStreamedList(any(), any(), any())).thenReturn(source)
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
 
-          val result = route(app, fakeRequest).get
+            val json = ImmSeq(
+              Json.obj(
+                "documentType" -> "C651",
+                "description"  -> "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+              ),
+              Json.obj(
+                "documentType" -> "C658",
+                "description" -> "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+              )
+            )
 
-          status(result) mustEqual OK
+            val source: Source[JsObject, NotUsed] = Source.apply(json)
 
-          verify(mockListRetrievalService).getLatestVersion(codeList.listName)
-          verify(mockListRetrievalService).getStreamedList(codeList.listName, version.versionId, None)
+            when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
+            when(mockListRetrievalService.getStreamedList(any(), any(), any())).thenReturn(source)
+
+            val result = route(app, fakeRequest).get
+
+            val expectedJson = Json.parse(s"""
+                |{
+                |  "_links": {
+                |    "self": {
+                |      "href": "/customs-reference-data/lists/AdditionalInformation"
+                |    }
+                |  },
+                |  "meta": {
+                |    "version": "${version.versionId}",
+                |    "snapshotDate": "${version.messageInformation.snapshotDate}"
+                |  },
+                |  "id": "AdditionalInformation",
+                |  "data": [
+                |    {
+                |      "documentType": "C651",
+                |      "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |    },
+                |    {
+                |      "documentType": "C658",
+                |      "description": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+                |    }
+                |  ]
+                |}
+                |""".stripMargin)
+
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
+
+            verify(mockListRetrievalService).getLatestVersion(codeList.listName)
+            verify(mockListRetrievalService).getStreamedList(codeList.listName, version.versionId, None)
+          }
+
+          "when there are query parameters" in {
+
+            implicit val mat: Materializer = app.materializer
+
+            val codeList = CodeList("AdditionalInformation")
+            val version  = arbitrary[VersionInformation].sample.value
+            lazy val url = s"/customs-reference-data/lists/${codeList.listName}?data.documentType=C651"
+
+            val filterParams = FilterParams(Seq("data.documentType" -> Seq("C651")))
+
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
+
+            val json = ImmSeq(
+              Json.obj(
+                "documentType" -> "C651",
+                "description"  -> "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+              )
+            )
+
+            val source: Source[JsObject, NotUsed] = Source.apply(json)
+
+            when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(Some(version)))
+            when(mockListRetrievalService.getStreamedList(any(), any(), any())).thenReturn(source)
+
+            val result = route(app, fakeRequest).get
+
+            val expectedJson = Json.parse(s"""
+                |{
+                |  "_links": {
+                |    "self": {
+                |      "href": "/customs-reference-data/lists/AdditionalInformation?data.documentType=C651"
+                |    }
+                |  },
+                |  "meta": {
+                |    "version": "${version.versionId}",
+                |    "snapshotDate": "${version.messageInformation.snapshotDate}"
+                |  },
+                |  "id": "AdditionalInformation",
+                |  "data": [
+                |    {
+                |      "documentType": "C651",
+                |      "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |    }
+                |  ]
+                |}
+                |""".stripMargin)
+
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
+
+            verify(mockListRetrievalService).getLatestVersion(codeList.listName)
+            verify(mockListRetrievalService).getStreamedList(codeList.listName, version.versionId, Some(filterParams))
+          }
         }
 
         "should return NotFound when latest version returns None" in {
@@ -96,12 +193,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           val fakeRequest = FakeRequest(GET, url).withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
 
-          val source: Source[JsObject, NotUsed] = Source(1 to 4).map(
-            _ => Json.obj("index" -> "value")
-          )
-
           when(mockListRetrievalService.getLatestVersion(any())).thenReturn(Future.successful(None))
-          when(mockListRetrievalService.getStreamedList(any(), any(), any())).thenReturn(source)
 
           val result = route(app, fakeRequest).get
 
@@ -118,6 +210,8 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           "when there are no query parameters" in {
 
+            implicit val mat: Materializer = app.materializer
+
             val listName = "AdditionalReference"
             val codeList = CodeList(listName)
 
@@ -126,15 +220,30 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
             val fakeRequest = FakeRequest(GET, url)
               .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
 
-            val source: Source[ByteString, NotUsed] = Source(1 to 4).map(
-              i => ByteString.fromString(i.toString)
-            )
+            val json =
+              """
+                |[
+                |  {
+                |    "key": "C651",
+                |    "value": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  },
+                |  {
+                |    "key": "C658",
+                |    "value": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+                |  }
+                |]
+                |""".stripMargin
+
+            val source: Source[ByteString, ?] = Source.single(ByteString(json))
 
             when(mockConnector.get(any(), any())(any())).thenReturn(Future.successful(source))
 
             val result = route(app, fakeRequest).get
 
+            val expectedJson = Json.parse(json)
+
             status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
 
             verifyNoInteractions(mockListRetrievalService)
             verify(mockConnector).get(eqTo(codeList), eqTo(FilterParams()))(any())
@@ -142,25 +251,38 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           "when there are query parameters" in {
 
+            implicit val mat: Materializer = app.materializer
+
             val listName = "AdditionalReference"
             val codeList = CodeList(listName)
 
-            val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
+            val filterParams = FilterParams(Seq("keys" -> Seq("C651")))
 
-            lazy val url = s"/customs-reference-data/lists/$listName?keys=00200"
+            lazy val url = s"/customs-reference-data/lists/$listName?keys=C651"
 
             val fakeRequest = FakeRequest(GET, url)
               .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
 
-            val source: Source[ByteString, NotUsed] = Source(1 to 4).map(
-              i => ByteString.fromString(i.toString)
-            )
+            val json =
+              """
+                |[
+                |  {
+                |    "key": "C651",
+                |    "value": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  }
+                |]
+                |""".stripMargin
+
+            val source: Source[ByteString, ?] = Source.single(ByteString(json))
 
             when(mockConnector.get(any(), any())(any())).thenReturn(Future.successful(source))
 
             val result = route(app, fakeRequest).get
 
+            val expectedJson = Json.parse(json)
+
             status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
 
             verifyNoInteractions(mockListRetrievalService)
             verify(mockConnector).get(eqTo(codeList), eqTo(filterParams))(any())
@@ -173,12 +295,6 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
           val fakeRequest = FakeRequest(GET, url)
             .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
-
-          val source: Source[ByteString, NotUsed] = Source(1 to 4).map(
-            i => ByteString.fromString(i.toString)
-          )
-
-          when(mockConnector.get(any(), any())(any())).thenReturn(Future.successful(source))
 
           val result = route(app, fakeRequest).get
 
