@@ -30,7 +30,7 @@ Although Publish/Subscribe is based on earlier design patterns like message queu
 
 This corresponds to P5 code lists:
 * Requests will retrieve data from MongoDB
-* Test-only requests will retrieve data from [here](conf/resources/phase-5)
+* Test-only requests will retrieve data from [here](conf/resources/code-lists)
 
 #### v2.0
 

@@ -17,10 +17,13 @@
 package controllers.consumption.testOnly
 
 import base.SpecBase
+import connectors.CrdlCacheConnector
 import generators.ModelArbitraryInstances
 import models.CodeList.RefDataCodeList
-import models.ListName
-import models.Phase.*
+import models.{FilterParams, ListName}
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.*
 import org.scalatest.{BeforeAndAfterEach, TestData}
@@ -34,16 +37,19 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.consumption.testOnly.ListRetrievalService
 
+import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with ScalaCheckPropertyChecks with ModelArbitraryInstances with BeforeAndAfterEach {
 
   private val mockListRetrievalService = mock[ListRetrievalService]
+  private val mockCrdlCacheConnector   = mock[CrdlCacheConnector]
 
   override def newAppForTest(testData: TestData): Application =
     new GuiceApplicationBuilder()
       .overrides(
-        bind[ListRetrievalService].toInstance(mockListRetrievalService)
+        bind[ListRetrievalService].toInstance(mockListRetrievalService),
+        bind[CrdlCacheConnector].toInstance(mockCrdlCacheConnector)
       )
       .configure("play.http.router" -> "testOnlyDoNotUseInAppConf.Routes")
       .build()
@@ -51,6 +57,7 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockListRetrievalService)
+    reset(mockCrdlCacheConnector)
   }
 
   "TestOnlyListRetrievalController" - {
@@ -59,30 +66,104 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
 
       "when phase 5" - {
 
-        "should return OK when get returns a Success" in {
+        "should return OK when get returns a Success" - {
 
-          val listName = ListName("AdditionalReference")
-          val codeList = RefDataCodeList(listName, "CL380")
+          "when there are no filter params" in {
 
-          lazy val url = s"/customs-reference-data/test-only/lists/$listName"
+            val listName = ListName("AdditionalReference")
+            val codeList = RefDataCodeList(listName, "CL380")
 
-          val fakeRequest = FakeRequest(GET, url)
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
+            lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
-          val json = JsArray(
-            Seq(
-              Json.obj("foo" -> "bar")
-            )
-          )
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
 
-          when(mockListRetrievalService.get(any(), any(), any())).thenReturn(Success(json))
+            val json = Json
+              .parse("""
+                |[
+                |  {
+                |    "documentType": "C651",
+                |    "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  },
+                |  {
+                |    "documentType": "C658",
+                |    "description": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+                |  }
+                |]
+                |""".stripMargin)
+              .as[JsArray]
 
-          val result = route(app, fakeRequest).get
+            when(mockListRetrievalService.get(any(), any())).thenReturn(Success(json))
 
-          status(result) mustEqual OK
-          contentAsJson(result) mustEqual Json.obj("data" -> json)
+            val result = route(app, fakeRequest).get
 
-          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase5), eqTo(None))
+            val expectedJson = Json.parse("""
+                |{
+                |  "data": [
+                |    {
+                |      "documentType": "C651",
+                |      "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |    },
+                |    {
+                |      "documentType": "C658",
+                |      "description": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+                |    }
+                |  ]
+                |}
+                |""".stripMargin)
+
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
+
+            verify(mockListRetrievalService).get(eqTo(codeList), eqTo(None))
+            verifyNoInteractions(mockCrdlCacheConnector)
+          }
+
+          "when there are filter params" in {
+
+            val listName = ListName("AdditionalReference")
+            val codeList = RefDataCodeList(listName, "CL380")
+
+            val filterParams = FilterParams(Seq("data.documentType" -> Seq("C651")))
+
+            lazy val url = s"/customs-reference-data/test-only/lists/$listName?data.documentType=C651"
+
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
+
+            val json = Json
+              .parse("""
+                |[
+                |  {
+                |    "documentType": "C651",
+                |    "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  }
+                |]
+                |""".stripMargin)
+              .as[JsArray]
+
+            when(mockListRetrievalService.get(any(), any())).thenReturn(Success(json))
+
+            val result = route(app, fakeRequest).get
+
+            val expectedJson = Json
+              .parse("""
+                |{
+                |  "data": [
+                |    {
+                |      "documentType": "C651",
+                |      "description": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |    }
+                |  ]
+                |}
+                |""".stripMargin)
+
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual expectedJson
+
+            verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Some(filterParams)))
+            verifyNoInteractions(mockCrdlCacheConnector)
+          }
         }
 
         "should return NotFound when get returns a Failure" in {
@@ -95,61 +176,94 @@ class ListRetrievalControllerSpec extends SpecBase with GuiceOneAppPerTest with 
           val fakeRequest = FakeRequest(GET, url)
             .withHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
 
-          when(mockListRetrievalService.get(any(), any(), any())).thenReturn(Failure(new Throwable("")))
+          when(mockListRetrievalService.get(any(), any())).thenReturn(Failure(new Throwable("")))
 
           val result = route(app, fakeRequest).get
 
           status(result) mustEqual NOT_FOUND
 
-          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase5), eqTo(None))
+          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(None))
+          verifyNoInteractions(mockCrdlCacheConnector)
         }
       }
 
       "when phase 6" - {
 
-        "should return OK when get returns a Success" in {
+        "should return OK when get returns a Success" - {
 
-          val listName = ListName("AdditionalReference")
-          val codeList = RefDataCodeList(listName, "CL380")
+          "when there are no filter params" in {
 
-          lazy val url = s"/customs-reference-data/test-only/lists/$listName"
+            implicit val mat: Materializer = app.materializer
 
-          val fakeRequest = FakeRequest(GET, url)
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
+            val listName = ListName("AdditionalReference")
+            val codeList = RefDataCodeList(listName, "CL380")
 
-          val json = JsArray(
-            Seq(
-              Json.obj("foo" -> "bar")
-            )
-          )
+            lazy val url = s"/customs-reference-data/test-only/lists/$listName"
 
-          when(mockListRetrievalService.get(any(), any(), any())).thenReturn(Success(json))
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
 
-          val result = route(app, fakeRequest).get
+            val json = Json.parse("""
+                |[
+                |  {
+                |    "key": "C651",
+                |    "value": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  },
+                |  {
+                |    "key": "C658",
+                |    "value": "Fallback Document for movements of excise goods under suspension of excise duty, as referred to in Article 9(1) of Commission Delegated Regulation (EU) 2022/1636"
+                |  }
+                |]
+                |""".stripMargin)
 
-          status(result) mustEqual OK
-          contentAsJson(result) mustEqual json
+            val source: Source[ByteString, ?] = Source.single(ByteString(Json.stringify(json)))
 
-          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase6), eqTo(None))
-        }
+            when(mockCrdlCacheConnector.get(any(), any())(any())).thenReturn(Future.successful(source))
 
-        "should return NotFound when get returns a Failure" in {
+            val result = route(app, fakeRequest).get
 
-          val listName = ListName("AdditionalReference")
-          val codeList = RefDataCodeList(listName, "CL380")
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual json
 
-          lazy val url = s"/customs-reference-data/test-only/lists/$listName"
+            verifyNoInteractions(mockListRetrievalService)
+            verify(mockCrdlCacheConnector).get(eqTo(codeList), eqTo(FilterParams()))(any())
+          }
 
-          val fakeRequest = FakeRequest(GET, url)
-            .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
+          "when there are filter params" in {
 
-          when(mockListRetrievalService.get(any(), any(), any())).thenReturn(Failure(new Throwable("")))
+            implicit val mat: Materializer = app.materializer
 
-          val result = route(app, fakeRequest).get
+            val listName = ListName("AdditionalReference")
+            val codeList = RefDataCodeList(listName, "CL380")
 
-          status(result) mustEqual NOT_FOUND
+            val filterParams = FilterParams(Seq("keys" -> Seq("C651")))
 
-          verify(mockListRetrievalService).get(eqTo(codeList), eqTo(Phase6), eqTo(None))
+            lazy val url = s"/customs-reference-data/test-only/lists/$listName?keys=C651"
+
+            val fakeRequest = FakeRequest(GET, url)
+              .withHeaders(ACCEPT -> "application/vnd.hmrc.2.0+json")
+
+            val json = Json.parse("""
+                |[
+                |  {
+                |    "key": "C651",
+                |    "value": "Electronic administrative document (e-AD), as referred to in Article 3(1) of Reg. (EC) No 684/2009"
+                |  }
+                |]
+                |""".stripMargin)
+
+            val source: Source[ByteString, ?] = Source.single(ByteString(Json.stringify(json)))
+
+            when(mockCrdlCacheConnector.get(any(), any())(any())).thenReturn(Future.successful(source))
+
+            val result = route(app, fakeRequest).get
+
+            status(result) mustEqual OK
+            contentAsJson(result) mustEqual json
+
+            verifyNoInteractions(mockListRetrievalService)
+            verify(mockCrdlCacheConnector).get(eqTo(codeList), eqTo(filterParams))(any())
+          }
         }
       }
     }

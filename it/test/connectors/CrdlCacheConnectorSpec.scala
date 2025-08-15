@@ -17,7 +17,7 @@
 package connectors
 
 import base.{ItSpecBase, WireMockServerHandler}
-import com.github.tomakehurst.wiremock.client.WireMock.{get, okJson, urlEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock.{equalTo, get, okJson, urlEqualTo}
 import models.CodeList.ColDataCodeList
 import models.{CodeList, FilterParams}
 import org.apache.pekko.stream.Materializer
@@ -27,11 +27,16 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
+import play.api.test.Helpers.AUTHORIZATION
 
 class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with WireMockServerHandler {
 
   override def guiceApplicationBuilder: GuiceApplicationBuilder =
-    super.guiceApplicationBuilder.configure("microservice.services.crdl-cache.port" -> server.port())
+    super.guiceApplicationBuilder
+      .configure(
+        "microservice.services.crdl-cache.port" -> server.port(),
+        "internal-auth.token"                   -> "crdl-cache-test-token"
+      )
 
   override def fakeApplication(): Application = guiceApplicationBuilder.build()
 
@@ -78,6 +83,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 
@@ -107,6 +113,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 
@@ -143,6 +150,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 
@@ -223,6 +231,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 
@@ -272,6 +281,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 
@@ -347,6 +357,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           server.stubFor(
             get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
               .willReturn(okJson(Json.stringify(json)))
           )
 

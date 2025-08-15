@@ -23,7 +23,7 @@ import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
 import uk.gov.hmrc.http.client.{HttpClientV2, given}
-import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
+import uk.gov.hmrc.http.{Authorization, HeaderCarrier, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,6 +37,8 @@ class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(impli
       case RefDataCodeList(_, code) =>
         url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList}"
     }
-    http.get(url).stream[Source[ByteString, ?]]
+    http
+      .get(url)(hc.copy(authorization = Some(Authorization(config.internalAuthToken))))
+      .stream[Source[ByteString, ?]]
   }
 }
