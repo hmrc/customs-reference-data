@@ -17,7 +17,7 @@
 package connectors
 
 import base.{ItSpecBase, WireMockServerHandler}
-import com.github.tomakehurst.wiremock.client.WireMock.{equalTo, get, okJson, urlEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock.{equalTo, get, getRequestedFor, okJson, urlEqualTo, urlPathEqualTo}
 import models.CodeList.ColDataCodeList
 import models.{CodeList, FilterParams}
 import org.apache.pekko.stream.Materializer
@@ -53,7 +53,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Nil)
 
-          val url = "/crdl-cache/lists/CL239"
+          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS"
 
           val json = Json.parse("""
               |[
@@ -97,7 +97,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
 
-          val url = "/crdl-cache/lists/CL239?keys=00200"
+          val url = "/crdl-cache/lists/CL239?keys=00200&phase=P6&domain=NCTS"
 
           val json = Json.parse("""
               |[
@@ -127,7 +127,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
 
-          val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700"
+          val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700&phase=P6&domain=NCTS"
 
           val json = Json.parse("""
               |[
@@ -158,6 +158,51 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           Json.parse(result.toArray) mustEqual json
         }
+
+        "when default query parameters" in {
+          val codeList = CodeList("AdditionalInformation")
+
+          val filterParams = FilterParams(Nil)
+
+          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS"
+
+          val json = Json.parse("""
+              |[
+              |  {
+              |    "key": "00200",
+              |    "value": "Several occurrences of documents and parties",
+              |    "properties": {
+              |      "state": "valid"
+              |    },
+              |    "phase": "P6"
+              |  },
+              |  {
+              |    "key": "00700",
+              |    "value": "Discharge of inward processing. IP’ and the relevant authorisation number or INF number",
+              |    "properties": {
+              |      "state": "valid"
+              |    },
+              |    "domain": "NCTS"
+              |  }
+              |]
+              |""".stripMargin)
+
+          server.stubFor(
+            get(urlEqualTo(url))
+              .withHeader(AUTHORIZATION, equalTo("crdl-cache-test-token"))
+              .willReturn(okJson(Json.stringify(json)))
+          )
+
+          val result = connector.get(codeList, filterParams).futureValue.runWith(Sink.fold(ByteString.empty)(_ ++ _)).futureValue
+
+          server.verify(
+            getRequestedFor(urlPathEqualTo("/crdl-cache/lists/CL239"))
+              .withQueryParam("domain", equalTo("NCTS"))
+          )
+
+          Json.parse(result.toArray) mustEqual json
+        }
+
       }
 
       "when a ColDataCodeList" - {
