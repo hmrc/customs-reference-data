@@ -35,7 +35,7 @@ class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(impli
 
     val url = codeList match {
       case ColDataCodeList =>
-        url"${config.crdlCacheUrl}/offices?${filterParams.toList}"
+        url"${config.crdlCacheUrl}/offices?${filterParams.toList ++ staticParams}"
       case RefDataCodeList(_, code) =>
         url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList ++ staticParams}"
     }
