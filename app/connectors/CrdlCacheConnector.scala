@@ -31,11 +31,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(implicit ec: ExecutionContext, mat: Materializer) {
 
   def get(codeList: CodeList, filterParams: FilterParams)(implicit hc: HeaderCarrier): Future[Source[ByteString, ?]] = {
+    val staticParams: Seq[(String, String)] = Seq("phase" -> "P6", "domain" -> "NCTS")
+
     val url = codeList match {
       case ColDataCodeList =>
-        url"${config.crdlCacheUrl}/offices?${filterParams.toList}"
+        url"${config.crdlCacheUrl}/offices?${filterParams.toList ++ staticParams}"
       case RefDataCodeList(_, code) =>
-        url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList}"
+        url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList ++ staticParams}"
     }
     http
       .get(url)(hc.copy(authorization = Some(Authorization(config.internalAuthToken))))
