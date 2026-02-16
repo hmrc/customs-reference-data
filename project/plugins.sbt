@@ -4,7 +4,7 @@ resolvers += Resolver.typesafeRepo("releases")
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.24.0")
 addSbtPlugin("uk.gov.hmrc" % "sbt-distributables" % "2.6.0")
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.8")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.10")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.2.0")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.3")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
