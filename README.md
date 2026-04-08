@@ -36,7 +36,7 @@ This corresponds to P5 code lists:
 
 This corresponds to P6 code lists:
 * Requests will retrieve data from [crdl-cache](https://github.com/hmrc/crdl-cache)
-* Test-only requests will retrieve data from [here](conf/resources/phase-6)
+* Test-only requests will retrieve data from [crdl-cache](https://github.com/hmrc/crdl-cache)
 
 ## Endpoints
 
