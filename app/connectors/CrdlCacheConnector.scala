@@ -37,7 +37,7 @@ class CrdlCacheConnector @Inject() (config: AppConfig, http: HttpClientV2)(impli
       case ColDataCodeList =>
         url"${config.crdlCacheUrl}/offices?${filterParams.toList ++ staticParams}"
       case RefDataCodeList(_, code) =>
-        url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList ++ staticParams}"
+        url"${config.crdlCacheUrl}/lists/$code?${filterParams.toList ++ staticParams :+ ("state" -> "valid")}"
     }
     http
       .get(url)(hc.copy(authorization = Some(Authorization(config.internalAuthToken))))

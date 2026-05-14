@@ -53,7 +53,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Nil)
 
-          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS"
+          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS&state=valid"
 
           val json = Json.parse("""
               |[
@@ -97,7 +97,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Seq("keys" -> Seq("00200")))
 
-          val url = "/crdl-cache/lists/CL239?keys=00200&phase=P6&domain=NCTS"
+          val url = "/crdl-cache/lists/CL239?keys=00200&phase=P6&domain=NCTS&state=valid"
 
           val json = Json.parse("""
               |[
@@ -127,7 +127,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Seq("keys" -> Seq("00200", "00700")))
 
-          val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700&phase=P6&domain=NCTS"
+          val url = "/crdl-cache/lists/CL239?keys=00200&keys=00700&phase=P6&domain=NCTS&state=valid"
 
           val json = Json.parse("""
               |[
@@ -164,7 +164,7 @@ class CrdlCacheConnectorSpec extends ItSpecBase with GuiceOneServerPerSuite with
 
           val filterParams = FilterParams(Nil)
 
-          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS"
+          val url = "/crdl-cache/lists/CL239?phase=P6&domain=NCTS&state=valid"
 
           val json = Json.parse("""
               |[
